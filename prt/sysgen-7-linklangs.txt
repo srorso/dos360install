@@ -1,0 +1,1835 @@
+
+// JOB SYSGEN7B   LINK BASIC FORTRAN IV                    360N-FO-451  12.02.44
+// OPTION CATAL                                                         LINK0216
+   INCLUDE IJTFO                                                        LINK0217
+// EXEC LNKEDT                                                          LINK0218
+
+JOB  SYSGEN7B  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE IJTFO                                                        LINK0217
+LIST   PHASE FORTRAN,*,NOAUTO                                                 =4510001
+LIST   INCLUDE IJJCPD1                                                        =4510002
+LIST   INCLUDE IJTFO1                                                         =4510003
+LIST   PHASE FORTREL,IJTFO139,NOAUTO                                          =4510004
+LIST   INCLUDE IJTFO2                                                         =4510005
+LIST   PHASE FORTRGE,IJTFO139,NOAUTO                                          =4510006
+LIST   INCLUDE IJTFO3                                                         =4510007
+LIST   PHASE FORTRPU,IJTFO139,NOAUTO                                          =4510008
+LIST   INCLUDE IJTFO4                                                         =4510009
+LIST   ENTRY                                                                  =4510010
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        FORTRAN   0063B0  006000  008677  11 05 3  CSECT     IJJCPD1   006000  006000
+                                                      ENTRY  IJJCPD1N  006000
+                                                      ENTRY  IJJCPD3   006000
+
+                                                   CSECT     IJTFO139  0061F8  0061F8
+
+        FORTREL   006420  0061F8  007E2B  11 07 1  CSECT     IJTFO239  0061F8  0061F8
+
+        FORTRGE   006498  0061F8  0080BF  11 08 2  CSECT     IJTFO335  0061F8  0061F8
+
+        FORTRPU   006420  0061F8  00785F  11 09 3  CSECT     IJTFO439  0061F8  0061F8
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 12 13 11              56 04 09 06             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        17 10 03                110 01 07                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             741                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE             1207                    17003                    23523
+LIBRARY   BLOCKS DELETED             116                      139                       00
+LIBRARY   BLOCKS AVAILABLE          3157                     7338                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN7B                                                            12.02.44,DURATION 00.00.00
+// JOB SYSGEN7C   LINK COBOL D                             360N-CB-452  12.02.44
+// OPTION CATAL                                                         LINK0222
+   INCLUDE IJSCBD                                                       LINK0223
+// EXEC LNKEDT                                                          LINK0224
+
+JOB  SYSGEN7C  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE IJSCBD                                                       LINK0223
+LIST   PHASE COBOL,*,NOAUTO              ASG                                      0001
+LIST   INCLUDE IJSCBL01                  ASG                                      0002
+LIST   PHASE COBOL000,COBOL,NOAUTO       CBL / SET                                0003
+LIST   INCLUDE IJSCBL02                  CBL                                      0004
+LIST   INCLUDE IJSCBL03                  SET                                      0005
+LIST   PHASE COBOL001,COBOL,NOAUTO       CBD / STD                                0006
+LIST   INCLUDE IJSCBL04                  CBD                                      0007
+LIST   INCLUDE IJSCBL05                  STD                                      0008
+LIST   PHASE COBOL002,CETSET,NOAUTO      DS1                                      0009
+LIST   INCLUDE IJSCBL06                  DS1                                      0010
+LIST   PHASE COBOL003,CETSET,NOAUTO      DS2                                      0011
+LIST   INCLUDE IJSCBL07                  DS2                                      0012
+LIST   PHASE COBOL004,CETSET,NOAUTO      DPC                                      0013
+LIST   INCLUDE IJSCBL08                  DPC                                      0014
+LIST   PHASE COBOL005,CETSET,NOAUTO      ALC                                      0015
+LIST   INCLUDE IJSCBL09                  ALC                                      0016
+LIST   PHASE COBOL006,CAFHSH,NOAUTO      BLD                                      0017
+LIST   INCLUDE IJSCBL10                  BLD                                      0018
+LIST   PHASE COBOL007,CAFHSH,NOAUTO      DMG                                      0019
+LIST   INCLUDE IJSCBL11                  DMG                                      0020
+LIST   PHASE COBOL008,CETSET,NOAUTO      LIT                                      0021
+LIST   INCLUDE IJSCBL12                  LIT                                      0022
+LIST   PHASE COBOL009,CETSET,NOAUTO      IOA                                      0023
+LIST   INCLUDE IJSCBL13                  IOA                                      0024
+LIST   PHASE COBOL010,CAFSAM,NOAUTO      IOB                                      0025
+LIST   INCLUDE IJSCBL14                  IOB                                      0026
+LIST   PHASE COBOL011,CETSET,NOAUTO      PMG                                      0027
+LIST   INCLUDE IJSCBL15                  PMG                                      0028
+LIST   PHASE COBOL012,CETSET,NOAUTO      SMG                                      0029
+LIST   INCLUDE IJSCBL16                  SMG                                      0030
+LIST   PHASE COBOL013,CETSET,NOAUTO      LST                                      0031
+LIST   INCLUDE IJSCBL17                  LST                                      0032
+LIST   PHASE COBOL014,IJJCPD1N,NOAUTO    PS1                                      0033
+LIST   INCLUDE IJSCBL18                  PS1                                      0034
+LIST   PHASE COBOL015,IJJCPD1N,NOAUTO    PS2                                      0035
+LIST   INCLUDE IJSCBL19                  PS2                                      0036
+LIST   PHASE COBOL016,IJJCPD1N,NOAUTO    PS3                                      0037
+LIST   INCLUDE IJSCBL20                  PS3                                      0038
+LIST   PHASE COBOL017,IJJCPD1N,NOAUTO    PS4                                      0039
+LIST   INCLUDE IJSCBL21                  PS4                                      0040
+LIST   PHASE COBOL018,IJJCPD1N,NOAUTO    PG1                                      0041
+LIST   INCLUDE IJSCBL22                  PG1                                      0042
+LIST   PHASE COBOL019,IJJCPD1N,NOAUTO    PG2                                      0043
+LIST   INCLUDE IJSCBL23                  PG2                                      0044
+LIST   PHASE COBOL020,IJJCPD1N,NOAUTO    PG3                                      0045
+LIST   INCLUDE IJSCBL24                  PG3                                      0046
+LIST   PHASE COBOL021,IJJCPD1N,NOAUTO    PG4                                      0047
+LIST   INCLUDE IJSCBL25                  PG4                                      0048
+LIST   PHASE COBOL022,IJJCPD1N,NOAUTO    PG5                                      0049
+LIST   INCLUDE IJSCBL26                  PG5                                      0050
+LIST   PHASE COBOL023,IJJCPD1N,NOAUTO    PG6                                      0051
+
+
+LIST   INCLUDE IJSCBL27                  PG6                                      0052
+LIST   PHASE COBOL024,IJJCPD1N,NOAUTO    PG7                                      0053
+LIST   INCLUDE IJSCBL28                  PG7                                      0054
+LIST   PHASE COBOL025,IJJCPD1N,NOAUTO    PG8                                      0055
+LIST   INCLUDE IJSCBL29                  PG8                                      0056
+LIST   PHASE COBOL027,IJJCPD1N,NOAUTO    PG9                                      0057
+LIST   INCLUDE IJSCBL31                  PG9                                      0058
+LIST   PHASE COBOL028,IJJCPD1N,NOAUTO    CBA / AS1                                0059
+LIST   INCLUDE IJSCBL32                  CBA                                      0060
+LIST   INCLUDE IJSCBL33                  AS1                                      0061
+LIST   PHASE COBOL029,IJSYSLN,NOAUTO     CBB                                      0062
+LIST   INCLUDE IJSCBL34                  CBB                                      0063
+LIST   PHASE COBOL030,CETAS1-16,NOAUTO   AS2                                      0064
+LIST   INCLUDE IJSCBL35                  AS2                                      0065
+LIST   PHASE COBOL031,CETAS1-16,NOAUTO   ASA                                      0066
+LIST   INCLUDE IJSCBL36                  ASA                                      0067
+LIST   PHASE COBOL032,CETAS1-16,NOAUTO   AS3                                      0068
+LIST   INCLUDE IJSCBL37                  AS3                                      0069
+LIST   PHASE COBOL033,CETAS1-16,NOAUTO   AS4                                      0070
+LIST   INCLUDE IJSCBL38                  AS4                                      0071
+LIST   PHASE COBOL034,CETAS1-16,NOAUTO   AS5                                      0072
+LIST   INCLUDE IJSCBL39                  AS5                                      0073
+LIST   PHASE COBOL035,CETAS1-16,NOAUTO   AS6                                      0074
+LIST   INCLUDE IJSCBL40                  AS6                                      0075
+LIST   PHASE COBOL036,IJSYSLN,NOAUTO     PD1                                      0076
+LIST   INCLUDE IJSCBL41                  PD1                                      0077
+LIST   PHASE COBOL037,IJSYSLN,NOAUTO     PD2                                      0078
+LIST   INCLUDE IJSCBL42                  PD2                                      0079
+LIST   PHASE COBOL038,OTABLE,NOAUTO      PT1                                      0080
+LIST   INCLUDE IJSCBL43                  PT1                                      0081
+LIST   PHASE COBOL039,OTABLE,NOAUTO      PT2                                      0082
+LIST   INCLUDE IJSCBL44                  PT2                                      0083
+LIST   PHASE COBOL040,OTABLE,NOAUTO      PT3                                      0084
+LIST   INCLUDE IJSCBL45                  PT3                                      0085
+LIST   PHASE COBOL041,OTABLE,NOAUTO      PT4                                      0086
+LIST   INCLUDE IJSCBL46                  PT4                                      0087
+LIST   PHASE COBOL042,OTABLE,NOAUTO      PT5                                      0088
+LIST   INCLUDE IJSCBL47                  PT5                                      0089
+LIST   PHASE COBOL043,OTABLE,NOAUTO      PT6                                      0090
+LIST   INCLUDE IJSCBL48                  PT6                                      0091
+LIST   PHASE COBOL044,OTABLE,NOAUTO      PT7                                      0092
+LIST   INCLUDE IJSCBL49                  PT7                                      0093
+LIST   PHASE COBOL050,CETAS1-16,NOAUTO   TRM                                      0094
+LIST   INCLUDE IJSCBL50                  TRM                                      0095
+LIST   PHASE COBOL055,CETSET,NOAUTO      DST                                      0096
+LIST   INCLUDE IJSCBL55                  DST                                      0097
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        COBOL     00600A  006000  006422  11 0A 3  CSECT     IJSASG20  006000  006000
+                                                   *  ENTRY  CETASG    00600A
+
+                                                   CSECT     IJ2M0011  006278  006000
+
+                                                   CSECT     CPLMODA   006298  006000
+
+        COBOL000  006A28  006000  007494  11 0A 4  CSECT     IJJCPD1N  0066B8  006000
+                                                      ENTRY  IJJCPD3   0066B8
+                                                      ENTRY  IJJCPD1   0066B8
+
+                                                   CSECT     IJSCBL20  006000  006000
+                                                      ENTRY  CCMAR     006010
+                                                      ENTRY  IJSYS01   006168
+                                                      ENTRY  IJSYS02   006218
+                                                      ENTRY  IJSYS03   0062C8
+
+                                                   CSECT     IJFWZNZZ  006380  006000
+                                                   *  ENTRY  IJFWZZZZ  006380
+                                                   *  ENTRY  IJFWZSZZ  006380
+
+                                                   CSECT     IJSDS0    006848  006000
+                                                      ENTRY  CLIST     006848
+                                                      ENTRY  CIOA1L    0068E0
+                                                      ENTRY  CINPT     006960
+                                                      ENTRY  CIOA1I    0069D8
+
+                                                   CSECT     IJSSET25  006A28  006A28
+                                                   *  ENTRY  CETSET    006A28
+
+        COBOL001  006A28  006000  007574  11 0B 4  CSECT     IJSCBD20  006000  006000
+
+                                                   CSECT     IJGWZNZZ  006380  006000
+                                                   *  ENTRY  IJGWZZZZ  006380
+                                                   *  ENTRY  IJGWZRZZ  006380
+
+                                                   CSECT     CPLMOD    0066B8  006000
+
+                                                   CSECT     IJSDSD    006848  006000
+
+                                                   CSECT     IJSSTD25  006A28  006A28
+                                                   *  ENTRY  CETSTD    006A28
+
+        COBOL002  006A32  006A28  008C97  11 0C 4  CSECT     IJSDS139  006A28  006A28
+                                                   *  ENTRY  CETDS1    006A32
+
+        COBOL003  006A32  006A28  008A5F  11 0E 2  CSECT     IJSDS239  006A28  006A28
+                                                   *  ENTRY  CETDS2    006A32
+
+        COBOL004  006A32  006A28  0086FF  11 0F 3  CSECT     IJSDPC39  006A28  006A28
+                                                   *  ENTRY  CETDPC    006A32
+
+                                                   CSECT     IJSPIC39  007C08  006A28
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        COBOL005  006A32  006A28  00859F  11 10 4  CSECT     IJSALC31  006A28  006A28
+                                                   *  ENTRY  CETALC    006A32
+                                                   *  ENTRY  CAFHSH    006C34
+
+        COBOL006  006C42  006C38  0072EF  11 12 1  CSECT     IJSBLD35  006C38  006C38
+                                                   *  ENTRY  CETBLD    006C42
+
+        COBOL007  006C42  006C38  007707  11 12 3  CSECT     IJSDMG41  006C38  006C38
+                                                   *  ENTRY  CETDMG    006C42
+
+        COBOL008  006A32  006A28  008487  11 13 1  CSECT     IJSLIT39  006A28  006A28
+                                                   *  ENTRY  CETLIT    006A32
+
+        COBOL009  006A32  006A28  00874F  12 00 1  CSECT     IJSIOA39  006A28  006A28
+                                                   *  ENTRY  CETIOA    006A32
+                                                   *  ENTRY  CAFSAM    0072F0
+
+        COBOL010  0072FA  0072F0  00881F  12 01 2  CSECT     IJSIOB33  0072F0  0072F0
+                                                   *  ENTRY  CETIOB    0072FA
+
+        COBOL011  006A32  006A28  0083EF  12 02 2  CSECT     IJSPMG41  006A28  006A28
+                                                      ENTRY  CLASTPMG  0083F0
+                                                   *  ENTRY  CETPMG    006A32
+
+        COBOL012  006A32  006A28  0085EF  12 03 2  CSECT     IJSSMG41  006A28  006A28
+                                                      ENTRY  CLASTSMG  0085F0
+                                                   *  ENTRY  CETSMG    006A32
+
+        COBOL013  006A32  006A28  0071FF  12 04 3  CSECT     IJSLST41  006A28  006A28
+                                                   *  ENTRY  CETLST    006A32
+
+        COBOL014  0066C2  0066B8  00895F  12 05 1  CSECT     IJSPS139  0066B8  0066B8
+                                                   *  ENTRY  CETPS1    0066C2
+
+        COBOL015  0066C2  0066B8  00890F  12 06 3  CSECT     IJSPS239  0066B8  0066B8
+                                                   *  ENTRY  CETPS2    0066C2
+
+        COBOL016  0066C2  0066B8  008717  12 08 1  CSECT     IJSPS339  0066B8  0066B8
+                                                   *  ENTRY  CETPS3    0066C2
+
+        COBOL017  0066C2  0066B8  00840F  12 09 2  CSECT     IJSPS435  0066B8  0066B8
+                                                   *  ENTRY  CETPS4    0066C2
+
+        COBOL018  0066C2  0066B8  008627  12 0A 3  CSECT     IJSPG133  0066B8  0066B8
+                                                      ENTRY  CETPG1    0066C2
+
+        COBOL019  0066C2  0066B8  008067  12 0B 4  CSECT     IJSPG235  0066B8  0066B8
+                                                   *  ENTRY  CETPG2    0066C2
+
+        COBOL020  0066C2  0066B8  00820F  12 0C 4  CSECT     IJSPG333  0066B8  0066B8
+                                                   *  ENTRY  CETPG3    0066C2
+
+        COBOL021  0066C2  0066B8  0085EF  12 0E 1  CSECT     IJSPG433  0066B8  0066B8
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+                                                   *  ENTRY  CETPG4    0066C2
+
+        COBOL022  0066C2  0066B8  007807  12 0F 2  CSECT     IJSPG530  0066B8  0066B8
+                                                   *  ENTRY  CETPG5    0066C2
+
+        COBOL023  0066C2  0066B8  0087E7  12 10 1  CSECT     IJSPG639  0066B8  0066B8
+                                                   *  ENTRY  CETPG6    0066C2
+
+        COBOL024  0066C2  0066B8  008427  12 11 3  CSECT     IJSPG739  0066B8  0066B8
+                                                   *  ENTRY  CETPG7    0066C2
+
+        COBOL025  0066C2  0066B8  008FA7  12 12 4  CSECT     IJSPG839  0066B8  0066B8
+                                                   *  ENTRY  CETPG8    0066C2
+
+        COBOL027  0066C2  0066B8  008CFF  13 00 3  CSECT     IJSPG935  0066B8  0066B8
+                                                   *  ENTRY  CETPG9    0066C2
+
+        COBOL028  006AE2  0066B8  007D87  13 02 1  CSECT     CPLMODP   0066B8  0066B8
+
+                                                   CSECT               006878  0066B8
+
+                                                   CSECT     IJSCBA20  006880  0066B8
+                                                      ENTRY  CLISTP    006880
+                                                      ENTRY  CIOA1LP   006918
+                                                      ENTRY  IJSYSLN   006998
+                                                      ENTRY  CIOA1P    006A81
+
+                                                   CSECT     IJSAS131  006AD8  006AD8
+                                                      ENTRY  CLASTAS1  007D88
+                                                   *  ENTRY  CETAS1    006AE2
+
+        COBOL029  006998  006998  006AD1  13 03 1  CSECT     IJSCBB20  006998  006998
+
+        COBOL030  006AE2  006AD8  0079C7  13 03 2  CSECT     IJSAS241  006AD8  006AD8
+                                                      ENTRY  CLASTAS2  0079C8
+                                                   *  ENTRY  CETAS2    006AE2
+
+        COBOL031  006AE2  006AD8  00742F  13 04 1  CSECT     IJSASA30  006AD8  006AD8
+                                                   *  ENTRY  CETASA    006AE2
+
+        COBOL032  006AE2  006AD8  0077B7  13 04 3  CSECT     IJSAS341  006AD8  006AD8
+                                                   *  ENTRY  CETAS3    006AE2
+
+        COBOL033  006AE2  006AD8  007D27  13 05 1  CSECT     IJSAS441  006AD8  006AD8
+                                                      ENTRY  CLASTAS4  007D28
+                                                   *  ENTRY  CETAS4    006AE2
+
+        COBOL034  006AE2  006AD8  007B4F  13 05 4  CSECT     IJSAS541  006AD8  006AD8
+                                                   *  ENTRY  CETAS5    006AE2
+
+        COBOL035  006AE2  006AD8  00798F  13 06 3  CSECT     IJSAS641  006AD8  006AD8
+                                                   *  ENTRY  CETAS6    006AE2
+
+        COBOL036  0069A2  006998  007AFF  13 07 2  CSECT     IJSPD139  006998  006998
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+                                                   *  ENTRY  CETPD1    0069A2
+                                                   *  ENTRY  OTABLE    007AE8
+
+        COBOL037  0069A2  006998  0084AF  13 08 1  CSECT     IJSPD239  006998  006998
+                                                   *  ENTRY  CETPD2    0069A2
+
+        COBOL038  007AE8  007AE8  0087F5  13 09 2  CSECT     IJSPT135  007AE8  007AE8
+
+        COBOL039  007AE8  007AE8  008701  13 09 4  CSECT     IJSPT239  007AE8  007AE8
+
+        COBOL040  007AE8  007AE8  008611  13 0A 2  CSECT     IJSPT333  007AE8  007AE8
+
+        COBOL041  007AE8  007AE8  008242  13 0A 4  CSECT     IJSPT430  007AE8  007AE8
+
+        COBOL042  007AE8  007AE8  008688  13 0B 2  CSECT     IJSPT530  007AE8  007AE8
+
+        COBOL043  007AE8  007AE8  008719  13 0B 4  CSECT     IJSPT635  007AE8  007AE8
+
+        COBOL044  007AE8  007AE8  0088F6  13 0C 2  CSECT     IJSPT738  007AE8  007AE8
+
+        COBOL050  006AE2  006AD8  006E29  13 0D 1  CSECT     IJSTRM20  006AD8  006AD8
+                                                   *  ENTRY  CETTRM    006AE2
+
+                                                   CSECT     IJ2M0012  006E10  006AD8
+
+        COBOL055  006A32  006A28  007937  13 0D 2  CSECT     IJSDST35  006A28  006A28
+                                                   *  ENTRY  CETDST    006A32
+   INCLUDE IJSDDB                                                       LINK0225
+// EXEC LNKEDT                                                          LINK0226
+
+JOB  SYSGEN7C  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE IJSDDB                                                       LINK0225
+LIST   PHASE DEBUG,*                                                              0001
+LIST   INCLUDE IJSCBL60                                                           0002
+LIST   AUTOLINK   IJFWZNZZ
+LIST   AUTOLINK   IJGWZNZZ
+LIST   AUTOLINK   IJJCPD1N
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        DEBUG     00600A  006000  00789C  13 0E 1  CSECT               006000  006000
+                                                   *  ENTRY  DEBUG     00600A
+
+                                                   CSECT     IJJCPD1N  0076E0  0076E0
+                                                      ENTRY  IJJCPD3   0076E0
+
+                                                   CSECT     IJ2M0030  007138  006000
+
+                                                   CSECT     IJGWZNZZ  007308  007308
+                                                   *  ENTRY  IJGWZZZZ  007308
+                                                   *  ENTRY  IJGWZRZZ  007308
+
+                                                   CSECT     IJFWZNZZ  007158  007158
+                                                   *  ENTRY  IJFWZSZZ  007158
+                                                   *  ENTRY  IJFWZZZZ  007158
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 13 01 05              56 04 09 06             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        19 15 01                110 01 07                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             789                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE             1385                    17003                    23523
+LIBRARY   BLOCKS DELETED             116                      139                       00
+LIBRARY   BLOCKS AVAILABLE          2979                     7338                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN7C                                                            12.02.46,DURATION 00.00.01
+// JOB SYSGEN7D   LINK RPG                                 360N-RG-460  12.02.46
+// OPTION CATAL                                                         LINK0238
+   INCLUDE IJRRG                                                        LINK0239
+// EXEC LNKEDT                                                          LINK0240
+
+JOB  SYSGEN7D  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE IJRRG                                                        LINK0239
+LIST     PHASE RPG1,*,NOAUTO                                                  .4600001
+LIST       INCLUDE IJR000                                                     .4600002
+LIST     PHASE RPG10010,IJRPRE                                                .4600003
+LIST       INCLUDE IJR010                                                     .4600004
+LIST     PHASE RPG10020,IJRPRE                                                .4600005
+LIST       INCLUDE IJR020                                                     .4600006
+LIST     PHASE RPG10025,IJRPRE                                                .4600007
+LIST       INCLUDE IJR025                                                     .4600008
+LIST     PHASE RPG10030,IJRCEX                                                    0009
+LIST       INCLUDE IJR030                                                         0010
+LIST       INCLUDE IJR039                                                         0011
+LIST     PHASE RPG10040,IJRCEX                                                .4600012
+LIST       INCLUDE IJR040                                                     .4600013
+LIST       INCLUDE IJR049                                                     .4600014
+LIST     PHASE RPG10050,IJRCEX                                                .4600015
+LIST       INCLUDE IJR050                                                         0016
+LIST       INCLUDE IJR059                                                     .4600017
+LIST     PHASE RPG10060,IJRCEX                                                .4600018
+LIST       INCLUDE IJR060                                                         0019
+LIST       INCLUDE IJR069                                                     .4600020
+LIST     PHASE RPG10070,IJRCEX                                                .4600021
+LIST       INCLUDE IJR070                                                         0022
+LIST       INCLUDE IJR079                                                     .4600023
+LIST     PHASE RPG10080,IJRCEX                                                .4600024
+LIST       INCLUDE IJR080                                                         0025
+LIST       INCLUDE IJR089                                                     .4600026
+LIST     PHASE RPG10090,IJRCEX                                                .4600027
+LIST       INCLUDE IJR090                                                         0028
+LIST       INCLUDE IJR099                                                     .4600029
+LIST     PHASE RPG10100,IJRCEX                                                .4600030
+LIST       INCLUDE IJR100                                                     .4600031
+LIST       INCLUDE IJR109                                                     .4600032
+LIST     PHASE RPG10110,IJRCEX                                                .4600033
+LIST       INCLUDE IJR110                                                         0034
+LIST       INCLUDE IJR119                                                     .4600035
+LIST     PHASE RPG10120,IJRCEX                                                .4600036
+LIST       INCLUDE IJR120                                                     .4600037
+LIST       INCLUDE IJR129                                                     .4600038
+LIST     PHASE RPG10130,IJRCEX                                                .4600039
+LIST       INCLUDE IJR130                                                     .4600040
+LIST       INCLUDE IJR139                                                     .4600041
+LIST     PHASE RPG10140,IJRCEX                                                .4600042
+LIST       INCLUDE IJR140                                                     .4600043
+LIST       INCLUDE IJR149                                                     .4600044
+LIST     PHASE RPG10150,IJRCEX                                                .4600045
+LIST       INCLUDE IJR150                                                         0046
+LIST       INCLUDE IJR159                                                     .4600047
+LIST     PHASE RPG10160,IJRCEX                                                .4600048
+LIST       INCLUDE IJR160                                                         0049
+LIST       INCLUDE IJR169                                                     .4600050
+LIST     PHASE RPG10170,IJRCEX                                                    0051
+
+
+LIST       INCLUDE IJR170                                                         0052
+LIST      INCLUDE IJR179                                                          0053
+LIST     PHASE RPG1018A,IJRCEX                                                    0054
+LIST       INCLUDE IJR18A                                                         0055
+LIST      INCLUDE IJR18F                                                          0056
+LIST    PHASE RPG1018G,IJRCEX
+LIST        INCLUDE IJR18G
+LIST        INCLUDE IJR18H
+LIST     PHASE RPG10180,IJRCEX                                                    0057
+LIST       INCLUDE IJR180                                                         0058
+LIST      INCLUDE IJR189                                                          0059
+LIST     PHASE RPG10190,IJRCEX                                                .4600060
+LIST       INCLUDE IJR190                                                         0061
+LIST       INCLUDE IJR199                                                     .4600062
+LIST     PHASE RPG10200,IJRCEX                                                .4600063
+LIST       INCLUDE IJR200                                                         0064
+LIST       INCLUDE IJR209                                                     .4600065
+LIST     PHASE RPG10210,IJRCEX                                                .4600066
+LIST       INCLUDE IJR210                                                     .4600067
+LIST       INCLUDE IJR219                                                     .4600068
+LIST     PHASE RPG10220,IJRCEX                                                .4600069
+LIST       INCLUDE IJR220                                                         0070
+LIST       INCLUDE IJR229                                                     .4600071
+LIST     PHASE RPG10230,IJRCEX                                                .4600072
+LIST       INCLUDE IJR230                                                         0073
+LIST       INCLUDE IJR239                                                     .4600074
+LIST     PHASE RPG10240,IJRCEX                                                    0075
+LIST       INCLUDE IJR240                                                         0076
+LIST       INCLUDE IJR241                                                     .4600077
+LIST       INCLUDE IJR242                                                     .4600078
+LIST       INCLUDE IJR243                                                     .4600079
+LIST       INCLUDE IJR244                                                     .4600080
+LIST       INCLUDE IJR245                                                     .4600081
+LIST       INCLUDE IJR246                                                     .4600082
+LIST       INCLUDE IJR247                                                     .4600083
+LIST       INCLUDE IJR249                                                     .4600084
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        RPG1      00600A  006000  00871A  13 0F 1  CSECT     IJR00039  006000  006000
+                                                      ENTRY  IJRPRE    006718
+                                                   *  ENTRY  IJRCEX    0065A0
+
+        RPG10010  006718  006718  0068EA  13 10 3  CSECT     IJJCPD1   006728  006718
+                                                      ENTRY  IJJCPD3   006728
+                                                      ENTRY  IJJCPD1N  006728
+                                                   *  ENTRY  IJR01031  006728
+
+                                                   CSECT               006718  006718
+
+        RPG10020  006718  006718  0068E9  13 10 4  CSECT               006718  006718
+
+                                                   CSECT     IJFWZNZZ  006728  006718
+                                                   *  ENTRY  IJR02031  006728
+                                                   *  ENTRY  IJFWZZZZ  006728
+                                                   *  ENTRY  IJFWZSZZ  006728
+
+        RPG10025  006718  006718  006A49  13 11 1  CSECT               006718  006718
+
+                                                   CSECT     IJGWZNZU  006728  006718
+                                                   *  ENTRY  IJR02532  006728
+                                                   *  ENTRY  IJGWZZZZ  006728
+                                                   *  ENTRY  IJGWZRZZ  006728
+                                                   *  ENTRY  IJGWZNZZ  006728
+                                                   *  ENTRY  IJGWZZZU  006728
+                                                   *  ENTRY  IJGWZRZU  006728
+
+        RPG10030  0065AA  0065A0  007A04  13 11 2  CSECT     IJR03038  0065A0  0065A0
+
+                                                   CSECT     IJR03931  0077F8  0077F8
+
+        RPG10040  0065AA  0065A0  007435  13 12 2  CSECT     IJR04036  0065A0  0065A0
+
+                                                   CSECT     IJR04931  007228  007228
+
+        RPG10050  0065AC  0065A0  007888  13 13 1  CSECT     IJR05036  0065A0  0065A0
+
+                                                   CSECT     IJR05931  007630  007630
+
+        RPG10060  0065AC  0065A0  00764C  13 13 4  CSECT     IJR06037  0065A0  0065A0
+
+                                                   CSECT     IJR06933  0074A8  0074A8
+
+        RPG10070  0065AC  0065A0  0076C8  14 00 3  CSECT     IJR07036  0065A0  0065A0
+
+                                                   CSECT     IJR07933  007470  007470
+
+        RPG10080  0065AC  0065A0  0077EB  14 01 2  CSECT     IJR08038  0065A0  0065A0
+
+                                                   CSECT     IJR08931  007578  007578
+
+        RPG10090  0065AC  0065A0  007733  14 02 1  CSECT     IJR09033  0065A0  0065A0
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+                                                   CSECT     IJR09931  0074C8  0074C8
+
+        RPG10100  0065AA  0065A0  0079E1  14 02 4  CSECT     IJR10034  0065A0  0065A0
+
+                                                   CSECT     IJR10931  007740  007740
+
+        RPG10110  0065AA  0065A0  007E2B  14 03 4  CSECT     IJR11038  0065A0  0065A0
+
+                                                   CSECT     IJR11931  007C58  007C58
+
+        RPG10120  0065AA  0065A0  007F77  14 04 4  CSECT     IJR12036  0065A0  004AA8
+
+                                                   CSECT     IJR12931  007D18  007D18
+
+        RPG10130  0065AC  0065A0  007F77  14 05 4  CSECT     IJR13039  0065A0  004888
+
+                                                   CSECT     IJR13931  007DC0  007DC0
+
+        RPG10140  0065AA  0065A0  008077  14 06 4  CSECT     IJR14036  0065A0  004888
+
+                                                   CSECT     IJR14934  007F18  007F18
+
+        RPG10150  0065AA  0065A0  00800F  14 08 1  CSECT     IJR15035  0065A0  0065A0
+
+                                                   CSECT     IJR15931  007DB0  007DB0
+
+                                                   CSECT     IJR15531  007508  0065A0
+
+        RPG10160  0065AA  0065A0  00800F  14 09 2  CSECT     IJR16034  0065A0  0065A0
+
+                                                   CSECT     IJR16931  007DB0  007DB0
+
+                                                   CSECT     IJR16531  007580  0065A0
+
+        RPG10170  0065AA  0065A0  007CC3  14 0A 3  CSECT     IJR17039  0065A0  0065A0
+
+                                                   CSECT     IJR17931  007AB0  007AB0
+
+        RPG1018A  0065AC  0065A0  007CAF  14 0B 3  CSECT     IJR18A39  0065A0  0065A0
+
+                                                   CSECT     IJR18F31  007A70  007A70
+
+        RPG1018G  0065AA  0065A0  007E87  14 0C 3  CSECT     IJR18G39  0065A0  0065A0
+
+                                                   CSECT     IJR18H33  007C48  007C48
+
+        RPG10180  0065AA  0065A0  00789F  14 0D 3  CSECT     IJR18039  0065A0  0065A0
+
+                                                   CSECT     IJR18931  007698  007698
+
+        RPG10190  0065AC  0065A0  007BDA  14 0E 2  CSECT     IJR19033  0065A0  0065A0
+
+                                                   CSECT     IJR19931  007AE8  007AE8
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        RPG10200  0065AC  0065A0  007DD8  14 0F 2  CSECT     IJR20033  0065A0  0065A0
+
+                                                   CSECT     IJR20931  007CE0  007CE0
+
+        RPG10210  0065AC  0065A0  007C78  14 10 2  CSECT     IJR21036  0065A0  0065A0
+
+                                                   CSECT     IJR21931  007B80  007B80
+
+        RPG10220  0065AC  0065A0  007C20  14 11 2  CSECT     IJR22035  0065A0  0065A0
+
+                                                   CSECT     IJR22931  007B28  007B28
+
+        RPG10230  0065AC  0065A0  007928  14 12 2  CSECT     IJR23038  0065A0  0065A0
+
+                                                   CSECT     IJR23931  007830  007830
+
+        RPG10240  0065AC  0065A0  00823B  14 13 1  CSECT     IJR24039  0065A0  0065A0
+
+                                                   CSECT     IJR24931  008090  008090
+
+                                                   CSECT     IJR24831  006DA8  0065A0
+
+                                                   CSECT     IJR24131  0077E0  0077E0
+                                                      ENTRY  IJRLR110  0077E0
+                                                      ENTRY  IJRUP110  007A80
+                                                      ENTRY  IJRSTRCI  0079FE
+
+                                                   CSECT     IJR24231  007A88  007A88
+                                                      ENTRY  IJRLR210  007A88
+                                                      ENTRY  IJRUP210  007CEC
+                                                      ENTRY  IJRSTRCO  007C9F
+
+                                                   CSECT     IJR24331  007CF0  007CF0
+                                                      ENTRY  IJRLR710  007CF0
+                                                      ENTRY  IJRUP710  007E25
+
+                                                   CSECT     IJR24431  007E28  007E28
+                                                      ENTRY  IJRLR410  007E28
+                                                      ENTRY  IJRUP410  007E90
+
+                                                   CSECT     IJR24531  007E98  007E98
+                                                      ENTRY  IJRLR610  007E98
+                                                      ENTRY  IJRUP610  007EBD
+
+                                                   CSECT     IJR24631  007EC0  007EC0
+                                                      ENTRY  IJRLR310  007EC0
+                                                      ENTRY  IJRUP310  008054
+
+                                                   CSECT     IJR24731  008058  008058
+                                                      ENTRY  IJRLR510  008058
+                                                      ENTRY  IJRUP510  00808A
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 13 02 15              56 04 09 06             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        21 00 02                110 01 07                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             817                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE             1486                    17003                    23523
+LIBRARY   BLOCKS DELETED             116                      139                       00
+LIBRARY   BLOCKS AVAILABLE          2878                     7338                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN7D                                                            12.02.47,DURATION 00.00.00
+// JOB SYSGEN7E   LINK PL/I D COMPILER WITH SYSFIL SUPPORT              12.02.47
+* LINK PL/ID (SYSIPT,PCH,LST MAY BE ON 2311 OR 2314.       360N-PL-464  LINK0516
+// OPTION CATAL                                                         LINK0518
+   INCLUDE IJXPLID                                                      LINK0519
+// EXEC LNKEDT                                                          LINK0520
+
+JOB  SYSGEN7E  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE IJXPLID                                                      LINK0519
+LIST           PHASE PL/I,S,NOAUTO                                            24640001
+LIST           INCLUDE IJXA00D,(IJXA00D)                                      24640002
+LIST           INCLUDE IJXA00D,(IJXMOD11)                                     24640003
+LIST           INCLUDE IJXA00D,(IJXA01)                                       24640004
+LIST           INCLUDE IJJCPD0                                                24640005
+LIST           INCLUDE IJXA00D,(IJXA06)                                       24640006
+LIST           INCLUDE IJXA00D,(IJXA11)                                       24640007
+LIST           PHASE PL/IA10,IJXA00D,NOAUTO                                   24640008
+LIST           INCLUDE IJXA10                                                 24640009
+LIST           INCLUDE IJFWZNZZ                                               24640010
+LIST           PHASE PL/IA20,IJXA00D,NOAUTO                                   24640011
+LIST           INCLUDE IJXA20                                                 24640012
+LIST           PHASE PL/IA25,IJXA07,NOAUTO                                    24640013
+LIST           INCLUDE IJXA25                                                 24640014
+LIST           PHASE PL/IA27,IJXA05+4,NOAUTO                                  24640015
+LIST           INCLUDE IJXA27                                                 24640016
+LIST           PHASE PL/IA30,IJXA05+4,NOAUTO                                  24640017
+LIST           INCLUDE IJXA30                                                 24640018
+LIST           PHASE PL/IA35,IJXA04+24,NOAUTO                                 24640019
+LIST           INCLUDE IJXA35                                                 24640020
+LIST           PHASE PL/IA45,IJXA05+4,NOAUTO                                  24640021
+LIST           INCLUDE IJXA45                                                 24640022
+LIST           PHASE PL/IA50,IJXA05+4,NOAUTO                                  24640023
+LIST           INCLUDE IJXA50                                                 24640024
+LIST           PHASE PL/IA60,IJXA04+24,NOAUTO                                 24640025
+LIST           INCLUDE IJXA60                                                 24640026
+LIST           PHASE PL/IA65,IJXA04+24,NOAUTO                                 24640027
+LIST           INCLUDE IJXA65                                                 24640028
+LIST           PHASE PL/IB10,IJXA05+4,NOAUTO                                  24640029
+LIST           INCLUDE IJXB10                                                 24640030
+LIST           PHASE PL/IB15,IJXA05+4,NOAUTO                                  24640031
+LIST           INCLUDE IJXB15                                                 24640032
+LIST           PHASE PL/IB20,IJXA05+4,NOAUTO                                  24640033
+LIST           INCLUDE IJXB20                                                 24640034
+LIST           PHASE PL/IB25,IJXA05+4,NOAUTO                                  24640035
+LIST           INCLUDE IJXB25,(IJXB25)                                        24640036
+LIST           PHASE PL/IB25A,+0,NOAUTO                                       24640037
+LIST           INCLUDE IJXB25,(IJXB25A)                                       24640038
+LIST           PHASE PL/IB30,IJXA05+4,NOAUTO                                  24640039
+LIST           INCLUDE  IJXB30                                                24640040
+LIST           PHASE PL/IB40,IJXA05+4,NOAUTO                                  24640041
+LIST           INCLUDE  IJXB40                                                24640042
+LIST           PHASE PL/IB70,IJXA05+4,NOAUTO                                  24640043
+LIST           INCLUDE IJXB70                                                 24640044
+LIST           PHASE PL/IB75,IJXA05+4,NOAUTO                                  24640045
+LIST           INCLUDE IJXB75                                                 24640046
+LIST           PHASE PL/IB80,IJXA05+4,NOAUTO                                  24640047
+LIST           INCLUDE IJXB80                                                 24640048
+LIST           PHASE PL/IB85,IJXA05+4,NOAUTO                                  24640049
+LIST           INCLUDE IJXB85,(IJXB85,IJXB85A)                                24640050
+LIST           PHASE PL/IB85A,+0,NOAUTO                                       24640051
+
+
+LIST           INCLUDE IJXB85,(IJXB85A)                                       24640052
+LIST           PHASE PL/IB87,IJXA05+4,NOAUTO                                  24640053
+LIST           INCLUDE IJXB87                                                 24640054
+LIST           PHASE PL/IB90,IJXA05+4,NOAUTO                                  24640055
+LIST           INCLUDE IJXB90                                                 24640056
+LIST           PHASE PL/IB92,IJXA05+4,NOAUTO                                  24640057
+LIST           INCLUDE IJXB92                                                 24640058
+LIST           PHASE PL/IB95,IJXA05+4,NOAUTO                                  24640059
+LIST           INCLUDE IJXB95                                                 24640060
+LIST           PHASE PL/IB97,IJXA05+4,NOAUTO                                  24640061
+LIST           INCLUDE IJXB97                                                 24640062
+LIST           PHASE PL/IC00,IJXA05+4,NOAUTO                                  24640063
+LIST           INCLUDE IJJCPD0                                                24640064
+LIST           INCLUDE IJXC00                                                 24640065
+LIST           PHASE PL/IC03,IJXA05+4,NOAUTO                                  24640066
+LIST           INCLUDE IJJCPD0                                                24640067
+LIST           INCLUDE IJXC03                                                 24640068
+LIST           PHASE PL/IC25,IJXA05+4,NOAUTO                                  24640069
+LIST           INCLUDE IJXC25                                                 24640070
+LIST           PHASE PL/IC30,IJXA05+4,NOAUTO                                  24640071
+LIST           INCLUDE IJXC30                                                 24640072
+LIST           PHASE PL/IC31,IJXA05+4,NOAUTO                                  24640073
+LIST           INCLUDE IJXC31                                                 24640074
+LIST           PHASE PL/IC32,IJXA05+4,NOAUTO                                  24640075
+LIST           INCLUDE IJXC32                                                 24640076
+LIST           PHASE PL/IC33,IJXA05+4,NOAUTO                                  24640077
+LIST           INCLUDE IJXC33                                                 24640078
+LIST           PHASE PL/IC34,IJXA05+4,NOAUTO                                  24640079
+LIST           INCLUDE IJJCPD0                                                24640080
+LIST           INCLUDE IJXC34                                                 24640081
+LIST           PHASE PL/IC34A,IJXC34A                                         24640082
+LIST           INCLUDE IJXC34A                                                24640083
+LIST           PHASE PL/IC34B,IJXC34A                                         24640084
+LIST           INCLUDE IJXC34B                                                24640085
+LIST           PHASE PL/IC35,IJXA05+4,NOAUTO                                  24640086
+LIST           INCLUDE IJXC35                                                 24640087
+LIST           PHASE PL/IC37,IJXA05+4,NOAUTO                                  24640088
+LIST           INCLUDE IJXC37                                                 24640089
+LIST           PHASE PL/IC40,IJXA05+4,NOAUTO                                  24640090
+LIST           INCLUDE IJXC40                                                 24640091
+LIST           PHASE PL/IC50,IJXA05+4,NOAUTO                                  24640092
+LIST           INCLUDE IJXC50                                                 24640093
+LIST           PHASE PL/IC55,IJXA05+4,NOAUTO                                  24640094
+LIST           INCLUDE IJXC55                                                 24640095
+LIST           PHASE PL/IC60,IJXA05+4,NOAUTO                                  24640096
+LIST           INCLUDE IJXC60                                                 24640097
+LIST           PHASE PL/IC65,IJXA05+4,NOAUTO                                  24640098
+LIST           INCLUDE IJXC65                                                 24640099
+LIST           PHASE PL/IC85,IJXA05+4,NOAUTO                                  24640100
+LIST           INCLUDE IJXC85                                                 24640101
+LIST           PHASE PL/IC86,IJXA05+4,NOAUTO                                  24640102
+LIST           INCLUDE IJXC86                                                 24640103
+LIST           PHASE PL/IC95,IJXA05+4,NOAUTO                                  24640104
+
+
+LIST           INCLUDE IJXC95                                                 24640105
+LIST           PHASE PL/ID00,IJXA02+X'118',NOAUTO                             24640106
+LIST           INCLUDE IJXD00                                                 24640107
+LIST           PHASE PL/ID03,IJXA02+X'118',NOAUTO                             24640108
+LIST           INCLUDE IJXD03                                                 24640109
+LIST           PHASE PL/ID05,IJXA02+X'118',NOAUTO                             24640110
+LIST           INCLUDE IJXD05                                                 24640111
+LIST           PHASE PL/ID10,IJXA02+X'118',NOAUTO                             24640112
+LIST           INCLUDE IJXD10                                                 24640113
+LIST           PHASE PL/ID11,IJXA05+4,NOAUTO                                  24640114
+LIST           INCLUDE IJXD11                                                 24640115
+LIST           PHASE PL/ID12,IJXA05+4,NOAUTO                                  24640116
+LIST           INCLUDE IJXD12                                                 24640117
+LIST           PHASE PL/ID15,IJXA05+4,NOAUTO                                  24640118
+LIST           INCLUDE IJXD15                                                 24640119
+LIST           PHASE PL/ID17,IJXA05+4,NOAUTO                                  24640120
+LIST           INCLUDE IJXD17                                                 24640121
+LIST           PHASE PL/ID20A,IJXA05+4100,NOAUTO                              24640122
+LIST           INCLUDE IJXD20A                                                24640123
+LIST           PHASE PL/ID20,IJXA05+4,NOAUTO                                  24640124
+LIST           INCLUDE IJXD20                                                 24640125
+LIST           PHASE PL/ID40,IJXA05+4,NOAUTO                                  24640126
+LIST           INCLUDE IJXD40                                                 24640127
+LIST           PHASE PL/ID70,IJXA05+4,NOAUTO                                  24640128
+LIST           INCLUDE IJXD70                                                 24640129
+LIST           PHASE PL/ID75,IJXA05+4,NOAUTO                                  24640130
+LIST           INCLUDE IJXD75                                                 24640131
+LIST           PHASE PL/ID80,IJXA05+4,NOAUTO                                  24640132
+LIST           INCLUDE IJXD80                                                 24640133
+LIST           PHASE PL/IE25,IJXA05+4,NOAUTO                                  24640134
+LIST           INCLUDE IJJCPD0                                                24640135
+LIST           INCLUDE IJXE25                                                 24640136
+LIST           PHASE PL/IE25A,IJXE25A                                         24640137
+LIST           INCLUDE IJXE25A                                                24640138
+LIST           PHASE PL/IE25B,IJXE25A                                         24640139
+LIST           INCLUDE IJXE25B                                                24640140
+LIST           PHASE PL/IE25C,IJXE25A                                         24640141
+LIST           INCLUDE IJXE25C                                                24640142
+LIST           PHASE PL/IE25D,IJXE25A                                         24640143
+LIST           INCLUDE IJXE25D                                                24640144
+LIST           PHASE PL/IE25E,IJXE25A                                         24640145
+LIST           INCLUDE IJXE25E                                                24640146
+LIST           PHASE PL/IE25F,IJXE25A                                         24640147
+LIST           INCLUDE IJXE25F                                                24640148
+LIST           PHASE PL/IE25G,IJXE25A                                         24640149
+LIST           INCLUDE IJXE25G                                                24640150
+LIST           PHASE PL/IE25H,IJXE25A                                         24640151
+LIST           INCLUDE IJXE25H                                                24640152
+LIST           PHASE PL/IE25I,IJXE25A                                         24640153
+LIST           INCLUDE IJXE25I                                                24640154
+LIST           PHASE PL/IE25J,IJXE25A                                         24640155
+LIST           INCLUDE IJXE25J                                                24640156
+LIST           PHASE PL/IE25K,IJXE25A                                         24640157
+
+
+LIST           INCLUDE IJXE25K                                                24640158
+LIST           PHASE PL/IE50,IJXA05+4,NOAUTO                                  24640159
+LIST           INCLUDE IJXE50                                                 24640160
+LIST           PHASE PL/IE55,IJXA05+4,NOAUTO                                  24640161
+LIST           INCLUDE IJXE55                                                 24640162
+LIST           PHASE PL/IE60,IJXA05+4,NOAUTO                                  24640163
+LIST           INCLUDE IJXE60                                                 24640164
+LIST           PHASE PL/IE60A,ANFNG+X'600',NOAUTO                             24640165
+LIST           INCLUDE IJXE61                                                 24640166
+LIST           PHASE PL/IF25,IJXA05+4,NOAUTO                                  24640167
+LIST           INCLUDE IJXF25                                                 24640168
+LIST           PHASE PL/IF35,IJXA05+4,NOAUTO                                  24640169
+LIST           INCLUDE IJXF35                                                 24640170
+LIST           PHASE PL/IF50,IJXA05+4,NOAUTO                                  24640171
+LIST            INCLUDE IJXF50                                                24640172
+LIST           PHASE PL/IF75,IJXA05+4,NOAUTO                                  24640173
+LIST           INCLUDE IJXF75                                                 24640174
+LIST           PHASE PL/IF90,IJXA05+4,NOAUTO                                  24640175
+LIST           INCLUDE IJXF90                                                 24640176
+LIST           PHASE PL/IF95,IJXA05+4,NOAUTO                                  24640177
+LIST           INCLUDE IJXF95                                                 24640178
+LIST           PHASE PL/IG00,IJXA05+4,NOAUTO                                  24640179
+LIST           INCLUDE IJXG00                                                 24640180
+LIST           PHASE PL/IG01,IJXA05+4,NOAUTO                                  24640181
+LIST           INCLUDE IJJCPD0                                                24640182
+LIST           INCLUDE IJXG01                                                 24640183
+LIST           PHASE PL/IG15,IJXA05+4,NOAUTO                                  24640184
+LIST           INCLUDE IJXG15                                                 24640185
+LIST           PHASE PL/IG16,IJXA05+4,NOAUTO                                  24640186
+LIST           INCLUDE IJXG16                                                 24640187
+LIST           PHASE PL/IG17,IJXA05+4,NOAUTO                                  24640188
+LIST           INCLUDE IJXG17                                                 24640189
+LIST           PHASE PL/IG17B,IJXA05+4,NOAUTO                                 24640190
+LIST           INCLUDE IJXG17B                                                24640191
+LIST           PHASE PL/IG17D,IJXA05+4,NOAUTO                                 24640192
+LIST           INCLUDE IJXG17D                                                24640193
+LIST           PHASE PL/IG17E,IJXA05+4,NOAUTO                                 24640194
+LIST           INCLUDE IJXG17E                                                24640195
+LIST           PHASE PL/IG17R,IJXA05+4,NOAUTO                                 24640196
+LIST           INCLUDE IJXG17R                                                24640197
+LIST           PHASE PL/IG17S,IJXA05+4,NOAUTO                                 24640198
+LIST           INCLUDE IJXG17S                                                24640199
+LIST           PHASE PL/IG17X,IJXA05+4,NOAUTO                                 24640200
+LIST           INCLUDE IJXG17X                                                24640201
+LIST           PHASE PL/IG17Y,IJXA05+4,NOAUTO                                 24640202
+LIST           INCLUDE IJXG17Y                                                24640203
+LIST           PHASE PL/IG20,IJXA05+4,NOAUTO                                  24640204
+LIST           INCLUDE IJXG20                                                 24640205
+LIST           PHASE PL/IG25,IJXA05+4,NOAUTO                                  24640206
+LIST           INCLUDE IJXG25                                                 24640207
+LIST           PHASE PL/IG30,IJXA05+4,NOAUTO                                  24640208
+LIST           INCLUDE IJXG30                                                 24640209
+LIST           PHASE PL/IG31,IJXA05+4,NOAUTO                                  24640210
+
+
+LIST           INCLUDE IJJCPD0                                                24640211
+LIST           INCLUDE IJXG31                                                 24640212
+LIST           PHASE PL/IG40,IJXA05+4,NOAUTO                                  24640213
+LIST           INCLUDE IJJCPD0                                                24640214
+LIST           INCLUDE IJXG40                                                 24640215
+LIST           PHASE PL/IG55,IJXG40,NOAUTO                                    24640216
+LIST           INCLUDE IJXG55                                                 24640217
+LIST           PHASE $IJKS00,+0                                               24640218
+LIST           INCLUDE IJXS00                                                 24640219
+LIST           PHASE $IJKS10,+0                                               24640220
+LIST           INCLUDE IJXS10                                                 24640221
+LIST           PHASE $IJKS20,+0                                               24640222
+LIST           INCLUDE IJXS20                                                 24640223
+LIST           PHASE $IJKS30,+0                                               24640224
+LIST           INCLUDE IJXS30                                                 24640225
+LIST           PHASE $IJKS40,+0                                               24640226
+LIST           INCLUDE IJXS40                                                 24640227
+LIST           PHASE $IJKS50,+0                                               24640228
+LIST           INCLUDE IJXS50                                                 24640229
+LIST           PHASE $IJKS60,+0                                               24640230
+LIST           INCLUDE IJXS60                                                 24640231
+LIST           PHASE $IJKS70,+0                                               24640232
+LIST           INCLUDE IJXS70                                                 24640233
+LIST           PHASE $$BPLOSE,+0000,NOAUTO                                    24640234
+LIST           INCLUDE IJXPLOSE                                               24640235
+LIST           ENTRY                                                          24640236
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        PL/I      006EB0  006000  007D78  15 00 2  CSECT     IJXA00D   006000  006000
+                                                      ENTRY  IJSYS01   006000
+                                                      ENTRY  IJSYS02   006098
+                                                      ENTRY  IJSYS03   006130
+
+                                                   CSECT     IJXMOD11  0061C8  006000
+
+                                                   CSECT     IJXA01    006448  006000
+                                                   *  ENTRY  IJXA02    006448
+                                                   *  ENTRY  KTETA     0064E8
+                                                   *  ENTRY  KSAVE1    006520
+                                                   *  ENTRY  IJKMTS    0064BC
+                                                   *  ENTRY  IJKMBL    0064DE
+                                                   *  ENTRY  IJKMBS    0064AC
+                                                      ENTRY  K5PH      0066D0
+                                                      ENTRY  IJSYSLS   006928
+                                                   *  ENTRY  IJXA04    0069C0
+                                                      ENTRY  IJXA05    006A74
+
+                                                   CSECT     IJXA06    006CB8  006240
+                                                      ENTRY  IJSYSIN   006CB8
+                                                      ENTRY  IJSYSPH   006D30
+                                                      ENTRY  IJXA07    006D30
+                                                      ENTRY  IJSYSLN   006E18
+                                                   *  ENTRY  IJXA09    006EB0
+
+                                                   CSECT     IJJCPD0   006A78  006A78
+                                                      ENTRY  IJJCPD0N  006A78
+                                                      ENTRY  IJJCPD2   006A78
+                                                      ENTRY  IJJCPD1N  006A78
+                                                   *  ENTRY  IJJCPD1   006A78
+                                                   *  ENTRY  IJJCPD3   006A78
+
+                                                   CSECT     IJXA11    0076C8  006240
+
+        PL/IA10   006000  006000  00631B  15 01 3  CSECT     IJXA10    006000  006000
+
+                                                   CSECT     IJFWZNZZ  006170  006170
+                                                   *  ENTRY  IJFWZSZZ  006170
+                                                   *  ENTRY  IJFWZZZZ  006170
+
+        PL/IA20   006000  006000  006447  15 01 4  CSECT     IJXA20    006000  006000
+
+                                                   CSECT     IJXMOD14  0061C8  006000
+
+        PL/IA25   006D30  006D30  0082A7  15 02 1  CSECT     IJXA25    006D30  006D30
+                                                      ENTRY  ELCO10    006DA8
+                                                      ENTRY  REC1      007D30
+                                                   *  ENTRY  REC2      007EF4
+                                                   *  ENTRY  A250      007B1A
+
+        PL/IA27   006A78  006A78  00791B  15 03 1  CSECT     IJXA27    006A78  006A78
+                                                   *  ENTRY  A270      00791C
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        PL/IA30   006A78  006A78  0076B7  15 03 4  CSECT     IJXA30    006A78  006A78
+
+        PL/IA35   0069D8  0069D8  0082E3  15 04 2  CSECT     IJXA35    0069D8  0069D8
+
+        PL/IA45   006A78  006A78  007635  15 05 2  CSECT     IJXA45    006A78  006A78
+
+        PL/IA50   006A78  006A78  007921  15 05 4  CSECT     IJXA50    006A78  006A78
+
+        PL/IA60   0069D8  0069D8  007EF7  15 06 3  CSECT     IJXA60    0069D8  0069D8
+
+        PL/IA65   0069D8  0069D8  007E63  15 07 3  CSECT     IJXA65    0069D8  0069D8
+
+        PL/IB10   006A78  006A78  007669  15 08 3  CSECT     IJXB10    006A78  006A78
+
+        PL/IB15   006A78  006A78  008001  15 09 1  CSECT     IJXB15    006A78  006A78
+
+        PL/IB20   006A78  006A78  007FBD  15 0A 1  CSECT     IJXB20    006A78  006A78
+
+        PL/IB25   006A78  006A78  007BF9  15 0B 1  CSECT     IJXB25    006A78  006A78
+
+        PL/IB25A  000000  000000  00017B  15 0B 4  CSECT     IJXB25A   000000 -001188
+
+        PL/IB30   006A78  006A78  0077BF  15 0C 1  CSECT     IJXB30    006A78  006A78
+
+        PL/IB40   006A78  006A78  0073FF  15 0C 4  CSECT     IJXB40    006A78  006A78
+
+        PL/IB70   006A78  006A78  0079E1  15 0D 2  CSECT     IJXB70    006A78  006A78
+
+        PL/IB75   006A78  006A78  007097  15 0E 1  CSECT     IJXB75    006A78  006A78
+
+        PL/IB80   006A78  006A78  007A41  15 0E 2  CSECT     IJXB80    006A78  006A78
+
+        PL/IB85   006A78  006A78  008337  15 0F 1  CSECT     IJXB85    006A78  006A78
+                                                   *  ENTRY  B850      007D68
+
+                                                   CSECT     IJXB85A   007D68  006A78
+
+        PL/IB85A  000000  000000  0005CF  15 10 1  CSECT     IJXB85A   000000 -0012F0
+
+        PL/IB87   006A78  006A78  007193  15 10 2  CSECT     IJXB87    006A78  006A78
+
+        PL/IB90   006A78  006A78  007B93  15 10 4  CSECT     IJXB90    006A78  006A78
+
+        PL/IB92   006A78  006A78  007759  15 11 3  CSECT     IJXB92    006A78  006A78
+
+        PL/IB95   006A78  006A78  007209  15 12 1  CSECT     IJXB95    006A78  006A78
+
+        PL/IB97   006A78  006A78  007527  15 12 3  CSECT     IJXB97    006A78  006A78
+
+        PL/IC00   006CB8  006A78  007D1B  15 13 1  CSECT     IJJCPD0   006A78  006A78
+                                                   *  ENTRY  IJJCPD1   006A78
+                                                   *  ENTRY  IJJCPD2   006A78
+                                                   *  ENTRY  IJJCPD3   006A78
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+                                                   *  ENTRY  IJJCPD0N  006A78
+                                                   *  ENTRY  IJJCPD1N  006A78
+
+                                                   CSECT     IJXC00    006CB8  006CB8
+                                                   *  ENTRY  C000      007B2C
+
+        PL/IC03   006CB8  006A78  007925  15 13 4  CSECT     IJJCPD0   006A78  006A78
+                                                   *  ENTRY  IJJCPD1   006A78
+                                                   *  ENTRY  IJJCPD2   006A78
+                                                   *  ENTRY  IJJCPD3   006A78
+                                                   *  ENTRY  IJJCPD0N  006A78
+                                                   *  ENTRY  IJJCPD1N  006A78
+
+                                                   CSECT     IJXC03    006CB8  006CB8
+                                                      ENTRY  IJXC03A   0078B4
+
+        PL/IC25   006A78  006A78  0075EB  16 00 3  CSECT     IJXC25    006A78  006A78
+
+        PL/IC30   006A78  006A78  00798F  16 01 1  CSECT     IJXC30    006A78  006A78
+
+        PL/IC31   006A78  006A78  007E19  16 01 4  CSECT     IJXC31    006A78  006A78
+
+        PL/IC32   006A78  006A78  007E47  16 02 3  CSECT     IJXC32    006A78  006A78
+
+        PL/IC33   006A78  006A78  007331  16 03 3  CSECT     IJXC33    006A78  003730
+
+        PL/IC34   006CB8  006A78  00778B  16 04 1  CSECT     IJJCPD0   006A78  006A78
+                                                   *  ENTRY  IJJCPD1   006A78
+                                                   *  ENTRY  IJJCPD2   006A78
+                                                   *  ENTRY  IJJCPD3   006A78
+                                                   *  ENTRY  IJJCPD0N  006A78
+                                                   *  ENTRY  IJJCPD1N  006A78
+
+                                                   CSECT     IJXC34    006CB8  003768
+                                                   *  ENTRY  IJXC34A   0070B8
+
+        PL/IC34A  0070B8  0070B8  007F7C  16 04 3  CSECT     IJXC341   0070B8  0070B8
+
+        PL/IC34B  0070B8  0070B8  007332  16 05 2  CSECT     IJXC342   0070B8  0070B8
+
+        PL/IC35   006A78  006A78  007A53  16 05 3  CSECT     IJXC35    006A78  006A78
+
+        PL/IC37   006A78  006A78  007709  16 06 2  CSECT     IJXC37    006A78  006A78
+
+        PL/IC40   006A78  006A78  007A5B  16 06 4  CSECT     IJXC40    006A78  003730
+
+        PL/IC50   006A78  006A78  007891  16 07 3  CSECT     IJXC50    006A78  006A78
+
+        PL/IC55   006A78  006A78  00799B  16 08 2  CSECT     IJXC55    006A78  006A78
+
+        PL/IC60   006A78  006A78  007931  16 09 1  CSECT     IJXC60    006A78  006A78
+
+        PL/IC65   006A78  006A78  00798B  16 09 4  CSECT     IJXC65    006A78  006A78
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        PL/IC85   006A78  006A78  0079E7  16 0A 3  CSECT     IJXC85    006A78  006A78
+
+        PL/IC86   006A78  006A78  007923  16 0B 2  CSECT     IJXC86    006A78  006A78
+
+        PL/IC95   006B18  006A78  00700F  16 0C 1  CSECT     IJXC95    006A78  006A78
+
+                                                   CSECT     NCOM      006EF8  006A78
+
+        PL/ID00   006564  006560  00821B  16 0C 2  CSECT     IJXD00    006560  006560
+
+        PL/ID03   006564  006560  007FB7  16 0D 3  CSECT     IJXD03    006560  006560
+
+        PL/ID05   006564  006560  0083BB  16 0E 3  CSECT     IJXD05    006560  006560
+
+        PL/ID10   006564  006560  00816B  16 0F 4  CSECT     IJXD10    006560  006560
+
+        PL/ID11   006B18  006A78  007BC3  16 11 1  CSECT     IJXD11    006A78  006A78
+
+        PL/ID12   006A78  006A78  007927  16 11 4  CSECT     IJXD12    006A78  006A78
+
+        PL/ID15   006A78  006A78  007FFA  16 12 3  CSECT     IJXD15    006A78  003730
+
+        PL/ID17   006A78  006A78  007EF1  16 13 3  CSECT     IJXD17    006A78  006A78
+
+        PL/ID20A  007A98  007A78  0082EB  17 00 3  CSECT     IJXD20A   007A78  007A78
+
+        PL/ID20   006A78  006A78  007F5F  17 01 1  CSECT     IJXD20    006A78  006A78
+
+        PL/ID40   006A78  006A78  007C57  17 02 1  CSECT     IJXD40    006A78  006A78
+
+        PL/ID70   006A78  006A78  007B8F  17 02 4  CSECT     IJXD70    006A78  006A78
+
+        PL/ID75   006A78  006A78  007C36  17 03 3  CSECT     IJXD75    006A78  006978
+
+        PL/ID80   006A78  006A78  00759F  17 04 2  CSECT     IJXD80    006A78  006978
+
+        PL/IE25   006CB8  006A78  0079AF  17 04 4  CSECT     IJJCPD0   006A78  006A78
+                                                   *  ENTRY  IJJCPD1   006A78
+                                                   *  ENTRY  IJJCPD2   006A78
+                                                   *  ENTRY  IJJCPD3   006A78
+                                                   *  ENTRY  IJJCPD0N  006A78
+                                                   *  ENTRY  IJJCPD1N  006A78
+
+                                                   CSECT     IJXE25    006CB8  006BB8
+                                                   *  ENTRY  IJXE25A   0074F2
+
+        PL/IE25A  0074F8  0074F8  0079A7  17 05 3  CSECT     IJXE26    0074F8  0073F8
+
+        PL/IE25B  0074F8  0074F8  0079A7  17 05 4  CSECT     IJXE27    0074F8  0073F8
+
+        PL/IE25C  0074F8  0074F8  0079A7  17 06 1  CSECT     IJXE28    0074F8  0073F8
+
+        PL/IE25D  0074F8  0074F8  0079A7  17 06 2  CSECT     IJXE29    0074F8  0073F8
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        PL/IE25E  0074F8  0074F8  0079A7  17 06 3  CSECT     IJXE30    0074F8  0073F8
+
+        PL/IE25F  0074F8  0074F8  0079A7  17 06 4  CSECT     IJXE31    0074F8  0073F8
+
+        PL/IE25G  0074F8  0074F8  0079A7  17 07 1  CSECT     IJXE32    0074F8  0073F8
+
+        PL/IE25H  0074F8  0074F8  0079A7  17 07 2  CSECT     IJXE33    0074F8  0073F8
+
+        PL/IE25I  0074F8  0074F8  0079A7  17 07 3  CSECT     IJXE34    0074F8  0073F8
+
+        PL/IE25J  0074F8  0074F8  0079A7  17 07 4  CSECT     IJXE35    0074F8  0073F8
+
+        PL/IE25K  0074F8  0074F8  0079A7  17 08 1  CSECT     IJXE36    0074F8  0073F8
+
+        PL/IE50   006A78  006A78  007EC4  17 08 2  CSECT     IJXE50    006A78  006A78
+
+        PL/IE55   006A78  006A78  007FAF  17 09 2  CSECT     IJXE55    006A78  006A78
+
+        PL/IE60   006A78  006A78  007CCF  17 0A 2  CSECT     IJXE60    006A78  006978
+                                                   *  ENTRY  ANFNG     006A9A
+
+        PL/IE60A  0070A0  0070A0  007C14  17 0B 1  CSECT     IJXE61    0070A0  006980
+
+        PL/IF25   006A78  006A78  007929  17 0B 3  CSECT     IJXF25    006A78  006A78
+
+        PL/IF35   006A78  006A78  007687  17 0C 2  CSECT     IJXF35    006A78  006A78
+
+        PL/IF50   006A78  006A78  007CE7  17 0C 4  CSECT     IJXF50    006A78  006A78
+
+        PL/IF75   006A78  006A78  007531  17 0D 3  CSECT     IJXF75    006A78  006A78
+
+        PL/IF90   006A78  006A78  00730D  17 0E 1  CSECT     IJXF90    006A78  006A78
+
+        PL/IF95   006A78  006A78  007667  17 0E 3  CSECT     IJXF95    006A78  006A78
+
+        PL/IG00   006A78  006A78  0079FD  17 0F 1  CSECT     IJXG00    006A78  006A78
+
+        PL/IG01   006CB8  006A78  0073DF  17 0F 4  CSECT     IJJCPD0   006A78  006A78
+                                                   *  ENTRY  IJJCPD1   006A78
+                                                   *  ENTRY  IJJCPD2   006A78
+                                                   *  ENTRY  IJJCPD3   006A78
+                                                   *  ENTRY  IJJCPD0N  006A78
+                                                   *  ENTRY  IJJCPD1N  006A78
+
+                                                   CSECT     IJXG01    006CB8  006CB8
+
+        PL/IG15   006A78  006A78  007837  17 10 2  CSECT     IJXG15    006A78  006A78
+
+        PL/IG16   006A78  006A78  007B7D  17 11 1  CSECT     IJXG16    006A78  006A78
+
+        PL/IG17   006A78  006A78  007F7F  17 11 4  CSECT     IJXG17    006A78  006978
+
+        PL/IG17B  006A78  006A78  007EF9  17 12 4  CSECT     IJXG17B   006A78  006978
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        PL/IG17D  006A78  006A78  007E65  17 13 4  CSECT     IJXG17D   006A78  006978
+
+        PL/IG17E  006A78  006A78  0081D1  18 00 4  CSECT     IJXG17E   006A78  006978
+
+        PL/IG17R  006A78  006A78  007CE1  18 01 4  CSECT     IJXG17R   006A78  006978
+
+        PL/IG17S  006A78  006A78  008039  18 02 3  CSECT     IJXG17S   006A78  006978
+
+        PL/IG17X  006A78  006A78  007E73  18 03 3  CSECT     IJXG17X   006A78  006978
+
+        PL/IG17Y  006A78  006A78  007933  18 04 3  CSECT     IJXG17Y   006A78  006978
+
+        PL/IG20   006A78  006A78  0071BF  18 05 2  CSECT     IJXG20    006A78  006A78
+
+        PL/IG25   006A78  006A78  0076B1  18 05 4  CSECT     IJXG25    006A78  006A78
+
+        PL/IG30   006A78  006A78  0075AE  18 06 2  CSECT     IJXG30    006A78  006A78
+
+        PL/IG31   006F10  006A78  00762F  18 06 4  CSECT     IJJCPD0   006A78  006A78
+                                                   *  ENTRY  IJJCPD1   006A78
+                                                   *  ENTRY  IJJCPD2   006A78
+                                                   *  ENTRY  IJJCPD3   006A78
+                                                   *  ENTRY  IJJCPD0N  006A78
+                                                   *  ENTRY  IJJCPD1N  006A78
+
+                                                   CSECT     IJXG31    006CB8  006CB8
+
+        PL/IG40   006CB8  006A78  007F5C  18 07 2  CSECT     IJJCPD0   006A78  006A78
+                                                   *  ENTRY  IJJCPD1   006A78
+                                                   *  ENTRY  IJJCPD2   006A78
+                                                   *  ENTRY  IJJCPD3   006A78
+                                                   *  ENTRY  IJJCPD0N  006A78
+                                                   *  ENTRY  IJJCPD1N  006A78
+
+                                                   CSECT     IJXG40    006CB8  006CB8
+
+        PL/IG55   006F10  006CB8  007B57  18 08 2  CSECT     IJXG55    006CB8  006CB8
+
+        $IJKS00   000000  000000  000217  18 09 1  CSECT     IJKS00    000000  000000
+
+        $IJKS10   000000  000000  00011B  18 09 2  CSECT     IJKS10    000000  000000
+
+        $IJKS20   000000  000000  0001E7  18 09 3  CSECT     IJKS20    000000  000000
+
+        $IJKS30   000000  000000  00024F  18 09 4  CSECT     IJKS30    000000  000000
+
+        $IJKS40   000000  000000  000187  18 0A 1  CSECT     IJKS40    000000  000000
+
+        $IJKS50   000000  000000  000167  18 0A 2  CSECT     IJKSDMT   000000  000000
+
+        $IJKS60   000000  000000  00029F  18 0A 3  CSECT     IJKS60    000000  000000
+
+        $IJKS70   000000  000000  000247  18 0A 4  CSECT     IJKS70    000000  000000
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        $$BPLOSE  000000  000000  000143  18 0B 1  CSECT     IJBCSP20  000000  000000
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 13 09 00              56 04 09 06             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        24 11 02                110 01 07                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             928                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE             1770                    17003                    23523
+LIBRARY   BLOCKS DELETED             116                      139                       00
+LIBRARY   BLOCKS AVAILABLE          2594                     7338                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN7E                                                            12.02.50,DURATION 00.00.03
+// JOB SYSGEN7F   LINK FORTRAN IV                          360N-FO-479  12.02.50
+// OPTION CATAL                                                         LINK0555
+   INCLUDE ILFFO                                                        LINK0556
+// EXEC LNKEDT                                                          LINK0557
+
+JOB  SYSGEN7F  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE ILFFO                                                        LINK0556
+LIST   PHASE FFORTRAN,*,NOAUTO
+LIST   INCLUDE IJJCPD0
+LIST   INCLUDE ILFFORT
+LIST   PHASE FFORT1,ILFINT,NOAUTO
+LIST   INCLUDE ILFPAR
+LIST   PHASE FFORT9,*,NOAUTO
+LIST   INCLUDE ILFROL
+LIST   PHASE FFORT2,ILFORG,NOAUTO
+LIST   INCLUDE ILFALL
+LIST   PHASE FFORT3,ILFORG,NOAUTO
+LIST   INCLUDE ILFUNF
+LIST   PHASE FFORT4,ILFORG,NOAUTO
+LIST   INCLUDE ILFGEN
+LIST   PHASE FFORT5,ILFORG,NOAUTO
+LIST   INCLUDE ILFEXT
+LIST   PHASE FFORTRBK,+0
+LIST   INCLUDE ILFTRBK
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        FFORTRAN  006E04  006000  00755D  18 0B 2  CSECT     IJJCPD0   006000  006000
+                                                   *  ENTRY  IJJCPD1   006000
+                                                      ENTRY  IJJCPD2   006000
+                                                   *  ENTRY  IJJCPD3   006000
+                                                      ENTRY  IJJCPD0N  006000
+                                                   *  ENTRY  IJJCPD1N  006000
+
+                                                   CSECT     ILFFORT   006240  006240
+                                                   *  ENTRY  ILFRETN   0062AE
+                                                      ENTRY  ILFRTN    0062AE
+                                                   *  ENTRY  ILFPRNT   006468
+                                                      ENTRY  ILFPR     006468
+                                                   *  ENTRY  ILFREAD   006520
+                                                      ENTRY  ILFRD     006520
+                                                   *  ENTRY  ILFPCH    00655A
+                                                      ENTRY  ILFPC     00655A
+                                                      ENTRY  ILFR11    0062D0
+                                                      ENTRY  ILFMOR    006290
+                                                   *  ENTRY  ILFINT    007088
+                                                      ENTRY  AFTPARFG  006AEB
+                                                      ENTRY  HEADING   006940
+
+        FFORT1    007088  007088  00CDFF  18 0C 2  CSECT     ILFPAR10  007088  007088
+                                                      ENTRY  ILFCMR    007CF0
+                                                      ENTRY  ENDRMY    007C5C
+                                                      ENTRY  ILFPAR    007088
+                                                      ENTRY  ILFSKP    00C6BE
+                                                      ENTRY  ILFITR    00BBB8
+                                                      ENTRY  MOVONS    007586
+                                                      ENTRY  PCHCD     007BE6
+                                                   *  ENTRY  BWORK     007C58
+                                                      ENTRY  PRTLN     007BB8
+                                                      ENTRY  GRBLOW    0072E6
+                                                      ENTRY  PARSAV    007D28
+                                                      ENTRY  ALLSAV    007E80
+                                                      ENTRY  UNFSAV    007EE8
+                                                   *  ENTRY  GENSAV    007EF4
+                                                   *  ENTRY  ILFORG    007FC8
+
+        FFORT9    00CE00  00CE00  00DFAF  18 10 1  CSECT     ILFROL10  00CE00  00CE00
+                                                      ENTRY  ILFROL    00CE00
+                                                      ENTRY  ILFDBG    00DBA0
+                                                      ENTRY  INITDB    00DBA0
+                                                      ENTRY  RBASE     00CE00
+                                                      ENTRY  BSWORK    00D308
+                                                      ENTRY  BSEXIT    00D6F0
+
+        FFORT2    007FD2  007FC8  009FEB  18 10 4  CSECT     ILFALL10  007FC8  007FC8
+
+        FFORT3    007FD2  007FC8  008BAD  18 12 1  CSECT     ILFUNF10  007FC8  007FC8
+
+        FFORT4    007FD2  007FC8  00BFF3  18 12 3  CSECT     ILFGEN10  007FC8  007FC8
+                                                      ENTRY  POCDAT    00BDC4
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+                                                      ENTRY  BINPOP    00AEF4
+                                                      ENTRY  BIMPOP    00B086
+                                                      ENTRY  BIDPOP    00AEDC
+                                                      ENTRY  LOCADR    008394
+
+        FFORT5    007FD2  007FC8  00996F  19 01 1  CSECT     ILFEXT10  007FC8  007FC8
+
+        FFORTRBK  000000  000000  00032F  19 02 1  CSECT     ILFTRBK   000000  000000
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 13 09 08              56 04 09 06             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        25 02 02                110 01 07                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             936                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE             1814                    17003                    23523
+LIBRARY   BLOCKS DELETED             116                      139                       00
+LIBRARY   BLOCKS AVAILABLE          2550                     7338                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN7F                                                            12.02.51,DURATION 00.00.00
+// JOB SYSGEN7G   LINK AMERICAN NATIONAL STANDARD COBOL    360N-CB-482  12.02.51
+// OPTION CATAL                                                         LINK0567
+  INCLUDE ILACBD                                                        LINK0568
+// EXEC LNKEDT                                                          LINK0569
+
+JOB  SYSGEN7G  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST    INCLUDE ILACBD                                                        LINK0568
+LIST   PHASE FCOBOL,S                                                             0001
+LIST   INCLUDE ILACBL00                                                           0002
+LIST   INCLUDE ILACBL01                                                           0003
+LIST   PHASE FCOBOL10,CLIB(FCOBOL)                                                0004
+LIST   INCLUDE ILACBL10                                                           0005
+LIST   PHASE FCOBOL12,CLIB(FCOBOL)                                                0006
+LIST   INCLUDE ILACBL12                                                           0007
+LIST   PHASE FCOBOL11,CLIB(FCOBOL)                                                0008
+LIST   INCLUDE ILACBL11                                                           0009
+LIST   PHASE FCOBOL20,PH0COPY(FCOBOL)                                             0010
+LIST   INCLUDE ILACBL20                                                           0011
+LIST   PHASE FCOBOL22,PH0COPY(FCOBOL)                                             0012
+LIST   INCLUDE ILACBL22                                                           0013
+LIST   PHASE FCOBOL21,PH0COPY(FCOBOL)                                             0014
+LIST   INCLUDE ILACBL21                                                           0015
+LIST   PHASE FCOBOL30,PH0COPY(FCOBOL)                                             0016
+LIST   INCLUDE ILACBL30                                                           0017
+LIST   PHASE FCOBOL40,PH0TBDIC(FCOBOL)                                            0018
+LIST   INCLUDE ILACBL40                                                           0019
+LIST   PHASE FCOBOL50,PH0TBDIC(FCOBOL)                                            0020
+LIST   INCLUDE ILACBL50                                                           0021
+LIST   PHASE FCOBOL51,PH0TBDIC(FCOBOL)                                            0022
+LIST   INCLUDE ILACBL51                                                           0023
+LIST   REP  000C72 00190E3,DC80
+LIST   REP  000C90 00198E3,DC80
+LIST   PHASE FCOBOL60,PH0TBDIC(FCOBOL)                                            0024
+LIST   INCLUDE ILACBL60                                                           0025
+LIST   PHASE FCOBOL61,PH0TBDIC(FCOBOL)                                            0026
+LIST   INCLUDE ILACBL61                                                           0027
+LIST   PHASE FCOBOL70,PH0TBST1(FCOBOL)                                            0028
+LIST   INCLUDE ILACBL70                                                           0029
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        FCOBOL    006C70  006000  00CC09  19 02 2  CSECT     ILACBL00  006000  006000
+
+                                                   CSECT     ILACBL01  008EC8  008EC8
+
+                                                   CSECT     PH0SECT2  006C70  006000
+                                                   *  ENTRY  START     006C70
+
+                                                   CSECT     IJJCPD0   007848  006000
+                                                      ENTRY  IJJCPD0N  007848
+                                                   *  ENTRY  IJJCPD1   007848
+                                                      ENTRY  IJJCPD2   007848
+                                                      ENTRY  IJJCPD3   007848
+                                                   *  ENTRY  IJJCPD1N  007848
+
+                                                   CSECT     IJGWZNZU  0073F8  006000
+                                                      ENTRY  IJGWZNZZ  0073F8
+                                                   *  ENTRY  IJGWZZZZ  0073F8
+                                                   *  ENTRY  IJGWZRZZ  0073F8
+                                                   *  ENTRY  IJGWZZZU  0073F8
+                                                   *  ENTRY  IJGWZRZU  0073F8
+
+                                                   CSECT     PH0TBST1  007A88  006000
+
+                                                   CSECT     TBDATA    0081C0  006000
+
+                                                   CSECT     PH0TBDIC  0085A0  006000
+
+                                                   CSECT     PH0COPY   008958  006000
+
+                                                   CSECT     CLIB      008B60  006000
+
+                                                   CSECT     PH0END    008EC0  006000
+
+                                                   CSECT     DATA      009600  008EC8
+
+                                                   CSECT     IJ2M0012  009A40  008EC8
+
+                                                   CSECT     IJFWZNZZ  009A60  008EC8
+
+                                                   CSECT     MODLEN    009C08  008EC8
+
+                                                   CSECT     ILA002    009C10  008EC8
+
+        FCOBOL10  008B6A  008B60  00FA73  19 06 3  CSECT     ILA101    008B60  008B60
+                                                   *  ENTRY  PH1A      008B6A
+
+                                                   CSECT     ILA102    009900  008B60
+
+                                                   CSECT     ILA103    00A268  008B60
+
+                                                   CSECT     ILA104    00AD98  008B60
+
+                                                   CSECT     ILA105    00BC48  008B60
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+                                                   CSECT     ILA106    00C518  008B60
+
+                                                   CSECT     ILA107    00CD30  008B60
+
+                                                   CSECT     ILA108    00CE50  008B60
+
+                                                   CSECT     ILA109    00DDB8  008B60
+
+                                                   CSECT     ILA110    00EB98  008B60
+
+                                                   CSECT     ILA111    00F388  008B60
+
+                                                   CSECT     ILA112    00F448  008B60
+
+        FCOBOL12  008B6A  008B60  0106CF  19 0A 4  CSECT     ILA101    008B60  008B60
+                                                   *  ENTRY  PHRW      008B6A
+
+                                                   CSECT     ILA102    0095A8  008B60
+
+                                                   CSECT     ILA103    00A128  008B60
+
+                                                   CSECT     ILA104    00AE60  008B60
+
+                                                   CSECT     ILA105    00BBE8  008B60
+
+                                                   CSECT     ILA106    00C420  008B60
+
+                                                   CSECT     ILA107    00CB60  008B60
+
+                                                   CSECT     ILA108    00CC50  008B60
+
+                                                   CSECT     ILA109    00CEA8  008B60
+
+                                                   CSECT     ILA110    00DC08  008B60
+
+                                                   CSECT     ILA111    00E8E0  008B60
+
+                                                   CSECT     ILA112    00F6A0  008B60
+
+                                                   CSECT     ILA113    0101E8  008B60
+
+                                                   CSECT     ILA114    0105B8  008B60
+
+        FCOBOL11  0093D8  008B60  00EED3  19 0F 3  CSECT     ILA100    008B60  008B60
+
+                                                   CSECT     ILA101    0093D8  008B60
+                                                   *  ENTRY  PH1B      0093D8
+
+                                                   CSECT     ILA102    009EF0  008B60
+
+                                                   CSECT     ILA103    00A758  008B60
+
+                                                   CSECT     ILA104    00B210  008B60
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+                                                   CSECT     ILA105    00BE48  008B60
+
+                                                   CSECT     ILA106    00C730  008B60
+
+                                                   CSECT     ILA107    00D018  008B60
+
+                                                   CSECT     ILA108    00DF80  008B60
+
+                                                   CSECT     ILA109    00EE58  008B60
+
+        FCOBOL20  008968  008958  00DD67  19 13 3  CSECT     ILACBL20  008958  008958
+
+                                                   CSECT     ILA201    008968  008958
+
+                                                   CSECT     ILA210    008E18  008958
+
+                                                   CSECT     ILA202    009A78  008958
+
+                                                   CSECT     ILA203    00A780  008958
+
+                                                   CSECT     ILA204    00B1A8  008958
+
+                                                   CSECT     ILA205    00B890  008958
+
+                                                   CSECT     ILA206    00B9C0  008958
+
+                                                   CSECT     ILA207    00BDA0  008958
+
+                                                   CSECT     ILA208    00CC88  008958
+
+                                                   CSECT     ILA209    00D980  008958
+
+        FCOBOL22  009948  008958  00E727  1A 02 4  CSECT     ILACBL22  008958  008958
+
+                                                   CSECT     ILA202    009948  008958
+
+                                                   CSECT     ILA203    00A3D0  008958
+
+                                                   CSECT     ILA204    00A890  008958
+
+                                                   CSECT     ILA205    00B6C8  008958
+
+                                                   CSECT     ILA206    00BF30  008958
+
+                                                   CSECT     ILA207    00C9C0  008958
+
+                                                   CSECT     ILA208    00D558  008958
+
+                                                   CSECT     ILA209    00E340  008958
+
+        FCOBOL21  0091D0  008958  00EDD3  1A 06 3  CSECT               008958  008958
+
+                                                   CSECT     SDDEF2    008968  008958
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+                                                   CSECT     PHASE2B   0091D0  008958
+                                                   *  ENTRY  PH2B      0091D0
+
+                                                   CSECT     ILA201    009850  008958
+
+                                                   CSECT     ILA202    009C88  008958
+
+                                                   CSECT     ILA203    009ED8  008958
+
+                                                   CSECT     ILA204    00A8C0  008958
+
+                                                   CSECT     ILA205    00B280  008958
+
+                                                   CSECT     ILA206    00BFD8  008958
+
+                                                   CSECT     PERMCODE  00CCA8  008958
+
+                                                   CSECT     BUFGEN    00DA68  008958
+
+                                                   CSECT     PH2BCON   00E240  008958
+
+        FCOBOL30  00AFA8  008958  00B6EB  1A 0A 3  CSECT     ILACBL30  008958  008958
+
+                                                   CSECT     IEQ301    009080  008958
+
+                                                   CSECT     IEQ302A   009940  008958
+
+                                                   CSECT     IEQ302    00A0F8  008958
+
+                                                   CSECT     IEQ303    00B028  008958
+
+        FCOBOL40  010C74  0085A0  011CDE  1A 0C 2  CSECT     ILACBL4A  0085A0  0085A0
+
+                                                   CSECT     ILACBL4B  009388  0085A0
+
+                                                   CSECT     ILA40B1   0099E8  0085A0
+
+                                                   CSECT     ILACBL4C  00A4D0  0085A0
+
+                                                   CSECT     ILACBL4D  00B200  0085A0
+
+                                                   CSECT     ILACBL45  00C058  0085A0
+
+                                                   CSECT     ILACBL46  00C6F8  0085A0
+
+                                                   CSECT     ILACBL4F  00D388  0085A0
+
+                                                   CSECT     ILACBL4G  00E358  0085A0
+
+                                                   CSECT     ILACBL4H  00F110  0085A0
+
+                                                   CSECT     ILACBL4J  00FF08  0085A0
+                                                   *  ENTRY  PHINIT    010C74
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+                                                   CSECT     ILACBL4K  010D40  0085A0
+
+        FCOBOL50  010270  0085A0  011047  1A 12 1  CSECT     IEQ501    0085A0  0085A0
+
+                                                   CSECT     IEQ502    009438  0085A0
+
+                                                   CSECT     IEQ503    009C58  0085A0
+
+                                                   CSECT     IEQ50A    00AB98  0085A0
+
+                                                   CSECT     IEQ50B    00B880  0085A0
+
+                                                   CSECT     IEQ50C    00C520  0085A0
+
+                                                   CSECT     IEQ50G    00C960  0085A0
+
+                                                   CSECT     IEQ50D    00D5B8  0085A0
+
+                                                   CSECT     IEQ50E    00E238  0085A0
+
+                                                   CSECT     IEQ50F    00EE90  0085A0
+
+                                                   CSECT     IEQ504    00FA90  0085A0
+                                                   *  ENTRY  PHASE5A   010270
+
+                                                   CSECT     IEQ505    010330  0085A0
+
+        FCOBOL51  00FBB0  0085A0  010CD3  1B 03 3  CSECT     IEQ501    0085A0  0085A0
+
+                                                   CSECT     IEQ503    009240  0085A0
+
+                                                   CSECT     IEQ50A    00A108  0085A0
+
+                                                   CSECT     IEQ50L    00A288  0085A0
+
+                                                   CSECT     IEQ50G    00AB58  0085A0
+
+                                                   CSECT     IEQ50H    00B7E8  0085A0
+
+                                                   CSECT     IEQ50J    00DC00  0085A0
+
+                                                   CSECT     IEQ50M    00EA98  0085A0
+
+                                                   CSECT     IEQ504    00ECA0  0085A0
+                                                   *  ENTRY  PHASE5    00FBB0
+
+                                                   CSECT     IEQ505    00FCD0  0085A0
+
+        FCOBOL60  0085AC  0085A0  00EE19  1B 08 4  CSECT     ILACBL60  0085A0  0085A0
+
+                                                   CSECT     ILA602    008FA0  0085A0
+
+                                                   CSECT     ILA603    009F08  0085A0
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+                                                   CSECT     ILA604    00AE28  0085A0
+
+                                                   CSECT     ILA605    00BCF8  0085A0
+
+                                                   CSECT     ILA606    00CEA0  0085A0
+
+                                                   CSECT     ILA607    00DA58  0085A0
+
+                                                   CSECT     ILA608    00E6B0  0085A0
+
+        FCOBOL61  0085B4  0085A0  008E74  1B 0C 4  CSECT     ILACBL61  0085A0  0085A0
+
+        FCOBOL70  007A94  007A88  0120E7  1B 0D 2  CSECT     ILACBL70  007A88  007A88
+
+                                                   CSECT     ILA702    008638  007A88
+
+                                                   CSECT     ILA703    0092B0  007A88
+
+                                                   CSECT     ILA713    009F40  007A88
+
+                                                   CSECT     ILA704    00A9E8  007A88
+
+                                                   CSECT     ILA705    00B7E8  007A88
+
+                                                   CSECT     ILA706    00C600  007A88
+
+                                                   CSECT     ILA707    00D640  007A88
+
+                                                   CSECT     ILA717    00DF70  007A88
+
+                                                   CSECT     ILA708    00E6B8  007A88
+
+                                                   CSECT     ILA710    00F118  007A88
+
+                                                   CSECT     ILA720    00FC20  007A88
+
+                                                   CSECT     ILA711    010220  007A88
+
+                                                   CSECT     ILA709    0106F0  007A88
+
+                                                   CSECT     ACC       0112D0  007A88
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 13 10 04              56 04 09 06             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        27 19 04                110 01 07                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             950                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE             2044                    17003                    23523
+LIBRARY   BLOCKS DELETED             116                      139                       00
+LIBRARY   BLOCKS AVAILABLE          2320                     7338                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN7G                                                            12.02.52,DURATION 00.00.01

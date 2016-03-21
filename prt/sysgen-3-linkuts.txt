@@ -1,0 +1,2785 @@
+
+// JOB SYSGEN3A  LINK STANDARD DUMP                                     12.00.17
+// OPTION CATAL                                                         LINK0059
+  INCLUDE IJBDUMPS                                                      LINK0060
+// EXEC LNKEDT                                                          LINK0061
+
+JOB  SYSGEN3A  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST    INCLUDE IJBDUMPS                                                      LINK0060
+LIST    INCLUDE IJBDMPS        $$BDUMP
+LIST   PHASE   $$BDUMP,+0,NOAUTO
+LIST    INCLUDE IJBDMPBS       $$BDUMPB
+LIST   PHASE   $$BDUMPB,+0,NOAUTO
+LIST    INCLUDE IJBDMPDS       $$BDUMPD
+LIST   PHASE   $$BDUMPD,+0,NOAUTO
+LIST    INCLUDE IJBDMPFS       $$BDUMPF
+LIST   PHASE   $$BDUMPF,+0,NOAUTO
+LIST    INCLUDE IJBPDMPS       $$BPDUMP
+LIST   PHASE   $$BPDUMP,+0,NOAUTO
+LIST    INCLUDE IJBPDUMS       $$BPDUM1
+LIST   PHASE   $$BPDUM1,+0,NOAUTO
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        $$BDUMP   000000  000000  0004AF  0A 02 4  CSECT     IJBDMP3B  000000  000000
+
+        $$BDUMPB  000000  000000  0003E0  0A 03 1  CSECT     IJBDMB3B  000000  000000
+
+        $$BDUMPD  000000  000000  0004A4  0A 03 2  CSECT     IJBDMD3B  000000  000000
+
+        $$BDUMPF  000000  000000  00045B  0A 03 3  CSECT     IJBDMF3B  000000  000000
+
+        $$BPDUMP  000000  000000  000187  0A 03 4  CSECT     IJBPDP33  000000  000000
+
+        $$BPDUM1  000000  000000  00033F  0A 04 1  CSECT     IJBPD133  000000  000000
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 11 13 02              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        10 04 02                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             466                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              626                    17002                    23523
+LIBRARY   BLOCKS DELETED             112                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3742                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN3A                                                            12.00.17,DURATION 00.00.00
+// JOB SYSGEN3B  LINK INTERPRETED DUMP                                  12.00.17
+// OPTION CATAL                                                         LINK0065
+  INCLUDE IJBDUMPT                                                      LINK0066
+// EXEC LNKEDT                                                          LINK0067
+
+JOB  SYSGEN3B  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST    INCLUDE IJBDUMPT                                                      LINK0066
+LIST    INCLUDE IJBDMPT        $$BDUMP
+LIST   PHASE   $$BDUMP,+0,NOAUTO
+LIST    INCLUDE IJBDMPBT       $$BDUMPB
+LIST   PHASE   $$BDUMPB,+0,NOAUTO
+LIST    INCLUDE IJBDMPDT       $$BDUMPD
+LIST   PHASE   $$BDUMPD,+0,NOAUTO
+LIST    INCLUDE IJBPDMPT       $$BPDUMP
+LIST   PHASE   $$BPDUMP,+0,NOAUTO                                                 0001
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        $$BDUMP   000000  000000  000304  0A 04 2  CSECT     IJBDMP3B  000000  000000
+
+        $$BDUMPB  000000  000000  0003D7  0A 04 3  CSECT     IJBDMB3B  000000  000000
+
+        $$BDUMPD  000000  000000  0003FF  0A 04 4  CSECT     IJBDMD3B  000000  000000
+
+        $$BPDUMP  000000  000000  000475  0A 05 1  CSECT     IJBPDP37  000000  000000
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 11 13 06              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        10 05 02                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             466                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              626                    17002                    23523
+LIBRARY   BLOCKS DELETED             116                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3738                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN3B                                                            12.00.17,DURATION 00.00.00
+// JOB SYSGEN3C  LINK EREP                                              12.00.17
+// OPTION CATAL                                                         LINK0071
+  INCLUDE IJBECALL                                                      LINK0072
+// EXEC LNKEDT                                                          LINK0073
+
+JOB  SYSGEN3C  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST    INCLUDE IJBECALL                                                      LINK0072
+LIST   INCLUDE IJBEREP                                                            0001
+LIST   PHASE EREP,S+144,NOAUTO                                                    0001
+LIST   INCLUDE IJBEDIT                                                            0002
+LIST   PHASE EREPEDIT,S+144,NOAUTO
+LIST   INCLUDE IJBECLR                                                            0003
+LIST   PHASE EREPCLR,S+144,NOAUTO
+LIST   INCLUDE IJBERSDR                                                           0004
+LIST   PHASE EREPSDR,EREP+6656,NOAUTO
+LIST   INCLUDE IJBEROBR                                                           0005
+LIST   PHASE EREPOBR,EREP+6656,NOAUTO
+LIST   INCLUDE IJBELST                                                            0006
+LIST   PHASE EREPLST,EREP+6656
+LIST   INCLUDE IJBE2715                                                           0007
+LIST   PHASE EREP2715,EREP+6656,NOAUTO
+LIST   INCLUDE IJBEASSM                                                           0008
+LIST   PHASE EREPASSM,EREP+6656,NOAUTO
+LIST   INCLUDE IJBECI30                                                           0009
+LIST   PHASE EREPCI30,EREP+6656,NOAUTO
+LIST   INCLUDE IJBEMC30                                                           0010
+LIST   PHASE EREPMC30,EREP+6656,NOAUTO
+LIST   INCLUDE IJBECI40                                                           0011
+LIST   PHASE EREPCI40,EREP+6656,NOAUTO
+LIST   INCLUDE IJBEMC40                                                           0012
+LIST   PHASE EREPMC40,EREP+6656,NOAUTO
+LIST   INCLUDE IJBECI50                                                           0013
+LIST   PHASE EREPCI50,EREP+6656,NOAUTO
+LIST   INCLUDE IJBEMC50                                                           0014
+LIST   PHASE EREPMC50,EREP+6656,NOAUTO
+LIST   INCLUDE IJBELOG1                                                           0015
+LIST   PHASE EREPLOG1,EREP+6656,NOAUTO
+LIST   INCLUDE IJBELOG2                                                           0016
+LIST   PHASE EREPLOG2,EREP+6656,NOAUTO
+LIST   INCLUDE IJBELOG3                                                           0017
+LIST   PHASE EREPLOG3,EREP+6656,NOAUTO
+LIST   INCLUDE IJBELOG4                                                           0018
+LIST   PHASE EREPLOG4,EREP+6656,NOAUTO
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        EREP      00609A  006090  006B79  0A 05 2  CSECT     IJBEREP   006090  006050
+                                                      ENTRY  OPTION    006496
+
+                                                   CSECT     IJJFCIZD  006A48  006050
+
+        EREPEDIT  00609A  006090  007834  0A 05 4  CSECT     IJBEDIT   006090  006050
+                                                      ENTRY  UPDATE1   006D26
+                                                      ENTRY  READREC   006D5C
+                                                      ENTRY  MODIFIED  006D06
+                                                      ENTRY  IS2715    0071B2
+                                                      ENTRY  TCLR      00671C
+                                                      ENTRY  BY7       006CF4
+                                                      ENTRY  PRROUT    006D80
+                                                      ENTRY  LINECNT   007488
+                                                      ENTRY  IJSYSRC   006168
+                                                      ENTRY  ERRMSG3   006E5E
+                                                      ENTRY  SEARCH    0071AA
+                                                      ENTRY  LSTRTN    006752
+                                                      ENTRY  SDRIN     0071B2
+                                                      ENTRY  INPUT     0071B2
+                                                      ENTRY  LISTPROC  0060BE
+                                                      ENTRY  EREP8     0060C2
+                                                      ENTRY  IOOUT     0070B4
+                                                      ENTRY  EOP       00757F
+                                                   *  ENTRY  NEWPAGE   006CF0
+                                                   *  ENTRY  IN        0074E3
+                                                   *  ENTRY  UPDATE3   00658A
+                                                      ENTRY  SW3       00712C
+                                                   *  ENTRY  UPDATE2   0063CA
+                                                   *  ENTRY  ERRMSG1   006E6A
+                                                   *  ENTRY  CIEOFF    0065B6
+                                                      ENTRY  RETN2715  0062E4
+                                                   *  ENTRY  IPLEND    006CC4
+
+                                                   CSECT     IJJCPD1N  007678  006050
+                                                   *  ENTRY  IJJCPD3   007678
+
+        EREPCLR   00609A  006090  0065A8  0A 06 4  CSECT     IJBECLR   006090  006050
+
+        EREPSDR   007A90  007A90  008582  0A 07 1  CSECT     IJBERSDR  007A90  007A90
+                                                      ENTRY  RETURNU   007AC8
+                                                      ENTRY  CONSOLE   007D22
+                                                      ENTRY  RDPCH     007D32
+                                                      ENTRY  CARTAP    007D42
+                                                      ENTRY  TPLIST    007D50
+                                                      ENTRY  PTLIST    007EA4
+                                                      ENTRY  PRTRLIST  007EF4
+                                                      ENTRY  UNTRCD    007B0C
+                                                      ENTRY  TAPELST   007C42
+                                                      ENTRY  DASDLST   007BDC
+                                                      ENTRY  MICRLST   007CDC
+                                                      ENTRY  UNSPDEV   007B14
+                                                      ENTRY  UNIVSDR   007A9A
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        EREPOBR   007A90  007A90  0084DD  0A 07 3  CSECT     IJBEROBR  007A90  007A90
+                                                      ENTRY  OBRLIST   007A9A
+                                                      ENTRY  BITABLE   0082CE
+
+        EREPLST   007A90  007A90  007CFF  0A 08 1  CSECT     IJBELST   007A90  007A90
+
+        EREP2715  007A9A  007A90  008740  0A 08 2  CSECT     IJBE2715  007A90  007A90
+
+        EREPASSM  007A9A  007A90  0081B0  0A 08 4  CSECT     IJBEASSM  007A90  007A90
+
+        EREPCI30  007A90  007A90  00861B  0A 09 2  CSECT     IJBECI30  007A90  007A90
+                                                   *  ENTRY  CIELST    007A9A
+
+        EREPMC30  007A90  007A90  0080A3  0A 09 4  CSECT     IJBEMC30  007A90  007A90
+                                                   *  ENTRY  MC30LST   007A9A
+
+        EREPCI40  007A90  007A90  007CE8  0A 0A 1  CSECT     IJBECI40  007A90  007A90
+
+        EREPMC40  007A90  007A90  007F7B  0A 0A 2  CSECT     IJBEMC40  007A90  007A90
+
+        EREPCI50  007A90  007A90  007FD4  0A 0A 3  CSECT     IJBECI50  007A90  007A90
+
+        EREPMC50  007A90  007A90  0081EC  0A 0A 4  CSECT     IJBEMC50  007A90  007A90
+
+        EREPLOG1  007A90  007A90  008611  0A 0B 2  CSECT     IJBELOG1  007A90  007A90
+                                                   *  ENTRY  EXCLUSVE  008246
+
+        EREPLOG2  007A90  007A90  0084B4  0A 0B 4  CSECT     IJBELOG2  007A90  007A90
+
+        EREPLOG3  007A90  007A90  008593  0A 0C 2  CSECT     IJBELOG3  007A90  007A90
+
+        EREPLOG4  007A90  007A90  0086EA  0A 0C 4  CSECT     IJBELOG4  007A90  007A90
+                                                      ENTRY  SELECTOR  007C91
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 11 14 06              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        10 13 02                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             484                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              658                    17002                    23523
+LIBRARY   BLOCKS DELETED             116                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3706                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN3C                                                            12.00.18,DURATION 00.00.00
+// JOB SYSGEN3D  LINK PDAID FOR MULTIPROGRAMMING SYSTEM                 12.00.18
+// OPTION CATAL                                                         LINK0118
+   PHASE PDAID,+0                                                       LINK0119
+   INCLUDE IJBPDAID                                                     LINK0120
+// EXEC LNKEDT                                                          LINK0121
+
+JOB  SYSGEN3D  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     PHASE PDAID,+0                                                       LINK0119
+LIST     INCLUDE IJBPDAID                                                     LINK0120
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        PDAID     00000A  000000  0012D1  0A 0D 2  CSECT     PDAID     000000  000000
+
+                                                   CSECT     IJJCPD3   001208  000000
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 11 14 07              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        10 14 01                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             485                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              661                    17002                    23523
+LIBRARY   BLOCKS DELETED             116                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3703                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN3D                                                            12.00.18,DURATION 00.00.00
+// JOB SYSGEN3E  LINK PDAID LISTER FOR MULTIPROGRAMMING SYSTEM          12.00.18
+// OPTION CATAL                                                         LINK0125
+   PHASE PDLIST,+0                                                      LINK0126
+   INCLUDE IJBPDLST                                                     LINK0127
+// EXEC LNKEDT                                                          LINK0128
+
+JOB  SYSGEN3E  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     PHASE PDLIST,+0                                                      LINK0126
+LIST     INCLUDE IJBPDLST                                                     LINK0127
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        PDLIST    00000A  000000  000BE6  0A 0E 1  CSECT               000000  000000
+
+                                                   CSECT     IJJCP1    000AB0  000000
+                                                      ENTRY  IJJCP3    000AB0
+                                                      ENTRY  IJJCP1N   000AB0
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 11 14 08              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        10 14 03                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             486                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              663                    17002                    23523
+LIBRARY   BLOCKS DELETED             116                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3701                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN3E                                                            12.00.18,DURATION 00.00.00
+// JOB SYSGEN3F  LINK LSERV FOR MULTIPROGRAMMING SYSTEM                 12.00.18
+// OPTION CATAL                                                         LINK0132
+   PHASE LSERV,+0                                                       LINK0133
+   INCLUDE IJBLSERV                                                     LINK0134
+// EXEC LNKEDT                                                          LINK0135
+
+JOB  SYSGEN3F  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     PHASE LSERV,+0                                                       LINK0133
+LIST     INCLUDE IJBLSERV                                                     LINK0134
+LIST   INCLUDE IJJCPD1N
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        LSERV     0001C0  000000  001E2F  0A 0E 3  CSECT     IJJCPD1N  000000  000000
+                                                   *  ENTRY  IJJCPD3   000000
+
+                                                   CSECT     ILULSERV  0001C0  0001C0
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 11 14 09              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        10 15 04                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             487                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              668                    17002                    23523
+LIBRARY   BLOCKS DELETED             116                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3696                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN3F                                                            12.00.18,DURATION 00.00.00
+// JOB SYSGEN3G  LINK DUMP GENERATOR FOR MULTIPROGRAMMING SYSTEM        12.00.18
+// OPTION CATAL                                                         LINK0139
+   PHASE DUMPGEN,+0                                                     LINK0140
+   INCLUDE IJBDMPGN                                                     LINK0141
+// EXEC LNKEDT                                                          LINK0142
+
+JOB  SYSGEN3G  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     PHASE DUMPGEN,+0                                                     LINK0140
+LIST     INCLUDE IJBDMPGN                                                     LINK0141
+LIST    INCLUDE     IJJCPD1
+LIST    INCLUDE ,(IJBDUM3B)
+LIST   PHASE        DUMPGEN1,LOADPH2,NOAUTO
+LIST    INCLUDE ,(IJBDU13B)
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        DUMPGEN   000202  000000  0013DF  0A 0F 4  CSECT     IJJCPD1   000000  000000
+                                                   *  ENTRY  IJJCPD1N  000000
+                                                      ENTRY  IJJCPD3   000000
+
+                                                   CSECT     IJBDUM3B  0001F8  0001F8
+                                                   *  ENTRY  LOADPH2   000538
+
+        DUMPGEN1  000538  000538  00214B  0A 10 4  CSECT     IJBDU13B  000538 -000CB0
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 11 14 11              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        10 18 01                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             489                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              677                    17002                    23523
+LIBRARY   BLOCKS DELETED             116                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3687                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN3G                                                            12.00.18,DURATION 00.00.00
+// JOB SYSGEN3H  LINK GROUPI UTILITY ASSIGN ALTERNATE TRK  360N-UT-461  12.00.18
+// OPTION CATAL                                                         LINK0244
+   INCLUDE IJWAD                                                        LINK0245
+// EXEC LNKEDT                                                          LINK0246
+
+JOB  SYSGEN3H  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE IJWAD                                                        LINK0245
+LIST           PHASE   ATAD,*,NOAUTO
+LIST           INCLUDE IJJCPD1N
+LIST           INCLUDE IJWAD1
+LIST           PHASE   ATAD2,IJWAD1P1,NOAUTO
+LIST           INCLUDE IJWAD2
+LIST           PHASE   ATAD3,IJWAD1P1,NOAUTO
+LIST           INCLUDE IJWAD3
+LIST           PHASE   ATAD4,IJWAD1P1,NOAUTO
+LIST           INCLUDE IJWAD4
+LIST           PHASE   ATAD5,IJWAD1P1,NOAUTO
+LIST           INCLUDE IJWAD5
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        ATAD      0061CA  006000  006D7B  0A 12 1  CSECT     IJJCPD1N  006000  006000
+                                                      ENTRY  IJJCPD3   006000
+
+                                                   CSECT     IJWAD13C  0061C0  0061C0
+                                                   *  ENTRY  IJWAD1P1  006478
+
+        ATAD2     006482  006478  0087FA  0A 12 4  CSECT     IJWAD23C  006478  006478
+                                                   *  ENTRY  ALTTRK2   006478
+
+        ATAD3     006482  006478  008652  0B 00 2  CSECT     IJWAD33B  006478  006478
+                                                   *  ENTRY  ALTTRK3   006478
+
+        ATAD4     006482  006478  008645  0B 01 4  CSECT     IJWAD438  006478  006478
+                                                   *  ENTRY  ALTTRK4   006478
+
+        ATAD5     006482  006478  00873F  0B 03 2  CSECT     IJWAD53B  006478  006478
+                                                   *  ENTRY  ALTTRK5   006478
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 11 14 16              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        11 04 04                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             494                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              704                    17002                    23523
+LIBRARY   BLOCKS DELETED             116                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3660                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN3H                                                            12.00.19,DURATION 00.00.00
+// JOB SYSGEN3I  LINK GROUP I UTILITY CARD TO DISK         360N-UT-461  12.00.19
+// OPTION CATAL                                                         LINK0250
+   INCLUDE IJWCD                                                        LINK0251
+   PHASE CDDK5,IJWCDCS2,NOAUTO                                          LINK0252
+   INCLUDE IJWLAB                                                       LINK0253
+// EXEC LNKEDT                                                          LINK0254
+
+JOB  SYSGEN3I  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE IJWCD                                                        LINK0251
+LIST   PHASE CDDK,*,NOAUTO                                                        0001
+LIST   INCLUDE IJWCD1                                                             0002
+LIST   INCLUDE IJJCPD0                                                            0003
+LIST   PHASE CDDK2,*,NOAUTO                                                       0004
+LIST   INCLUDE IJWGEN                                                             0005
+LIST   PHASE CDDK3,CDDK2,NOAUTO                                                   0006
+LIST   INCLUDE IJWCD3                                                             0007
+LIST   PHASE CDDK4,CDDK2,NOAUTO                                                   0008
+LIST   INCLUDE IJWCD4                                                             0009
+LIST     PHASE CDDK5,IJWCDCS2,NOAUTO                                          LINK0252
+LIST     INCLUDE IJWLAB                                                       LINK0253
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        CDDK      00600E  006000  006518  0B 04 4  CSECT     IJWCD135  006000  006000
+                                                   *  ENTRY  IJWCD1AN  006063
+                                                   *  ENTRY  IJWCD1MS  006110
+
+                                                   CSECT     IJJCPD0   0062E0  0062E0
+                                                      ENTRY  IJJCPD1N  0062E0
+                                                   *  ENTRY  IJJCPD1   0062E0
+                                                   *  ENTRY  IJJCPD2   0062E0
+                                                      ENTRY  IJJCPD3   0062E0
+                                                   *  ENTRY  IJJCPD0N  0062E0
+
+        CDDK2     00652A  006520  00744B  0B 05 1  CSECT     IJWGEN36  006520  006520
+                                                   *  ENTRY  IJWGENHD  006530
+                                                   *  ENTRY  IJWGENTB  0065C0
+                                                   *  ENTRY  IJWGENP2  0065D0
+
+        CDDK3     00652A  006520  007443  0B 05 4  CSECT     IJWCD336  006520  006520
+
+        CDDK4     00652A  006520  0071E9  0B 06 3  CSECT     IJWCDCS2  006EA0  006520
+
+                                                   CSECT     IJWCD432  006520  006520
+
+        CDDK5     006EAA  006EA0  006EAB  0B 07 1  CSECT     IJWLAB30  006EA0  006EA0
+                                                      ENTRY  IJWLABIN  006EAC
+                                                      ENTRY  IJWLABND  006EAC
+                                                      ENTRY  IJWLABOU  006EAC
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 11 15 03              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        11 07 02                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             499                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              714                    17002                    23523
+LIBRARY   BLOCKS DELETED             116                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3650                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN3I                                                            12.00.19,DURATION 00.00.00
+// JOB SYSGEN3J  LINK GROUP I UTILITY CARD TO PRINTER/PNCH 360N-UT-461  12.00.19
+// OPTION CATAL                                                         LINK0258
+   INCLUDE IJWCP                                                        LINK0259
+   PHASE CDPP5,IJWCPCS2,NOAUTO                                          LINK0260
+   INCLUDE IJWLAB                                                       LINK0261
+// EXEC LNKEDT                                                          LINK0262
+
+JOB  SYSGEN3J  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE IJWCP                                                        LINK0259
+LIST   PHASE CDPP,*,NOAUTO                                                        0001
+LIST   INCLUDE IJWCP1                                                             0002
+LIST   INCLUDE IJJCPD0                                                            0003
+LIST   PHASE CDPP2,*,NOAUTO                                                       0004
+LIST   INCLUDE IJWGEN                                                             0005
+LIST   PHASE CDPP3,IJWGENP2,NOAUTO                                                0006
+LIST   INCLUDE IJWCP3                                                             0007
+LIST   PHASE CDPP4,CDPP3,NOAUTO                                                   0008
+LIST   INCLUDE IJWCP4                                                             0009
+LIST     PHASE CDPP5,IJWCPCS2,NOAUTO                                          LINK0260
+LIST     INCLUDE IJWLAB                                                       LINK0261
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        CDPP      00600E  006000  006518  0B 07 2  CSECT     IJWCP135  006000  006000
+                                                   *  ENTRY  IJWCP1AN  006063
+                                                   *  ENTRY  IJWCP1MS  006110
+
+                                                   CSECT     IJJCPD0   0062E0  0062E0
+                                                      ENTRY  IJJCPD1N  0062E0
+                                                   *  ENTRY  IJJCPD1   0062E0
+                                                   *  ENTRY  IJJCPD2   0062E0
+                                                      ENTRY  IJJCPD3   0062E0
+                                                   *  ENTRY  IJJCPD0N  0062E0
+
+        CDPP2     00652A  006520  00744B  0B 07 3  CSECT     IJWGEN36  006520  006520
+                                                      ENTRY  IJWGENHD  006530
+                                                      ENTRY  IJWGENTB  0065C0
+                                                   *  ENTRY  IJWGENP2  0065D0
+
+        CDPP3     0065DA  0065D0  007657  0B 08 2  CSECT     IJWCP332  0065D0  0065D0
+
+        CDPP4     0065DA  0065D0  007C4B  0B 09 1  CSECT     IJWCP436  0065D0  0065D0
+
+                                                   CSECT     IJWCP210  007250  0065D0
+                                                      ENTRY  IJWCPCS2  007250
+
+        CDPP5     00725A  007250  00725B  0B 0A 1  CSECT     IJWLAB30  007250  007250
+                                                      ENTRY  IJWLABIN  00725C
+                                                      ENTRY  IJWLABND  00725C
+                                                   *  ENTRY  IJWLABOU  00725C
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 11 15 08              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        11 10 02                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             504                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              726                    17002                    23523
+LIBRARY   BLOCKS DELETED             116                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3638                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN3J                                                            12.00.19,DURATION 00.00.00
+// JOB SYSGEN3K  LINK GROUP I UTILITY CLEAR DISK           360N-UT-461  12.00.19
+// OPTION CATAL                                                         LINK0266
+   INCLUDE IJWCLD                                                       LINK0267
+// EXEC LNKEDT                                                          LINK0268
+
+JOB  SYSGEN3K  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE IJWCLD                                                       LINK0267
+LIST   PHASE CLRDSK,*,NOAUTO                                                      0001
+LIST   INCLUDE IJWCLD1                                                            0002
+LIST   INCLUDE IJJCPD0                                                            0003
+LIST   PHASE CLRD2,*,NOAUTO                                                       0004
+LIST   INCLUDE IJWCLD2                                                            0005
+LIST   PHASE CLRD3,CLRD2,NOAUTO                                                   0006
+LIST   INCLUDE IJWCLD3                                                            0007
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        CLRDSK    00600E  006000  006448  0B 0A 2  CSECT     IJWCLD33  006000  006000
+
+                                                   CSECT     IJJCPD0   006210  006210
+                                                      ENTRY  IJJCPD1N  006210
+                                                   *  ENTRY  IJJCPD1   006210
+                                                   *  ENTRY  IJJCPD2   006210
+                                                      ENTRY  IJJCPD3   006210
+                                                   *  ENTRY  IJJCPD0N  006210
+
+        CLRD2     00645A  006450  006DBB  0B 0A 3  CSECT     IJWCL233  006450  006450
+
+        CLRD3     00645A  006450  0069C4  0B 0B 1  CSECT     IJWCL336  006450  006450
+                                                      ENTRY  IJWCLDIO  006938
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 11 15 11              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        11 11 02                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             507                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              730                    17002                    23523
+LIBRARY   BLOCKS DELETED             116                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3634                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN3K                                                            12.00.19,DURATION 00.00.00
+// JOB SYSGEN3L  LINK GROUP I UTILITY DISK TO CARD         360N-UT-461  12.00.19
+// OPTION CATAL                                                         LINK0272
+   INCLUDE IJWDC                                                        LINK0273
+   PHASE DKCD5,IJWDCCS2,NOAUTO                                          LINK0274
+   INCLUDE IJWLAB                                                       LINK0275
+// EXEC LNKEDT                                                          LINK0276
+
+JOB  SYSGEN3L  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE IJWDC                                                        LINK0273
+LIST   PHASE DKCD,*,NOAUTO                                                        0001
+LIST   INCLUDE IJWDC1                                                             0002
+LIST   INCLUDE IJJCPD0                                                            0003
+LIST   PHASE DKCD2,*,NOAUTO                                                       0004
+LIST   INCLUDE IJWGEN                                                             0005
+LIST   PHASE DKCD3,DKCD2,NOAUTO                                                   0006
+LIST   INCLUDE IJWDC3                                                             0007
+LIST   PHASE DKCD4,DKCD2,NOAUTO                                                   0008
+LIST   INCLUDE IJWDC4                                                             0009
+LIST     PHASE DKCD5,IJWDCCS2,NOAUTO                                          LINK0274
+LIST     INCLUDE IJWLAB                                                       LINK0275
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        DKCD      00600E  006000  006518  0B 0B 2  CSECT     IJWDC135  006000  006000
+                                                   *  ENTRY  IJWDC1AN  006063
+                                                   *  ENTRY  IJWDC1MS  006110
+
+                                                   CSECT     IJJCPD0   0062E0  0062E0
+                                                      ENTRY  IJJCPD1N  0062E0
+                                                   *  ENTRY  IJJCPD1   0062E0
+                                                   *  ENTRY  IJJCPD2   0062E0
+                                                      ENTRY  IJJCPD3   0062E0
+                                                   *  ENTRY  IJJCPD0N  0062E0
+
+        DKCD2     00652A  006520  00744B  0B 0B 3  CSECT     IJWGEN36  006520  006520
+                                                   *  ENTRY  IJWGENHD  006530
+                                                   *  ENTRY  IJWGENTB  0065C0
+                                                   *  ENTRY  IJWGENP2  0065D0
+
+        DKCD3     00652A  006520  007413  0B 0C 2  CSECT     IJWDC336  006520  006520
+
+        DKCD4     00652A  006520  0073D5  0B 0D 1  CSECT     IJWDCCS2  006F90  006520
+
+                                                   CSECT     IJWDC43B  006520  006520
+
+        DKCD5     006F9A  006F90  006F9B  0B 0D 4  CSECT     IJWLAB30  006F90  006F90
+                                                      ENTRY  IJWLABIN  006F9C
+                                                      ENTRY  IJWLABND  006F9C
+                                                   *  ENTRY  IJWLABOU  006F9C
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 11 15 16              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        11 14 01                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             512                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              741                    17002                    23523
+LIBRARY   BLOCKS DELETED             116                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3623                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN3L                                                            12.00.20,DURATION 00.00.00
+// JOB SYSGEN3M  LINK GROUP I UTILITY DISK TO DISK         360N-UT-461  12.00.20
+// OPTION CATAL                                                         LINK0280
+   INCLUDE IJWDD                                                        LINK0281
+   PHASE DKDK5,IJWDDCS2,NOAUTO                                          LINK0282
+   INCLUDE IJWLAB                                                       LINK0283
+// EXEC LNKEDT                                                          LINK0284
+
+JOB  SYSGEN3M  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE IJWDD                                                        LINK0281
+LIST   PHASE DKDK,*,NOAUTO                                                        0001
+LIST   INCLUDE IJWDD1                                                             0002
+LIST   INCLUDE IJJCPD0                                                            0003
+LIST   PHASE DKDK2,*,NOAUTO                                                       0004
+LIST   INCLUDE IJWGEN                                                             0005
+LIST   PHASE DKDK3,DKDK2,NOAUTO                                                   0006
+LIST   INCLUDE IJWDD3                                                             0007
+LIST   PHASE DKDK4,DKDK2,NOAUTO                                                   0008
+LIST   INCLUDE IJWDD4                                                             0009
+LIST     PHASE DKDK5,IJWDDCS2,NOAUTO                                          LINK0282
+LIST     INCLUDE IJWLAB                                                       LINK0283
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        DKDK      00600E  006000  006518  0B 0E 1  CSECT     IJWDD135  006000  006000
+                                                   *  ENTRY  IJWDD1AN  006063
+                                                   *  ENTRY  IJWDD1MS  006110
+
+                                                   CSECT     IJJCPD0   0062E0  0062E0
+                                                      ENTRY  IJJCPD1N  0062E0
+                                                   *  ENTRY  IJJCPD1   0062E0
+                                                   *  ENTRY  IJJCPD2   0062E0
+                                                      ENTRY  IJJCPD3   0062E0
+                                                   *  ENTRY  IJJCPD0N  0062E0
+
+        DKDK2     00652A  006520  00744B  0B 0E 2  CSECT     IJWGEN36  006520  006520
+                                                   *  ENTRY  IJWGENHD  006530
+                                                   *  ENTRY  IJWGENTB  0065C0
+                                                   *  ENTRY  IJWGENP2  0065D0
+
+        DKDK3     00652A  006520  007627  0B 0F 1  CSECT     IJWDD336  006520  006520
+
+        DKDK4     00652A  006520  0074AB  0B 0F 4  CSECT     IJWDDCS2  0070C0  006520
+                                                   *  ENTRY  IJWDMCS2  0070C0
+                                                   *  ENTRY  IJWMDCS2  0070C0
+                                                   *  ENTRY  IJWMMCS2  0070C0
+
+                                                   CSECT     IJWDD43B  006520  006520
+
+        DKDK5     0070CA  0070C0  0070CB  0B 10 3  CSECT     IJWLAB30  0070C0  0070C0
+                                                      ENTRY  IJWLABIN  0070CC
+                                                      ENTRY  IJWLABND  0070CC
+                                                      ENTRY  IJWLABOU  0070CC
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 12 01 03              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        11 16 04                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             517                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              752                    17002                    23523
+LIBRARY   BLOCKS DELETED             116                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3612                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN3M                                                            12.00.20,DURATION 00.00.00
+// JOB SYSGEN3N  LINK GROUP I UTILITY DISK TO PRINTER      360N-UT-461  12.00.20
+// OPTION CATAL                                                         LINK0288
+   INCLUDE IJWDP                                                        LINK0289
+   PHASE DKPR5,IJWDPCS2,NOAUTO                                          LINK0290
+   INCLUDE IJWLAB                                                       LINK0291
+// EXEC LNKEDT                                                          LINK0292
+
+JOB  SYSGEN3N  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE IJWDP                                                        LINK0289
+LIST   PHASE DKPR,*,NOAUTO                                                        0001
+LIST   INCLUDE IJWDP1                                                             0002
+LIST   INCLUDE IJJCPD0                                                            0003
+LIST   PHASE DKPR2,*,NOAUTO                                                       0004
+LIST   INCLUDE IJWGEN                                                             0005
+LIST   PHASE DKPR3,IJWGENP2,NOAUTO                                                0006
+LIST   INCLUDE IJWDP3                                                             0007
+LIST   PHASE DKPR4,IJWGENP2,NOAUTO                                                0008
+LIST   INCLUDE IJWDP4                                                             0009
+LIST     PHASE DKPR5,IJWDPCS2,NOAUTO                                          LINK0290
+LIST     INCLUDE IJWLAB                                                       LINK0291
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        DKPR      00600E  006000  006518  0B 10 4  CSECT     IJWDP135  006000  006000
+                                                   *  ENTRY  IJWDP1AN  006063
+                                                   *  ENTRY  IJWDP1MS  006110
+
+                                                   CSECT     IJJCPD0   0062E0  0062E0
+                                                      ENTRY  IJJCPD1N  0062E0
+                                                   *  ENTRY  IJJCPD1   0062E0
+                                                   *  ENTRY  IJJCPD2   0062E0
+                                                      ENTRY  IJJCPD3   0062E0
+                                                   *  ENTRY  IJJCPD0N  0062E0
+
+        DKPR2     00652A  006520  00744B  0B 11 1  CSECT     IJWGEN36  006520  006520
+                                                      ENTRY  IJWGENHD  006530
+                                                      ENTRY  IJWGENTB  0065C0
+                                                   *  ENTRY  IJWGENP2  0065D0
+
+        DKPR3     0065DA  0065D0  0075B7  0B 11 4  CSECT     IJWDP336  0065D0  0065D0
+
+        DKPR4     0065DA  0065D0  007B0B  0B 12 3  CSECT     IJWDPCS2  0071F8  0065D0
+                                                   *  ENTRY  IJWMPCS2  0071F8
+
+                                                   CSECT     IJWDP43B  0065D0  0065D0
+
+        DKPR5     007202  0071F8  007203  0B 13 3  CSECT     IJWLAB30  0071F8  0071F8
+                                                      ENTRY  IJWLABIN  007204
+                                                      ENTRY  IJWLABND  007204
+                                                   *  ENTRY  IJWLABOU  007204
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 12 01 08              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        11 19 04                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             522                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              764                    17002                    23523
+LIBRARY   BLOCKS DELETED             116                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3600                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN3N                                                            12.00.20,DURATION 00.00.00
+// JOB SYSGEN3O  LINK GROUP I UTILITY INITIALIZE DISK      360N-UT-461  12.00.20
+// OPTION CATAL                                                         LINK0296
+ INCLUDE IJWID                                                          LINK0297
+// EXEC LNKEDT                                                          LINK0298
+
+JOB  SYSGEN3O  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST   INCLUDE IJWID                                                          LINK0297
+LIST   PHASE INTD,*,NOAUTO
+LIST   INCLUDE IJJCPD1N
+LIST   INCLUDE IJWID1
+LIST   PHASE INTD2,IJWID1P1,NOAUTO
+LIST   INCLUDE IJWID2
+LIST   PHASE INTD3,IJWID2P2,NOAUTO
+LIST   INCLUDE IJWID3
+LIST   PHASE INTD4,IJWID1P1,NOAUTO
+LIST   INCLUDE IJWID4
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        INTD      0061CA  006000  006D53  0B 13 4  CSECT     IJJCPD1N  006000  006000
+                                                      ENTRY  IJJCPD3   006000
+
+                                                   CSECT     IJWID13C  0061C0  0061C0
+                                                   *  ENTRY  IJWID1    0061C0
+                                                   *  ENTRY  IJWID1P1  0065A8
+
+        INTD2     0065B2  0065A8  008721  0C 00 3  CSECT     IJWID23A  0065A8  0065A8
+                                                   *  ENTRY  INTDSK2   0065A8
+                                                   *  ENTRY  IJWID2P2  006AA4
+                                                      ENTRY  SKALT     006986
+                                                      ENTRY  TRKCON    0069B2
+                                                      ENTRY  MKFILE    0069AF
+                                                      ENTRY  SKADDR    00698E
+                                                      ENTRY  DFCTHA    0069B7
+                                                      ENTRY  DFCTR0    0069BC
+                                                      ENTRY  ALTHA     0069CC
+                                                      ENTRY  ALTR0     0069D1
+
+        INTD3     006AB2  006AA8  006E6F  0C 02 1  CSECT     IJWID336  006AA8  006AA8
+                                                   *  ENTRY  INTDSK3   006AA8
+
+        INTD4     0065B2  0065A8  0081E3  0C 02 2  CSECT     IJWID439  0065A8  0065A8
+                                                   *  ENTRY  INTDSK4   0065A8
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 12 01 12              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        12 03 03                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             526                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              779                    17002                    23523
+LIBRARY   BLOCKS DELETED             116                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3585                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN3O                                                            12.00.20,DURATION 00.00.00
+// JOB SYSGEN3P  LINK GROUP I UTILITY COPY DISK TO CARD    360N-UT-461  12.00.20
+// OPTION CATAL                                                         LINK0302
+   INCLUDE IJWKC                                                        LINK0303
+// LBLTYP NSD(10)                                                       LINK0304
+// EXEC LNKEDT                                                          LINK0305
+
+JOB  SYSGEN3P  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE IJWKC                                                        LINK0303
+LIST   PHASE CRDC,*,NOAUTO
+LIST   INCLUDE IJJCPD1N
+LIST   INCLUDE IJWKC1
+LIST   PHASE CRDC2,IJWKC1OP,NOAUTO
+LIST   INCLUDE IJWKC2
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        CRDC      0062EA  006120  007101  0C 03 3  CSECT     IJJCPD1N  006120  006120
+                                                      ENTRY  IJJCPD3   006120
+
+                                                   CSECT     IJWKC136  0062E0  0062E0
+                                                   *  ENTRY  IJWKC1OP  006640
+
+        CRDC2     00664A  006640  007C5B  0C 04 2  CSECT     IJWKC239  006640  006640
+
+                                                   CSECT     IJWKC2IN  006FC0  006640
+                                                      ENTRY  RTRVMOD   007A7C
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 12 01 14              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        12 05 02                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             528                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              786                    17002                    23523
+LIBRARY   BLOCKS DELETED             116                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3578                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN3P                                                            12.00.21,DURATION 00.00.00
+// JOB SYSGEN3Q  GROUP I UTILITY VTOC DISPLAY (MPS)        360N-UT-461  12.00.21
+// OPTION CATAL                                                         LINK0316
+ INCLUDE IJWLVM                                                         LINK0317
+// EXEC LNKEDT                                                          LINK0318
+
+JOB  SYSGEN3Q  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST   INCLUDE IJWLVM                                                         LINK0317
+LIST           PHASE LISTVTOC,+0,NOAUTO
+LIST           INCLUDE IJWLV1
+LIST           INCLUDE IJJCPD0N
+LIST           INCLUDE IJWLVT
+LIST           PHASE $$BLISTV,+0,NOAUTO                                       W4610007
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        LISTVTOC  00000A  000000  001178  0C 05 2  CSECT     IJWLV13B  000000  000000
+
+                                                   CSECT     IJJCPD0N  000F78  000F78
+                                                   *  ENTRY  IJJCPD1N  000F78
+                                                   *  ENTRY  IJJCPD2   000F78
+                                                   *  ENTRY  IJJCPD3   000F78
+
+        $$BLISTV  000000  000000  000207  0C 06 1  CSECT     IJWLVT33  000000  000000
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 12 01 16              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        12 06 02                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             530                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              790                    17002                    23523
+LIBRARY   BLOCKS DELETED             116                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3574                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN3Q                                                            12.00.21,DURATION 00.00.00
+// JOB SYSGEN3R  LINK GROUP I UTILITY RESTORE CARD TO DISK 360N-UT-461  12.00.21
+// OPTION CATAL                                                         LINK0322
+   INCLUDE IJWRC                                                        LINK0323
+// LBLTYP NSD(10)                                                       LINK0324
+// EXEC LNKEDT                                                          LINK0325
+
+JOB  SYSGEN3R  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE IJWRC                                                        LINK0323
+LIST   PHASE CRCD,*,NOAUTO
+LIST   INCLUDE IJJCPD1N
+LIST   INCLUDE IJWRC1
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        CRCD      0062EA  006120  00790F  0C 06 2  CSECT     IJJCPD1N  006120  006120
+                                                   *  ENTRY  IJJCPD3   006120
+
+                                                   CSECT     IJWRC136  0062E0  0062E0
+
+                                                   CSECT     IJWRC2ML  006650  0062E0
+
+                                                   CSECT     IJWRC2IN  006E10  0062E0
+                                                      ENTRY  LOADMOD   0075EC
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 12 01 17              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        12 07 02                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             531                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              794                    17002                    23523
+LIBRARY   BLOCKS DELETED             116                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3570                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN3R                                                            12.00.21,DURATION 00.00.00
+// JOB SYSGEN3S  LINK GROUP I UTILITY COPY DISK TO DISK    360N-UT-461  12.00.21
+// OPTION CATAL                                                         LINK0329
+   INCLUDE IJWRD                                                        LINK0330
+// LBLTYP NSD(10)                                                       LINK0331
+// EXEC LNKEDT                                                          LINK0332
+
+JOB  SYSGEN3S  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE IJWRD                                                        LINK0330
+LIST   PHASE CRDD,*,NOAUTO
+LIST   INCLUDE IJJCPD1N
+LIST   INCLUDE IJWRD1
+LIST   PHASE CRDD2,IJWRD1OP,NOAUTO
+LIST   INCLUDE IJWRD2
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        CRDD      0062EA  006120  007109  0C 07 2  CSECT     IJJCPD1N  006120  006120
+                                                      ENTRY  IJJCPD3   006120
+
+                                                   CSECT     IJWRD136  0062E0  0062E0
+                                                   *  ENTRY  IJWRD1OP  006640
+
+        CRDD2     00664A  006640  00813B  0C 08 1  CSECT     IJWRD239  006640  006640
+
+                                                   CSECT     IJWRD2IN  006F78  006640
+                                                      ENTRY  RTRVMOD   007BE4
+                                                      ENTRY  LOADMOD   007D5C
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 12 02 01              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        12 09 02                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             533                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              802                    17002                    23523
+LIBRARY   BLOCKS DELETED             116                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3562                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN3S                                                            12.00.21,DURATION 00.00.00
+// JOB SYSGEN3T  LINK GROUP II UTILITY INITIALIZE TAPE     360N-UT-462 L12.00.21
+// OPTION CATAL                                                         LINK0336
+   PHASE INTT,*,NOAUTO                                                  LINK0337
+   INCLUDE IJWIT                                                        LINK0338
+// EXEC LNKEDT                                                          LINK0339
+
+JOB  SYSGEN3T  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     PHASE INTT,*,NOAUTO                                                  LINK0337
+LIST     INCLUDE IJWIT                                                        LINK0338
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        INTT      00600A  006000  007121  0C 09 2  CSECT     IJWIT3C   006000  006000
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 12 02 02              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        12 10 01                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             534                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              805                    17002                    23523
+LIBRARY   BLOCKS DELETED             116                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3559                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN3T                                                            12.00.21,DURATION 00.00.00
+// JOB SYSGEN3U  LINK GROUP II UTILITY COPY DISK/DATA CELL TO TAPE      12.00.21
+// OPTION CATAL                                                         LINK0343
+   INCLUDE IJWKT                                                        LINK0344
+// LBLTYP NSD(10)                                                       LINK0345
+// EXEC LNKEDT                                                          LINK0346
+
+JOB  SYSGEN3U  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE IJWKT                                                        LINK0344
+LIST   PHASE CRDT,*,NOAUTO
+LIST   INCLUDE IJJCPD1N
+LIST   INCLUDE IJWKT1
+LIST   PHASE CRDT2,IJWKT1OP,NOAUTO
+LIST   INCLUDE IJWKT2
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        CRDT      0062EA  006120  0071F5  0C 0A 1  CSECT     IJJCPD1N  006120  006120
+                                                      ENTRY  IJJCPD3   006120
+
+                                                   CSECT     IJWKT13C  0062E0  0062E0
+                                                   *  ENTRY  IJWKT1OP  006648
+
+        CRDT2     006652  006648  007C9B  0C 0A 4  CSECT     IJWKT23B  006648  006648
+                                                      ENTRY  TODUMLM   006C40
+
+                                                   CSECT     IJWKT2IN  006E18  006648
+                                                      ENTRY  RTRVMOD   007AAC
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 12 02 04              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        12 11 04                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             536                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              812                    17002                    23523
+LIBRARY   BLOCKS DELETED             116                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3552                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN3U                                                            12.00.21,DURATION 00.00.00
+// JOB SYSGEN3V  LINK GROUP II UTILITY RESTORE TAPE TO DISK/DATA CELL   12.00.21
+// OPTION CATAL                                                         LINK0350
+   INCLUDE IJWRT                                                        LINK0351
+// LBLTYP NSD(10)                                                       LINK0352
+// EXEC LNKEDT                                                          LINK0353
+
+JOB  SYSGEN3V  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE IJWRT                                                        LINK0351
+LIST   PHASE CRTD,*,NOAUTO
+LIST   INCLUDE IJJCPD1N
+LIST   INCLUDE IJWRT1
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        CRTD      0062EA  006120  007B77  0C 0B 4  CSECT     IJJCPD1N  006120  006120
+                                                   *  ENTRY  IJJCPD3   006120
+
+                                                   CSECT     IJWRT137  0062E0  0062E0
+
+                                                   CSECT     IJWRT2ML  006658  0062E0
+                                                      ENTRY  TIDUMLM   006C02
+
+                                                   CSECT     IJWRT2IN  006E08  0062E0
+                                                      ENTRY  LOADMOD   007880
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 12 02 05              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        12 12 04                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             537                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              816                    17002                    23523
+LIBRARY   BLOCKS DELETED             116                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3548                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN3V                                                            12.00.22,DURATION 00.00.00
+// JOB SYSGEN3W  LINK GROUP II UTILITY TAPE TO TAPE        360N-UT-462  12.00.22
+// OPTION CATAL                                                         LINK0357
+   INCLUDE IJWTT                                                        LINK0358
+   PHASE TPTP5,IJWTTCS2,NOAUTO                                          LINK0359
+   INCLUDE IJWLAB                                                       LINK0360
+// LBLTYP TAPE                                                          LINK0361
+// EXEC LNKEDT                                                          LINK0362
+
+JOB  SYSGEN3W  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE IJWTT                                                        LINK0358
+LIST   PHASE TPTP,*,NOAUTO                                                        0001
+LIST   INCLUDE IJWTT1                                                             0002
+LIST   INCLUDE IJJCPD0                                                            0003
+LIST   PHASE TPTP2,*,NOAUTO                                                       0004
+LIST   INCLUDE IJWGEN                                                             0005
+LIST   PHASE TPTP3,TPTP2,NOAUTO                                                   0006
+LIST   INCLUDE IJWTT3                                                             0007
+LIST   PHASE TPTP4,TPTP2,NOAUTO                                                   0008
+LIST   INCLUDE IJWTT4                                                             0009
+LIST     PHASE TPTP5,IJWTTCS2,NOAUTO                                          LINK0359
+LIST     INCLUDE IJWLAB                                                       LINK0360
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        TPTP      00605E  006050  006568  0C 0C 4  CSECT     IJWTT135  006050  006050
+                                                   *  ENTRY  IJWTT1AN  0060B3
+                                                   *  ENTRY  IJWTT1MS  006160
+
+                                                   CSECT     IJJCPD0   006330  006330
+                                                      ENTRY  IJJCPD1N  006330
+                                                   *  ENTRY  IJJCPD1   006330
+                                                   *  ENTRY  IJJCPD2   006330
+                                                      ENTRY  IJJCPD3   006330
+                                                   *  ENTRY  IJJCPD0N  006330
+
+        TPTP2     00657A  006570  00749B  0C 0D 1  CSECT     IJWGEN36  006570  006570
+                                                   *  ENTRY  IJWGENHD  006580
+                                                   *  ENTRY  IJWGENTB  006610
+                                                   *  ENTRY  IJWGENP2  006620
+
+        TPTP3     00657A  006570  007413  0C 0D 4  CSECT     IJWTT336  006570  006570
+
+        TPTP4     00657A  006570  007179  0C 0E 3  CSECT     IJWTTCS2  006E38  006570
+
+                                                   CSECT     IJWTT43C  006570  006570
+
+        TPTP5     006E42  006E38  006E43  0C 0F 1  CSECT     IJWLAB30  006E38  006E38
+                                                      ENTRY  IJWLABIN  006E44
+                                                      ENTRY  IJWLABND  006E44
+                                                      ENTRY  IJWLABOU  006E44
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 12 02 10              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        12 15 02                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             542                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              826                    17002                    23523
+LIBRARY   BLOCKS DELETED             116                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3538                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN3W                                                            12.00.22,DURATION 00.00.00
+// JOB SYSGEN3X  LINK GROUP II UTILITY TAPE TO PRINTER     360N-UT-462  12.00.22
+// OPTION CATAL                                                         LINK0366
+   INCLUDE IJWTP                                                        LINK0367
+   PHASE TPPR5,IJWTPCS2,NOAUTO                                          LINK0368
+   INCLUDE IJWLAB                                                       LINK0369
+// LBLTYP TAPE                                                          LINK0370
+// EXEC LNKEDT                                                          LINK0371
+
+JOB  SYSGEN3X  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE IJWTP                                                        LINK0367
+LIST   PHASE TPPR,*,NOAUTO                                                        0001
+LIST   INCLUDE IJWTP1                                                             0002
+LIST   INCLUDE IJJCPD0                                                            0003
+LIST   PHASE TPPR2,*,NOAUTO                                                       0004
+LIST   INCLUDE IJWGEN                                                             0005
+LIST   PHASE TPPR3,IJWGENP2,NOAUTO                                                0006
+LIST   INCLUDE IJWTP3                                                             0007
+LIST   PHASE TPPR4,TPPR3,NOAUTO                                                   0008
+LIST   INCLUDE IJWTP4                                                             0009
+LIST     PHASE TPPR5,IJWTPCS2,NOAUTO                                          LINK0368
+LIST     INCLUDE IJWLAB                                                       LINK0369
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        TPPR      00605E  006050  006568  0C 0F 2  CSECT     IJWTP135  006050  006050
+                                                   *  ENTRY  IJWTP1AN  0060B3
+                                                   *  ENTRY  IJWTP1MS  006160
+
+                                                   CSECT     IJJCPD0   006330  006330
+                                                      ENTRY  IJJCPD1N  006330
+                                                   *  ENTRY  IJJCPD1   006330
+                                                   *  ENTRY  IJJCPD2   006330
+                                                      ENTRY  IJJCPD3   006330
+                                                   *  ENTRY  IJJCPD0N  006330
+
+        TPPR2     00657A  006570  00749B  0C 0F 3  CSECT     IJWGEN36  006570  006570
+                                                      ENTRY  IJWGENHD  006580
+                                                      ENTRY  IJWGENTB  006610
+                                                   *  ENTRY  IJWGENP2  006620
+
+        TPPR3     00662A  006620  007457  0C 10 2  CSECT     IJWTP336  006620  006620
+
+        TPPR4     00662A  006620  007A43  0C 11 1  CSECT     IJWTPCS2  007178  006620
+
+                                                   CSECT     IJWTP430  006620  006620
+
+        TPPR5     007182  007178  007183  0C 12 1  CSECT     IJWLAB30  007178  007178
+                                                      ENTRY  IJWLABIN  007184
+                                                      ENTRY  IJWLABND  007184
+                                                   *  ENTRY  IJWLABOU  007184
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 12 02 15              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        12 18 02                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             547                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              838                    17002                    23523
+LIBRARY   BLOCKS DELETED             116                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3526                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN3X                                                            12.00.22,DURATION 00.00.00
+// JOB SYSGEN3Y  LINK GROUP II UTILITY TAPE TO DISK        360N-UT-462  12.00.22
+// OPTION CATAL                                                         LINK0375
+   INCLUDE IJWTD                                                        LINK0376
+   PHASE TPDK5,IJWTDCS2,NOAUTO                                          LINK0377
+   INCLUDE IJWLAB                                                       LINK0378
+// LBLTYP TAPE                                                          LINK0379
+// EXEC LNKEDT                                                          LINK0380
+
+JOB  SYSGEN3Y  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE IJWTD                                                        LINK0376
+LIST   PHASE TPDK,*,NOAUTO                                                        0001
+LIST   INCLUDE IJWTD1                                                             0002
+LIST   INCLUDE IJJCPD0                                                            0003
+LIST   PHASE TPDK2,*,NOAUTO                                                       0004
+LIST   INCLUDE IJWGEN                                                             0005
+LIST   PHASE TPDK3,TPDK2,NOAUTO                                                   0006
+LIST   INCLUDE IJWTD3                                                             0007
+LIST   PHASE TPDK4,TPDK2,NOAUTO                                                   0008
+LIST   INCLUDE IJWTD4                                                             0009
+LIST     PHASE TPDK5,IJWTDCS2,NOAUTO                                          LINK0377
+LIST     INCLUDE IJWLAB                                                       LINK0378
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        TPDK      00605E  006050  006568  0C 12 2  CSECT     IJWTD135  006050  006050
+                                                   *  ENTRY  IJWTD1AN  0060B3
+                                                   *  ENTRY  IJWTD1MS  006160
+
+                                                   CSECT     IJJCPD0   006330  006330
+                                                      ENTRY  IJJCPD1N  006330
+                                                   *  ENTRY  IJJCPD1   006330
+                                                   *  ENTRY  IJJCPD2   006330
+                                                      ENTRY  IJJCPD3   006330
+                                                   *  ENTRY  IJJCPD0N  006330
+
+        TPDK2     00657A  006570  00749B  0C 12 3  CSECT     IJWGEN36  006570  006570
+                                                   *  ENTRY  IJWGENHD  006580
+                                                   *  ENTRY  IJWGENTB  006610
+                                                   *  ENTRY  IJWGENP2  006620
+
+        TPDK3     00657A  006570  007593  0C 13 2  CSECT     IJWTD336  006570  006570
+
+        TPDK4     00657A  006570  007403  0D 00 1  CSECT     IJWTDCS2  007080  006570
+                                                   *  ENTRY  IJWTMCS2  007080
+
+                                                   CSECT     IJWTD43A  006570  006570
+
+        TPDK5     00708A  007080  00708B  0D 00 4  CSECT     IJWLAB30  007080  007080
+                                                      ENTRY  IJWLABIN  00708C
+                                                      ENTRY  IJWLABND  00708C
+                                                      ENTRY  IJWLABOU  00708C
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 12 03 02              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        13 01 01                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             552                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              849                    17002                    23523
+LIBRARY   BLOCKS DELETED             116                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3515                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN3Y                                                            12.00.22,DURATION 00.00.00
+// JOB SYSGEN3Z  LINK GROUP II UTILITY TAPE COMPARE        360N-UT-462  12.00.22
+// OPTION CATAL                                                         LINK0393
+   PHASE TPCP,*,NOAUTO                                                  LINK0394
+   INCLUDE IJWTCP                                                       LINK0395
+   INCLUDE IJJCPD0                                                      LINK0396
+   INCLUDE IJWXIT                                                       LINK0397
+   INCLUDE IJWTPCP                                                      LINK0398
+// LBLTYP TAPE                                                          LINK0399
+// EXEC LNKEDT                                                          LINK0400
+
+JOB  SYSGEN3Z  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     PHASE TPCP,*,NOAUTO                                                  LINK0394
+LIST     INCLUDE IJWTCP                                                       LINK0395
+LIST     INCLUDE IJJCPD0                                                      LINK0396
+LIST     INCLUDE IJWXIT                                                       LINK0397
+LIST     INCLUDE IJWTPCP                                                      LINK0398
+LIST   PHASE TPCP2,*,NOAUTO                                                       0001
+LIST   INCLUDE IJWTCP2                                                            0002
+LIST   PHASE TPCP3,TPCP2,NOAUTO                                                   0003
+LIST   INCLUDE IJWTCP3                                                            0004
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        TPCP      00605A  006050  006603  0D 01 1  CSECT     IJWTCP35  006050  006050
+                                                      ENTRY  IJWTCP1A  0060A0
+                                                   *  ENTRY  IJWTCPAN  0060C6
+                                                   *  ENTRY  IJWTCPMS  0060BA
+
+                                                   CSECT     IJJCPD0   0063B8  0063B8
+                                                      ENTRY  IJJCPD1N  0063B8
+                                                   *  ENTRY  IJJCPD1   0063B8
+                                                   *  ENTRY  IJJCPD2   0063B8
+                                                      ENTRY  IJJCPD3   0063B8
+                                                   *  ENTRY  IJJCPD0N  0063B8
+
+                                                   CSECT     IJWXIT32  0065F8  0065F8
+                                                      ENTRY  IJWXIT1   006602
+
+        TPCP2     006612  006608  006E33  0D 01 2  CSECT     IJWCM232  006608  006608
+                                                      ENTRY  IJWTCP2A  0066A0
+
+        TPCP3     006612  006608  0071BF  0D 01 4  CSECT     IJWCM338  006608  006608
+                                                      ENTRY  IJWTCP3L  007195
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 12 03 05              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        13 02 02                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             555                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              854                    17002                    23523
+LIBRARY   BLOCKS DELETED             116                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3510                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN3Z                                                            12.00.22,DURATION 00.00.00
+// JOB SYSGEN31  LINK GROUP II UTILITY TAPE TO CARD        360N-UT-462  12.00.22
+// OPTION CATAL                                                         LINK0404
+   INCLUDE IJWTC                                                        LINK0405
+   PHASE TPCD5,IJWTCCS2,NOAUTO                                          LINK0406
+   INCLUDE IJWLAB                                                       LINK0407
+// LBLTYP TAPE                                                          LINK0408
+// EXEC LNKEDT                                                          LINK0409
+
+JOB  SYSGEN31  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE IJWTC                                                        LINK0405
+LIST   PHASE TPCD,*,NOAUTO                                                        0001
+LIST   INCLUDE IJWTC1                                                             0002
+LIST   INCLUDE IJJCPD0                                                            0003
+LIST   PHASE TPCD2,*,NOAUTO                                                       0004
+LIST   INCLUDE IJWGEN                                                             0005
+LIST   PHASE TPCD3,TPCD2,NOAUTO                                                   0006
+LIST   INCLUDE IJWTC3                                                             0007
+LIST   PHASE TPCD4,TPCD2,NOAUTO                                                   0008
+LIST   INCLUDE IJWTC4                                                             0009
+LIST     PHASE TPCD5,IJWTCCS2,NOAUTO                                          LINK0406
+LIST     INCLUDE IJWLAB                                                       LINK0407
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        TPCD      00605E  006050  006568  0D 02 2  CSECT     IJWTC135  006050  006050
+                                                   *  ENTRY  IJWTC1AN  0060B3
+                                                   *  ENTRY  IJWTC1MS  006160
+
+                                                   CSECT     IJJCPD0   006330  006330
+                                                      ENTRY  IJJCPD1N  006330
+                                                   *  ENTRY  IJJCPD1   006330
+                                                   *  ENTRY  IJJCPD2   006330
+                                                      ENTRY  IJJCPD3   006330
+                                                   *  ENTRY  IJJCPD0N  006330
+
+        TPCD2     00657A  006570  00749B  0D 02 3  CSECT     IJWGEN36  006570  006570
+                                                   *  ENTRY  IJWGENHD  006580
+                                                   *  ENTRY  IJWGENTB  006610
+                                                   *  ENTRY  IJWGENP2  006620
+
+        TPCD3     00657A  006570  0073BB  0D 03 2  CSECT     IJWTC336  006570  006570
+
+        TPCD4     00657A  006570  00732D  0D 04 1  CSECT     IJWTCCS2  006F28  006570
+
+                                                   CSECT     IJWTC430  006570  006570
+
+        TPCD5     006F32  006F28  006F33  0D 04 4  CSECT     IJWLAB30  006F28  006F28
+                                                      ENTRY  IJWLABIN  006F34
+                                                      ENTRY  IJWLABND  006F34
+                                                   *  ENTRY  IJWLABOU  006F34
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 12 03 10              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        13 05 01                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             560                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              865                    17002                    23523
+LIBRARY   BLOCKS DELETED             116                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3499                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN31                                                            12.00.23,DURATION 00.00.00
+// JOB SYSGEN32  LINK GROUP II UTILITY DISK TO TAPE        360N-UT-462  12.00.23
+// OPTION CATAL                                                         LINK0413
+   INCLUDE IJWDT                                                        LINK0414
+   PHASE DKTP5,IJWDTCS2,NOAUTO                                          LINK0415
+   INCLUDE IJWLAB                                                       LINK0416
+// LBLTYP TAPE                                                          LINK0417
+// EXEC LNKEDT                                                          LINK0418
+
+JOB  SYSGEN32  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE IJWDT                                                        LINK0414
+LIST   PHASE DKTP,*,NOAUTO                                                        0001
+LIST   INCLUDE IJWDT1                                                             0002
+LIST   INCLUDE IJJCPD0                                                            0003
+LIST   PHASE DKTP2,*,NOAUTO                                                       0004
+LIST   INCLUDE IJWGEN                                                             0005
+LIST   PHASE DKTP3,DKTP2,NOAUTO                                                   0006
+LIST   INCLUDE IJWDT3                                                             0007
+LIST   PHASE DKTP4,DKTP2,NOAUTO                                                   0008
+LIST   INCLUDE IJWDT4                                                             0009
+LIST     PHASE DKTP5,IJWDTCS2,NOAUTO                                          LINK0415
+LIST     INCLUDE IJWLAB                                                       LINK0416
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        DKTP      00605E  006050  006568  0D 05 1  CSECT     IJWDT135  006050  006050
+                                                   *  ENTRY  IJWDT1AN  0060B3
+                                                   *  ENTRY  IJWDT1MS  006160
+
+                                                   CSECT     IJJCPD0   006330  006330
+                                                      ENTRY  IJJCPD1N  006330
+                                                   *  ENTRY  IJJCPD1   006330
+                                                   *  ENTRY  IJJCPD2   006330
+                                                      ENTRY  IJJCPD3   006330
+                                                   *  ENTRY  IJJCPD0N  006330
+
+        DKTP2     00657A  006570  00749B  0D 05 2  CSECT     IJWGEN36  006570  006570
+                                                   *  ENTRY  IJWGENHD  006580
+                                                   *  ENTRY  IJWGENTB  006610
+                                                   *  ENTRY  IJWGENP2  006620
+
+        DKTP3     00657A  006570  00750B  0D 06 1  CSECT     IJWDT336  006570  006570
+
+        DKTP4     00657A  006570  00728D  0D 06 4  CSECT     IJWDTCS2  006F00  006570
+                                                   *  ENTRY  IJWMTCS2  006F00
+
+                                                   CSECT     IJWDT43C  006570  006570
+
+        DKTP5     006F0A  006F00  006F0B  0D 07 2  CSECT     IJWLAB30  006F00  006F00
+                                                      ENTRY  IJWLABIN  006F0C
+                                                      ENTRY  IJWLABND  006F0C
+                                                      ENTRY  IJWLABOU  006F0C
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 12 03 15              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        13 07 03                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             565                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              875                    17002                    23523
+LIBRARY   BLOCKS DELETED             116                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3489                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN32                                                            12.00.23,DURATION 00.00.00
+// JOB SYSGEN33  LINK GROUP II UTILITY CARD TO TAPE        360N-UT-462  12.00.23
+// OPTION CATAL                                                         LINK0431
+   INCLUDE IJWCT                                                        LINK0432
+   PHASE CDTP5,IJWCTCS2,NOAUTO                                          LINK0433
+   INCLUDE IJWLAB                                                       LINK0434
+// LBLTYP TAPE                                                          LINK0435
+// EXEC LNKEDT                                                          LINK0436
+
+JOB  SYSGEN33  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE IJWCT                                                        LINK0432
+LIST   PHASE CDTP,*,NOAUTO                                                        0001
+LIST   INCLUDE IJWCT1                                                             0002
+LIST   INCLUDE IJJCPD0                                                            0003
+LIST   PHASE CDTP2,*,NOAUTO                                                       0004
+LIST   INCLUDE IJWGEN                                                             0005
+LIST   PHASE CDTP3,CDTP2,NOAUTO                                                   0006
+LIST   INCLUDE IJWCT3                                                             0007
+LIST   PHASE CDTP4,CDTP2,NOAUTO                                                   0008
+LIST   INCLUDE IJWCT4                                                             0009
+LIST     PHASE CDTP5,IJWCTCS2,NOAUTO                                          LINK0433
+LIST     INCLUDE IJWLAB                                                       LINK0434
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        CDTP      00605E  006050  006568  0D 07 3  CSECT     IJWCT135  006050  006050
+                                                   *  ENTRY  IJWCT1AN  0060B3
+                                                   *  ENTRY  IJWCT1MS  006160
+
+                                                   CSECT     IJJCPD0   006330  006330
+                                                      ENTRY  IJJCPD1N  006330
+                                                   *  ENTRY  IJJCPD1   006330
+                                                   *  ENTRY  IJJCPD2   006330
+                                                      ENTRY  IJJCPD3   006330
+                                                   *  ENTRY  IJJCPD0N  006330
+
+        CDTP2     00657A  006570  00749B  0D 07 4  CSECT     IJWGEN36  006570  006570
+                                                   *  ENTRY  IJWGENHD  006580
+                                                   *  ENTRY  IJWGENTB  006610
+                                                   *  ENTRY  IJWGENP2  006620
+
+        CDTP3     00657A  006570  00738B  0D 08 3  CSECT     IJWCT336  006570  006570
+
+        CDTP4     00657A  006570  007093  0D 09 2  CSECT     IJWCTCS2  006D70  006570
+
+                                                   CSECT     IJWCT43C  006570  006570
+
+        CDTP5     006D7A  006D70  006D7B  0D 09 4  CSECT     IJWLAB30  006D70  006D70
+                                                      ENTRY  IJWLABIN  006D7C
+                                                      ENTRY  IJWLABND  006D7C
+                                                      ENTRY  IJWLABOU  006D7C
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 12 04 02              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        13 10 01                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             570                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              885                    17002                    23523
+LIBRARY   BLOCKS DELETED             116                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3479                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN33                                                            12.00.23,DURATION 00.00.00
+// JOB SYSGEN34  LINK VOCABULARY FILE UTILITY PROGRAM      360N-UT-472  12.00.23
+// OPTION CATAL                                                         LINK0548
+   INCLUDE IJNVOC                                                       LINK0549
+// LBLTYP NSD(01)                                                       LINK0550
+// EXEC LNKEDT                                                          LINK0551
+
+JOB  SYSGEN34  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE IJNVOC                                                       LINK0549
+LIST           PHASE VOC72UT,S,NOAUTO                                         04720001
+LIST           INCLUDE IJNVIO,(IJNVIO0,IJNVIO1,IJNVIO2,IJNVIO5)               04720002
+LIST           INCLUDE IJNVCT                                                 04720003
+LIST           PHASE VOC72CR,VOCIN2(VOC72UT),NOAUTO                           04720004
+LIST           INCLUDE IJNVIO,(IJNVIO6)                                       04720005
+LIST           INCLUDE IJNVIO,(IJNVIO4)                                       04720006
+LIST           PHASE VOC72PR,VOCOUT2(VOC72UT),NOAUTO                          04720007
+LIST           INCLUDE IJNVIO,(IJNVIO7)                                       04720008
+LIST           INCLUDE IJNVIO,(IJNVIO3)                                       04720009
+LIST           PHASE VOC72ER,BUFR(VOC72UT),NOAUTO                             04720010
+LIST           INCLUDE IJNVER                                                 04720011
+LIST           PHASE VOC72BL,IJNVCT2(VOC72UT),NOAUTO                          04720012
+LIST           INCLUDE IJNVBL,(IJNVBL1)                                       04720013
+LIST           PHASE VOC72BM,APHASE(VOC72BL),NOAUTO                           04720014
+LIST           INCLUDE IJNVBL,(IJNVBL2)                                       04720015
+LIST           PHASE VOC72BN,BLLOAD1(VOC72BM),NOAUTO                          04720016
+LIST           INCLUDE IJNVBL,(IJNVBL3)                                       04720017
+LIST           PHASE VOC72LO,IJNVCT2(VOC72UT),NOAUTO                          04720018
+LIST           INCLUDE IJNVLO                                                 04720019
+LIST           PHASE VOC72LI,IJNVCT2(VOC72UT),NOAUTO                          04720020
+LIST           INCLUDE IJNVLI                                                 04720021
+LIST           PHASE VOC72UP,IJNVCT2(VOC72UT),NOAUTO                          04720022
+LIST           INCLUDE IJNVUP,(IJNVUP1)                                       04720023
+LIST           PHASE VOC72UQ,BPHASE(VOC72UP),NOAUTO                           04720024
+LIST           INCLUDE IJNVUP,(IJNVUP2)                                       04720025
+LIST           PHASE VOC72UR,BPHASE(VOC72UP),NOAUTO                           04720026
+LIST           INCLUDE IJNVUP,(IJNVUP3)                                       04720027
+LIST           ENTRY IJNVCT2                                                  04720028
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        VOC72UT   007468  006068  007627  0D 0A 1  CSECT     IJNVIO0   006068  006068
+
+                                                   CSECT     IJNVIO1   0060E8  006068
+
+                                                   CSECT     IJNVIO2   0065B0  006068
+
+                                                   CSECT     IJNVIO5   006858  005F38
+                                                      ENTRY  VOCIN2    006858
+                                                      ENTRY  VOCOUT2   006950
+                                                      ENTRY  VOCRES    006A60
+                                                      ENTRY  VOCUT     006BB8
+                                                      ENTRY  VOCTRS    006D10
+
+                                                   CSECT     IJNVCT1   006D70  006D70
+                                                      ENTRY  BUFR      008068
+                                                      ENTRY  CTLEOF1   007314
+                                                      ENTRY  CTLEOF2   007330
+                                                      ENTRY  CTLERTAP  007336
+                                                      ENTRY  CTLXITR   007344
+                                                      ENTRY  CTLXITU   007356
+                                                      ENTRY  ERRR      006E4A
+                                                      ENTRY  IDLOCR    006DFC
+                                                      ENTRY  INAREA    006EC8
+                                                      ENTRY  PRNTAREA  006EC7
+                                                      ENTRY  SEEKRC    006D70
+                                                      ENTRY  SEEKUC    006D80
+                                                      ENTRY  ITEM      006E76
+                                                      ENTRY  PARAM     006E0C
+                                                      ENTRY  IDENT     006E0A
+                                                      ENTRY  UNIT      007209
+                                                      ENTRY  LOGBUF    006EC8
+
+                                                   CSECT     IJNVCT2   007468  006D70
+
+        VOC72CR   006858  006858  0068F7  0D 0B 1  CSECT     IJNVIO4   006890  005FD8
+
+                                                   CSECT     IJNVIO6   006858  005A20
+
+        VOC72PR   006950  006950  006A43  0D 0B 2  CSECT     IJNVIO3   006980  006190
+
+                                                   CSECT     IJNVIO7   006950  005AE0
+                                                      ENTRY  VOCOUT1   006950
+
+        VOC72ER   008068  008068  0084C3  0D 0B 3  CSECT     IJNVER1   008068  008068
+
+                                                   CSECT     IJ2L0008  008458  008068
+
+        VOC72BL   007468  007468  007F3B  0D 0B 4  CSECT     IJNVBL1   007468  007468
+                                                   *  ENTRY  APHASE    007788
+
+        VOC72BM   007788  007788  007ECB  0D 0C 2  CSECT     IJNVBL2   007788  006CB0
+                                                      ENTRY  BLLOADD   007BEC
+                                                   *  ENTRY  BLLOAD3   007A64
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+                                                   *  ENTRY  BLLOAD2   007A5A
+                                                   *  ENTRY  BLLOAD1   007A50
+
+        VOC72BN   007A50  007A50  007DBB  0D 0C 4  CSECT     IJNVBL3   007A50  006830
+
+        VOC72LO   007468  007468  0079B9  0D 0D 1  CSECT     IJNVLO1   007468  007468
+
+        VOC72LI   007468  007468  007983  0D 0D 2  CSECT     IJNVLI1   007468  007468
+
+        VOC72UP   007468  007468  007A07  0D 0D 3  CSECT     IJNVUP1   007468  007468
+                                                   *  ENTRY  BPHASE    007670
+
+        VOC72UQ   007670  007670  007D6F  0D 0D 4  CSECT     IJNVUP2   007670  0070D0
+
+        VOC72UR   007670  007670  007F5F  0D 0E 2  CSECT     IJNVUP3   007670  0069D0
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 12 04 14              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        13 14 04                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             582                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              904                    17002                    23523
+LIBRARY   BLOCKS DELETED             116                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3460                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN34                                                            12.00.23,DURATION 00.00.00
+// JOB SYSGEN34  LINK OLTEP                                360N-DN-481  12.00.23
+// OPTION CATAL                                                         LINK0561
+   INCLUDE IJZABOOK                                                     LINK0562
+// EXEC LNKEDT                                                          LINK0563
+
+JOB  SYSGEN34  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE IJZABOOK                                                     LINK0562
+LIST    PHASE IJZADOLT,S+X'0000',NOAUTO                                           0001
+LIST    INCLUDE IJZADOLT,(DOLTCOMN)                                               0002
+LIST    INCLUDE IJZADO01                                                          0003
+LIST    INCLUDE IJZADO94                                                          0004
+LIST    INCLUDE IJZADO98                                                          0005
+LIST    INCLUDE IJZADOLT,(IJZADOLT)                                               0006
+LIST   PHASE IJZADO99,S+10K,NOAUTO                                                0007
+LIST    INCLUDE IJZADO99                                                          0008
+LIST    PHASE IJZADO41,IJZADOLT                                                   0009
+LIST   INCLUDE IJZADO41                                                           0010
+LIST   PHASE IJZADO39,*                                                           0011
+LIST   INCLUDE IJZADO39                                                           0012
+LIST   PHASE IJZADO60,*                                                           0013
+LIST    INCLUDE IJZADO60                                                          0014
+LIST   PHASE IJZADO61,IJZADO60                                                    0015
+LIST   INCLUDE IJZADO61                                                           0016
+LIST   PHASE IJZADO62,IJZADO60                                                    0017
+LIST    INCLUDE IJZADO62                                                          0018
+LIST   PHASE IJZADO63,IJZADO60                                                    0019
+LIST    INCLUDE IJZADO63                                                          0020
+LIST   PHASE IJZADO64,IJZADO60                                                    0021
+LIST   INCLUDE IJZADO64                                                           0022
+LIST   PHASE IJZADO65,IJZADO60                                                    0023
+LIST   INCLUDE IJZADO65                                                           0024
+LIST   PHASE IJZADO02,IJZADO39                                                    0025
+LIST   INCLUDE IJZADO02                                                           0026
+LIST   PHASE IJZADO03,IJZADO39                                                    0027
+LIST   INCLUDE IJZADO03                                                           0028
+LIST   PHASE IJZADO00,*                                                           0029
+LIST    INCLUDE IJZADO00                                                          0030
+LIST   PHASE IJZADO07,IJZADO39                                                    0031
+LIST    INCLUDE IJZADO07                                                          0032
+LIST   PHASE IJZADO10,+0                                                          0033
+LIST   INCLUDE IJZADO10                                                           0034
+LIST   PHASE IJZADO28,IJZADO39                                                    0035
+LIST   INCLUDE IJZADO28                                                           0036
+LIST   PHASE IJZADO22,*                                                           0037
+LIST   INCLUDE IJZADO22                                                           0038
+LIST   PHASE IJZADOAA,*                                                           0039
+LIST   INCLUDE IJZADOAA                                                           0040
+LIST   PHASE IJZADOAB,*                                                           0041
+LIST   INCLUDE IJZADOAB                                                           0042
+LIST    PHASE IJZADO21,IJZADO00                                                   0043
+LIST    INCLUDE IJZADO21                                                          0044
+LIST   PHASE IJZADOAC,*                                                           0045
+LIST   INCLUDE IJZADOAC                                                           0046
+LIST   PHASE IJZADO24,IJZADO21                                                    0047
+LIST   INCLUDE IJZADO24                                                           0048
+LIST   PHASE IJZADO26,IJZADO21                                                    0049
+LIST   INCLUDE IJZADO26                                                           0050
+LIST   PHASE IJZADO31,IJZADO39                                                    0051
+
+
+LIST   INCLUDE IJZADO31                                                           0052
+LIST   PHASE IJZADO57,*                                                           0053
+LIST   INCLUDE IJZADO57                                                           0054
+LIST   PHASE IJZADO16,IJZADO57                                                    0055
+LIST    INCLUDE IJZADO16                                                          0056
+LIST   PHASE IJZADO32,IJZADO39                                                    0057
+LIST   INCLUDE IJZADO32                                                           0058
+LIST   PHASE IJZADO52,*                                                           0059
+LIST   INCLUDE IJZADO52                                                           0060
+LIST   PHASE IJZADO70,*                                                           0061
+LIST   INCLUDE IJZADO70                                                           0062
+LIST   PHASE IJZADO37,*                                                           0063
+LIST   INCLUDE IJZADO37                                                           0064
+LIST   PHASE IJZADO42,*                                                           0065
+LIST   INCLUDE IJZADO42                                                           0066
+LIST   PHASE IJZADO33,IJZADO39                                                    0067
+LIST   INCLUDE IJZADO33                                                           0068
+LIST   PHASE IJZADO35,IJZADO39                                                    0069
+LIST   INCLUDE IJZADO35                                                           0070
+LIST   PHASE IJZADO36,*                                                           0071
+LIST   INCLUDE IJZADO36                                                           0072
+LIST   REP  00020E 00147F0,42C4
+LIST   REP  0002D0 00194F7,8024,94FD,8014,47F0,4206
+LIST   PHASE IJZADO11,IJZADO36                                                    0073
+LIST   INCLUDE IJZADO11                                                           0074
+LIST   PHASE IJZADO40,IJZADO39                                                    0075
+LIST   INCLUDE IJZADO40                                                           0076
+LIST   PHASE IJZADO44,*                                                           0077
+LIST   INCLUDE IJZADO44                                                           0078
+LIST   PHASE IJZACKTP,*                                                           0079
+LIST   INCLUDE IJZACKTP                                                           0080
+LIST   PHASE IJZADO43,IJZADO36                                                    0081
+LIST   INCLUDE IJZADO43                                                           0082
+LIST   PHASE IJZADO47,*                                                           0083
+LIST   INCLUDE IJZADO47                                                           0084
+LIST   PHASE IJZADO56,IJZADO39                                                    0085
+LIST   INCLUDE IJZADO56                                                           0086
+LIST   PHASE IJZADO71,IJZADO39                                                    0087
+LIST   INCLUDE IJZADO71                                                           0088
+LIST   PHASE IJZADO72,IJZADO39                                                    0089
+LIST   INCLUDE IJZADO72                                                           0090
+LIST   PHASE IJZADO73,IJZADO39                                                    0091
+LIST   INCLUDE IJZADO73                                                           0092
+LIST   PHASE IJZADO76,IJZADO39                                                    0093
+LIST   INCLUDE IJZADO76                                                           0094
+LIST   PHASE IJZADO77,IJZADO39                                                    0095
+LIST   INCLUDE IJZADO77                                                           0096
+LIST   PHASE IJZADO78,*                                                           0097
+LIST   INCLUDE IJZADO78                                                           0098
+LIST   PHASE IJZADO85,S+X'2800'                                                   0099
+LIST   INCLUDE IJZADO85                                                           0100
+LIST   PHASE IJZACEOM,IJZADO70                                                    0101
+LIST   INCLUDE IJZACEOM                                                           0102
+
+
+LIST   PHASE IJZACONV,IJZADO41                                                    0103
+LIST   INCLUDE IJZACONV                                                           0104
+LIST   PHASE IJZAEXIO,IJZADO39                                                    0105
+LIST   INCLUDE IJZAEXIO                                                           0106
+LIST   PHASE IJZAWAIT,*                                                           0107
+LIST   INCLUDE IJZAWAIT                                                           0108
+LIST   PHASE IJZARATA,*                                                           0109
+LIST   INCLUDE IJZARATA                                                           0110
+LIST   PHASE IJZAHEAD,IJZADO39                                                    0111
+LIST   INCLUDE IJZAHEAD                                                           0112
+LIST   PHASE IJZARSLT,IJZADO39                                                    0113
+LIST   INCLUDE IJZARSLT                                                           0114
+LIST   PHASE IJZACMNT,*                                                           0115
+LIST   INCLUDE IJZACMNT                                                           0116
+LIST   PHASE IJZAOPUT,*                                                           0117
+LIST   INCLUDE IJZAOPUT                                                           0118
+LIST   PHASE IJZACOMP,*                                                           0119
+LIST   INCLUDE IJZACOMP                                                           0120
+LIST   PHASE IJZADPRT,*,NOAUTO                                                    0121
+LIST   INCLUDE IJZADPRT                                                           0122
+LIST   PHASE $$BSOPEN,+0                                                          0123
+LIST   INCLUDE IJZAOPEN                                                           0124
+LIST   PHASE $$BZTIME,+0                                                          0125
+LIST   INCLUDE IJZATIME                                                           0126
+LIST   PHASE $$BOLTEP,+0                                                          0127
+LIST   INCLUDE IJZAOLTP                                                           0128
+LIST   PHASE $$BTOLTP,+0                                                          0129
+LIST   INCLUDE IJZATOLT                                                           0130
+LIST    ENTRY  AEZADOLT                                                           0131
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        IJZADOLT  0070CA  006000  0072A7  0D 0E 4  CSECT     DOLTCOMN  006000  006000
+                                                   *  ENTRY  PUBADDR   0066C0
+                                                      ENTRY  COMADR    006020
+                                                      ENTRY  $FLAG1    006394
+                                                      ENTRY  TPCCB     006690
+                                                      ENTRY  CCB       006678
+                                                      ENTRY  TPSENSE   0066AE
+                                                      ENTRY  SNSINFO   0066A8
+                                                      ENTRY  SCT       006028
+                                                      ENTRY  $DTRMLNK  0066D8
+                                                      ENTRY  OLTREGS   006018
+                                                      ENTRY  $DEVPTR   00657C
+                                                      ENTRY  SAVEAREA  0065DC
+                                                      ENTRY  $FLAG9    0067FC
+
+                                                   CSECT     IJZADO01  006950  006950
+
+                                                   CSECT     IJZADO98  006D18  006D18
+
+                                                   CSECT     IJZADOLT  0070C0  006770
+                                                   *  ENTRY  AEZADOLT  0070CA
+
+                                                   CSECT     IJZADO94  006C18  006C18
+
+        IJZADO99  00880C  008800  008B69  0D 0F 3  CSECT     IJZADO99  008800  008800
+
+        IJZADO41  0070CC  0070C0  0071EF  0D 0F 4  CSECT     IJZADO41  0070C0  0070C0
+
+        IJZADO39  0071FC  0071F0  00763F  0D 10 1  CSECT     IJZADO39  0071F0  0071F0
+
+        IJZADO60  00764C  007640  0078DD  0D 10 2  CSECT     IJZADO60  007640  007640
+
+        IJZADO61  00764C  007640  007807  0D 10 3  CSECT     IJZADO61  007640  007640
+
+        IJZADO62  00764C  007640  00796D  0D 10 4  CSECT     IJZADO62  007640  007640
+
+        IJZADO63  00764C  007640  007AEF  0D 11 1  CSECT     IJZADO63  007640  007640
+
+        IJZADO64  00764C  007640  0079CF  0D 11 2  CSECT     IJZADO64  007640  007640
+
+        IJZADO65  00764C  007640  00791F  0D 11 3  CSECT     IJZADO65  007640  007640
+
+        IJZADO02  0071FC  0071F0  0076D3  0D 11 4  CSECT     IJZADO02  0071F0  0071F0
+
+        IJZADO03  0071FC  0071F0  00783B  0D 12 1  CSECT     IJZADO03  0071F0  0071F0
+
+        IJZADO00  00784C  007840  007FFF  0D 12 2  CSECT     IJZADO00  007840  007840
+                                                      ENTRY  S00BAD    007C2E
+                                                      ENTRY  S00DTERM  007C90
+                                                      ENTRY  S00NXTST  007C42
+                                                   *  ENTRY  S00DPROT  0079A8
+
+        IJZADO07  0071FC  0071F0  00772D  0D 12 4  CSECT     IJZADO07  0071F0  0071F0
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        IJZADO10  00000C  000000  000B1E  0D 13 1  CSECT     IJZADO10  000000  000000
+
+        IJZADO28  0071FC  0071F0  007357  0D 13 3  CSECT     IJZADO28  0071F0  0071F0
+
+        IJZADO22  007364  007358  00757F  0D 13 4  CSECT     IJZADO22  007358  007358
+
+        IJZADOAA  00758C  007580  007653  0E 00 1  CSECT     IJZADOAA  007580  007580
+
+        IJZADOAB  007664  007658  0077B7  0E 00 2  CSECT     IJZADOAB  007658  007658
+
+        IJZADO21  00784C  007840  007AE7  0E 00 3  CSECT     IJZADO21  007840  007840
+
+        IJZADOAC  007AF4  007AE8  007BB9  0E 00 4  CSECT     IJZADOAC  007AE8  007AE8
+
+        IJZADO24  00784C  007840  007DA6  0E 01 1  CSECT     IJZADO24  007840  007840
+
+        IJZADO26  00784C  007840  007E7F  0E 01 2  CSECT     IJZADO26  007840  007840
+
+        IJZADO31  0071FC  0071F0  007929  0E 01 3  CSECT     IJZADO31  0071F0  0071F0
+
+        IJZADO57  00793C  007930  007E1F  0E 02 1  CSECT     IJZADO57  007930  007930
+
+        IJZADO16  00793C  007930  008267  0E 02 2  CSECT     IJZADO16  007930  007930
+
+        IJZADO32  0071FC  0071F0  0078A0  0E 02 4  CSECT     IJZADO32  0071F0  0071F0
+
+        IJZADO52  0078B4  0078A8  007EBB  0E 03 2  CSECT     IJZADO52  0078A8  0078A8
+
+        IJZADO70  007ECC  007EC0  007FE9  0E 03 3  CSECT     IJZADO70  007EC0  007EC0
+
+        IJZADO37  007FFC  007FF0  0084C2  0E 03 4  CSECT     IJZADO37  007FF0  007FF0
+
+        IJZADO42  0084D4  0084C8  0087A7  0E 04 1  CSECT     IJZADO42  0084C8  0084C8
+
+        IJZADO33  0071FC  0071F0  007732  0E 04 2  CSECT     IJZADO33  0071F0  0071F0
+
+        IJZADO35  0071FC  0071F0  00761A  0E 04 3  CSECT     IJZADO35  0071F0  0071F0
+
+        IJZADO36  00762C  007620  007933  0E 04 4  CSECT     IJZADO36  007620  007620
+
+        IJZADO11  00762C  007620  007E1F  0E 05 1  CSECT     IJZADO11  007620  007620
+
+        IJZADO40  0071FC  0071F0  0074FF  0E 05 3  CSECT     IJZADO40  0071F0  0071F0
+
+        IJZADO44  00750C  007500  0079AF  0E 05 4  CSECT     IJZADO44  007500  007500
+
+        IJZACKTP  0079BA  0079B0  007DDC  0E 06 1  CSECT     IJZACKTP  0079B0  0079B0
+
+        IJZADO43  00762C  007620  007821  0E 06 2  CSECT     IJZADO43  007620  007620
+
+        IJZADO47  007834  007828  0079BB  0E 06 3  CSECT     IJZADO47  007828  007828
+
+        IJZADO56  0071FC  0071F0  007687  0E 06 4  CSECT     IJZADO56  0071F0  0071F0
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        IJZADO71  0071FC  0071F0  0074C7  0E 07 1  CSECT     IJZADO71  0071F0  0071F0
+
+        IJZADO72  0071FC  0071F0  007481  0E 07 2  CSECT     IJZADO72  0071F0  0071F0
+
+        IJZADO73  0071FC  0071F0  00768F  0E 07 3  CSECT     IJZADO73  0071F0  0071F0
+
+        IJZADO76  0071FC  0071F0  0073B1  0E 07 4  CSECT     IJZADO76  0071F0  0071F0
+
+        IJZADO77  0071FC  0071F0  0073CA  0E 08 1  CSECT     IJZADO77  0071F0  0071F0
+
+        IJZADO78  0073DC  0073D0  00762F  0E 08 2  CSECT     IJZADO78  0073D0  0073D0
+
+        IJZADO85  00880C  008800  008C2B  0E 08 3  CSECT     IJZADO85  008800  008800
+
+        IJZACEOM  007ECA  007EC0  007FCB  0E 08 4  CSECT     IJZACEOM  007EC0  007EC0
+
+        IJZACONV  0070CA  0070C0  0071CF  0E 09 1  CSECT     IJZACONV  0070C0  0070C0
+
+        IJZAEXIO  0071FA  0071F0  007467  0E 09 2  CSECT     IJZAEXIO  0071F0  0071F0
+
+        IJZAWAIT  007472  007468  00758B  0E 09 3  CSECT     IJZAWAIT  007468  007468
+
+        IJZARATA  00759A  007590  007633  0E 09 4  CSECT     IJZARATA  007590  007590
+
+        IJZAHEAD  0071FA  0071F0  00739F  0E 0A 1  CSECT     IJZAHEAD  0071F0  0071F0
+
+        IJZARSLT  0071FA  0071F0  0075B7  0E 0A 2  CSECT     IJZARSLT  0071F0  0071F0
+
+        IJZACMNT  0075C2  0075B8  00762F  0E 0A 3  CSECT     IJZACMNT  0075B8  0075B8
+
+        IJZAOPUT  00763A  007630  0076EF  0E 0A 4  CSECT     IJZAOPUT  007630  007630
+
+        IJZACOMP  0076FA  0076F0  007813  0E 0B 1  CSECT     IJZACOMP  0076F0  0076F0
+
+        IJZADPRT  007824  007818  007CE7  0E 0B 2  CSECT     IJZADPRT  007818  007818
+                                                      ENTRY  BUFFER2   007B70
+                                                      ENTRY  BUFFER1   007B28
+                                                      ENTRY  PCTRL     007B08
+                                                      ENTRY  PRJA      007B0A
+
+        $$BSOPEN  000000  000000  000227  0E 0B 3  CSECT     IJZAOPEN  000000  000000
+
+        $$BZTIME  000000  000000  0001DF  0E 0B 4  CSECT     IJZATIME  000000  000000
+
+        $$BOLTEP  000000  000000  000019  0E 0C 1  CSECT     IJZAOLTP  000000  000000
+
+        $$BTOLTP  000008  000000  00021D  0E 0C 2  CSECT     IJZATOLT  000000  000000
+
+POSSIBLE INVALID ENTRY POINT DUPLICATION IN INPUT
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 12 08 05              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        14 12 03                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             645                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              975                    17002                    23523
+LIBRARY   BLOCKS DELETED             116                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3389                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN34                                                            12.00.25,DURATION 00.00.01
+// JOB SYSGEN34  LINK LANGUAGE CONVERSION PROGRAM          360N-CV-489  12.00.25
+// OPTION CATAL                                                         LINK0629
+  INCLUDE IKLLCP                                                        LINK0630
+// EXEC LNKEDT                                                          LINK0631
+
+JOB  SYSGEN34  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST    INCLUDE IKLLCP                                                        LINK0630
+LIST    PHASE LCPC,*,NOAUTO                                                       0001
+LIST    INCLUDE IKLD0A                                                            0002
+LIST    INCLUDE IKLDAA                                                            0003
+LIST    PHASE LCPCOBDK,IKLDAA,NOAUTO                                              0004
+LIST    INCLUDE IKLDAB                                                            0005
+LIST    INCLUDE IKLD1A                                                            0006
+LIST    INCLUDE IKLD0B                                                            0007
+LIST    PHASE LCPCOBTP,IKLDAA,NOAUTO                                              0008
+LIST    INCLUDE IKLDAC                                                            0009
+LIST    INCLUDE IKLD1A                                                            0010
+LIST    INCLUDE IKLD0B                                                            0011
+LIST    PHASE LCPCOB11,IKLD0B,NOAUTO                                              0012
+LIST    INCLUDE IKLB1B                                                            0013
+LIST    INCLUDE IKLB11                                                            0014
+LIST    PHASE LCPCOB12,IKLB11,NOAUTO                                              0015
+LIST    INCLUDE IKLB12                                                            0016
+LIST    PHASE LCPCOB13,IKLB11,NOAUTO                                              0017
+LIST    INCLUDE IKLB13                                                            0018
+LIST    PHASE LCPCOB21,IKLD1A,NOAUTO                                              0019
+LIST    INCLUDE IKLB0C                                                            0020
+LIST    INCLUDE IKLB0D                                                            0021
+LIST    INCLUDE IKLB21                                                            0022
+LIST    PHASE LCPCOB22,IKLB21,NOAUTO                                              0023
+LIST    INCLUDE IKLB22                                                            0024
+LIST    PHASE LCPCOB23,IKLB21,NOAUTO                                              0025
+LIST    INCLUDE IKLB23                                                            0026
+LIST    PHASE LCPCOB24,IKLB21,NOAUTO                                              0027
+LIST    INCLUDE IKLB24                                                            0028
+LIST    PHASE LCPCOB31,IKLB21,NOAUTO                                              0029
+LIST    INCLUDE IKLB31                                                            0030
+LIST    PHASE LCPCOB32,IKLB21,NOAUTO                                              0031
+LIST    INCLUDE IKLB32                                                            0032
+LIST    PHASE LCPCOB33,IKLB21,NOAUTO                                              0033
+LIST    INCLUDE IKLB33                                                            0034
+LIST    PHASE LCPCOB34,IKLB21,NOAUTO                                              0035
+LIST    INCLUDE IKLB34                                                            0036
+LIST    PHASE LCPCOB35,IKLB21,NOAUTO                                              0037
+LIST    INCLUDE IKLB35                                                            0038
+LIST    PHASE LCPCOB36,IKLB21,NOAUTO                                              0039
+LIST    INCLUDE IKLB36                                                            0040
+LIST    PHASE LCPCOB37,IKLB21,NOAUTO                                              0041
+LIST    INCLUDE IKLB37                                                            0042
+LIST    PHASE LCPCOB41,IKLB0D,NOAUTO                                              0043
+LIST    INCLUDE IKLD4A                                                            0044
+LIST    INCLUDE IKLB4B                                                            0045
+LIST    PHASE  LCPCOB4C,*,NOAUTO                                                  0046
+LIST    INCLUDE IKLB4C                                                            0047
+LIST    PHASE LCPCOB42,IKLB4C,NOAUTO                                              0048
+LIST    INCLUDE IKLB41                                                            0049
+LIST    PHASE LCPCOB43,IKLB4C,NOAUTO                                              0050
+LIST    INCLUDE IKLB42                                                            0051
+
+
+LIST    PHASE  LCPCOB4D,*,NOAUTO                                                  0052
+LIST    INCLUDE IKLB4D                                                            0053
+LIST    PHASE  LCPCOB4E,IKLB4D,NOAUTO                                             0054
+LIST    INCLUDE IKLB4E                                                            0055
+LIST    PHASE  LCPCOB4F,IKLB4D,NOAUTO                                             0056
+LIST    INCLUDE IKLB4F                                                            0057
+LIST    PHASE  LCPCOB4G,IKLB4D,NOAUTO                                             0058
+LIST    INCLUDE IKLB4G                                                            0059
+LIST    ENTRY  IKLD0A                                                             0060
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        LCPC      006000  006000  006C6A  0E 0C 3  CSECT     IKLD0A    006000  006000
+                                                      ENTRY  CONTROL   00600C
+                                                      ENTRY  COMMON    0060B8
+                                                      ENTRY  CDEVTYP   006A74
+                                                      ENTRY  OPTIONSW  006A75
+                                                      ENTRY  POINTTBL  006540
+                                                      ENTRY  BUFCNLS   0064D0
+                                                      ENTRY  SVPTBCBS  006A30
+                                                      ENTRY  INITLIST  006A54
+                                                      ENTRY  DATASETS  006574
+                                                      ENTRY  EXIT      00699A
+                                                      ENTRY  RET1      006A6F
+
+                                                   CSECT     IKLDAA    006B28  006B28
+                                                      ENTRY  LCPASG    006B28
+
+        LCPCOBDK  0076F0  006B28  0084E0  0E 0D 1  CSECT     DTFSL     007418  007388
+
+                                                   CSECT     IKLDAB    006B28  006B28
+                                                      ENTRY  IJSYS01   006B28
+                                                      ENTRY  IJSYS02   006BC0
+                                                      ENTRY  IJSYS03   006C58
+
+                                                   CSECT     IJGWZNZU  006CF8  006B28
+                                                      ENTRY  IJGWZNZZ  006CF8
+                                                   *  ENTRY  IJGWZZZZ  006CF8
+                                                   *  ENTRY  IJGWZRZZ  006CF8
+                                                   *  ENTRY  IJGWZZZU  006CF8
+                                                   *  ENTRY  IJGWZRZU  006CF8
+
+                                                   CSECT     IJJCPD0   007148  006B28
+                                                   *  ENTRY  IJJCPD1   007148
+                                                      ENTRY  IJJCPD2   007148
+                                                      ENTRY  IJJCPD3   007148
+                                                   *  ENTRY  IJJCPD0N  007148
+                                                   *  ENTRY  IJJCPD1N  007148
+
+                                                   CSECT     IKLD1A    007388  007388
+                                                      ENTRY  CINPT     007388
+
+                                                   CSECT     IKLD0B    0076F0  0076F0
+
+        LCPCOBTP  0076F0  006B28  0084E0  0E 0E 1  CSECT     IKLDAC    006B28  006B28
+
+                                                   CSECT     IJFWZNZZ  006CF8  006B28
+                                                   *  ENTRY  IJFWZSZZ  006CF8
+                                                   *  ENTRY  IJFWZZZZ  006CF8
+
+                                                   CSECT     IJJCPD0   007148  006B28
+                                                   *  ENTRY  IJJCPD1   007148
+                                                      ENTRY  IJJCPD2   007148
+                                                      ENTRY  IJJCPD3   007148
+                                                      ENTRY  IJJCPD0N  007148
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+                                                   *  ENTRY  IJJCPD1N  007148
+
+                                                   CSECT     IKLD1A    007388  007388
+                                                   *  ENTRY  CINPT     007388
+
+                                                   CSECT     DTFSL     007418  007388
+
+                                                   CSECT     IKLD0B    0076F0  0076F0
+
+        LCPCOB11  0076F0  0076F0  00A51F  0E 0F 1  CSECT     IKLB1B    0076F0  0076F0
+                                                      ENTRY  GETCRDEX  0076F0
+                                                   *  ENTRY  ENDPARM   00799A
+                                                      ENTRY  BUILDNEW  00813E
+                                                      ENTRY  NEWTOOUT  0081A8
+                                                      ENTRY  BUILD2    008142
+
+                                                   CSECT     IKLB1BA   0082D0  0076F0
+                                                      ENTRY  GET1STEX  0082D0
+                                                   *  ENTRY  ENCODE4   0088FC
+                                                      ENTRY  ADTAB     008980
+                                                      ENTRY  TBQUT1    008B7D
+                                                      ENTRY  TBQUT2    008B7F
+
+                                                   CSECT     IKLB1BB   008DA0  0076F0
+                                                      ENTRY  SHARDATA  008DA0
+                                                   *  ENTRY  END1B     009CA0
+                                                      ENTRY  COBDATA   00911D
+                                                      ENTRY  COBREPT   0093E1
+                                                      ENTRY  COBPROC   0097F8
+                                                      ENTRY  COBTHEN   0090D5
+                                                      ENTRY  COBDSP    0094FB
+                                                      ENTRY  COBLINK   0095C1
+
+                                                   CSECT     IKLB11    009CA0  009CA0
+                                                      ENTRY  PH1A      009CA0
+                                                      ENTRY  END11     00A520
+                                                   *  ENTRY  PH011     009CA0
+
+        LCPCOB12  009CA0  009CA0  00A51F  0E 11 1  CSECT     IKLB12    009CA0  009CA0
+                                                      ENTRY  END12     00A520
+                                                      ENTRY  CONVLEV   00A358
+                                                      ENTRY  CONVLCUR  00A354
+                                                   *  ENTRY  PH012     009CA0
+
+        LCPCOB13  009CA0  009CA0  00A527  0E 11 3  CSECT     IKLB13    009CA0  009CA0
+                                                      ENTRY  END13     00A528
+                                                      ENTRY  ENTERSW   00A4CF
+                                                   *  ENTRY  PH013     009CA0
+
+        LCPCOB21  007388  007388  00948F  0E 12 1  CSECT     IKLB0C    007388  007388
+                                                      ENTRY  TABLECOM  007388
+                                                      ENTRY  TSEGBEG   007440
+                                                      ENTRY  TSEGEND   007444
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+                                                      ENTRY  TSEGNO    00746C
+
+                                                   CSECT     IKLB0D    007710  007710
+                                                      ENTRY  SWITCH    008452
+                                                      ENTRY  ROUTINES  007710
+                                                      ENTRY  SVR1R2    008240
+
+                                                   CSECT     IKLB0DA   008478  007710
+                                                      ENTRY  RPUTELM   008669
+                                                   *  ENTRY  SAVEDIN   008478
+                                                      ENTRY  TBENTSIZ  0087DE
+                                                      ENTRY  TCHAIN11  008780
+                                                      ENTRY  TCHAIN12  008788
+                                                      ENTRY  TCHAIN13  008790
+
+                                                   CSECT     IKLB21    008EC0  008EC0
+                                                      ENTRY  PH21      008EC0
+                                                      ENTRY  END21     009490
+
+        LCPCOB22  008EC0  008EC0  00967F  0E 13 3  CSECT     IKLB22    008EC0  008EC0
+                                                      ENTRY  END22     009680
+                                                   *  ENTRY  PH22      008EC0
+
+        LCPCOB23  008EC0  008EC0  00979F  0F 00 1  CSECT     IKLB23    008EC0  008EC0
+                                                      ENTRY  END23     0097A0
+                                                   *  ENTRY  PH23      008EC0
+
+        LCPCOB24  008EC0  008EC0  009767  0F 00 3  CSECT     IKLB24    008EC0  008EC0
+                                                      ENTRY  END24     009768
+                                                   *  ENTRY  PH24      008EC0
+
+        LCPCOB31  008EC0  008EC0  009E07  0F 01 1  CSECT     IKLB31    008EC0  008EC0
+                                                      ENTRY  END31     009E08
+                                                   *  ENTRY  PH31      008EC0
+
+        LCPCOB32  008EC0  008EC0  00A0CF  0F 01 4  CSECT     IKLB32    008EC0  008EC0
+                                                   *  ENTRY  PH32      008EC0
+
+                                                   CSECT     IKLB32B   009BD8  008EC0
+                                                      ENTRY  END32     00A0D0
+
+        LCPCOB33  008EC0  008EC0  009557  0F 02 3  CSECT     IKLB33    008EC0  008EC0
+                                                      ENTRY  END33     009558
+
+        LCPCOB34  008EC0  008EC0  009CB7  0F 02 4  CSECT     IKLB34    008EC0  008EC0
+                                                      ENTRY  END34     009CB8
+
+        LCPCOB35  008EC0  008EC0  00986F  0F 03 3  CSECT     IKLB35    008EC0  008EC0
+                                                      ENTRY  END35     009870
+
+        LCPCOB36  008EC0  008EC0  009D1F  0F 04 1  CSECT     IKLB36    008EC0  008EC0
+                                                      ENTRY  END36     009D20
+                                                   *  ENTRY  PH36      008EC0
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        LCPCOB37  008EC0  008EC0  00947F  0F 04 4  CSECT     IKLB37    008EC0  008EC0
+                                                      ENTRY  END37     009480
+                                                   *  ENTRY  PH37      008EC0
+
+        LCPCOB41  007710  007710  0080D9  0F 05 1  CSECT     IKLD4A    007710  007710
+                                                      ENTRY  CLIST     007710
+                                                      ENTRY  CPUNCH    0077A8
+
+                                                   CSECT     IKLB4B    007890  007890
+                                                      ENTRY  PH41      007890
+                                                      ENTRY  COMPL     007F40
+                                                      ENTRY  PRINTER   007CB0
+                                                      ENTRY  CHAINTAB  0079E0
+                                                      ENTRY  COMS      007F3C
+
+        LCPCOB4C  0080E0  0080E0  008F6F  0F 05 3  CSECT     IKLB4C    0080E0  0080E0
+                                                      ENTRY  END4C     008F70
+                                                   *  ENTRY  PH4B      0080E0
+
+        LCPCOB42  0080E0  0080E0  008BE7  0F 06 2  CSECT     IKLB41    0080E0  0080E0
+                                                      ENTRY  END41     008BE8
+                                                   *  ENTRY  PH4C      0080E0
+
+        LCPCOB43  0080E0  0080E0  00856D  0F 06 4  CSECT     IKLB42    0080E0  0080E0
+                                                   *  ENTRY  PH42      0080E0
+
+        LCPCOB4D  008570  008570  008B7F  0F 07 1  CSECT     IKLB4D    008570  008570
+                                                      ENTRY  END4D     008B80
+                                                   *  ENTRY  PH4D      008570
+
+        LCPCOB4E  008570  008570  008BEF  0F 07 2  CSECT     IKLB4E    008570  008570
+                                                      ENTRY  END4E     008BF0
+                                                   *  ENTRY  PH4E      008570
+
+        LCPCOB4F  008570  008570  008F07  0F 07 3  CSECT     IKLB4F    008570  008570
+                                                      ENTRY  END4F     008F08
+                                                   *  ENTRY  PH4F      008570
+
+        LCPCOB4G  008570  008570  008F37  0F 08 1  CSECT     IKLB4G    008570  008570
+                                                      ENTRY  END4G     008F38
+                                                   *  ENTRY  PH4G      008570
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 12 09 12              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        15 08 03                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             670                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE             1039                    17002                    23523
+LIBRARY   BLOCKS DELETED             116                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3325                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN34                                                            12.00.26,DURATION 00.00.01

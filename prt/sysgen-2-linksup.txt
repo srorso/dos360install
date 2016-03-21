@@ -1,0 +1,418 @@
+
+// JOB SYSGEN02  CATALOG NEW SUPERVISOR                                 00.01.33
+* CATALOG SUPERVISOR, XSERV, $JOBACCT, ASSEMBLY
+// PAUSE MOUNT TAPE FROM SYSGEN01 ON X'280'
+MTC REW,X'280'
+// ASSGN SYSIPT,X'280'
+// OPTION CATAL
+  ACTION CLEAR
+  INCLUDE
+// EXEC LNKEDT
+
+JOB  SYSGEN02  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP CLEAR
+LIST           PHASE $$A$SUP1,+0,NOAUTO                                       R4530171
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        $$A$SUP1  000000  000000  005FD9  08 0E 1  CSECT     IJBSUP20  000000  000000
+                                                   *  ENTRY  IJB$$STP  006000
+                                                   *  ENTRY  IJB$$EOS  006000
+   INCLUDE IJBSL3           RSERV
+// EXEC LNKEDT
+
+JOB  SYSGEN02  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE IJBSL3           RSERV
+LIST   PHASE RSERV,S
+LIST   INCLUDE IJJCPD0
+LIST   INCLUDE IJBLBC
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        RSERV     0063EA  006000  007A42  08 11 4  CSECT     IJJCPD0   006000  006000
+                                                      ENTRY  IJJCPD1   006000
+                                                   *  ENTRY  IJJCPD2   006000
+                                                      ENTRY  IJJCPD3   006000
+                                                   *  ENTRY  IJJCPD0N  006000
+                                                      ENTRY  IJJCPD1N  006000
+
+                                                   CSECT     IJBERR39  006240  006240
+                                                      ENTRY  AREA      00628D
+                                                      ENTRY  IJSYSLS   006340
+                                                      ENTRY  ASA       00628B
+                                                   *  ENTRY  SKIPMV    006252
+                                                   *  ENTRY  COUNT     00628A
+                                                      ENTRY  ERSTART   006240
+                                                   *  ENTRY  VIJBLBC   006308
+                                                   *  ENTRY  OPSYSLS   006310
+
+                                                   CSECT     IJBRSE30  0063E0  004068
+                                                      ENTRY  CSSTART   007A12
+   INCLUDE IJBSL4           SSERV
+// EXEC LNKEDT
+
+JOB  SYSGEN02  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE IJBSL4           SSERV
+LIST   PHASE SSERV,S
+LIST   INCLUDE IJJCPD0
+LIST   INCLUDE IJBLBC
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        SSERV     0063EA  006000  0079EF  08 12 4  CSECT     IJJCPD0   006000  006000
+                                                   *  ENTRY  IJJCPD1   006000
+                                                   *  ENTRY  IJJCPD2   006000
+                                                      ENTRY  IJJCPD3   006000
+                                                      ENTRY  IJJCPD0N  006000
+                                                      ENTRY  IJJCPD1N  006000
+
+                                                   CSECT     IJBERR39  006240  006240
+                                                   *  ENTRY  AREA      00628D
+                                                      ENTRY  IJSYSLS   006340
+                                                      ENTRY  ASA       00628B
+                                                   *  ENTRY  SKIPMV    006252
+                                                   *  ENTRY  COUNT     00628A
+                                                      ENTRY  ERSTART   006240
+                                                   *  ENTRY  VIJBLBC   006308
+                                                   *  ENTRY  OPSYSLS   006310
+
+                                                   CSECT     IJBSSE3B  0063E0  0063E0
+                                                      ENTRY  CSSTART   006A33
+                                                   *  ENTRY  INPUT     0074B7
+   INCLUDE IJBSL5           CORGZ
+// EXEC LNKEDT
+
+JOB  SYSGEN02  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE IJBSL5           CORGZ
+LIST     INCLUDE  IJBLBJ                                                      34530002
+LIST   PHASE CORGZ,S,NOAUTO
+LIST   INCLUDE IJJCPD1N
+LIST     INCLUDE  IJBLBS                                                      34530003
+LIST   PHASE CORGZ1,CORGZEND,NOAUTO
+LIST     INCLUDE  IJBLBK                                                      34530004
+LIST   PHASE CORGZ2,CORGZEND,NOAUTO
+LIST     INCLUDE  IJBLBT                                                      34530005
+LIST   PHASE CORGZ3,CORGZEND,NOAUTO
+LIST     INCLUDE  IJBLBU                                                      34530006
+LIST   PHASE CORGZ4,LOADPT,NOAUTO
+LIST     INCLUDE  IJBLBV                                                      34530007
+LIST   PHASE CORGZ5,LOADPT,NOAUTO
+LIST     INCLUDE IJBLBW                                                       34530008
+LIST   PHASE CORGZ6,LOADPT,NOAUTO
+LIST     INCLUDE IJBLBX                                                       34530009
+LIST   PHASE CORGZ7,CORGZEND,NOAUTO
+LIST     INCLUDE IJBLBY                                                       34530010
+LIST   PHASE CORGZ8,LOADPT,NOAUTO
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        CORGZ     0061CA  006000  007247  08 13 4  CSECT     IJJCPD1N  006000  006000
+                                                      ENTRY  IJJCPD3   006000
+
+                                                   CSECT     CORGZ00   0061C0  0061C0
+                                                   *  ENTRY  CORGZEND  007134
+                                                      ENTRY  RTN2      0061FE
+                                                   *  ENTRY  IOTABLE   006888
+                                                      ENTRY  CARD      006FD7
+                                                      ENTRY  COL72     00701E
+                                                      ENTRY  COMEIN    0062D2
+                                                      ENTRY  FOR2311   006FB0
+                                                      ENTRY  AREA      007028
+                                                      ENTRY  STMTSCAN  0061DC
+                                                      ENTRY  EXIT      0064AA
+                                                      ENTRY  ERROR     006556
+                                                      ENTRY  PREFLUSH  00653A
+                                                      ENTRY  FLUSH     006542
+                                                      ENTRY  COMEBACK  00654E
+                                                      ENTRY  RESDADT   006FB9
+                                                      ENTRY  UPPERLIM  0067F6
+                                                      ENTRY  IJSYSRS   0067C0
+                                                   *  ENTRY  BADFILE   006530
+                                                      ENTRY  NRSTYPE   0070C4
+
+        CORGZ1    007142  007138  0084CB  09 00 3  CSECT     CORGZ11   007138  007138
+                                                      ENTRY  COPY      00715A
+                                                      ENTRY  FORMAT    007712
+                                                      ENTRY  COPY$     0076C8
+                                                      ENTRY  BEGIN1    007142
+
+        CORGZ2    007142  007138  0087C3  09 01 2  CSECT     CORGZ22   007138  007138
+                                                      ENTRY  BEGIN2    007142
+                                                      ENTRY  IPLREC    00764C
+                                                      ENTRY  IPLMERGE  007640
+
+        CORGZ3    007142  007138  008768  09 02 2  CSECT     CORGZ33   007138  007138
+                                                      ENTRY  BEGIN3    007142
+                                                      ENTRY  JOINT1    0072E4
+                                                   *  ENTRY  LOADPT    0080A0
+                                                      ENTRY  CHKC72    0072CC
+                                                      ENTRY  READTO    007BD6
+                                                      ENTRY  READFROM  007BE6
+                                                      ENTRY  DIRECTI   007D0C
+                                                      ENTRY  DIRECTO   007E74
+                                                      ENTRY  WRITE     007BF6
+
+        CORGZ4    0080AA  0080A0  00861F  09 03 2  CSECT     CORGZ44   0080A0  0080A0
+
+        CORGZ5    0080AA  0080A0  00861F  09 03 3  CSECT     CORGZ55   0080A0  0080A0
+
+        CORGZ6    0080AA  0080A0  0085EB  09 03 4  CSECT     CORGZ66   0080A0  0080A0
+
+        CORGZ7    007142  007138  007CE7  09 04 1  CSECT     CORGZ77   007138  007138
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+                                                      ENTRY  ALLOC     007986
+                                                      ENTRY  NEWVOL    0074CA
+                                                   *  ENTRY  BEGIN7    007142
+
+        CORGZ8    0080AA  0080A0  0084AF  09 04 3  CSECT     CORGZ88   0080A0  0080A0
+                                                   *  ENTRY  BEGIN8    0080AA
+   INCLUDE $JOBACCT         $JOBACCT
+// EXEC LNKEDT
+
+JOB  SYSGEN02  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE $JOBACCT         $JOBACCT
+LIST   PHASE   $JOBACCT,+0,NOAUTO
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        $JOBACCT  000000  000000  000001  09 04 4  CSECT               000000  000000
+   INCLUDE IJYASM           44K ASSEMBLER
+// EXEC LNKEDT
+
+JOB  SYSGEN02  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE IJYASM           44K ASSEMBLER
+LIST           PHASE     ASSEMBLY,S,NOAUTO                                        0001
+LIST           INCLUDE   IJYF0,(IJYF0RT0,IJYF0MTM,IJYF0SDM,IJYF0GIO)              0002
+LIST           INCLUDE   IJYCM                                                    0003
+LIST           INCLUDE   IJYIN                                                    0004
+LIST           INCLUDE   IJYF2                                                    0005
+LIST           INCLUDE   IJYF1                                                    0006
+LIST           INCLUDE   IJYF0,(IJYF0TDF)                                         0007
+LIST           PHASE     ASSEM3,IJYCMORG,NOAUTO                                   0008
+LIST           INCLUDE   IJYF3                                                    0009
+LIST           PHASE     ASSEM3E,IJYCMORG,NOAUTO                                  0010
+LIST           INCLUDE   IJYF3E                                                   0011
+LIST           PHASE     ASSEM7,IJYF0GIO,NOAUTO                                   0012
+LIST           INCLUDE   IJYRTA                                                   0013
+LIST           INCLUDE   IJYF7I                                                   0014
+LIST           INCLUDE   IJYF7E                                                   0015
+LIST           INCLUDE   IJYF7D                                                   0016
+LIST           INCLUDE   IJYF7X                                                   0017
+LIST           INCLUDE   IJYF7N                                                   0018
+LIST           INCLUDE   IJYF7V                                                   0019
+LIST           INCLUDE   IJYF7L                                                   0020
+LIST           INCLUDE   IJYF7G                                                   0021
+LIST           INCLUDE   IJYF7C                                                   0022
+LIST           INCLUDE   IJYF7S                                                   0023
+LIST           PHASE     ASSEMFI,IJYRTA04,NOAUTO                                  0024
+LIST           INCLUDE   IJYRTB                                                   0025
+LIST           INCLUDE   IJYFI0                                                   0026
+LIST           PHASE     ASSEMF8,IJYFI0,NOAUTO                                    0027
+LIST           INCLUDE   IJYF8I                                                   0028
+LIST           INCLUDE   IJYF8C                                                   0029
+LIST           INCLUDE   IJYF8M                                                   0030
+LIST           INCLUDE   IJYF8A                                                   0031
+LIST           INCLUDE   IJYF8P                                                   0032
+LIST           INCLUDE   IJYF8D                                                   0033
+LIST           INCLUDE   IJYF8V                                                   0034
+LIST           INCLUDE   IJYF8S                                                   0035
+LIST           INCLUDE   IJYF8L                                                   0036
+LIST           INCLUDE   IJYF8N                                                   0037
+LIST           PHASE     ASSEMFPP,IJYFI0,NOAUTO                                   0038
+LIST           INCLUDE   IJYFPP                                                   0039
+LIST           INCLUDE   IJYFD                                                    0040
+LIST           PHASE     ASSEMABT,IJYFI0,NOAUTO                                   0041
+LIST           INCLUDE   IJYABT                                                   0042
+LIST           ENTRY     IJYF1BGN                                                 0043
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        ASSEMBLY  00BF60  006000  00CD47  09 05 1  CSECT     IJYF0RT0  006000  006000
+                                                      ENTRY  IJYF0S01  006020
+                                                      ENTRY  IJYF0S02  0060B8
+                                                      ENTRY  IJYF0S03  006150
+                                                      ENTRY  IJYF0ESW  00601C
+                                                   *  ENTRY  IJYF0ABT  006008
+
+                                                   CSECT     IJYF0SDM  0063C8  006000
+
+                                                   CSECT     IJYF0MTM  0061E8  006000
+
+                                                   CSECT     IJYF0GIO  006810  006000
+                                                      ENTRY  IJYF0CHK  006868
+                                                      ENTRY  IJYF0NTE  006916
+                                                      ENTRY  IJYF0PTR  0068C6
+                                                      ENTRY  IJYF0PTW  00688C
+                                                      ENTRY  IJYF0RED  00683C
+                                                      ENTRY  IJYF0WRT  006810
+
+                                                   CSECT     IJYF0TDF  00CCA8  00C350
+
+                                                   CSECT     IJYCMCOM  006958  006958
+                                                   *  ENTRY  IJYCMORG  0069B0
+
+                                                   CSECT     IJYINIPT  0074A0  0074A0
+                                                      ENTRY  IJYINBF1  00751C
+
+                                                   CSECT     IJJCPD2   0075C0  0074A0
+                                                      ENTRY  IJJCPD3   0075C0
+
+                                                   CSECT     IJYINLIB  0076D8  0074A0
+
+                                                   CSECT     IJYF2EDT  007A48  007A48
+                                                      ENTRY  IJYF2GLD  00B358
+                                                      ENTRY  IJYF2EDC  009A44
+                                                      ENTRY  IJYF2DCL  00ABD0
+                                                      ENTRY  IJYF2EOF  00B106
+                                                      ENTRY  IJYF2ROF  00B1FC
+                                                      ENTRY  IJYF2ENT  007A50
+                                                      ENTRY  IJYF2GSC  00AE7E
+
+                                                   CSECT     IJYF1INT  00BF58  00BF58
+                                                   *  ENTRY  IJYF1BGN  00BF60
+
+        ASSEM3    0069B8  0069B0  008937  09 09 2  CSECT     IJYF3000  0069B0  0069B0
+
+        ASSEM3E   0069B8  0069B0  006D1F  09 0A 3  CSECT     IJYF3E00  0069B0  0069B0
+
+        ASSEM7    007E12  006810  00C647  09 0A 4  CSECT     IJYRTA    006810  006810
+
+                                                   CSECT     IJJCPDV   006918  006810
+                                                      ENTRY  IJYRTA01  006B50
+                                                      ENTRY  IJYRTA02  006C38
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+                                                   *  ENTRY  IJJCPDV1  006918
+                                                      ENTRY  IJJCPD0   006918
+                                                      ENTRY  IJJCPD0N  006918
+                                                      ENTRY  IJYRTA03  006CD0
+                                                   *  ENTRY  IJYRTA04  007928
+
+                                                   CSECT     IJYF7I    007928  007928
+
+                                                   CSECT     IJYF7E    008540  008540
+                                                      ENTRY  IJYF7E02  00856C
+                                                      ENTRY  IJYF7E04  008636
+                                                      ENTRY  IJYF7E05  008708
+                                                      ENTRY  IJYF7E07  0087FA
+                                                      ENTRY  IJYF7E08  00888E
+                                                      ENTRY  IJYF7E06  0087CE
+                                                      ENTRY  IJYF7E09  008948
+                                                      ENTRY  IJYF7E10  0089D2
+                                                      ENTRY  IJYF7E11  008A30
+                                                      ENTRY  IJYF7E12  008AC8
+                                                      ENTRY  IJYF7E03  0085C4
+                                                      ENTRY  IJYF7E01  008540
+                                                      ENTRY  IJYF7E13  008B18
+
+                                                   CSECT     IJYF7D    008F20  008F20
+
+                                                   CSECT     IJYF7X    009E18  009E18
+
+                                                   CSECT     IJYF7N    00A880  00A880
+
+                                                   CSECT     IJYF7S    00C2F8  00C2F8
+                                                      ENTRY  IJYF7SND  00C648
+                                                      ENTRY  IJYF7S01  00C2F8
+                                                      ENTRY  IJYF7S02  00C2FE
+                                                      ENTRY  IJYF7S03  00C4E4
+
+                                                   CSECT     IJYF7V    00AB68  00AB68
+
+                                                   CSECT     IJYF7L    00B430  00B430
+
+                                                   CSECT     IJYF7G    00B500  00B500
+
+                                                   CSECT     IJYF7C    00B5F8  00B5F8
+
+        ASSEMFI   008058  007928  00A397  09 0E 3  CSECT     IJYRTB    007928  007928
+                                                      ENTRY  IJYRTB01  007A80
+                                                      ENTRY  IJYRTB02  007C0C
+
+                                                   CSECT     IJYFI0    008050  008050
+
+        ASSEMF8   008444  008050  00CDA3  09 10 2  CSECT     IJYF8I    008050  008050
+
+                                                   CSECT     IJYF8C    008628  008628
+                                                      ENTRY  IJYF8C01  008854
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+                                                   CSECT     IJYF8M    0089F0  0089F0
+                                                      ENTRY  IJYF8M01  009088
+                                                      ENTRY  IJYF8M02  009266
+
+                                                   CSECT     IJYF8A    0097B8  0097B8
+                                                      ENTRY  IJYF8A01  00A050
+
+                                                   CSECT     IJYF8P    00A370  00A370
+                                                      ENTRY  IJYF8P03  00AB44
+                                                      ENTRY  IJYF8P02  00A9B6
+                                                      ENTRY  IJYF8P04  00AD9E
+                                                      ENTRY  IJYF8P01  00A60A
+
+                                                   CSECT     IJYF8D    00B148  00B148
+                                                      ENTRY  IJYF8D01  00BB60
+                                                      ENTRY  IJYF8D02  00BCCC
+
+                                                   CSECT     IJYF8S    00C6E0  00C6E0
+
+                                                   CSECT     IJYF8V    00BE68  00BE68
+
+                                                   CSECT     IJYF8L    00C7A0  00C7A0
+
+                                                   CSECT     IJYF8N    00C870  00C870
+
+                                                   CSECT     IJYF8P05  00AFB8  00A370
+
+        ASSEMFPP  008058  008050  00D2EF  09 13 2  CSECT     IJYFPP    008050  008050
+
+                                                   CSECT     IJYFD     00BB38  00BB38
+                                                      ENTRY  IJYFDEND  00D2F0
+
+        ASSEMABT  008058  008050  008695  0A 02 3  CSECT     IJYABORT  008050  008050
+
+                                                   CSECT     IJ2M0012  0084C0  008050
+
+                                                   CSECT     IJJCPD1N  0084E0  008050
+// RESET SYSIPT
+MTC REW,X'280'
+* RESPOND 'IGNORE' TO MSG 1C90D
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 11 12 14              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        10 02 04                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             466                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              626                    17002                    23523
+LIBRARY   BLOCKS DELETED             106                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3748                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN02                                                            00.01.40,DURATION 00.00.06

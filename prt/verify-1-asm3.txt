@@ -1,0 +1,313 @@
+
+// JOB VERASM03  DOS TAPE ASSEMBLER TEST F2                             12.02.10
+// OPTION LINK
+// EXEC ASSEMBLY
+
+SMPL                                          EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+          PC  01 000000 000164
+IJFFZZZZ  ER  02
+IJFFZZZZ  SD  03 000168 0002F8
+SMPL   DOS ASSEMBLER TEST                                                                                      PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      2 *
+                                      3 * WRITE 2000 15-BYTE TAPE RECORDS WITH RECORD NUMBER IN POS 12-15
+                                      4 *
+000000                                5          START 0                                                        $4650003
+000000 0580                           6 TESTGEN  BALR  8,0                      LOAD BASE REG                   $4650004
+000002                                7          USING *,8                                                      $4650005
+000002 41D0 809E            000A0     8          LA    13,SAVEAREA                                              $4650006
+                                      9          OPEN  OUTFILE                  OPEN OUTPUT FILE                $4650007
+                                     10+* 360N-CL-453 OPEN     CHANGE LEVEL 3-3                             3-3
+000006 0700                          11+         CNOP  0,4
+000008                               12+         DC    0F'0'
+000008 4110 814E            00150    13+         LA    1,=C'$$BOPEN '
+00000C 4500 8012            00014    14+IJJO0001 BAL   0,*+4+4*(2-1)
+000010 000000E8                      15+         DC    A(OUTFILE)
+000014 0A02                          16+         SVC   2
+000016 4130 07D0            007D0    17          LA    3,2000                   GET STARTING RECORD VALUE       $4650008
+                                     18 *
+00001A 4E30 8096            00098    19 NEXT     CVD   3,DWD                    CONVERT VALUE TO DEC.           $4650009
+00001E F337 200B 8096 0000B 00098    20          UNPK  11(4,2),DWD              UNPACK IT                       $4650010
+000024 96F0 200E      0000E          21          OI    14(2),X'F0'              MASK SIGN BIT                   $4650011
+                                     22          PUT   OUTFILE                  WRITE RECORD ON TAPE            $4650012
+                                     23+* 360N-CL-453 PUT          CHANGE LEVEL 3-5                         3-5
+000028 5810 815E            00160    24+         L     1,=A(OUTFILE) GET DTF TABLE ADDRESS
+00002C 58F1 0010            00010    25+         L     15,16(1) GET LOGIC MODULE ADDRESS     3-5
+000030 45EF 000C            0000C    26+         BAL   14,12(15) BRANCH TO PUT ROUTINE        3-5
+000034 4630 8018            0001A    27          BCT   3,NEXT                   DECREMENT R3, BR IF >0          $4650013
+                                     28 *
+                                     29          CLOSE OUTFILE                  CLOSE TAPE FILE                 $4650014
+                                     30+* 360N-CL-453 CLOSE    CHANGE LEVEL 3-3                             3-3
+000038                               31+         CNOP  0,4
+000038                               32+         DC    0F'0'
+000038 4110 8156            00158    33+         LA    1,=C'$$BCLOSE'
+00003C 4500 8042            00044    34+IJJC0003 BAL   0,*+4+4*(2-1)
+000040 000000E8                      35+         DC    A(OUTFILE)
+000044 0A02                          36+         SVC   2
+                                     37          EOJ                            RETURN TO CONTROL PROGRAM       $4650015
+                                     38+* 360N-CL-453 EOJ      CHANGE LEVEL 3-0
+000046 0A0E                          39+         SVC   14
+
+
+000048 4040404040404040              41 A1       DC    40C' '                                                   $4650019
+000070 4040404040404040              42 A2       DC    40C' '                                                   $4650020
+000098                               43 DWD      DS    D                                                        $4650021
+0000A0                               44 SAVEAREA DS    9D                                                       $4650022
+
+
+                                     46 OUTFILE  DTFMT TYPEFLE=OUTPUT,          OUTPUT FILE                    X
+                                                       DEVADDR=SYS002,          ASSGN'D TO SYS002              X
+                                                       FILABL=STD,              STANDARD LABEL TAPE VOLUME     X
+                                                       BLKSIZE=40,              UNBLOCKED 15-BYTE RECORDS      X
+                                                       IOAREA1=A1,IOAREA2=A2,   TWO I/O AREAS                  X
+SMPL   DOS ASSEMBLER TEST                                                                                      PAGE    2
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                                       IOREG=(2)                POINT R2 AT CURRENT I/O AREA
+                                     47+* 360N-IO-456      DTFMT   CHANGE LEVEL 3-10                       3-10
+0000E8                               48+         DC    0D'0' 3-8
+0000E8 000080000000                  49+OUTFILE  DC    X'000080000000' CCB
+0000EE 01                            50+         DC    AL1(1) LOGICAL UNIT CLASS
+0000EF 02                            51+         DC    AL1(2) LOGICAL UNIT
+0000F0 00000120                      52+         DC    AL4(IJF10005) CCW ADDRESS                  3-8
+0000F4 00000000                      53+         DC    4X'00' CCB-ST BYTE,CSW CCW ADDRESS  3-8
+0000F8 00                            54+         DC    AL1(0) 3-8
+0000F9 000000                        55+         DC    VL3(IJFFZZZZ) ADDRESS OF LOGIC MODULE      3-8
+0000FC 12                            56+         DC    X'12' DTF TYPE
+0000FD 20                            57+         DC    AL1(32) LOGICAL IOCS SWITCHES
+0000FE D6E4E3C6C9D3C540              58+         DC    CL8'OUTFILE'
+000106 01                            59+         DC    X'01'
+000107 64                            60+         DC    AL1(100) SWITCHES FOR OPEN                3-8
+000108 80                            61+         DC    AL1(128) SWITCH ONE FOR OPEN AND CLOSE
+000109 000000                        62+         DC    AL3(0) USER LABEL ROUTINE
+00010C 00                            63+         DC    AL1(0) SWITCH FOR OPEN AND CLOSE
+00010D 00010D                        64+         DC    AL3(*)
+000110 00000000                      65+         DC    F'0' BLOCKCOUNT
+000114 86BC F018            00018    66+         BXH   11,12,24(15) DEBLOCKING FORWARD
+000118 41EE 0001            00001    67+         LA    14,1(14) INCREASE BLOCKCOUNT BY ONE
+00011C 5821 0044            00044    68+         L     2,IJF20005-OUTFILE(1) LOAD USER IOREG
+000120 0100004820000028              69+IJF10005 CCW   X'01',A1,X'20',40
+000128 00000070                      70+         DC    A(A2) TWO IOAREAS                 3-10
+00012C 00000070                      71+IJF20005 DC    A(A2) DEBLOCKER 1                 3-10
+000130 00000028                      72+         DC    F'40' DEBLOCKER 2                  3-8
+000134 00000097                      73+         DC    A(A2+40-1) DEBLOCKER 3                 3-10
+000138 0028                          74+         DC    Y(40) BLOCKSIZE
+00013A 0027                          75+         DC    Y(40-1) BLOCKSIZE-1
+00013C 0027                          76+         DC    Y(40-1) RECSIZE-1                    3-8
+00013E 0000                          77+         DC    2X'00' RESERVED
+000140 0000                          78+         DC    2X'00' RESERVED FOR OPEN
+000142 000000000000                  79+         DC    6X'00' FILE SERIAL NO.
+000148 00000000                      80+         DC    4X'00' VOLUME SEQUENCE NO.
+00014C 00000000                      81+         DC    4X'00' FILE SEQUENCE NO.
+
+
+                                     83          PRINT NOGEN
+                                     84          MTMOD RECFORM=FIXUNB                                           $4650018
+
+
+000000                              326          END   TESTGEN                                                  $4650023
+000150 5B5BC2D6D7C5D540             327                =C'$$BOPEN '
+000158 5B5BC2C3D3D6E2C5             328                =C'$$BCLOSE'
+000160 000000E8                     329                =A(OUTFILE)
+SMPL                                             RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      0C     000010
+   01       01      0C     000040
+   01       01      0C     0000F0
+   01       02      18     0000F9
+   01       01      08     00010D
+   01       01      08     000121
+   01       01      0C     000128
+   01       01      0C     00012C
+   01       01      0C     000134
+   01       01      0C     000160
+SMPL                                         CROSS-REFERENCE                                                   PAGE    1
+
+
+SYMBOL    LEN  VALUE  DEFN     REFERENCES                                                                       03/29/70
+
+A1       00001 000048 00041   0069
+A2       00001 000070 00042   0070  0071  0073
+DWD      00008 000098 00043   0019  0020
+IJFFAEO  00001 000024 00096   0127  0260  0263  0269  0283  0291  0293
+IJFFAR2  00004 000040 00103   0143  0217  0218
+IJFFBACK 00001 000004 00320   0278
+IJFFBK0  00004 000028 00098   0181  0183  0298  0300
+IJFFBTRT 00008 00040E 00302   0265
+IJFFBZ1  00002 000050 00107   0153
+IJFFBZ2  00002 000052 00108   0187
+IJFFCB2  00004 000003 00088   0179
+IJFFCCW  00008 000038 00102   0131  0148  0153  0158  0165  0184  0215  0217
+IJFFCLOS 00001 000001 00321   0135  0285
+IJFFCNT  00004 0001FA 00155   0117
+IJFFCON  00004 00029E 00201   0194  0197
+IJFFDBL  00004 00022C 00169   0132  0139
+IJFFDBX  00004 00002C 00099
+IJFFDB1  00004 000044 00104   0142  0169  0171  0186  0233  0280  0280
+IJFFDB2  00004 000048 00105   0191
+IJFFDB3  00004 00004C 00106   0167  0167  0189  0281  0281
+IJFFDTF  00001 000000 00086
+IJFFEFE  00004 0003AE 00278   0270
+IJFFEOF  00001 000008 00319   0263  0293
+IJFFERR  00004 00005C 00112   0113  0201  0212
+IJFFERR1 00004 0002F0 00223   0203  0208  0213
+IJFFEXIT 00004 0001A8 00133   0140  0144  0154
+IJFFEXOE 00004 000068 00113   0238
+IJFFEXT  00004 0003CC 00285   0180
+IJFFEXYN 00002 000332 00240
+IJFFFEO  00004 00036A 00260   0121
+IJFFFEOV 00001 000010 00317   0260  0269  0283
+IJFFFEO1 00002 00037A 00264   0295
+IJFFFEO2 00004 000376 00263   0297  0301
+IJFFFTI  00004 000350 00253   0123  0149  0274
+IJFFGBC  00004 000256 00181   0276  0286
+IJFFGET  00004 0001B8 00138   0119
+IJFFHRU  00004 00023A 00173   0254  0257  0259
+IJFFHU2  00002 000242 00175
+IJFFIGN  00004 0002D0 00214   0124  0206
+IJFFINP  00001 000008 00318   0207  0234  0256  0273  0278  0294
+IJFFLCH  00001 000001 00322
+IJFFLDR  00004 000034 00101   0134
+IJFFMAI  00004 000244 00176   0174
+IJFFNERX 00004 00033E 00246   0235
+IJFFNM   00004 000000 00087   0088  0115  0159  0164  0188  0190  0195  0198  0202  0205  0209  0214  0289
+IJFFOPN  00001 000080 00314   0227  0229  0253  0255
+IJFFPUT  00004 000192 00127   0120
+IJFFRCT  00004 000262 00184   0277
+IJFFREGA 00001 00000A 00308   0170  0191  0192  0192  0199
+IJFFREGB 00001 00000B 00309   0169  0184  0185  0185  0186  0187  0188  0189  0190  0193  0193  0196  0196  0199  0215
+                              0216  0216  0218
+SMPL                                         CROSS-REFERENCE                                                   PAGE    2
+
+
+SYMBOL    LEN  VALUE  DEFN     REFERENCES                                                                       03/29/70
+
+IJFFREGC 00001 00000C 00310   0142  0143  0148  0271  0288
+IJFFREGD 00001 00000D 00311   0232  0251
+IJFFREGE 00001 00000E 00312   0136  0166  0168  0181  0183  0201  0204  0212  0223  0225  0226  0228  0230  0230  0238
+                              0240  0240  0247  0247  0248  0250  0262  0266  0282  0284  0291  0292  0298  0300
+IJFFREGF 00001 00000F 00313   0116  0170  0249
+IJFFREG0 00001 000000 00303   0134  0158  0182  0261  0264  0268  0299
+IJFFREG1 00001 000001 00304   0115  0130  0133  0138  0141  0145  0150  0155  0161  0176  0239  0246  0249  0261  0264
+                              0265  0268
+IJFFREG7 00001 000007 00305   0130  0132  0133  0138  0139  0141  0149  0172  0220  0222  0231  0232  0251  0252  0271
+                              0272  0287  0288
+IJFFREG8 00001 000008 00306
+IJFFREG9 00001 000009 00307   0169  0170  0171
+IJFFREL  00006 000224 00167   0118
+IJFFRSZ  00002 000054 00109
+IJFFSAV  00008 000418 00323   0130  0133  0138  0141  0231  0232  0233  0239  0246  0249  0251  0252  0261  0262  0268
+                              0271  0272  0282  0287  0288
+IJFFSBL  00004 000030 00100   0182  0299
+IJFFSKIP 00004 000348 00251
+IJFFSTD  00004 000276 00189
+IJFFSWI  00001 000015 00091   0135  0173  0207  0219  0227  0229  0234  0236  0253  0255  0256  0273  0275  0278  0285
+                              0294  0296
+IJFFTET  00004 00028A 00195   0200
+IJFFTRU  00004 0001C4 00141   0122
+IJFFTYP  00002 00001E 00093   0165
+IJFFWAR  00001 000010 00316
+IJFFWLR  00004 000058 00111   0204
+IJFFYSOT 00004 000304 00229   0224
+IJFFZZZZ 00001 000168 00114
+IJFF2IO  00001 000020 00315   0173  0219  0256  0275  0296
+IJF10005 00008 000120 00069   0052
+IJF20005 00004 00012C 00071   0068
+IJJC0003 00004 00003C 00034
+IJJO0001 00004 00000C 00014
+NEXT     00004 00001A 00019   0027
+OUTFILE  00006 0000E8 00049   0015  0024  0035  0068  0329
+SAVEAREA 00008 0000A0 00044   0008
+TESTGEN  00002 000000 00006   0326
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// LBLTYP TAPE
+// EXEC LNKEDT
+
+JOB  VERASM03  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        PHASE***  1010C8  1010C8  101527  14 07 1  CSECT               1010C8  1010C8
+
+                                                   CSECT     IJFFZZZZ  101230  1010C8
+// ASSGN SYS002,X'280'
+// MTC REW,SYS002
+// TLBL OUTFILE,,0
+// EXEC
+
+// MTC REW,SYS002
+// UPSI 1
+// EXEC DITTO
+$$DITTO  TP    INPUT=SYS002,NBLKS=0200
+
+* * * * DEVICE  280  SYS002,  MODE C0                                                                                        * * * *
+
+
+BLOCK    1   DATA    80         VOL1001003                               HERCULES
+BLOCK    2   DATA    80         HDR1OUTFILE          00100300010001000101 70088 700880000000DOS/TOS/360
+$$DITTO  REW   OUTPUT=SYS002
+
+$$DITTO  EOJ
+
+
+// TLBL SORTOUT,'SORTED.OUTFILE',0
+// TLBL SORTIN1,'OUTFILE'
+// DLBL SORTWK1,'DOS.F2.WORKFILE.001',0,SD
+// EXTENT SYS003,WRK14B,1,1,1700,300
+// DLBL SORTWK2,'DOS.F2.WORKFILE.002',0,SD
+// EXTENT SYS004,WRK14B,1,1,2000,300
+// DLBL SORTWK3,'DOS.F2.WORKFILE.003',0,SD
+// EXTENT SYS005,WRK14B,1,1,2300,300
+// ASSGN SYS001,X'281'
+// ASSGN SYS002,X'280'
+// ASSGN SYS003,X'193'
+// ASSGN SYS004,X'193'
+// ASSGN SYS005,X'193'
+// EXEC SORT
+
+7000I  SORT FIELDS=(1,15,CH,A),WORK=3,FILES=1
+7000I  RECORD TYPE=F,LENGTH=40
+7000I  INPFIL BLKSIZE=40
+7000I  OUTFIL BLKSIZE=40
+7000I  OPTION PRINT=ALL,LABEL=(S,S)
+7000I  END
+7050I NMAX = 00079852
+7051I B = 00007281
+7052I G = 00008983
+7001I PHASE 0 END,NO DETECTED ERRORS
+
+// MTC REW,SYS001
+// UPSI 1
+// EXEC DITTO
+$$DITTO  TP    INPUT=SYS001,NBLKS=0200
+
+* * * * DEVICE  281  SYS001,  MODE C0                                                                                        * * * *
+
+
+BLOCK    1   DATA    80         VOL1001004                               HERCULES
+BLOCK    2   DATA    80         HDR1SORTED.OUTFILE   00100400010001000101 70088 700880000000DOS/TOS/360
+$$DITTO  REW   OUTPUT=SYS001
+
+$$DITTO  REW   OUTPUT=SYS002
+
+$$DITTO  EOJ
+
+
+EOJ VERASM03                                                            12.02.15,DURATION 00.00.05

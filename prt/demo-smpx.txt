@@ -1,0 +1,899 @@
+
+// JOB DEMOSMPX LINEAR PROGRAMMING SIMPLEX METHOD                       12.13.47
+// OPTION LINK,LISTX
+// EXEC FFORTRAN
+
+  DOS FORTRAN IV 360N-FO-479 3-8
+
+// FTC NAME=SIMPLEX
+
+    OPTIONS IN EFFECT
+    -----------------
+
+    LOAD   =4
+
+    DECK   NO
+
+    LIST   YES
+
+    LISTX  YES
+
+    EBCDIC
+  DOS FORTRAN IV 360N-FO-479 3-8         SIMPLEX           DATE   03/29/70     TIME    12.13.56      PAGE 0001
+
+               C  OPERATIONS RESEARCH--
+               C  LINEAR PROGRAMMING - SIMPLEX METHODD - MAXIMIZATION PROBLEMS
+               C
+   0001              INTEGER R,C
+   0002              DIMENSION ATRIX(6,10),SAVER(10),CJR(10),ZJ(10),DIF(10),
+                    -CJC(6),FS(6),DIV(6),SAVEC(6)
+               C  READ IN SIZE OF MATRIX AND THE COEFFICIENTS OF THE OBJECTIVE FUNCTION
+   0003              READ 1, R,C,(CJR(I),I=1,C)
+   0004            1 FORMAT (2I2/(8F10.0))
+               C  READ IN MATRIX (CONSTRAINT COEFFICIENTS) AND INITIALIZE
+               C       COEFFICIENTS OF SOLUTION PRODUCT MIX (UNIT GAIN)
+   0005              DO 15 I=1,R
+   0006                CJC(I)=0.0
+   0007                READ 2, (ATRIX(I,J),J=1,C)
+   0008            2   FORMAT (8F10.0)
+   0009           15 CONTINUE
+               C  READ IN FEASIBLE SOLUTION VALUES
+   0010              READ 3, (FS(I),I=1,R)
+   0011            3 FORMAT (F10.0)
+   0012              NUMBR=0
+   0013              MANUM=1
+               C  SKIP TO TOP OF FIRST PAGE
+   0014              PRINT 13
+   0015           13 FORMAT (1H1)
+   0016           70 NUMBR=NUMBR+1
+               C  CALCULATE ZJ AND DIFFERENCE ROW VALUES
+   0017              DO 20 I=1,C
+   0018                ZJ(I)=0.0
+   0019                DO 21 J=1,R
+   0020                  ZJ(I)=ZJ(I)+ATRIX(J,I)*CJC(J)
+   0021           21   CONTINUE
+   0022                DIF(I)=CJR(I)-ZJ(I)
+   0023           20 CONTINUE
+               C  PRINT TABLEAU NUMBER AND OBJECTIVE FUNCTION COEFFICIENTS
+   0024              PRINT 5, MANUM,(CJR(I),I=1,C)
+   0025            5 FORMAT (1H-,44X,'TABLEAU  NUMBER  ',I2/1H0,15X,'CJC'/
+                    -1H0,7X,'CJR',10X,10F10.3)
+   0026              PRINT 12
+   0027           12 FORMAT (1H )
+               C  PRINT OUT THE CURRENT MATRIX
+   0028              DO 16 I=1,R
+   0029                PRINT 6, CJC(I),(ATRIX(I,J),J=1,C),FS(I)
+   0030            6   FORMAT (1H ,10X,12F10.3)
+   0031           16 CONTINUE
+               C  PRINT ZJ (UNIT LOSS) ROW
+   0032              PRINT 7, (ZJ(I),I=1,C)
+   0033            7 FORMAT (1H0,7X,'ZJ',11X,10F10.3)
+               C  PRINT DIFFERENCE ROW
+   0034              PRINT 11, (DIF(J),J=1,C)
+   0035           11 FORMAT (1H ,7X,'DIF',10X,10F10.3)
+   0036              PRINT 12
+               C  FIND LARGEST DIFFERENCE (INCOMING ITEM)
+   0037              N=1
+   0038              DO 30 I=1,C
+  DOS FORTRAN IV 360N-FO-479 3-8         SIMPLEX           DATE   03/29/70     TIME    12.13.56      PAGE 0002
+
+   0039                IF (DIF(N) .LT. DIF(I)) N=I
+   0040           30 CONTINUE
+               C  IF NEGATIVE OR ZERO, OPTIMALITY ACHIEVED
+   0041              IF (DIF(N) .LE. 0) GO TO 99
+               C  CALCULATE DIVIDENDS AND FIND SMALLEST ONE (OUTGOING ITEM)
+   0042              M=1
+   0043              DO 40 I=1,R
+   0044                IF (ATRIX(I,N)) 42,43,42
+   0045           43   DIV(I)=999999.
+   0046                GO TO 40
+   0047           42   DIV(I)=FS(I)/ATRIX(I,N)
+   0048                IF (DIV(I) .LT. DIV(M)) M=I
+   0049           40 CONTINUE
+               C  PRINT OUT LARGEST COL. NUMBER, DIVIDENDS, AND SMALLEST DIV. (ROW) NO.
+   0050              PRINT 8, N,(DIV(I),I=1,R)
+   0051            8 FORMAT (1H ,'LARGEST  DIF  IS  COL. ',I2/(1H ,4X,'DIV  =',F10.3))
+   0052              PRINT 9, M
+   0053            9 FORMAT (1H, 'SMALLEST  DIV  IS ROW ',I2///)
+               C  CHANGE THE CORRECT UNIT GAIN COEFFICIENT
+   0054              CJC(M)=CJR(N)
+               C  SAVE COEFFICIENTS TO CALCULATE NEW MATRIX
+   0055              SAVX=ATRIX(M,N)
+   0056              SAVFS=FS(M)
+   0057              DO 50 I=1,C
+   0058                SAVER(I)=ATRIX(M,I)
+   0059           50 CONTINUE
+               C  CALCULATE THE NEW MATRIX AND FEASIBLE SOLUTIONS
+   0060              DO 60 I=1,R
+   0061                SAVEC(I)=ATRIX(I,N)
+   0062                IF (I-M) 61,62,61
+   0063           61   FS(I)=FS(I)-(SAVFS/SAVX)*SAVEC(I)
+   0064                DO 63 J=1,C
+   0065                  ATRIX(I,J)=ATRIX(I,J)-(SAVER(J)/SAVX)*SAVEC(I)
+   0066           63   CONTINUE
+   0067                GO TO 60
+   0068           62   FS(I)=FS(I)/SAVX
+   0069                DO 64 J=1,C
+   0070                  ATRIX(I,J)=ATRIX(I,J)/SAVX
+   0071           64   CONTINUE
+   0072           60 CONTINUE
+               C  UPDATE TABLEAU NUMBER AND CHECK FOR OVERFLOW
+   0073              MANUM=MANUM+1
+   0074              IF (NUMBR-2) 70,80,80
+   0075           80 PRINT 12
+   0076              NUMBR=0
+   0077              GO TO 70
+               C  CALCULATE AND PRINT THE OPTIMAL SOLUTION
+   0078           99 OPT=0.0
+   0079              DO 98 I=1,R
+   0080                OPT=OPT+CJC(I)*FS(I)
+   0081           98 CONTINUE
+   0082              PRINT 10, OPT
+   0083           10 FORMAT (1H0,10X,'THE OPTIMAL SOLUTION IS',F10.3)
+   0084              STOP
+  DOS FORTRAN IV 360N-FO-479 3-8         SIMPLEX           DATE   03/29/70     TIME    12.13.56      PAGE 0003
+
+   0085              END
+  DOS FORTRAN IV 360N-FO-479 3-8         SIMPLEX           DATE   03/29/70     TIME    12.13.56      PAGE 0004
+
+
+                               SCALAR MAP
+ SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION
+ R            12C        C            130        I            134        J            138        NUMBR        13C
+ MANUM        140        N            144        M            148        SAVX         14C        SAVFS        150
+ OPT          154
+
+
+                               ARRAY MAP
+ SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION
+ ATRIX        158        SAVER        248        CJR          270        ZJ           298        DIF          2C0
+ CJC          2E8        FS           300        DIV          318        SAVEC        330
+
+
+                               SUBPROGRAMS CALLED
+ SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION
+ IBCOM#       348
+
+
+                               FORMAT STATEMENT MAP
+ SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION
+      1       34C             2       35B             3       362            13       367             5       36C
+     12       3A5             6       3AA             7       3B6            11       3C8             8       3DB
+      9       40F            10       431
+
+
+  DOS FORTRAN IV 360N-FO-479 3-8         SIMPLEX           DATE   03/29/70     TIME    12.13.56      PAGE 0005
+
+  LOCATION   STA NUM     LABEL   OP         OPERAND                  BCD OPERAND
+   000000                        BALR       15,0
+   000002                        LM         2,3,34(15)
+   000006                        L          13,30(0,15)
+   00000A                        LA         15,2(0,15)
+   00000E                        ST         15,4(0,13)
+   000012                        BCR        15,2
+   000014                A4      DC         00000000                 A4
+   000018                        DC         07E2C9D4
+   00001C                        DC         D7D3C5E7
+   000020                        DC         00000000                 A20
+   000024                        DC         00000000                 A36
+   000028                        DC         00000000                 A52
+   0004B8                A52     L          13,4(0,13)
+   0004BC                        L          14,12(0,13)
+   0004C0                        LM         2,12,28(13)
+   0004C4                        MVI        12(13),255
+   0004C8                        BCR        15,14
+   0004CA                A36     L          15,796(0,13)             IBCOM#
+   0004CE                        LR         12,13
+   0004D0                        LR         13,4
+   0004D2                        BAL        14,64(0,15)
+   0004D6                        LR         13,12
+   0004D8        3               L          15,796(0,13)             IBCOM#
+   0004DC                        BAL        14,0(0,15)
+   0004E0                        DC         04000001
+   0004E4                        DC         0000034C
+   0004E8                        L          15,796(0,13)             IBCOM#
+   0004EC                        BAL        14,8(0,15)
+   0004F0                        DC         0450D100
+   0004F4                        BAL        14,8(0,15)
+   0004F8                        DC         0450D104
+   0004FC                        L          0,1136(0,13)
+   000500                L76     ST         0,264(0,13)              I
+   000504                        L          8,264(0,13)              I
+   000508                        SLA        8,2(0)
+   00050C                        BAL        14,8(0,15)
+   000510                        DC         0478D240
+   000514                        L          0,264(0,13)              I
+   000518                        L          1,132(0,13)              L76
+   00051C                        LA         2,1(0,0)
+   000520                        L          3,260(0,13)              C
+   000524                        BXLE       0,2,0(1)
+   000528                        BAL        14,16(0,15)
+   00052C        5               L          7,1108(0,13)
+   000530                        L          0,1136(0,13)
+   000534                L84     ST         0,264(0,13)              I
+   000538        6               LE         0,1068(0,13)
+   00053C                        STE        0,744(0,7)               CJC
+   000540        7               L          15,796(0,13)             IBCOM#
+   000544                        BAL        14,0(0,15)
+   000548                        DC         04000001
+   00054C                        DC         0000035B
+   000550                        L          0,1136(0,13)
+  DOS FORTRAN IV 360N-FO-479 3-8         SIMPLEX           DATE   03/29/70     TIME    12.13.56      PAGE 0006
+
+   000554                L92     ST         0,268(0,13)              J
+   000558                        L          1,268(0,13)              J
+   00055C                        M          0,1140(0,13)
+   000560                        LR         9,1
+   000562                        SLA        9,2(0)
+   000566                        BCR        0,0
+   000568                        BAL        14,8(0,15)
+   00056C                        DC         04797140
+   000570                        L          0,268(0,13)              J
+   000574                        L          1,140(0,13)              L92
+   000578                        LA         2,1(0,0)
+   00057C                        L          3,260(0,13)              C
+   000580                        BXLE       0,2,0(1)
+   000584                        BAL        14,16(0,15)
+   000588        9       15      A          7,1144(0,13)
+   00058C                        L          0,264(0,13)              I
+   000590                        L          1,136(0,13)              L84
+   000594                        LA         2,1(0,0)
+   000598                        L          3,256(0,13)              R
+   00059C                        BXLE       0,2,0(1)
+   0005A0       10               L          15,796(0,13)             IBCOM#
+   0005A4                        BAL        14,0(0,15)
+   0005A8                        DC         04000001
+   0005AC                        DC         00000362
+   0005B0                        L          0,1136(0,13)
+   0005B4                L100    ST         0,264(0,13)              I
+   0005B8                        L          8,264(0,13)              I
+   0005BC                        SLA        8,2(0)
+   0005C0                        BAL        14,8(0,15)
+   0005C4                        DC         0478D2D0
+   0005C8                        L          0,264(0,13)              I
+   0005CC                        L          1,144(0,13)              L100
+   0005D0                        LA         2,1(0,0)
+   0005D4                        L          3,256(0,13)              R
+   0005D8                        BXLE       0,2,0(1)
+   0005DC                        BAL        14,16(0,15)
+   0005E0       12               L          0,1068(0,13)
+   0005E4                        ST         0,272(0,13)              NUMBR
+   0005E8       13               L          0,1136(0,13)
+   0005EC                        ST         0,276(0,13)              MANUM
+   0005F0       14               L          15,796(0,13)             IBCOM#
+   0005F4                        BAL        14,4(0,15)
+   0005F8                        DC         04000002
+   0005FC                        DC         00000367
+   000600                        BAL        14,16(0,15)
+   000604       16       70      L          0,272(0,13)              NUMBR
+   000608                        A          0,1136(0,13)
+   00060C                        ST         0,272(0,13)              NUMBR
+   000610       17               L          6,1108(0,13)
+   000614                        L          5,1112(0,13)
+   000618                        LA         4,0(0,0)
+   00061C                        L          0,1136(0,13)
+   000620                L108    ST         0,264(0,13)              I
+   000624       18               LE         0,1068(0,13)
+  DOS FORTRAN IV 360N-FO-479 3-8         SIMPLEX           DATE   03/29/70     TIME    12.13.56      PAGE 0007
+
+   000628                        STE        0,664(0,6)               ZJ
+   00062C       19               LR         7,5
+   00062E                        L          0,1136(0,13)
+   000632                L116    ST         0,268(0,13)              J
+   000636       20               LE         0,320(0,7)               ATRIX
+   00063A                        ME         0,720(7,4)               CJC
+   00063E                        AE         0,664(0,6)               ZJ
+   000642                        STE        0,664(0,6)               ZJ
+   000646       21       21      A          7,1144(0,13)
+   00064A                        L          0,268(0,13)              J
+   00064E                        L          1,152(0,13)              L116
+   000652                        LA         2,1(0,0)
+   000656                        L          3,256(0,13)              R
+   00065A                        BXLE       0,2,0(1)
+   00065E       22               LE         0,624(0,6)               CJR
+   000662                        SE         0,664(0,6)               ZJ
+   000666                        STE        0,704(0,6)               DIF
+   00066A       23       20      A          6,1144(0,13)
+   00066E                        A          5,1148(0,13)
+   000672                        A          4,1152(0,13)
+   000676                        L          0,264(0,13)              I
+   00067A                        L          1,148(0,13)              L108
+   00067E                        LA         2,1(0,0)
+   000682                        L          3,260(0,13)              C
+   000686                        BXLE       0,2,0(1)
+   00068A       24               L          15,796(0,13)             IBCOM#
+   00068E                        BCR        0,0
+   000690                        BAL        14,4(0,15)
+   000694                        DC         04000002
+   000698                        DC         0000036C
+   00069C                        BAL        14,8(0,15)
+   0006A0                        DC         0450D114
+   0006A4                        L          0,1136(0,13)
+   0006A8                L124    ST         0,264(0,13)              I
+   0006AC                        L          8,264(0,13)              I
+   0006B0                        SLA        8,2(0)
+   0006B4                        BAL        14,8(0,15)
+   0006B8                        DC         0478D240
+   0006BC                        L          0,264(0,13)              I
+   0006C0                        L          1,156(0,13)              L124
+   0006C4                        LA         2,1(0,0)
+   0006C8                        L          3,260(0,13)              C
+   0006CC                        BXLE       0,2,0(1)
+   0006D0                        BAL        14,16(0,15)
+   0006D4       26               L          15,796(0,13)             IBCOM#
+   0006D8                        BAL        14,4(0,15)
+   0006DC                        DC         04000002
+   0006E0                        DC         000003A5
+   0006E4                        BAL        14,16(0,15)
+   0006E8       28               L          7,1108(0,13)
+   0006EC                        L          0,1136(0,13)
+   0006F0                L132    ST         0,264(0,13)              I
+   0006F4       29               L          15,796(0,13)             IBCOM#
+   0006F8                        BAL        14,4(0,15)
+  DOS FORTRAN IV 360N-FO-479 3-8         SIMPLEX           DATE   03/29/70     TIME    12.13.56      PAGE 0008
+
+   0006FC                        DC         04000002
+   000700                        DC         000003AA
+   000704                        BAL        14,8(0,15)
+   000708                        DC         047072E8
+   00070C                        L          0,1136(0,13)
+   000710                L140    ST         0,268(0,13)              J
+   000714                        L          1,268(0,13)              J
+   000718                        M          0,1140(0,13)
+   00071C                        LR         9,1
+   00071E                        SLA        9,2(0)
+   000722                        BCR        0,0
+   000724                        BAL        14,8(0,15)
+   000728                        DC         04797140
+   00072C                        L          0,268(0,13)              J
+   000730                        L          1,164(0,13)              L140
+   000734                        LA         2,1(0,0)
+   000738                        L          3,260(0,13)              C
+   00073C                        BXLE       0,2,0(1)
+   000740                        BAL        14,8(0,15)
+   000744                        DC         04707300
+   000748                        BAL        14,16(0,15)
+   00074C       31       16      A          7,1144(0,13)
+   000750                        L          0,264(0,13)              I
+   000754                        L          1,160(0,13)              L132
+   000758                        LA         2,1(0,0)
+   00075C                        L          3,256(0,13)              R
+   000760                        BXLE       0,2,0(1)
+   000764       32               L          15,796(0,13)             IBCOM#
+   000768                        BAL        14,4(0,15)
+   00076C                        DC         04000002
+   000770                        DC         000003B6
+   000774                        L          0,1136(0,13)
+   000778                L148    ST         0,264(0,13)              I
+   00077C                        L          8,264(0,13)              I
+   000780                        SLA        8,2(0)
+   000784                        BAL        14,8(0,15)
+   000788                        DC         0478D268
+   00078C                        L          0,264(0,13)              I
+   000790                        L          1,168(0,13)              L148
+   000794                        LA         2,1(0,0)
+   000798                        L          3,260(0,13)              C
+   00079C                        BXLE       0,2,0(1)
+   0007A0                        BAL        14,16(0,15)
+   0007A4       34               L          15,796(0,13)             IBCOM#
+   0007A8                        BAL        14,4(0,15)
+   0007AC                        DC         04000002
+   0007B0                        DC         000003C8
+   0007B4                        L          0,1136(0,13)
+   0007B8                L156    ST         0,268(0,13)              J
+   0007BC                        L          8,268(0,13)              J
+   0007C0                        SLA        8,2(0)
+   0007C4                        BAL        14,8(0,15)
+   0007C8                        DC         0478D290
+   0007CC                        L          0,268(0,13)              J
+  DOS FORTRAN IV 360N-FO-479 3-8         SIMPLEX           DATE   03/29/70     TIME    12.13.56      PAGE 0009
+
+   0007D0                        L          1,172(0,13)              L156
+   0007D4                        LA         2,1(0,0)
+   0007D8                        L          3,260(0,13)              C
+   0007DC                        BXLE       0,2,0(1)
+   0007E0                        BAL        14,16(0,15)
+   0007E4       36               L          15,796(0,13)             IBCOM#
+   0007E8                        BAL        14,4(0,15)
+   0007EC                        DC         04000002
+   0007F0                        DC         000003A5
+   0007F4                        BAL        14,16(0,15)
+   0007F8       37               L          0,1136(0,13)
+   0007FC                        ST         0,280(0,13)              N
+   000800       38               L          7,1108(0,13)
+   000804                        L          0,1136(0,13)
+   000808                L164    ST         0,264(0,13)              I
+   00080C       39               L          8,280(0,13)              N
+   000810                        SLA        8,2(0)
+   000814                        LE         0,656(8,13)              DIF
+   000818                        CE         0,704(0,7)               DIF
+   00081C                        L          14,180(0,13)             L172
+   000820                        BCR        11,14
+   000822                        L          0,264(0,13)              I
+   000826                        ST         0,280(0,13)              N
+   00082A       40       30      A          7,1144(0,13)
+   00082E                        L          0,264(0,13)              I
+   000832                        L          1,176(0,13)              L164
+   000836                        LA         2,1(0,0)
+   00083A                        L          3,260(0,13)              C
+   00083E                        BXLE       0,2,0(1)
+   000842       41               L          8,280(0,13)              N
+   000846                        SLA        8,2(0)
+   00084A                        LE         0,656(8,13)              DIF
+   00084E                        CE         0,1068(0,13)
+   000852                        L          14,100(0,13)             99
+   000856                        BCR        13,14
+   000858       42               L          0,1136(0,13)
+   00085C                        ST         0,284(0,13)              M
+   000860       43               L          7,1108(0,13)
+   000864                        L          0,1136(0,13)
+   000868                L180    ST         0,264(0,13)              I
+   00086C       44               L          1,280(0,13)              N
+   000870                        M          0,1140(0,13)
+   000874                        LR         9,1
+   000876                        SLA        9,2(0)
+   00087A                        LE         0,320(9,7)               ATRIX
+   00087E                        LTER       0,0
+   000880                        L          14,108(0,13)             42
+   000884                        BCR        7,14
+   000886       45       43      LE         0,1156(0,13)
+   00088A                        STE        0,792(0,7)               DIV
+   00088E       46               L          14,104(0,13)             40
+   000892                        BCR        15,14
+   000894       47       42      L          1,280(0,13)              N
+   000898                        M          0,1140(0,13)
+  DOS FORTRAN IV 360N-FO-479 3-8         SIMPLEX           DATE   03/29/70     TIME    12.13.56      PAGE 0010
+
+   00089C                        LR         9,1
+   00089E                        SLA        9,2(0)
+   0008A2                        LE         0,768(0,7)               FS
+   0008A6                        DE         0,320(9,7)               ATRIX
+   0008AA                        STE        0,792(0,7)               DIV
+   0008AE       48               LE         0,792(0,7)               DIV
+   0008B2                        L          8,284(0,13)              M
+   0008B6                        SLA        8,2(0)
+   0008BA                        CE         0,744(8,13)              DIV
+   0008BE                        L          14,188(0,13)             L188
+   0008C2                        BCR        11,14
+   0008C4                        L          0,264(0,13)              I
+   0008C8                        ST         0,284(0,13)              M
+   0008CC       49       40      A          7,1144(0,13)
+   0008D0                        L          0,264(0,13)              I
+   0008D4                        L          1,184(0,13)              L180
+   0008D8                        LA         2,1(0,0)
+   0008DC                        L          3,256(0,13)              R
+   0008E0                        BXLE       0,2,0(1)
+   0008E4       50               L          15,796(0,13)             IBCOM#
+   0008E8                        BAL        14,4(0,15)
+   0008EC                        DC         04000002
+   0008F0                        DC         000003DB
+   0008F4                        BAL        14,8(0,15)
+   0008F8                        DC         0450D118
+   0008FC                        L          0,1136(0,13)
+   000900                L196    ST         0,264(0,13)              I
+   000904                        L          8,264(0,13)              I
+   000908                        SLA        8,2(0)
+   00090C                        BAL        14,8(0,15)
+   000910                        DC         0478D2E8
+   000914                        L          0,264(0,13)              I
+   000918                        L          1,192(0,13)              L196
+   00091C                        LA         2,1(0,0)
+   000920                        L          3,256(0,13)              R
+   000924                        BXLE       0,2,0(1)
+   000928                        BAL        14,16(0,15)
+   00092C       52               L          15,796(0,13)             IBCOM#
+   000930                        BAL        14,4(0,15)
+   000934                        DC         04000002
+   000938                        DC         0000040F
+   00093C                        BAL        14,8(0,15)
+   000940                        DC         0450D11C
+   000944                        BAL        14,16(0,15)
+   000948       54               L          8,280(0,13)              N
+   00094C                        SLA        8,2(0)
+   000950                        LE         0,576(8,13)              CJR
+   000954                        L          9,284(0,13)              M
+   000958                        SLA        9,2(0)
+   00095C                        STE        0,696(9,13)              CJC
+   000960       55               L          1,280(0,13)              N
+   000964                        M          0,1140(0,13)
+   000968                        A          1,284(0,13)              M
+   00096C                        LR         9,1
+  DOS FORTRAN IV 360N-FO-479 3-8         SIMPLEX           DATE   03/29/70     TIME    12.13.56      PAGE 0011
+
+   00096E                        SLA        9,2(0)
+   000972                        LE         0,272(9,13)              ATRIX
+   000976                        STE        0,288(0,13)              SAVX
+   00097A       56               L          9,284(0,13)              M
+   00097E                        SLA        9,2(0)
+   000982                        LE         0,720(9,13)              FS
+   000986                        STE        0,292(0,13)              SAVFS
+   00098A       57               L          7,1108(0,13)
+   00098E                        L          6,1108(0,13)
+   000992                        L          0,1136(0,13)
+   000996                L204    ST         0,264(0,13)              I
+   00099A       58               L          9,284(0,13)              M
+   00099E                        SLA        9,2(0)
+   0009A2                        LE         0,340(9,6)               ATRIX
+   0009A6                        STE        0,584(0,7)               SAVER
+   0009AA       59       50      A          7,1144(0,13)
+   0009AE                        A          6,1148(0,13)
+   0009B2                        L          0,264(0,13)              I
+   0009B6                        L          1,196(0,13)              L204
+   0009BA                        LA         2,1(0,0)
+   0009BE                        L          3,260(0,13)              C
+   0009C2                        BXLE       0,2,0(1)
+   0009C6       60               L          4,1108(0,13)
+   0009CA                        L          5,1116(0,13)
+   0009CE                        L          0,1136(0,13)
+   0009D2                L212    ST         0,264(0,13)              I
+   0009D6       61               L          1,280(0,13)              N
+   0009DA                        M          0,1140(0,13)
+   0009DE                        LR         9,1
+   0009E0                        SLA        9,2(0)
+   0009E4                        LE         0,320(9,4)               ATRIX
+   0009E8                        STE        0,812(0,5)               SAVEC
+   0009EC       62               L          0,264(0,13)              I
+   0009F0                        S          0,284(0,13)              M
+   0009F4                        LTR        0,0
+   0009F6                        L          14,124(0,13)             62
+   0009FA                        BCR        8,14
+   0009FC       63       61      LE         0,292(0,13)              SAVFS
+   000A00                        DE         0,288(0,13)              SAVX
+   000A04                        ME         0,812(0,5)               SAVEC
+   000A08                        SE         0,764(0,5)               FS
+   000A0C                        LCER       0,0
+   000A0E                        STE        0,764(0,5)               FS
+   000A12       64               LR         7,5
+   000A14                        L          6,1108(0,13)
+   000A18                        L          0,1136(0,13)
+   000A1C                L220    ST         0,268(0,13)              J
+   000A20       65               LE         0,584(0,6)               SAVER
+   000A24                        DE         0,288(0,13)              SAVX
+   000A28                        ME         0,812(0,5)               SAVEC
+   000A2C                        SE         0,340(0,7)               ATRIX
+   000A30                        LCER       0,0
+   000A32                        STE        0,340(0,7)               ATRIX
+   000A36       66       63      A          7,1148(0,13)
+  DOS FORTRAN IV 360N-FO-479 3-8         SIMPLEX           DATE   03/29/70     TIME    12.13.56      PAGE 0012
+
+   000A3A                        A          6,1144(0,13)
+   000A3E                        L          0,268(0,13)              J
+   000A42                        L          1,204(0,13)              L220
+   000A46                        LA         2,1(0,0)
+   000A4A                        L          3,260(0,13)              C
+   000A4E                        BXLE       0,2,0(1)
+   000A52       67               L          14,116(0,13)             60
+   000A56                        BCR        15,14
+   000A58       68       62      LE         0,764(0,5)               FS
+   000A5C                        DE         0,288(0,13)              SAVX
+   000A60                        STE        0,764(0,5)               FS
+   000A64       69               LR         7,5
+   000A66                        L          0,1136(0,13)
+   000A6A                L228    ST         0,268(0,13)              J
+   000A6E       70               LE         0,340(0,7)               ATRIX
+   000A72                        DE         0,288(0,13)              SAVX
+   000A76                        STE        0,340(0,7)               ATRIX
+   000A7A       71       64      A          7,1148(0,13)
+   000A7E                        L          0,268(0,13)              J
+   000A82                        L          1,208(0,13)              L228
+   000A86                        LA         2,1(0,0)
+   000A8A                        L          3,260(0,13)              C
+   000A8E                        BXLE       0,2,0(1)
+   000A92       72       60      A          4,1144(0,13)
+   000A96                        A          5,1144(0,13)
+   000A9A                        L          0,264(0,13)              I
+   000A9E                        L          1,200(0,13)              L212
+   000AA2                        LA         2,1(0,0)
+   000AA6                        L          3,256(0,13)              R
+   000AAA                        BXLE       0,2,0(1)
+   000AAE       73               L          0,276(0,13)              MANUM
+   000AB2                        A          0,1136(0,13)
+   000AB6                        ST         0,276(0,13)              MANUM
+   000ABA       74               L          0,272(0,13)              NUMBR
+   000ABE                        S          0,1160(0,13)
+   000AC2                        LTR        0,0
+   000AC4                        L          14,96(0,13)              70
+   000AC8                        BCR        4,14
+   000ACA       75       80      L          15,796(0,13)             IBCOM#
+   000ACE                        BCR        0,0
+   000AD0                        BAL        14,4(0,15)
+   000AD4                        DC         04000002
+   000AD8                        DC         000003A5
+   000ADC                        BAL        14,16(0,15)
+   000AE0       76               L          0,1068(0,13)
+   000AE4                        ST         0,272(0,13)              NUMBR
+   000AE8       77               L          14,96(0,13)              70
+   000AEC                        BCR        15,14
+   000AEE       78       99      LE         0,1068(0,13)
+   000AF2                        STE        0,296(0,13)              OPT
+   000AF6       79               L          7,1108(0,13)
+   000AFA                        L          0,1136(0,13)
+   000AFE                L236    ST         0,264(0,13)              I
+   000B02       80               LE         0,744(0,7)               CJC
+  DOS FORTRAN IV 360N-FO-479 3-8         SIMPLEX           DATE   03/29/70     TIME    12.13.56      PAGE 0013
+
+   000B06                        ME         0,768(0,7)               FS
+   000B0A                        AE         0,296(0,13)              OPT
+   000B0E                        STE        0,296(0,13)              OPT
+   000B12       81       98      A          7,1144(0,13)
+   000B16                        L          0,264(0,13)              I
+   000B1A                        L          1,212(0,13)              L236
+   000B1E                        LA         2,1(0,0)
+   000B22                        L          3,256(0,13)              R
+   000B26                        BXLE       0,2,0(1)
+   000B2A       82               L          15,796(0,13)             IBCOM#
+   000B2E                        BCR        0,0
+   000B30                        BAL        14,4(0,15)
+   000B34                        DC         04000002
+   000B38                        DC         00000431
+   000B3C                        BAL        14,8(0,15)
+   000B40                        DC         0470D128
+   000B44                        BAL        14,16(0,15)
+   000B48       84               L          15,796(0,13)             IBCOM#
+   000B4C                        BAL        14,52(0,15)
+   000B50                        DC         05404040
+   000B54                        DC         4040
+                                 END
+    TOTAL MEMORY REQUIREMENTS 000B56 BYTES
+
+    HIGHEST SEVERITY LEVEL OF ERRORS FOR THIS MODULE WAS 0
+    12.13.56,TOTAL COMPILATION TIME,00.00.00
+// EXEC LNKEDT
+
+JOB  DEMOSMPX  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST   AUTOLINK   ILFIBCOM
+LIST   AUTOLINK   ILFADCON
+LIST   AUTOLINK   ILFFINT
+LIST   AUTOLINK   ILFFIOCS
+LIST   AUTOLINK   IJJCPD1
+LIST   AUTOLINK   ILFUNTAB
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        PHASE***  006000  006000  00A35F  1B 06 4  CSECT     SIMPLEX   006000  006000
+
+                                                   CSECT     ILFIBCOM  006B58  006B58
+                                                      ENTRY  IBCOM#    006B58
+                                                      ENTRY  READSW    0079E8
+                                                   *  ENTRY  OPSYS     00788C
+                                                      ENTRY  INTSW     0079EA
+                                                      ENTRY  PDPAR     007800
+                                                      ENTRY  DUMPSW#   00778A
+                                                   *  ENTRY  IJTINTSW  0079EA
+                                                      ENTRY  IOSWF     006C49
+
+                                                   CSECT     ILFFINT   008C18  008C18
+                                                      ENTRY  SAVERR    0090F8
+
+                                                   CSECT     ILFADCON  007B38  007B38
+                                                      ENTRY  ILFFCVEO  008622
+                                                      ENTRY  ILFFCVLO  007DBA
+                                                      ENTRY  ILFFCVIO  0080F8
+                                                      ENTRY  ILFFCVCO  00883C
+                                                      ENTRY  ILFFCVAO  007D2A
+                                                      ENTRY  ILFFCVZO  007C84
+                                                      ENTRY  INT6SW    008C00
+
+                                                   CSECT     ILFFIOCS  0091E8  0091E8
+                                                      ENTRY  ILFFBORG  009E74
+                                                      ENTRY  ILFBFORG  009E70
+                                                      ENTRY  IJSYSLO   009F80
+                                                   *  ENTRY  ADIOCR#   009DC4
+                                                   *  ENTRY  UBRSAVE   009E6C
+
+                                                   CSECT     ILFUNTAB  00A260  00A260
+
+                                                   CSECT     IJJCPD1   00A068  00A068
+                                                   *  ENTRY  IJJCPD1N  00A068
+                                                   *  ENTRY  IJJCPD3   00A068
+
+                                                   CSECT     IJ2L0005  009FF8  0091E8
+// EXEC
+
+
+
+
+                                            TABLEAU  NUMBER   1
+
+               CJC
+
+       CJR               0.0       0.0       0.0       0.250     0.500     0.750
+
+               0.0       1.000     0.0       0.0       2.000     3.000     1.000  2400.000
+               0.0       0.0       1.000     0.0       3.000     3.000     4.000  2400.000
+               0.0       0.0       0.0       1.000     2.000     5.000     8.000  2400.000
+
+       ZJ                0.0       0.0       0.0       0.0       0.0       0.0
+       DIF               0.0       0.0       0.0       0.250     0.500     0.750
+
+LARGEST  DIF  IS  COL.  6
+    DIV  =  2400.000
+    DIV  =   600.000
+    DIV  =   300.000
+
+SMALLEST  DIV  IS ROW  3
+
+
+
+
+
+                                            TABLEAU  NUMBER   2
+
+               CJC
+
+       CJR               0.0       0.0       0.0       0.250     0.500     0.750
+
+               0.0       1.000     0.0      -0.125     1.750     2.375     0.0    2100.000
+               0.0       0.0       1.000    -0.500     2.000     0.500     0.0    1200.000
+               0.750     0.0       0.0       0.125     0.250     0.625     1.000   300.000
+
+       ZJ                0.0       0.0       0.094     0.188     0.469     0.750
+       DIF               0.0       0.0      -0.094     0.063     0.031     0.0
+
+LARGEST  DIF  IS  COL.  4
+    DIV  =  1200.000
+    DIV  =   600.000
+    DIV  =  1200.000
+
+SMALLEST  DIV  IS ROW  2
+
+
+
+
+
+
+                                            TABLEAU  NUMBER   3
+
+               CJC
+
+       CJR               0.0       0.0       0.0       0.250     0.500     0.750
+
+               0.0       1.000    -0.875     0.313     0.0       1.938     0.0    1050.000
+               0.250     0.0       0.500    -0.250     1.000     0.250     0.0     600.000
+               0.750     0.0      -0.125     0.188     0.0       0.563     1.000   150.000
+
+       ZJ                0.0       0.031     0.078     0.250     0.484     0.750
+       DIF               0.0      -0.031    -0.078     0.0       0.016     0.0
+
+LARGEST  DIF  IS  COL.  5
+    DIV  =   541.935
+    DIV  =  2400.000
+    DIV  =   266.667
+
+SMALLEST  DIV  IS ROW  3
+
+
+
+
+
+                                            TABLEAU  NUMBER   4
+
+               CJC
+
+       CJR               0.0       0.0       0.0       0.250     0.500     0.750
+
+               0.0       1.000    -0.444    -0.333     0.0       0.0      -3.444   533.334
+               0.250     0.0       0.556    -0.333     1.000     0.0      -0.444   533.333
+               0.500     0.0      -0.222     0.333     0.0       1.000     1.778   266.667
+
+       ZJ                0.0       0.028     0.083     0.250     0.500     0.778
+       DIF               0.0      -0.028    -0.083     0.0       0.0      -0.028
+
+
+          THE OPTIMAL SOLUTION IS   266.667
+// EXEC
+
+
+
+
+                                            TABLEAU  NUMBER   1
+
+               CJC
+
+       CJR               0.0       0.0       0.0     100.000   200.000
+
+               0.0       1.000     0.0       0.0     150.000    60.000 30000.000
+               0.0       0.0       1.000     0.0      50.000    40.000 13000.000
+               0.0       0.0       0.0       1.000    10.000    20.000  5000.000
+
+       ZJ                0.0       0.0       0.0       0.0       0.0
+       DIF               0.0       0.0       0.0     100.000   200.000
+
+LARGEST  DIF  IS  COL.  5
+    DIV  =   500.000
+    DIV  =   325.000
+    DIV  =   250.000
+
+SMALLEST  DIV  IS ROW  3
+
+
+
+
+
+                                            TABLEAU  NUMBER   2
+
+               CJC
+
+       CJR               0.0       0.0       0.0     100.000   200.000
+
+               0.0       1.000     0.0      -3.000   120.000     0.0   15000.000
+               0.0       0.0       1.000    -2.000    30.000     0.0    3000.000
+             200.000     0.0       0.0       0.050     0.500     1.000   250.000
+
+       ZJ                0.0       0.0      10.000   100.000   200.000
+       DIF               0.0       0.0     -10.000     0.0       0.0
+
+
+          THE OPTIMAL SOLUTION IS 50000.000
+// EXEC
+
+
+
+
+                                            TABLEAU  NUMBER   1
+
+               CJC
+
+       CJR               0.0       0.0       0.0       1.000     2.000     3.000     4.000
+
+               0.0       1.000     0.0       0.0       0.400     0.500     0.600     0.0     437.000
+               0.0       0.0       1.000     0.0       0.100     0.0       0.300     1.000   281.000
+               0.0       0.0       0.0       1.000     0.0       0.700     0.800     0.400   883.000
+
+       ZJ                0.0       0.0       0.0       0.0       0.0       0.0       0.0
+       DIF               0.0       0.0       0.0       1.000     2.000     3.000     4.000
+
+LARGEST  DIF  IS  COL.  7
+    DIV  =999999.000
+    DIV  =   281.000
+    DIV  =  2207.500
+
+SMALLEST  DIV  IS ROW  2
+
+
+
+
+
+                                            TABLEAU  NUMBER   2
+
+               CJC
+
+       CJR               0.0       0.0       0.0       1.000     2.000     3.000     4.000
+
+               0.0       1.000     0.0       0.0       0.400     0.500     0.600     0.0     437.000
+               4.000     0.0       1.000     0.0       0.100     0.0       0.300     1.000   281.000
+               0.0       0.0      -0.400     1.000    -0.040     0.700     0.680     0.0     770.600
+
+       ZJ                0.0       4.000     0.0       0.400     0.0       1.200     4.000
+       DIF               0.0      -4.000     0.0       0.600     2.000     1.800     0.0
+
+LARGEST  DIF  IS  COL.  5
+    DIV  =   874.000
+    DIV  =999999.000
+    DIV  =  1100.857
+
+SMALLEST  DIV  IS ROW  1
+
+
+
+
+
+
+                                            TABLEAU  NUMBER   3
+
+               CJC
+
+       CJR               0.0       0.0       0.0       1.000     2.000     3.000     4.000
+
+               2.000     2.000     0.0       0.0       0.800     1.000     1.200     0.0     874.000
+               4.000     0.0       1.000     0.0       0.100     0.0       0.300     1.000   281.000
+               0.0      -1.400    -0.400     1.000    -0.600     0.0      -0.160     0.0     158.800
+
+       ZJ                4.000     4.000     0.0       2.000     2.000     3.600     4.000
+       DIF              -4.000    -4.000     0.0      -1.000     0.0      -0.600     0.0
+
+
+          THE OPTIMAL SOLUTION IS  2872.000
+EOJ DEMOSMPX                                                            12.13.57,DURATION 00.00.09

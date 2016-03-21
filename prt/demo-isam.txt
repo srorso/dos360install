@@ -1,0 +1,2222 @@
+
+// JOB DEMOISAC DEMONSTRATE ISAM ASSEMBLER CREATE                       12.16.24
+// OPTION LINK
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+DEMOISAC  SD  01 000000 000751
+IJJFCIZD  ER  02
+IJHZLZZZ  ER  03
+IJDFAZIZ  ER  04
+       ISAM DEMONSTRATION-CREATE                                                                               PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      2 * THIS PROGRAM GIVES AN EXAMPLE OF USAGE OF THE INDEXED-
+                                      3 * SEQUENTIAL ACCESS METHOD.  IT BUILDS A FILE FROM A SEQUENTIAL FILE.
+                                      4 * IT ALSO SHOWS AN EXAMPLE OF A SELF-RELOCATING PROGRAM USING
+                                      5 * REGISTER NOTATION IN THE MACROS AND USES THE SYSTEM LINE COUNTER
+                                      6 * FOR PAGE OVERFLOW.
+                                      7 *        PRINT NOGEN
+000000                                8 DEMOISAC CSECT
+000000                                9 R0       EQU   0                   WORK REGISTER                        C1R10400
+000001                               10 R1       EQU   1                   WORK, ALSO POINTER TO I/O CCB        C1R10500
+000002                               11 R2       EQU   2                   LINKAGE FOR INTERNAL SUBROUTINES     C1R10600
+000003                               12 R3       EQU   3                   CYLINDER COUNT REMAINING             C1R10700
+000004                               13 R4       EQU   4                   CURRENT CYLINDER NR                  C1R10800
+000005                               14 R5       EQU   5                   TRACK COUNT REMAINING                C1R10900
+000006                               15 R6       EQU   6                   CURRENT TRACK NR                     C1R11000
+000007                               16 R7       EQU   7                   RECORD COUNT REMAINING               C1R11100
+000008                               17 R8       EQU   8                   CURRENT RECORD NR                    C1R11200
+000009                               18 R9       EQU   9                                                        C1R11300
+00000A                               19 R10      EQU   10                                                       C1R11400
+00000B                               20 R11      EQU   11                  PROGRAM BASE REGISTER 1              C1R11500
+00000C                               21 R12      EQU   12                  PROGRAM BASE REGISTER 2              C1R11600
+00000D                               22 R13      EQU   13                                                       C1R11700
+00000E                               23 R14      EQU   14                  WORK REGISTER                        C1R11800
+00000F                               24 R15      EQU   15                  WORK REGISTER                        C1R11900
+000000 05C0                          25          BALR  R12,0
+000002                               26          USING *,R12
+000000                               27          USING PRDSECT,R10
+                                     28          OPENR READER,ISFILE,PRINTER   OPEN FILES
+                                     29+* 360N-CL-453 OPENR    CHANGE LEVEL 3-3                             3-3
+000002 0700                          30+         CNOP  0,4
+000004                               31+         DC    0F'0'
+000004 4110 C036            00038    32+         LA    1,IJJO0001+4 PUT ACTUAL LOCATION ADDR. IN REG.
+000008 9258 C002      00004          33+         MVI   *-4,X'58' DISABLE SUBSEQUENT RELOCATION
+00000C 5800 C036            00038    34+         L     0,IJJO0001+4 PUT RELOCATION FACTOR IN REG
+000010 1B10                          35+         SR    1,0 FIND DISPLACEMENT FACTOR
+000012 5800 C03A            0003C    36+         L     0,IJJO0001+4+4*1 PUT FILENANE ADDR. IN REG. 0
+000016 1A01                          37+         AR    0,1 ADD DISPLACEMENT FACTOR TO ADDR.
+000018 5000 C03A            0003C    38+         ST    0,IJJO0001+4+4*1 STORE NEW ADDR. BACK INTO ADCON
+00001C 5800 C03E            00040    39+         L     0,IJJO0001+4+4*2 PUT FILENANE ADDR. IN REG. 0
+000020 1A01                          40+         AR    0,1 ADD DISPLACEMENT FACTOR TO ADDR.
+000022 5000 C03E            00040    41+         ST    0,IJJO0001+4+4*2 STORE NEW ADDR. BACK INTO ADCON
+000026 5800 C042            00044    42+         L     0,IJJO0001+4+4*3 PUT FILENANE ADDR. IN REG. 0
+00002A 1A01                          43+         AR    0,1 ADD DISPLACEMENT FACTOR TO ADDR.
+00002C 5000 C042            00044    44+         ST    0,IJJO0001+4+4*3 STORE NEW ADDR. BACK INTO ADCON
+000030 4110 C2B6            002B8    45+         LA    1,=C'$$BOPENR' FETCH OPENR TRANSIENT PHASE
+000034                               46+         CNOP  0,4
+000034 4500 C046            00048    47+IJJO0001 BAL   0,*+8+4*(4-1) TO RELOCATE DTF ADCONS
+000038 00000038                      48+         DC    A(*) ADDRESS USED BY OPENR FOR RELOCATION
+00003C 000002E8                      49+         DC    A(READER) FILENAME ADDRESS
+000040 000003D8                      50+         DC    A(ISFILE) FILENAME ADDRESS
+000044 000004E0                      51+         DC    A(PRINTER) FILENAME ADDRESS
+000048 0A02                          52+         SVC   2
+       ISAM DEMONSTRATION-CREATE                                                                               PAGE    2
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+00004A 9240 A000      00000          53          MVI   PRTLINE,C' '        CLEAR PRINT LINE
+00004E D283 A001 A000 00001 00000    54          MVC   PRTLINE+1(132),PRTLINE
+                                     55          COMRG
+                                     56+* 360N-CL-453 COMRG    CHANGE LEVEL 3-0
+000054 5810 0014            00014    57+         L     1,20
+000058 0A21                          58+         SVC   33
+00005A D207 C20E 1000 00210 00000    59          MVC   TODAY,0(R1)         GET SYSTEM DATE
+000060 1B22                          60          SR    R2,R2                 AND SYSTEM LINE COUNTER
+000062 4321 004E            0004E    61          IC    R2,78(R1)
+000066 4E20 C206            00208    62          CVD   R2,DOUBLE
+00006A F817 C202 C206 00204 00208    63          ZAP   SYSLC,DOUBLE
+000070 4530 C164            00166    64          BAL   R3,HEADING          PRINT FIRST PAGE HEADING
+000074 4100 C3D6            003D8    65          LA    R0,ISFILE           FORMAT EXTENTS FOR ISAM
+                                     66          SETFL (0)
+                                     67+* 360N-IO-457 SETFL    CHANGE LEVEL 3-0
+000078 4110 C2BE            002C0    68+         LA    1,=C'$$BSETFL'
+00007C 0A02                          69+         SVC   2 FETCH SETFL PHASE 1
+00007E 1810                          70+         LR    1,0 ADDR OF DTF TO REG 1
+000080 91FF 101E      0001E          71          TM    30(R1),X'FF'        IF ANY ERRORS,
+000084 4770 C14A            0014C    72          BNZ   CANCEL                CANCEL
+                                     73 *
+000088 4110 C2E6            002E8    74 MAINLOOP LA    R1,READER           READ A CARD
+                                     75          GET   (1)
+                                     76+* 360N-CL-453 GET      CHANGE LEVEL 3-0
+00008C                               77+         DC    0H'0'
+00008C 58F1 0010            00010    78+         L     15,16(1) GET LOGIC MODULE ADDRESS
+000090 45EF 0008            00008    79+         BAL   14,8(15) BRANCH TO GET ROUTINE
+000094 95F1 C216      00218          80          CLI   EOPSW,C'1'          IF BOTTOM OF PAGE,
+000098 4770 C09E            000A0    81          BNE   *+8
+00009C 4530 C164            00166    82          BAL   R3,HEADING            GO TO NEXT PAGE
+0000A0 D202 A005 C219 00005 0021B    83          MVC   PRTLINE+5(3),CEMPNO
+0000A6 D24A A00B C217 0000B 00219    84          MVC   PRTLINE+11(L'ISREC),CARDIN
+0000AC FA10 C200 C2E0 00202 002E2    85          AP    LINCT,=P'1'
+0000B2 4520 C1A0            001A2    86          BAL   R2,PRINT
+0000B6 D24A C267 C217 00269 00219    87          MVC   ISREC,CARDIN        MOVE DATA TO RECORD
+0000BC 4110 C3D6            003D8    88          LA    R1,ISFILE           WRITE RECORD
+                                     89          WRITE (1),NEWKEY
+                                     90+* 360N-CL-453 WRITE    CHANGE LEVEL 3-0
+0000C0                               91+         DC    0H'0'
+0000C0 58F1 0010            00010    92+         L     15,16(1) GET LOGIC MODULE ADDRESS
+0000C4 45EF 0000            00000    93+         BAL   14,0(15)
+0000C8 91FF 101E      0001E          94          TM    30(R1),X'FF'        IF ANY ERRORS,
+0000CC 4770 C14A            0014C    95          BNZ   CANCEL                CANCEL
+0000D0 47F0 C086            00088    96          B     MAINLOOP
+                                     97 *
+0000D4 4110 C3D6            003D8    98 ENDOFJOB LA    R1,ISFILE           WRITE LAST BLOCK, EOF, ETC.
+                                     99          ENDFL (1)
+                                    100+* 360N-IO-457 ENDFL    CHANGE LEVEL 3-6                             3-6
+0000D8 1811                         101+         LR    1,1 3-4
+0000DA 58F1 0010            00010   102+         L     15,16(1) GET LOGIC MODULE ADDRESS         3-4
+0000DE 9101 1015      00015         103+         TM    21(1),X'01' ARE THERE 2 I/O AREAS        3-4
+       ISAM DEMONSTRATION-CREATE                                                                               PAGE    3
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+0000E2 4780 C0EA            000EC   104+         BZ    *+10 NO, BRANCH                   3-4
+0000E6 45EF 0006            00006   105+         BAL   14,6(15) 3-6
+0000EA AA                           106+         DC    X'AA' 3-4
+0000EB 00
+0000EC 1801                         107+         LR    0,1 3-4
+0000EE 4110 C2C6            002C8   108+         LA    1,=C'$$BENDFL' 3-4
+0000F2 0A02                         109+         SVC   2 3-4
+0000F4 1810                         110+         LR    1,0 ADDR OF DTF TO REG 1
+0000F6 91FF 101E      0001E         111          TM    30(R1),X'FF'        IF ANY ERRORS,
+0000FA 4770 C14A            0014C   112          BNZ   CANCEL                CANCEL
+                                    113          CLOSER READER,ISFILE,PRINTER  CLOSE FILES
+                                    114+* 360N-CL-453  CLOSER  CHANGE LEVEL 3-11                           3-11
+0000FE 0700                         115+         CNOP  0,4
+000100                              116+         DC    0F'0'
+000100 47F0 C106            00108   117+         B     *+8
+000104 00000104                     118+         DC    A(*) OLD LOCATION ADDRESS
+000108 4110 C102            00104   119+         LA    1,*-4 PUT ACT. LOCATION ADDR. IN REG.
+00010C 9258 C106      00108         120+         MVI   *-4,X'58' DISABLE SUBSEQUENT RELOCATION
+000110 5800 C102            00104   121+         L     0,*-12 PUT OLD LOCATION ADDRESS IN REG.
+000114 1B10                         122+         SR    1,0 FIND DISPLACEMENT FACTOR
+000116 5800 C13A            0013C   123+         L     0,IJJC0007+1*4 GET POINTER TO DTF
+00011A 1A01                         124+         AR    0,1 ADD DISPLACEMENT FACTOR
+00011C 5000 C13A            0013C   125+         ST    0,IJJC0007+1*4 AND STORE BACK INTO ADCON
+000120 5800 C13E            00140   126+         L     0,IJJC0007+2*4 GET POINTER TO DTF
+000124 1A01                         127+         AR    0,1 ADD DISPLACEMENT FACTOR
+000126 5000 C13E            00140   128+         ST    0,IJJC0007+2*4 AND STORE BACK INTO ADCON
+00012A 5800 C142            00144   129+         L     0,IJJC0007+3*4 GET POINTER TO DTF
+00012E 1A01                         130+         AR    0,1 ADD DISPLACEMENT FACTOR
+000130 5000 C142            00144   131+         ST    0,IJJC0007+3*4 AND STORE BACK INTO ADCON
+000134 4110 C2CE            002D0   132+         LA    1,=C'$$BCLOSE'
+000138                              133+         CNOP  0,4
+000138 4500 C146            00148   134+IJJC0007 BAL   0,*+(4-1)*4+4
+00013C 000002E8                     135+         DC    A(READER) FILENAME ADDRESS             3-9
+000140 000003D8                     136+         DC    A(ISFILE) FILENAME ADDRESS             3-9
+000144 000004E0                     137+         DC    A(PRINTER) FILENAME ADDRESS             3-9
+000148 0A02                         138+         SVC   2 FETCH TRANSIENT ROUTINE
+                                    139          EOJ
+                                    140+* 360N-CL-453 EOJ      CHANGE LEVEL 3-0
+00014A 0A0E                         141+         SVC   14
+00014C F321 C1E1 101E 001E3 0001E   142 CANCEL   UNPK  MERR1C(3),30(2,R1)  MAKE ERRORS PRINTABLE
+000152 DC01 C1E1 C0D6 001E3 000D8   143          TR    MERR1C(2),TRTABLE-X'F0'
+000158 D20C A00A C1D6 0000A 001D8   144          MVC   PRTLINE+10(L'MERR1-1),MERR1
+00015E 4520 C1A0            001A2   145          BAL   R2,PRINT            PRINT ISAM STATUS BYTE
+                                    146          CANCEL
+                                    147+* 360N-CL-453 CANCEL   CHANGE LEVEL 3-6                             3-6
+000162 1B00                         148+         SR    0,0 3-3
+000164 0A06                         149+         SVC   6 3-3
+                                    150 *
+000166 D207 A001 C20E 00001 00210   151 HEADING  MVC   PRTLINE+1(L'TODAY),TODAY
+00016C D218 A01E C1E4 0001E 001E6   152          MVC   PRTLINE+30(L'MHEAD1),MHEAD1
+000172 FA20 C1FD C2E0 001FF 002E2   153          AP    PAGENO,=P'1'
+       ISAM DEMONSTRATION-CREATE                                                                               PAGE    4
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+000178 D203 A06F C2D6 0006F 002D8   154          MVC   PRTLINE+111(4),=C'PAGE'
+00017E D205 A073 C2DA 00073 002DC   155          MVC   PRTLINE+115(6),=X'402020202120'
+000184 DE05 A073 C1FD 00073 001FF   156          ED    PRTLINE+115(6),PAGENO
+00018A 92F1 A000      00000         157          MVI   PRTLINE,C'1'        SKIP TO NEW PAGE
+00018E 4520 C1A0            001A2   158          BAL   R2,PRINT
+000192 92F0 A000      00000         159          MVI   PRTLINE,C'0'        DOUBLE SPACE NEXT TIME
+000196 F810 C200 C2E1 00202 002E3   160          ZAP   LINCT,=P'2'         RESET LINE COUNTER
+00019C 92F0 C216      00218         161          MVI   EOPSW,C'0'          RESET END-OF-PAGE SWITCH
+0001A0 07F3                         162          BR    R3
+0001A2 4110 C4DE            004E0   163 PRINT    LA    R1,PRINTER
+                                    164          PUT   (1)
+                                    165+* 360N-CL-453 PUT          CHANGE LEVEL 3-5                         3-5
+0001A6                              166+         DC    0H'0'
+0001A6 58F1 0010            00010   167+         L     15,16(1) GET LOGIC MODULE ADDRESS     3-5
+0001AA 45EF 000C            0000C   168+         BAL   14,12(15) BRANCH TO PUT ROUTINE        3-5
+0001AE F911 C200 C202 00202 00204   169          CP    LINCT,SYSLC         CHECK FOR BOTTOM OF PAGE
+0001B4 4740 C1BA            001BC   170          BL    *+8
+0001B8 92F1 C216      00218         171          MVI   EOPSW,C'1'          INDICATE BOTTOM OF PAGE
+0001BC 9240 A000      00000         172          MVI   PRTLINE,C' '        CLEAR PRINT LINE
+0001C0 D283 A001 A000 00001 00000   173          MVC   PRTLINE+1(132),PRTLINE
+0001C6 07F2                         174          BR    R2
+0001C8 F0F1F2F3F4F5F6F7             175 TRTABLE  DC    C'0123456789ABCDEF'
+0001D8 C9E2C1D440C5D9D9             176 MERR1    DC    C'ISAM ERROR-XX '
+0001E3                              177 MERR1C   EQU   MERR1+L'MERR1-3
+0001E6 C9E2C1D440C4C5D4             178 MHEAD1   DC    C'ISAM DEMONSTRATION-CREATE'
+0001FF 00000C                       179 PAGENO   DC    PL3'0'
+000202 000C                         180 LINCT    DC    PL2'0'
+000204                              181 SYSLC    DS    PL2
+000208                              182 DOUBLE   DS    D
+000210                              183 TODAY    DS    CL8
+000218                              184 EOPSW    DS    C
+000219                              185 CARDIN   DS    0CL80
+000219                              186          DS    CL2
+00021B                              187 CEMPNO   DS    CL3
+00021E                              188          DS    CL75
+000269                              189 ISREC    DS    CL75
+000000                              190 PRDSECT  DSECT
+000000                              191 PRTLINE  DS    CL133
+000000                              192 DEMOISAC CSECT
+0002B8                              193          LTORG
+0002B8 5B5BC2D6D7C5D5D9             194                =C'$$BOPENR'
+0002C0 5B5BC2E2C5E3C6D3             195                =C'$$BSETFL'
+0002C8 5B5BC2C5D5C4C6D3             196                =C'$$BENDFL'
+0002D0 5B5BC2C3D3D6E2C5             197                =C'$$BCLOSE'
+0002D8 D7C1C7C5                     198                =C'PAGE'
+0002DC 402020202120                 199                =X'402020202120'
+0002E2 1C                           200                =P'1'
+0002E3 2C                           201                =P'2'
+                                    202 READER   DTFDI DEVADDR=SYSIPT,EOFADDR=ENDOFJOB,                        X
+                                                       IOAREA1=CARDIN,RECSIZE=80
+                                    203+* 360N-CL-453  DTFDI  CHANGE LEVEL 3-11                            3-11
+       ISAM DEMONSTRATION-CREATE                                                                               PAGE    5
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+0002E8                              205+         DS    0D
+0002E8 0000                         206+READER   DC    H'0' RESIDUAL COUNT
+0002EA 8200                         207+         DC    X'8200' COMMUNICATION BYTES                        3-3
+0002EC 0800                         208+         DC    X'0800' CSW STATUS BYTES
+0002EE 0001                         209+         DC    X'0001' LOGICAL UNIT
+0002F0 00                           210+         DC    X'00'
+0002F1 000340                       211+         DC    AL3(IJJD0011) CCW ADDRESS
+0002F4 00                           212+         DC    X'00' STATUS BYTE
+0002F5 000000                       213+         DC    XL3'0' CSW CCW ADDRESS
+0002F8 00                           214+         DC    X'00'
+0002F9 000000                       215+         DC    VL3(IJJFCIZD) 3-8
+0002FC 33                           216+         DC    X'33' DTF FILE TYPE
+0002FD 02                           217+         DC    X'02'
+0002FE D9C5C1C4C5D940               218+         DC    CL7'READER' FILE NAME
+000305 00                           219+         DC    X'00' DASD INDICATOR
+000306 000000000000                 220+         DC    6X'00' FMT 1 DSCB DISK ADDRESS
+00030C 0000                         221+         DC    2X'00' DISK VOLUME SEQUENCE NUMBER
+00030E 08                           222+         DC    X'08' OPEN SWITCH BYTE
+00030F 00                           223+         DC    X'00' XTENT SEQ. NO. OF CURRENT XTENT
+000310 00                           224+         DC    X'00' SEQ NO OF LAST XTENT OR PUNCH CNSTNT
+000311 20                           225+         DC    X'20' OPEN INDICATORS
+000312 20                           226+         DC    X'20' DEVICE TYPE INDICATORS
+000313 F3                           227+         DC    X'F3' LOGIC MODULE DEVICE INDICATORS
+000314 80                           228+         DC    AL1(128) LOGIC MODULE OPTION SWITCHES
+000315 000219                       229+         DC    AL3(CARDIN) ALTERNATE I/O AREA ADDRESS
+000318 80000000                     230+         DC    X'80000000' OPEN/CLOSE INDICATORS
+00031C 0000                         231+         DC    2X'00' LOWER XTENT HEAD LIMIT
+00031E 00000000                     232+         DC    4X'00' XTENT UPPER LIMIT
+000322 0000                         233+IJJA0011 DC    H'0' BB
+000324 0000FF00                     234+         DC    X'0000FF00' CYLINDER AND HEAD
+000328 00                           235+         DC    X'00' RECORD FOR DISK, CONSTANT FOR PUNCH
+000329 0000D4                       236+         DC    AL3(ENDOFJOB) EOF ADDRESS
+00032C 00000000                     237+         DC    4X'00' CCHH.CONTROL BUCKET
+000330 1A                           238+         DC    AL1(25+1) NO. OF RECORDS/TRACK + 1
+000331 01                           239+         DC    X'01' FIRST RECORD
+000332 0018                         240+         DC    X'0018' CONSTANT
+000334 00000000                     241+IJJB0011 DC    4X'00' CCHH COUNT ID
+000338 01                           242+         DC    X'01' COUNT FIELD RECORD
+000339 00                           243+         DC    X'00' KEY LENGTH
+00033A 0050                         244+         DC    H'80' DATA LENGTH
+00033C 4700 0000            00000   245+         NOP   0(0)
+000340 0700032240000006             246+IJJD0011 CCW   X'07',IJJA0011,X'40',6 SEEK TRACK
+000348 3100032440000005             247+         CCW   X'31',IJJA0011+2,X'40',5 SEARCH
+000350 0800034820000001             248+         CCW   X'08',IJJD0011+8,X'20',1 TRANSFER
+000358 0600021920000050             249+         CCW   X'06',CARDIN,X'20',80 INPUT
+000360 0000000000000000             250+         DC    112X'00'
+0003D0 47FF 001C            0001C   251+         B     28(15) WLR OPTION
+0003D4 47FF 0000            00000   252+         B     0(15) ERROR EXIT
+                                    253 ISFILE   DTFIS DSKXTNT=3,IOROUT=LOAD,CYLOFL=2,VERIFY=YES,              X
+                                                       DEVICE=2314,HINDEX=2314,                                X
+                                                       RECFORM=FIXBLK,RECSIZE=75,NRECDS=4,                     X
+       ISAM DEMONSTRATION-CREATE                                                                               PAGE    6
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                                       KEYLOC=3,KEYLEN=3,                                      X
+                                                       IOAREAL=ISAMIOL1,WORKL=ISREC
+                                    254+* 360N-IO-457 DTFIS    CHANGE LEVEL 3-12                           3-12
+                                    255+* 360N-IO-457 DTFIS1  CHANGE LEVEL 3-9                              3-9
+0003D8                              256+         DC    0D'0' 3-4
+0003D8 0000                         257+ISFILE   DC    XL2'00' 3-8
+0003DA 80                           258+         DC    B'10000000' 3-11
+0003DB 0000000000                   259+         DC    XL5'0' 3-4
+0003E0 00000458                     260+         DC    A(ISFILEB) CCW ADDR
+0003E4 00000000                     261+         DC    XL4'0'
+0003E8 00                           262+         DC    B'00000000' FLAG BYTE                    3-9
+0003E9 000000                       263+         DC    VL3(IJHZLZZZ) LOGIC MODULE ADDR            3-9
+0003EC 24                           264+         DC    AL1(36) TYPE FILE INDICATOR          3-9
+0003ED 2C                           265+         DC    B'00101100' OPTION CO3-4
+0003EE C9E2C6C9D3C540               266+         DC    CL7'ISFILE' FILE NAME
+0003F5 01                           267+         DC    AL1(1) PRIME DATA DEVICE TYPE INDICATOR
+0003F6 00                           268+ISFILEC  DC    XL1'0' STATUS INDICATORS
+0003F7 01                           269+         DC    AL1(1) INDEX DEVICE TYPE INDICATOR
+0003F8 3E                           270+         DC    AL1((ISFILEE-ISFILE)/4) REL POS XTNT-CELL TABLE
+0003F9 0000                         271+         DC    AL2(0) 1ST PD TRK IN CYL            3-9
+0003FB 26                           272+         DC    AL1(38) 1ST PD RCD IN CYL
+0003FC 0011                         273+         DC    AL2(17) LAST PD TRK IN CYL
+0003FE 2E                           274+         DC    AL1(46) HI RECORD ON MI/CI TRACK
+0003FF 10                           275+         DC    AL1(16) HI RECORD ON PD TRACK
+000400 1F                           276+         DC    AL1(31) HI RCD ON OVFLO TRK          3-9
+000401 28                           277+         DC    AL1(40) HI RCD ON TI TRK - MAY BE SHARED
+000402 28                           278+         DC    AL1(40) HI RCD ON TI TRK             3-9
+000403 0000000000000000             279+         DC    XL22'0'
+000419 01                           280+         DC    AL1(1) NO OF INDEX LEVELS
+00041A 0000000000000000             281+ISFILEH  DC    XL8'0' LST PRIME DATA RCD ADDR
+000422 004B                         282+         DC    H'75' LOGICAL RCD LEN
+000424 0003                         283+         DC    H'3' KEY LEN
+000426 012C                         284+         DC    H'300' BLOCK LENGTH
+000428 0000000000000000             285+         DC    XL14'0'
+000436 0003                         286+         DC    H'3' KEY LOCATION                 3-9
+                                    287+*   END OF COMMON TABLE
+000438 0000000000000000             288+ISFILES  DC    XL8'0' SEEK/SRCH BKT
+000440 0000000000000000             289+ISFILEP  DC    XL24'0'
+000458 0000000000000000             290+ISFILEB  DC    7D'0' CCWS BUILT BY SETFL
+000490 00000510                     291+ISFILEM  DC    A(ISAMIOL1) ADDRRESS IOAREA
+000494 00000269                     292+         DC    A(ISREC) ADDR WORKL                   3-9
+000498 0000026B                     293+         DC    A(ISREC+3-1) ADDR KEY IN WORKL
+00049C 00000000                     294+         DC    F'0' BLOCK POSITION               3-9
+0004A0 00                           295+         DC    B'00000000' MI, XTNSN INDIC
+0004A1 0000000000000000             296+         DC    XL45'0' FIELDS FILLED BY SETFL
+0004CE 0010                         297+         DC    AL2(4*(3+1)) POINTER TO PREVIOUS I/O AREA 3-4
+0004D0 0000000000000000             298+ISFILEE  DC    3F'0' XTNT-CELL TABLE
+0004DC FFFFFFFF                     299+         DC    X'FFFFFFFF' END OF XTNT-CELL TABLE
+                                    300 PRINTER  DTFPR DEVADDR=SYSLST,BLKSIZE=133,CTLCHR=ASA,                  X
+                                                       IOAREA1=PRNTOUT1,IOAREA2=PRNTOUT2,IOREG=(10)
+                                    301+* 360 N-CL-453 DTFPR       CHANGE LEVEL 3-9                         3-9
+       ISAM DEMONSTRATION-CREATE                                                                               PAGE    7
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+0004E0                              302+         DC    0D'0'
+0004E0 000080000000                 303+PRINTER  DC    X'000080000000' RES. COUNT, COM. BYTES, STATUS BYTES 3-9
+0004E6 00                           304+         DC    AL1(0) LOGICAL UNIT CLASS
+0004E7 03                           305+         DC    AL1(3) LOGICAL UNIT
+0004E8 00000508                     306+         DC    A(*+32) CCW  ADDR.
+0004EC 00000000                     307+         DC    4X'00' CCB-ST BYTE,CSW CCW ADDRESS
+0004F0 00                           308+         DC    AL1(0) 3-9
+0004F1 000000                       309+         DC    VL3(IJDFAZIZ) ADDR OF LOGIC MODUL3-8
+0004F4 08                           310+         DC    X'08' DTF TYPE  (PRINTER)
+0004F5 34                           311+         DC    AL1(52) SWITCHES
+0004F6 09                           312+         DC    X'09' NORMAL  COMM. CODE
+0004F7 09                           313+         DC    X'09' CONTROL COMM. CODE
+0004F8 00000648                     314+         DC    A(PRNTOUT1+1) ADDRESS OF DATA IN IOAREA1
+0004FC 00000000                     315+         DC    4X'00' BUCKET                      3-5
+000500 0700                         316+         NOPR  0 PUT LENGTH IN REG12 (ONLY UNDEF.
+000502 41AE 0000            00000   317+         LA    10,0(14) LOAD USER POINTER REG
+000506 0000                         318+         DC    2X'00' NOT USED                    3-5
+000508 090006CD20000084             319+         CCW   9,PRNTOUT2+1,X'20',133-1
+000510                              320+IJJZ0013 EQU   *
+000510                              321 ISAMIOL1 DS    CL311
+000647                              322 PRNTOUT1 DS    CL133
+0006CC                              323 PRNTOUT2 DS    CL133
+                                    324          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      0C     000038
+   01       01      0C     00003C
+   01       01      0C     000040
+   01       01      0C     000044
+   01       01      0C     000104
+   01       01      0C     00013C
+   01       01      0C     000140
+   01       01      0C     000144
+   01       01      08     0002F1
+   01       02      18     0002F9
+   01       01      08     000315
+   01       01      08     000329
+   01       01      08     000341
+   01       01      08     000349
+   01       01      08     000351
+   01       01      08     000359
+   01       01      0C     0003E0
+   01       03      18     0003E9
+   01       01      0C     000490
+   01       01      0C     000494
+   01       01      0C     000498
+   01       01      0C     0004E8
+   01       04      18     0004F1
+   01       01      0C     0004F8
+   01       01      08     000509
+                                             CROSS-REFERENCE                                                   PAGE    1
+
+
+SYMBOL    LEN  VALUE  DEFN     REFERENCES                                                                       03/29/70
+
+CANCEL   00006 00014C 00142   0072  0095  0112
+CARDIN   00080 000219 00185   0084  0087  0229  0249
+CEMPNO   00003 00021B 00187   0083
+DEMOISAC 00001 000000 00008   0192
+DOUBLE   00008 000208 00182   0062  0063
+ENDOFJOB 00004 0000D4 00098   0236
+EOPSW    00001 000218 00184   0080  0161  0171
+HEADING  00006 000166 00151   0064  0082
+IJJA0011 00002 000322 00233   0246  0247
+IJJB0011 00001 000334 00241
+IJJC0007 00004 000138 00134   0123  0125  0126  0128  0129  0131
+IJJD0011 00008 000340 00246   0211  0248
+IJJO0001 00004 000034 00047   0032  0034  0036  0038  0039  0041  0042  0044
+IJJZ0013 00001 000510 00320
+ISAMIOL1 00311 000510 00321   0291
+ISFILE   00002 0003D8 00257   0050  0065  0088  0098  0136  0270
+ISFILEB  00008 000458 00290   0260
+ISFILEC  00001 0003F6 00268
+ISFILEE  00004 0004D0 00298   0270
+ISFILEH  00008 00041A 00281
+ISFILEM  00004 000490 00291
+ISFILEP  00024 000440 00289
+ISFILES  00008 000438 00288
+ISREC    00075 000269 00189   0084  0087  0292  0293
+LINCT    00002 000202 00180   0085  0160  0169
+MAINLOOP 00004 000088 00074   0096
+MERR1    00014 0001D8 00176   0144  0144  0177  0177
+MERR1C   00014 0001E3 00177   0142  0143
+MHEAD1   00025 0001E6 00178   0152  0152
+PAGENO   00003 0001FF 00179   0153  0156
+PRDSECT  00001 000000 00190   0027
+PRINT    00004 0001A2 00163   0086  0145  0158
+PRINTER  00006 0004E0 00303   0051  0137  0163
+PRNTOUT1 00133 000647 00322   0314
+PRNTOUT2 00133 0006CC 00323   0319
+PRTLINE  00133 000000 00191   0053  0054  0054  0083  0084  0144  0151  0152  0154  0155  0156  0157  0159  0172  0173
+                              0173
+READER   00002 0002E8 00206   0049  0074  0135
+R0       00001 000000 00009   0065
+R1       00001 000001 00010   0059  0061  0071  0074  0088  0094  0098  0111  0142  0163
+R10      00001 00000A 00019   0027
+R11      00001 00000B 00020
+R12      00001 00000C 00021   0025  0026
+R13      00001 00000D 00022
+R14      00001 00000E 00023
+R15      00001 00000F 00024
+R2       00001 000002 00011   0060  0060  0061  0062  0086  0145  0158  0174
+R3       00001 000003 00012   0064  0082  0162
+R4       00001 000004 00013
+R5       00001 000005 00014
+R6       00001 000006 00015
+                                             CROSS-REFERENCE                                                   PAGE    2
+
+
+SYMBOL    LEN  VALUE  DEFN     REFERENCES                                                                       03/29/70
+
+R7       00001 000007 00016
+R8       00001 000008 00017
+R9       00001 000009 00018
+SYSLC    00002 000204 00181   0063  0169
+TODAY    00008 000210 00183   0059  0151  0151
+TRTABLE  00016 0001C8 00175   0143
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// LBLTYP NSD(3)
+// EXEC LNKEDT
+
+JOB  DEMOISAC  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST   AUTOLINK   IJDFAZIZ
+LIST   AUTOLINK   IJHZLZZZ
+LIST   AUTOLINK   IJJFCIZD
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        PHASE***  006090  006090  006D31  1B 06 4  CSECT     DEMOISAC  006090  006090
+
+                                                   CSECT     IJJFCIZD  006C00  006C00
+
+                                                   CSECT     IJHZLZZZ  0068C8  0068C8
+
+                                                   CSECT     IJDFAZIZ  0067E8  0067E8
+// ASSGN SYS004,X'192'
+// DLBL ISFILE,'DEMO.ISAM.FILE',0,ISC
+// EXTENT SYS004,WRK14A,4,1,600,10
+// EXTENT SYS004,WRK14A,1,2,620,20
+// EXTENT SYS004,WRK14A,2,3,610,10
+// EXEC
+03/29/70                     ISAM DEMONSTRATION-CREATE                                                        PAGE     1
+
+    004   10004ACHER, WILLIAM C.          00675241004            3679874321120000034
+    027   40027ALHOUER, ELAINE E.         00220660006            6381469783079500022
+    030   30030ALLOREN, RUTH W.           00000000002            7647982367130000055
+    040   50040ATKINSON, CHARLES          00675241004            3679874321120000034
+    060   50060BASEL, DEBORAH L           00900191003            1043781234130000040
+    105   50105BETTINARDI, RONALD J       01500500003            1125666601110000022
+    111   20111CARTOLER, VIOLET B.        00750060004            3455667381140000032
+    171   40171COSTA, NAN S.              00560000005            1241963182122000046
+    181   30181DELBERT, EDWARD D.         01305541015            6419182773110000051
+    185   10185DONNEMAN, THOMAS M.        00900191003            1043781234130000040
+    300   10300FELDMAN, MIKE R.           00300000004            2156278643115000026
+    304   20304FROMM, STEVE V.            01200005002            2300267832122500037
+    317   40317HANBEE, ALETTA O.          00395000008            1136719674139000050
+    318   30318HANEY, CAROL S.            01450005008            5533266791100000058
+    325   10325HATFIELD, MARK I.          00205390002            2225723628090000030
+    487   30487KING, MILDRED J.           01804290010            8711322487090500033
+    590   20590NEIL, CLARENCE N.          00950230001            4016787112135000040
+    721   40721RASSMUSEN, JOHN J.         01000000004            2064397865129600040
+    730   10730REEDE, OWEN W.             01051440001            2115897234105000021
+    801   20801SCHEIBER, HARRY T.         00325080002            6198842236112500046
+    834   30834TRAWLEY, HARRIS T.         00550000009            7623561471100250032
+    956   20956WANGLEY, THEO. A.          00150000003            1723456124120000050
+    960   10960WINGLAND, KEITH E.         00350000003            4215679672085000026
+EOJ DEMOISAC                                                            12.16.33,DURATION 00.00.09
+// JOB DEMOISAS DEMONSTRATE ISAM ASSEMBLER SEQ. RETRIEVE                12.16.33
+// OPTION LINK,NOXREF
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+DEMOISAS  SD  01 000000 00060E
+IJHZRSZZ  ER  02
+IJDFAZIZ  ER  03
+       ISAM DEMONSTRATION-SEQUENTIAL RETRIEVAL                                                                 PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      2 *         PRINT NOGEN
+000000                                3 DEMOISAS CSECT
+000000                                4 R0       EQU   0                   WORK REGISTER                        C1R10400
+000001                                5 R1       EQU   1                   WORK, ALSO POINTER TO I/O CCB        C1R10500
+000002                                6 R2       EQU   2                   LINKAGE FOR INTERNAL SUBROUTINES     C1R10600
+000003                                7 R3       EQU   3                   CYLINDER COUNT REMAINING             C1R10700
+000004                                8 R4       EQU   4                   CURRENT CYLINDER NR                  C1R10800
+000005                                9 R5       EQU   5                   TRACK COUNT REMAINING                C1R10900
+000006                               10 R6       EQU   6                   CURRENT TRACK NR                     C1R11000
+000007                               11 R7       EQU   7                   RECORD COUNT REMAINING               C1R11100
+000008                               12 R8       EQU   8                   CURRENT RECORD NR                    C1R11200
+000009                               13 R9       EQU   9                                                        C1R11300
+00000A                               14 R10      EQU   10                                                       C1R11400
+00000B                               15 R11      EQU   11                  PROGRAM BASE REGISTER 1              C1R11500
+00000C                               16 R12      EQU   12                  PROGRAM BASE REGISTER 2              C1R11600
+00000D                               17 R13      EQU   13                                                       C1R11700
+00000E                               18 R14      EQU   14                  WORK REGISTER                        C1R11800
+00000F                               19 R15      EQU   15                  WORK REGISTER                        C1R11900
+000000 05C0                          20          BALR  R12,0
+000002                               21          USING *,R12
+000000                               22          USING PRDSECT,R10
+                                     23          OPENR ISFILE,PRINTER
+                                     24+* 360N-CL-453 OPENR    CHANGE LEVEL 3-3                             3-3
+000002 0700                          25+         CNOP  0,4
+000004                               26+         DC    0F'0'
+000004 4110 C02E            00030    27+         LA    1,IJJO0001+4 PUT ACTUAL LOCATION ADDR. IN REG.
+000008 9258 C002      00004          28+         MVI   *-4,X'58' DISABLE SUBSEQUENT RELOCATION
+00000C 5800 C02E            00030    29+         L     0,IJJO0001+4 PUT RELOCATION FACTOR IN REG
+000010 1B10                          30+         SR    1,0 FIND DISPLACEMENT FACTOR
+000012 5800 C032            00034    31+         L     0,IJJO0001+4+4*1 PUT FILENANE ADDR. IN REG. 0
+000016 1A01                          32+         AR    0,1 ADD DISPLACEMENT FACTOR TO ADDR.
+000018 5000 C032            00034    33+         ST    0,IJJO0001+4+4*1 STORE NEW ADDR. BACK INTO ADCON
+00001C 5800 C036            00038    34+         L     0,IJJO0001+4+4*2 PUT FILENANE ADDR. IN REG. 0
+000020 1A01                          35+         AR    0,1 ADD DISPLACEMENT FACTOR TO ADDR.
+000022 5000 C036            00038    36+         ST    0,IJJO0001+4+4*2 STORE NEW ADDR. BACK INTO ADCON
+000026 4110 C256            00258    37+         LA    1,=C'$$BOPENR' FETCH OPENR TRANSIENT PHASE
+00002A 0700                          38+         CNOP  0,4
+00002C 4500 C03A            0003C    39+IJJO0001 BAL   0,*+8+4*(3-1) TO RELOCATE DTF ADCONS
+000030 00000030                      40+         DC    A(*) ADDRESS USED BY OPENR FOR RELOCATION
+000034 00000280                      41+         DC    A(ISFILE) FILENAME ADDRESS
+000038 000003A8                      42+         DC    A(PRINTER) FILENAME ADDRESS
+00003C 0A02                          43+         SVC   2
+00003E 9240 A000      00000          44          MVI   PRTLINE,C' '        CLEAR PRINT LINE
+000042 D283 A001 A000 00001 00000    45          MVC   PRTLINE+1(132),PRTLINE
+                                     46          COMRG
+                                     47+* 360N-CL-453 COMRG    CHANGE LEVEL 3-0
+000048 5810 0014            00014    48+         L     1,20
+00004C 0A21                          49+         SVC   33
+00004E D207 C1FE 1000 00200 00000    50          MVC   TODAY,0(R1)         GET SYSTEM DATE
+000054 1B22                          51          SR    R2,R2                 AND SYSTEM LINE COUNTER
+000056 4321 004E            0004E    52          IC    R2,78(R1)
+       ISAM DEMONSTRATION-SEQUENTIAL RETRIEVAL                                                                 PAGE    2
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+00005A 4E20 C1F6            001F8    53          CVD   R2,DOUBLE
+00005E F817 C1F0 C1F6 001F2 001F8    54          ZAP   SYSLC,DOUBLE
+000064 4530 C144            00146    55          BAL   R3,HEADING          PRINT FIRST PAGE HEADING
+000068 4110 C27E            00280    56          LA    R1,ISFILE
+                                     57          SETL  (1),BOF             START AT BEGINNING OF FILE
+                                     58+* 360N-IO-457 SETL    CHANGE LEVEL 3-0
+00006C                               59+         CNOP  0,4
+00006C 5010 C076            00078    60+         ST    1,IJJS0003+4
+000070 4110 C25E            00260    61+         LA    1,=C'$$BSETL '
+000074 4500 C07E            00080    62+IJJS0003 BAL   0,*+12
+000078 00000001                      63+         DC    A(1)
+00007C C2D6C640                      64+         DC    CL4'BOF'
+000080 0A02                          65+         SVC   2
+000082 5810 C076            00078    66+         L     1,IJJS0003+4 ADDR OF DTF TO REG 1
+000086 91FE 101E      0001E          67          TM    30(R1),X'FE'        IF ANY ERRORS,
+00008A 4770 C126            00128    68          BNZ   CANCEL                CANCEL
+                                     69 *
+00008E 4110 C27E            00280    70 MAINLOOP LA    R1,ISFILE           READ A RECORD
+000092 4100 C20A            0020C    71          LA    R0,ISREC
+                                     72          GET   (1),(0)
+                                     73+* 360N-CL-453 GET      CHANGE LEVEL 3-0
+000096                               74+         DC    0H'0'
+000096 58F1 0010            00010    75+         L     15,16(1) GET LOGIC MODULE ADDRESS
+00009A 45EF 0008            00008    76+         BAL   14,8(15) BRANCH TO GET ROUTINE
+00009E 91DE 101E      0001E          77          TM    30(R1),X'DE'        IF ANY ERRORS,
+0000A2 4770 C126            00128    78          BNZ   CANCEL                CANCEL
+0000A6 9120 101E      0001E          79          TM    30(R1),X'20'        IS IT END OF FILE
+0000AA 4710 C0D2            000D4    80          BO    ENDOFJOB
+0000AE 95F1 C206      00208          81          CLI   EOPSW,C'1'          IF BOTTOM OF PAGE,
+0000B2 4770 C0B8            000BA    82          BNE   *+8
+0000B6 4530 C144            00146    83          BAL   R3,HEADING            GO TO NEXT PAGE
+0000BA D202 A005 C20C 00005 0020E    84          MVC   PRTLINE+5(3),ISREC+2
+0000C0 D24A A00B C20A 0000B 0020C    85          MVC   PRTLINE+11(L'ISREC),ISREC
+0000C6 FA10 C1EE C278 001F0 0027A    86          AP    LINCT,=P'1'
+0000CC 4520 C180            00182    87          BAL   R2,PRINT            PRINT RECORD
+0000D0 47F0 C08C            0008E    88          B     MAINLOOP
+                                     89 *
+0000D4 4110 C27E            00280    90 ENDOFJOB LA    R1,ISFILE           END SEQUENTIAL MODE
+                                     91          ESETL (1)
+                                     92+* 360N-IO-457 ESETL    CHANGE LEVEL 3-0
+0000D8 58F1 0010            00010    93+         L     15,16(1) GET LOGIC MODULE ADDRESS
+0000DC 45EF 0014            00014    94+         BAL   14,20(15) BRANCH TO ESETL ROUTINE
+0000E0 91FE 101E      0001E          95          TM    30(R1),X'FE'        IF ANY ERRORS,
+0000E4 4770 C126            00128    96          BNZ   CANCEL                CANCEL
+                                     97          CLOSER ISFILE,PRINTER
+                                     98+* 360N-CL-453  CLOSER  CHANGE LEVEL 3-11                           3-11
+0000E8                               99+         CNOP  0,4
+0000E8                              100+         DC    0F'0'
+0000E8 47F0 C0EE            000F0   101+         B     *+8
+0000EC 000000EC                     102+         DC    A(*) OLD LOCATION ADDRESS
+0000F0 4110 C0EA            000EC   103+         LA    1,*-4 PUT ACT. LOCATION ADDR. IN REG.
+       ISAM DEMONSTRATION-SEQUENTIAL RETRIEVAL                                                                 PAGE    3
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+0000F4 9258 C0EE      000F0         104+         MVI   *-4,X'58' DISABLE SUBSEQUENT RELOCATION
+0000F8 5800 C0EA            000EC   105+         L     0,*-12 PUT OLD LOCATION ADDRESS IN REG.
+0000FC 1B10                         106+         SR    1,0 FIND DISPLACEMENT FACTOR
+0000FE 5800 C11A            0011C   107+         L     0,IJJC0006+1*4 GET POINTER TO DTF
+000102 1A01                         108+         AR    0,1 ADD DISPLACEMENT FACTOR
+000104 5000 C11A            0011C   109+         ST    0,IJJC0006+1*4 AND STORE BACK INTO ADCON
+000108 5800 C11E            00120   110+         L     0,IJJC0006+2*4 GET POINTER TO DTF
+00010C 1A01                         111+         AR    0,1 ADD DISPLACEMENT FACTOR
+00010E 5000 C11E            00120   112+         ST    0,IJJC0006+2*4 AND STORE BACK INTO ADCON
+000112 4110 C266            00268   113+         LA    1,=C'$$BCLOSE'
+000116 0700                         114+         CNOP  0,4
+000118 4500 C122            00124   115+IJJC0006 BAL   0,*+(3-1)*4+4
+00011C 00000280                     116+         DC    A(ISFILE) FILENAME ADDRESS             3-9
+000120 000003A8                     117+         DC    A(PRINTER) FILENAME ADDRESS             3-9
+000124 0A02                         118+         SVC   2 FETCH TRANSIENT ROUTINE
+                                    119          EOJ
+                                    120+* 360N-CL-453 EOJ      CHANGE LEVEL 3-0
+000126 0A0E                         121+         SVC   14
+000128 F321 C1C1 101E 001C3 0001E   122 CANCEL   UNPK  MERR1C(3),30(2,R1)  MAKE ERRORS PRINTABLE
+00012E 9240 C1C3      001C5         123          MVI   MERR1C+2,C' '
+000132 DC01 C1C1 C0B6 001C3 000B8   124          TR    MERR1C(2),TRTABLE-X'F0'
+000138 D20D A00A C1B6 0000A 001B8   125          MVC   PRTLINE+10(L'MERR1),MERR1
+00013E 4520 C180            00182   126          BAL   R2,PRINT            PRINT ISAM STATUS BYTE
+                                    127          CANCEL
+                                    128+* 360N-CL-453 CANCEL   CHANGE LEVEL 3-6                             3-6
+000142 1B00                         129+         SR    0,0 3-3
+000144 0A06                         130+         SVC   6 3-3
+                                    131 *
+000146 D207 A001 C1FE 00001 00200   132 HEADING  MVC   PRTLINE+1(L'TODAY),TODAY
+00014C D226 A01E C1C4 0001E 001C6   133          MVC   PRTLINE+30(L'MHEAD1),MHEAD1
+000152 FA20 C1EB C278 001ED 0027A   134          AP    PAGENO,=P'1'
+000158 D203 A06F C26E 0006F 00270   135          MVC   PRTLINE+111(4),=C'PAGE'
+00015E D205 A073 C272 00073 00274   136          MVC   PRTLINE+115(6),=X'402020202120'
+000164 DE05 A073 C1EB 00073 001ED   137          ED    PRTLINE+115(6),PAGENO
+00016A 92F1 A000      00000         138          MVI   PRTLINE,C'1'        SKIP TO NEW PAGE
+00016E 4520 C180            00182   139          BAL   R2,PRINT
+000172 92F0 A000      00000         140          MVI   PRTLINE,C'0'        DOUBLE SPACE NEXT TIME
+000176 F810 C1EE C279 001F0 0027B   141          ZAP   LINCT,=P'2'         RESET LINE COUNTER
+00017C 92F0 C206      00208         142          MVI   EOPSW,C'0'          RESET BOTTOM-OF-PAGE SWITCH
+000180 07F3                         143          BR    R3
+000182 4110 C3A6            003A8   144 PRINT    LA    R1,PRINTER
+                                    145          PUT   (1)
+                                    146+* 360N-CL-453 PUT          CHANGE LEVEL 3-5                         3-5
+000186                              147+         DC    0H'0'
+000186 58F1 0010            00010   148+         L     15,16(1) GET LOGIC MODULE ADDRESS     3-5
+00018A 45EF 000C            0000C   149+         BAL   14,12(15) BRANCH TO PUT ROUTINE        3-5
+00018E F911 C1EE C1F0 001F0 001F2   150          CP    LINCT,SYSLC         CHECK FOR BOTTOM OF PAGE
+000194 4740 C19A            0019C   151          BL    *+8
+000198 92F1 C206      00208         152          MVI   EOPSW,C'1'          INDICATE BOTTOM OF PAGE
+00019C 9240 A000      00000         153          MVI   PRTLINE,C' '        CLEAR PRINT LINE
+0001A0 D283 A001 A000 00001 00000   154          MVC   PRTLINE+1(132),PRTLINE
+       ISAM DEMONSTRATION-SEQUENTIAL RETRIEVAL                                                                 PAGE    4
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+0001A6 07F2                         155          BR    R2
+0001A8 F0F1F2F3F4F5F6F7             156 TRTABLE  DC    C'0123456789ABCDEF'
+0001B8 C9E2C1D440C5D9D9             157 MERR1    DC    C'ISAM ERROR-XX '
+0001C3                              158 MERR1C   EQU   MERR1+L'MERR1-3
+0001C6 C9E2C1D440C4C5D4             159 MHEAD1   DC    C'ISAM DEMONSTRATION-SEQUENTIAL RETRIEVAL'
+0001ED 00000C                       160 PAGENO   DC    PL3'0'
+0001F0 000C                         161 LINCT    DC    PL2'0'
+0001F2                              162 SYSLC    DS    PL2
+0001F8                              163 DOUBLE   DS    D
+000200                              164 TODAY    DS    CL8
+000208                              165 EOPSW    DS    C
+000209                              166 ISKEY    DS    CL3
+00020C                              167 ISREC    DS    CL75
+000000                              168 PRDSECT  DSECT
+000000                              169 PRTLINE  DS    CL133
+000000                              170 DEMOISAS CSECT
+000258                              171          LTORG
+000258 5B5BC2D6D7C5D5D9             172                =C'$$BOPENR'
+000260 5B5BC2E2C5E3D340             173                =C'$$BSETL '
+000268 5B5BC2C3D3D6E2C5             174                =C'$$BCLOSE'
+000270 D7C1C7C5                     175                =C'PAGE'
+000274 402020202120                 176                =X'402020202120'
+00027A 1C                           177                =P'1'
+00027B 2C                           178                =P'2'
+                                    179 ISFILE   DTFIS DSKXTNT=3,IOROUT=RETRVE,TYPEFLE=SEQNTL,                 X
+                                                       DEVICE=2314,HINDEX=2314,                                X
+                                                       RECFORM=FIXBLK,RECSIZE=75,NRECDS=4,                     X
+                                                       KEYLOC=3,KEYLEN=3,KEYARG=ISKEY,                         X
+                                                       IOAREAS=ISAMIOS1,WORKS=YES
+                                    180+* 360N-IO-457 DTFIS    CHANGE LEVEL 3-12                           3-12
+                                    181+* 360N-IO-457 DTFIS1  CHANGE LEVEL 3-9                              3-9
+00027C 00000000
+000280                              182+         DC    0D'0' 3-4
+000280 0000                         183+ISFILE   DC    XL2'00' 3-8
+000282 88                           184+         DC    B'10001000' 3-11
+000283 0000000000                   185+         DC    XL5'0' 3-4
+000288 00000358                     186+         DC    A(ISFILEB) CCW ADDR
+00028C 00000000                     187+         DC    XL4'0'
+000290 00                           188+         DC    B'00000000' FLAG BYTE                    3-9
+000291 000000                       189+         DC    VL3(IJHZRSZZ) LOGIC MODULE ADDR            3-9
+000294 26                           190+         DC    AL1(38) TYPE FILE INDICATOR          3-9
+000295 08                           191+         DC    B'00001000' OPTION CO3-4
+000296 C9E2C6C9D3C540               192+         DC    CL7'ISFILE' FILE NAME
+00029D 01                           193+         DC    AL1(1) PRIME DATA DEVICE TYPE INDICATOR
+00029E 00                           194+ISFILEC  DC    XL1'0' STATUS INDICATORS
+00029F 01                           195+         DC    AL1(1) INDEX DEVICE TYPE INDICATOR
+0002A0 46                           196+         DC    AL1((ISFILEE-ISFILE)/4) REL POS XTNT-CELL TABLE
+0002A1 000000                       197+         DC    XL3'000000' HHR FIRST DATA RECORD IN CYL.
+0002A4 0000                         198+         DC    H'0' HH LAST PRIME DATA TRK IN CYL
+0002A6 00                           199+         DC    XL1'00' HI RECORD # ON MAST.NDX/CYL.NDX
+0002A7 00                           200+         DC    XL1'00' HI RECORD # ON PRIME DATA TRACK
+       ISAM DEMONSTRATION-SEQUENTIAL RETRIEVAL                                                                 PAGE    5
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+0002A8 00                           201+         DC    XL1'00' HI RECORD # ON OVFLO TRACK
+0002A9 00                           202+         DC    XL1'00' HI RECORD # ON SHARED TRACK
+0002AA 00                           203+         DC    XL1'00' HI RECORD # ON TI TRACK
+0002AB 40                           204+         DC    B'01000000' RETRIEVAL SWITCH             3-9
+0002AC 00000000000000               205+         DC    XL7'00' PRIME DATA START
+0002B3 00000000000000               206+         DC    XL7'00' MBBCCH CYL INDEX START
+0002BA 00000000000000               207+         DC    XL7'00' MBBCCH MST INDEX START
+0002C1 00                           208+         DC    X'00' INDEX LEVEL NUMBER
+0002C2 0000000000000000             209+         DC    XL8'00' MBBCCHHR LAST PR.DATA RCD ADDR.
+0002CA 0000                         210+         DC    H'0' RECORD LENGTH
+0002CC 0000                         211+         DC    H'0' KEY LENGTH
+0002CE 012C                         212+         DC    H'300' BLOCK LENGTH                3-10
+0002D0 0000                         213+         DC    H'0' RL+10
+0002D2 0000                         214+         DC    H'0' BLOCKING FACTOR
+0002D4 0000                         215+         DC    H'0' INDEX ENTRY LENGTH KL+10
+0002D6 0000                         216+         DC    H'0' PR.DATA REC. KEY+DATA
+0002D8 0000                         217+         DC    H'0' OVFLO KEY AND DATA KL+NRCDS$RL
+0002DA 0000                         218+         DC    H'0' KL+NRCDS*RL+8
+0002DC 0000                         219+         DC    H'0' KL+RL+18
+0002DE 0000                         220+         DC    H'0' KEY LOCATION
+0002E0 0005                         221+         DC    H'5' 5
+0002E2 000A                         222+         DC    H'10'
+0002E4 007C                         223+         DC    Y(ISFILE2-ISFILE) BASE FOR TABLE2
+0002E6 00D8                         224+         DC    Y(ISFILEB-ISFILE) BASE FOR TABLE3
+0002E8 0000000000000000             225+ISFILES  DC    5H'0' COMMON SEEK/SEARCH BUC.
+0002F2 0000000000000000             226+ISFILEW  DC    5H'0' CWORKAREA USED IN MACRO
+0002FC                              227+ISFILEM  EQU   *
+                                    228+******************** SECOND PART OF TABLE ********************
+0002FC                              229+ISFILE2  EQU   *
+0002FC 000002EB                     230+         DC    A(ISFILES+3) ADDR OF COMMON SEEK/SEARCH BUC.
+000300 000002F2                     231+         DC    A(ISFILEW) ADDR OF RANDOM SEQ BUCKET
+000304 000003D8                     232+         DC    A(ISAMIOS1) ADDR OF IOAREAS
+000308 00000000                     233+         DC    F'0' ADDR IOAREA2                 3-4
+00030C 00000209                     234+         DC    A(ISKEY) ADDR OF KEYARG
+000310 00000000                     235+         DC    F'0' ADDR OF WORKR                3-9
+000314 00000000                     236+         DC    F'0' SEQ CURRENT IOAREA           3-9
+000318 4700 0000            00000   237+         NOP   0 3-9
+00031C 00                           238+         DC    X'00' NO VERIFY
+00031D 00                           239+         DC    X'00' BLOCKED                      3-9
+00031E 000000000000                 240+         DC    3H'0' CCHHR          LIMITS FOR SEQ.
+000324 0000                         241+         DC    H'0' BLOCKED.
+000326 C7                           242+         DC    X'C7'
+000327 0000000000                   243+         DC    X'0000000000' 3-9
+00032C 0000000000000000             244+ISFILEH  DC    4H'0' MBBCCHHR       CURRENT DISKADDR FOR SEQ
+000334 0000000000000000             245+         DC    4H'0' MBBCCHHR       CURRENT OVFL. ENTRY FOR SEQ.
+00033C 0000                         246+         DC    H'0' SEQ RECORD COUNTER
+00033E 0000                         247+         DC    H'0' HR CURRENT TRCNDX ENTRY FOR SEQ.
+000340 0000                         248+ISFILET  DC    H'0' NUMBER OF RECORDS TAGGED
+000348                              249+         DS    2D RESERVED.                   3-9
+                                    250+******************** THIRD PART OF TABLE *********************
+000358 070002E940000006             251+ISFILEB  CCW   X'07',ISFILES+1,X'40',6 SEEK
+       ISAM DEMONSTRATION-SEQUENTIAL RETRIEVAL                                                                 PAGE    6
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+000360 0000000000000000             252+         DC    7D'0'
+000398 0000000000000000             253+ISFILEE  DC    3F'0' MODULE CELL TABLE
+0003A4 FFFFFFFF                     254+         DC    X'FFFFFFFF'
+                                    255 PRINTER  DTFPR DEVADDR=SYSLST,BLKSIZE=133,CTLCHR=ASA,                  X
+                                                       IOAREA1=PRNTOUT1,IOAREA2=PRNTOUT2,IOREG=(10)
+                                    256+* 360 N-CL-453 DTFPR       CHANGE LEVEL 3-9                         3-9
+0003A8                              257+         DC    0D'0'
+0003A8 000080000000                 258+PRINTER  DC    X'000080000000' RES. COUNT, COM. BYTES, STATUS BYTES 3-9
+0003AE 00                           259+         DC    AL1(0) LOGICAL UNIT CLASS
+0003AF 03                           260+         DC    AL1(3) LOGICAL UNIT
+0003B0 000003D0                     261+         DC    A(*+32) CCW  ADDR.
+0003B4 00000000                     262+         DC    4X'00' CCB-ST BYTE,CSW CCW ADDRESS
+0003B8 00                           263+         DC    AL1(0) 3-9
+0003B9 000000                       264+         DC    VL3(IJDFAZIZ) ADDR OF LOGIC MODUL3-8
+0003BC 08                           265+         DC    X'08' DTF TYPE  (PRINTER)
+0003BD 34                           266+         DC    AL1(52) SWITCHES
+0003BE 09                           267+         DC    X'09' NORMAL  COMM. CODE
+0003BF 09                           268+         DC    X'09' CONTROL COMM. CODE
+0003C0 00000505                     269+         DC    A(PRNTOUT1+1) ADDRESS OF DATA IN IOAREA1
+0003C4 00000000                     270+         DC    4X'00' BUCKET                      3-5
+0003C8 0700                         271+         NOPR  0 PUT LENGTH IN REG12 (ONLY UNDEF.
+0003CA 41AE 0000            00000   272+         LA    10,0(14) LOAD USER POINTER REG
+0003CE 0000                         273+         DC    2X'00' NOT USED                    3-5
+0003D0 0900058A20000084             274+         CCW   9,PRNTOUT2+1,X'20',133-1
+0003D8                              275+IJJZ0011 EQU   *
+0003D8                              276 ISAMIOS1 DS    CL300
+000504                              277 PRNTOUT1 DS    CL133
+000589                              278 PRNTOUT2 DS    CL133
+                                    279          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      0C     000030
+   01       01      0C     000034
+   01       01      0C     000038
+   01       01      0C     0000EC
+   01       01      0C     00011C
+   01       01      0C     000120
+   01       01      0C     000288
+   01       02      18     000291
+   01       01      0C     0002FC
+   01       01      0C     000300
+   01       01      0C     000304
+   01       01      0C     00030C
+   01       01      08     000359
+   01       01      0C     0003B0
+   01       03      18     0003B9
+   01       01      0C     0003C0
+   01       01      08     0003D1
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// LBLTYP NSD(3)
+// EXEC LNKEDT
+
+JOB  DEMOISAS  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST   AUTOLINK   IJDFAZIZ
+LIST   AUTOLINK   IJHZRSZZ
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        PHASE***  006090  006090  006C51  1B 06 4  CSECT     DEMOISAS  006090  006090
+
+                                                   CSECT     IJHZRSZZ  006780  006780
+
+                                                   CSECT     IJDFAZIZ  0066A0  0066A0
+// ASSGN SYS004,X'192'
+// DLBL ISFILE,'DEMO.ISAM.FILE',0,ISC
+// EXTENT SYS004,WRK14A,4,1,600,10
+// EXTENT SYS004,WRK14A,1,2,620,20
+// EXTENT SYS004,WRK14A,2,3,610,10
+// EXEC
+03/29/70                     ISAM DEMONSTRATION-SEQUENTIAL RETRIEVAL                                          PAGE     1
+
+    004   10004ACHER, WILLIAM C.          00675241004            3679874321120000034
+    027   40027ALHOUER, ELAINE E.         00220660006            6381469783079500022
+    030   30030ALLOREN, RUTH W.           00000000002            7647982367130000055
+    040   50040ATKINSON, CHARLES          00675241004            3679874321120000034
+    060   50060BASEL, DEBORAH L           00900191003            1043781234130000040
+    105   50105BETTINARDI, RONALD J       01500500003            1125666601110000022
+    111   20111CARTOLER, VIOLET B.        00750060004            3455667381140000032
+    171   40171COSTA, NAN S.              00560000005            1241963182122000046
+    181   30181DELBERT, EDWARD D.         01305541015            6419182773110000051
+    185   10185DONNEMAN, THOMAS M.        00900191003            1043781234130000040
+    300   10300FELDMAN, MIKE R.           00300000004            2156278643115000026
+    304   20304FROMM, STEVE V.            01200005002            2300267832122500037
+    317   40317HANBEE, ALETTA O.          00395000008            1136719674139000050
+    318   30318HANEY, CAROL S.            01450005008            5533266791100000058
+    325   10325HATFIELD, MARK I.          00205390002            2225723628090000030
+    487   30487KING, MILDRED J.           01804290010            8711322487090500033
+    590   20590NEIL, CLARENCE N.          00950230001            4016787112135000040
+    721   40721RASSMUSEN, JOHN J.         01000000004            2064397865129600040
+    730   10730REEDE, OWEN W.             01051440001            2115897234105000021
+    801   20801SCHEIBER, HARRY T.         00325080002            6198842236112500046
+    834   30834TRAWLEY, HARRIS T.         00550000009            7623561471100250032
+    956   20956WANGLEY, THEO. A.          00150000003            1723456124120000050
+    960   10960WINGLAND, KEITH E.         00350000003            4215679672085000026
+EOJ DEMOISAS                                                            12.16.34,DURATION 00.00.00
+// JOB DEMOISAR DEMONSTRATE ISAM ASSEMBLER RANDOM RETRIEVAL             12.16.34
+// OPTION LINK
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+DEMOISAR  SD  01 000000 0007AB
+IJJFCIZD  ER  02
+IJHZRRCZ  ER  03
+IJDFAZIZ  ER  04
+       ISAM DEMONSTRATION-RANDOM RETRIEVAL                                                                     PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      2 *        PRINT NOGEN
+000000                                3 DEMOISAR CSECT
+000000                                4 R0       EQU   0                   WORK REGISTER                        C1R10400
+000001                                5 R1       EQU   1                   WORK, ALSO POINTER TO I/O CCB        C1R10500
+000002                                6 R2       EQU   2                   LINKAGE FOR INTERNAL SUBROUTINES     C1R10600
+000003                                7 R3       EQU   3                   CYLINDER COUNT REMAINING             C1R10700
+000004                                8 R4       EQU   4                   CURRENT CYLINDER NR                  C1R10800
+000005                                9 R5       EQU   5                   TRACK COUNT REMAINING                C1R10900
+000006                               10 R6       EQU   6                   CURRENT TRACK NR                     C1R11000
+000007                               11 R7       EQU   7                   RECORD COUNT REMAINING               C1R11100
+000008                               12 R8       EQU   8                   CURRENT RECORD NR                    C1R11200
+000009                               13 R9       EQU   9                                                        C1R11300
+00000A                               14 R10      EQU   10                                                       C1R11400
+00000B                               15 R11      EQU   11                  PROGRAM BASE REGISTER 1              C1R11500
+00000C                               16 R12      EQU   12                  PROGRAM BASE REGISTER 2              C1R11600
+00000D                               17 R13      EQU   13                                                       C1R11700
+00000E                               18 R14      EQU   14                  WORK REGISTER                        C1R11800
+00000F                               19 R15      EQU   15                  WORK REGISTER                        C1R11900
+000000 05C0                          20          BALR  R12,0
+000002                               21          USING *,R12
+000000                               22          USING PRDSECT,R10
+                                     23          OPENR READER,ISFILE,PRINTER
+                                     24+* 360N-CL-453 OPENR    CHANGE LEVEL 3-3                             3-3
+000002 0700                          25+         CNOP  0,4
+000004                               26+         DC    0F'0'
+000004 4110 C036            00038    27+         LA    1,IJJO0001+4 PUT ACTUAL LOCATION ADDR. IN REG.
+000008 9258 C002      00004          28+         MVI   *-4,X'58' DISABLE SUBSEQUENT RELOCATION
+00000C 5800 C036            00038    29+         L     0,IJJO0001+4 PUT RELOCATION FACTOR IN REG
+000010 1B10                          30+         SR    1,0 FIND DISPLACEMENT FACTOR
+000012 5800 C03A            0003C    31+         L     0,IJJO0001+4+4*1 PUT FILENANE ADDR. IN REG. 0
+000016 1A01                          32+         AR    0,1 ADD DISPLACEMENT FACTOR TO ADDR.
+000018 5000 C03A            0003C    33+         ST    0,IJJO0001+4+4*1 STORE NEW ADDR. BACK INTO ADCON
+00001C 5800 C03E            00040    34+         L     0,IJJO0001+4+4*2 PUT FILENANE ADDR. IN REG. 0
+000020 1A01                          35+         AR    0,1 ADD DISPLACEMENT FACTOR TO ADDR.
+000022 5000 C03E            00040    36+         ST    0,IJJO0001+4+4*2 STORE NEW ADDR. BACK INTO ADCON
+000026 5800 C042            00044    37+         L     0,IJJO0001+4+4*3 PUT FILENANE ADDR. IN REG. 0
+00002A 1A01                          38+         AR    0,1 ADD DISPLACEMENT FACTOR TO ADDR.
+00002C 5000 C042            00044    39+         ST    0,IJJO0001+4+4*3 STORE NEW ADDR. BACK INTO ADCON
+000030 4110 C2AE            002B0    40+         LA    1,=C'$$BOPENR' FETCH OPENR TRANSIENT PHASE
+000034                               41+         CNOP  0,4
+000034 4500 C046            00048    42+IJJO0001 BAL   0,*+8+4*(4-1) TO RELOCATE DTF ADCONS
+000038 00000038                      43+         DC    A(*) ADDRESS USED BY OPENR FOR RELOCATION
+00003C 000002D8                      44+         DC    A(READER) FILENAME ADDRESS
+000040 000003C8                      45+         DC    A(ISFILE) FILENAME ADDRESS
+000044 00000518                      46+         DC    A(PRINTER) FILENAME ADDRESS
+000048 0A02                          47+         SVC   2
+00004A 9240 A000      00000          48          MVI   PRTLINE,C' '        CLEAR PRINT LINE
+00004E D283 A001 A000 00001 00000    49          MVC   PRTLINE+1(132),PRTLINE
+                                     50          COMRG
+                                     51+* 360N-CL-453 COMRG    CHANGE LEVEL 3-0
+000054 5810 0014            00014    52+         L     1,20
+       ISAM DEMONSTRATION-RANDOM RETRIEVAL                                                                     PAGE    2
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+000058 0A21                          53+         SVC   33
+00005A D207 C206 1000 00208 00000    54          MVC   TODAY,0(R1)         GET SYSTEM DATE
+000060 1B22                          55          SR    R2,R2                 AND SYSTEM LINE COUNTER
+000062 4321 004E            0004E    56          IC    R2,78(R1)
+000066 4E20 C1FE            00200    57          CVD   R2,DOUBLE
+00006A F817 C1FC C1FE 001FE 00200    58          ZAP   SYSLC,DOUBLE
+000070 4530 C154            00156    59          BAL   R3,HEADING          PRINT FIRST PAGE HEADING
+                                     60 *
+000074 4110 C2D6            002D8    61 MAINLOOP LA    R1,READER           READ A RECORD
+                                     62          GET   (1)
+                                     63+* 360N-CL-453 GET      CHANGE LEVEL 3-0
+000078                               64+         DC    0H'0'
+000078 58F1 0010            00010    65+         L     15,16(1) GET LOGIC MODULE ADDRESS
+00007C 45EF 0008            00008    66+         BAL   14,8(15) BRANCH TO GET ROUTINE
+000080 95F1 C20E      00210          67          CLI   EOPSW,C'1'          IF BOTTOM OF PAGE,
+000084 4770 C08A            0008C    68          BNE   *+8
+000088 4530 C154            00156    69          BAL   R3,HEADING            GO TO NEXT PAGE
+00008C D202 C25F C20F 00261 00211    70          MVC   ISKEY,CEMPNO        SET KEY FIELD FOR SEARCH
+000092 4110 C3C6            003C8    71          LA    R1,ISFILE
+                                     72          READ  (1),KEY             READ RECORD
+                                     73+* 360N-CL-453 READ     CHANGE LEVEL 3-0
+000096                               74+         DC    0H'0'
+000096 58F1 0010            00010    75+         L     15,16(1) GET LOGIC MODULE ADDRESS
+00009A 45EF 0018            00018    76+         BAL   14,24(15) BR TO READ KEY
+                                     77          WAITF (1)
+                                     78+* 360N-CL-453 WAITF  CHANGE LEVEL 3-3                               3-3
+00009E 58F1 0010            00010    79+         L     15,16(1) GET LOGIC MODULE ADDRESS
+0000A2 45EF 0004            00004    80+         BAL   14,4(15) BRANCH TO WAITF ROUTINE
+0000A6 91EE 101E      0001E          81          TM    30(R1),X'EE'        IF ANY ERRORS,
+0000AA 4770 C136            00138    82          BNZ   CANCEL                CANCEL
+0000AE 9110 101E      0001E          83          TM    30(R1),X'10'        WAS RECORD FOUND
+0000B2 4710 C0CE            000D0    84          BO    NORECFND
+0000B6 D202 A005 C20F 00005 00211    85 FOUND    MVC   PRTLINE+5(3),CEMPNO
+0000BC D24A A00B C262 0000B 00264    86          MVC   PRTLINE+11(L'ISREC),ISREC
+0000C2 FA10 C1FA C2C8 001FC 002CA    87          AP    LINCT,=P'1'
+0000C8 4520 C190            00192    88          BAL   R2,PRINT
+0000CC 47F0 C072            00074    89          B     MAINLOOP
+0000D0 D202 A005 C25F 00005 00261    90 NORECFND MVC   PRTLINE+5(3),ISKEY
+0000D6 D208 A014 C2C9 00014 002CB    91          MVC   PRTLINE+20(9),=C'NOT FOUND'
+0000DC FA10 C1FA C2C8 001FC 002CA    92          AP    LINCT,=P'1'
+0000E2 4520 C190            00192    93          BAL   R2,PRINT
+0000E6 47F0 C072            00074    94          B     MAINLOOP
+                                     95 *
+                                     96 ENDOFJOB CLOSER READER,ISFILE,PRINTER
+                                     97+* 360N-CL-453  CLOSER  CHANGE LEVEL 3-11                           3-11
+0000EA 0700                          98+         CNOP  0,4
+0000EC                               99+ENDOFJOB DC    0F'0'
+0000EC 47F0 C0F2            000F4   100+         B     *+8
+0000F0 000000F0                     101+         DC    A(*) OLD LOCATION ADDRESS
+0000F4 4110 C0EE            000F0   102+         LA    1,*-4 PUT ACT. LOCATION ADDR. IN REG.
+0000F8 9258 C0F2      000F4         103+         MVI   *-4,X'58' DISABLE SUBSEQUENT RELOCATION
+       ISAM DEMONSTRATION-RANDOM RETRIEVAL                                                                     PAGE    3
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+0000FC 5800 C0EE            000F0   104+         L     0,*-12 PUT OLD LOCATION ADDRESS IN REG.
+000100 1B10                         105+         SR    1,0 FIND DISPLACEMENT FACTOR
+000102 5800 C126            00128   106+         L     0,IJJC0006+1*4 GET POINTER TO DTF
+000106 1A01                         107+         AR    0,1 ADD DISPLACEMENT FACTOR
+000108 5000 C126            00128   108+         ST    0,IJJC0006+1*4 AND STORE BACK INTO ADCON
+00010C 5800 C12A            0012C   109+         L     0,IJJC0006+2*4 GET POINTER TO DTF
+000110 1A01                         110+         AR    0,1 ADD DISPLACEMENT FACTOR
+000112 5000 C12A            0012C   111+         ST    0,IJJC0006+2*4 AND STORE BACK INTO ADCON
+000116 5800 C12E            00130   112+         L     0,IJJC0006+3*4 GET POINTER TO DTF
+00011A 1A01                         113+         AR    0,1 ADD DISPLACEMENT FACTOR
+00011C 5000 C12E            00130   114+         ST    0,IJJC0006+3*4 AND STORE BACK INTO ADCON
+000120 4110 C2B6            002B8   115+         LA    1,=C'$$BCLOSE'
+000124                              116+         CNOP  0,4
+000124 4500 C132            00134   117+IJJC0006 BAL   0,*+(4-1)*4+4
+000128 000002D8                     118+         DC    A(READER) FILENAME ADDRESS             3-9
+00012C 000003C8                     119+         DC    A(ISFILE) FILENAME ADDRESS             3-9
+000130 00000518                     120+         DC    A(PRINTER) FILENAME ADDRESS             3-9
+000134 0A02                         121+         SVC   2 FETCH TRANSIENT ROUTINE
+                                    122          EOJ
+                                    123+* 360N-CL-453 EOJ      CHANGE LEVEL 3-0
+000136 0A0E                         124+         SVC   14
+000138 F321 C1D1 101E 001D3 0001E   125 CANCEL   UNPK  MERR1C(3),30(2,R1)  MAKE ERRORS PRINTABLE
+00013E 9240 C1D3      001D5         126          MVI   MERR1C+2,C' '
+000142 DC01 C1D1 C0C6 001D3 000C8   127          TR    MERR1C(2),TRTABLE-X'F0'
+000148 D20D A00A C1C6 0000A 001C8   128          MVC   PRTLINE+10(L'MERR1),MERR1
+00014E 4520 C190            00192   129          BAL   R2,PRINT            PRINT ISAM STATUS BYTE
+                                    130          CANCEL
+                                    131+* 360N-CL-453 CANCEL   CHANGE LEVEL 3-6                             3-6
+000152 1B00                         132+         SR    0,0 3-3
+000154 0A06                         133+         SVC   6 3-3
+                                    134 *
+000156 D207 A001 C206 00001 00208   135 HEADING  MVC   PRTLINE+1(L'TODAY),TODAY
+00015C D222 A01E C1D4 0001E 001D6   136          MVC   PRTLINE+30(L'MHEAD1),MHEAD1
+000162 FA20 C1F7 C2C8 001F9 002CA   137          AP    PAGENO,=P'1'
+000168 D203 A06F C2BE 0006F 002C0   138          MVC   PRTLINE+111(4),=C'PAGE'
+00016E D205 A073 C2C2 00073 002C4   139          MVC   PRTLINE+115(6),=X'402020202120'
+000174 DE05 A073 C1F7 00073 001F9   140          ED    PRTLINE+115(6),PAGENO
+00017A 92F1 A000      00000         141          MVI   PRTLINE,C'1'        SKIP TO NEW PAGE
+00017E 4520 C190            00192   142          BAL   R2,PRINT
+000182 92F0 A000      00000         143          MVI   PRTLINE,C'0'        DOUBLE SPACE NEXT TIME
+000186 F810 C1FA C2D2 001FC 002D4   144          ZAP   LINCT,=P'2'         RESET LINE COUNTER
+00018C 92F0 C20E      00210         145          MVI   EOPSW,C'0'          RESET BOTTOM-OF-PAGE SWITCH
+000190 07F3                         146          BR    R3
+000192 4110 C516            00518   147 PRINT    LA    R1,PRINTER
+                                    148          PUT   (1)
+                                    149+* 360N-CL-453 PUT          CHANGE LEVEL 3-5                         3-5
+000196                              150+         DC    0H'0'
+000196 58F1 0010            00010   151+         L     15,16(1) GET LOGIC MODULE ADDRESS     3-5
+00019A 45EF 000C            0000C   152+         BAL   14,12(15) BRANCH TO PUT ROUTINE        3-5
+00019E F911 C1FA C1FC 001FC 001FE   153          CP    LINCT,SYSLC         CHECK FOR BOTTOM OF PAGE
+0001A4 4740 C1AA            001AC   154          BL    *+8
+       ISAM DEMONSTRATION-RANDOM RETRIEVAL                                                                     PAGE    4
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+0001A8 92F1 C20E      00210         155          MVI   EOPSW,C'1'          INDICATE BOTTOM OF PAGE
+0001AC 9240 A000      00000         156          MVI   PRTLINE,C' '        CLEAR PRINT LINE
+0001B0 D283 A001 A000 00001 00000   157          MVC   PRTLINE+1(132),PRTLINE
+0001B6 07F2                         158          BR    R2
+0001B8 F0F1F2F3F4F5F6F7             159 TRTABLE  DC    C'0123456789ABCDEF'
+0001C8 C9E2C1D440C5D9D9             160 MERR1    DC    C'ISAM ERROR-XX '
+0001D3                              161 MERR1C   EQU   MERR1+L'MERR1-3
+0001D6 C9E2C1D440C4C5D4             162 MHEAD1   DC    C'ISAM DEMONSTRATION-RANDOM RETRIEVAL'
+0001F9 00000C                       163 PAGENO   DC    PL3'0'
+0001FC 000C                         164 LINCT    DC    PL2'0'
+0001FE                              165 SYSLC    DS    PL2
+000200                              166 DOUBLE   DS    D
+000208                              167 TODAY    DS    CL8
+000210                              168 EOPSW    DS    C
+000211                              169 CARDIN   DS    0CL80
+000211                              170 CEMPNO   DS    CL3
+000214                              171          DS    CL77
+000261                              172 ISKEY    DS    CL3
+000264                              173 ISREC    DS    CL75
+000000                              174 PRDSECT  DSECT
+000000                              175 PRTLINE  DS    CL133
+000000                              176 DEMOISAR CSECT
+0002B0                              177          LTORG
+0002B0 5B5BC2D6D7C5D5D9             178                =C'$$BOPENR'
+0002B8 5B5BC2C3D3D6E2C5             179                =C'$$BCLOSE'
+0002C0 D7C1C7C5                     180                =C'PAGE'
+0002C4 402020202120                 181                =X'402020202120'
+0002CA 1C                           182                =P'1'
+0002CB D5D6E340C6D6E4D5             183                =C'NOT FOUND'
+0002D4 2C                           184                =P'2'
+                                    185 READER   DTFDI DEVADDR=SYSIPT,EOFADDR=ENDOFJOB,                        X
+                                                       IOAREA1=CARDIN,RECSIZE=80
+                                    186+* 360N-CL-453  DTFDI  CHANGE LEVEL 3-11                            3-11
+
+
+0002D8                              188+         DS    0D
+0002D8 0000                         189+READER   DC    H'0' RESIDUAL COUNT
+0002DA 8200                         190+         DC    X'8200' COMMUNICATION BYTES                        3-3
+0002DC 0800                         191+         DC    X'0800' CSW STATUS BYTES
+0002DE 0001                         192+         DC    X'0001' LOGICAL UNIT
+0002E0 00                           193+         DC    X'00'
+0002E1 000330                       194+         DC    AL3(IJJD0010) CCW ADDRESS
+0002E4 00                           195+         DC    X'00' STATUS BYTE
+0002E5 000000                       196+         DC    XL3'0' CSW CCW ADDRESS
+0002E8 00                           197+         DC    X'00'
+0002E9 000000                       198+         DC    VL3(IJJFCIZD) 3-8
+0002EC 33                           199+         DC    X'33' DTF FILE TYPE
+0002ED 02                           200+         DC    X'02'
+0002EE D9C5C1C4C5D940               201+         DC    CL7'READER' FILE NAME
+0002F5 00                           202+         DC    X'00' DASD INDICATOR
+0002F6 000000000000                 203+         DC    6X'00' FMT 1 DSCB DISK ADDRESS
+       ISAM DEMONSTRATION-RANDOM RETRIEVAL                                                                     PAGE    5
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+0002FC 0000                         204+         DC    2X'00' DISK VOLUME SEQUENCE NUMBER
+0002FE 08                           205+         DC    X'08' OPEN SWITCH BYTE
+0002FF 00                           206+         DC    X'00' XTENT SEQ. NO. OF CURRENT XTENT
+000300 00                           207+         DC    X'00' SEQ NO OF LAST XTENT OR PUNCH CNSTNT
+000301 20                           208+         DC    X'20' OPEN INDICATORS
+000302 20                           209+         DC    X'20' DEVICE TYPE INDICATORS
+000303 F3                           210+         DC    X'F3' LOGIC MODULE DEVICE INDICATORS
+000304 80                           211+         DC    AL1(128) LOGIC MODULE OPTION SWITCHES
+000305 000211                       212+         DC    AL3(CARDIN) ALTERNATE I/O AREA ADDRESS
+000308 80000000                     213+         DC    X'80000000' OPEN/CLOSE INDICATORS
+00030C 0000                         214+         DC    2X'00' LOWER XTENT HEAD LIMIT
+00030E 00000000                     215+         DC    4X'00' XTENT UPPER LIMIT
+000312 0000                         216+IJJA0010 DC    H'0' BB
+000314 0000FF00                     217+         DC    X'0000FF00' CYLINDER AND HEAD
+000318 00                           218+         DC    X'00' RECORD FOR DISK, CONSTANT FOR PUNCH
+000319 0000EC                       219+         DC    AL3(ENDOFJOB) EOF ADDRESS
+00031C 00000000                     220+         DC    4X'00' CCHH.CONTROL BUCKET
+000320 1A                           221+         DC    AL1(25+1) NO. OF RECORDS/TRACK + 1
+000321 01                           222+         DC    X'01' FIRST RECORD
+000322 0018                         223+         DC    X'0018' CONSTANT
+000324 00000000                     224+IJJB0010 DC    4X'00' CCHH COUNT ID
+000328 01                           225+         DC    X'01' COUNT FIELD RECORD
+000329 00                           226+         DC    X'00' KEY LENGTH
+00032A 0050                         227+         DC    H'80' DATA LENGTH
+00032C 4700 0000            00000   228+         NOP   0(0)
+000330 0700031240000006             229+IJJD0010 CCW   X'07',IJJA0010,X'40',6 SEEK TRACK
+000338 3100031440000005             230+         CCW   X'31',IJJA0010+2,X'40',5 SEARCH
+000340 0800033820000001             231+         CCW   X'08',IJJD0010+8,X'20',1 TRANSFER
+000348 0600021120000050             232+         CCW   X'06',CARDIN,X'20',80 INPUT
+000350 0000000000000000             233+         DC    112X'00'
+0003C0 47FF 001C            0001C   234+         B     28(15) WLR OPTION
+0003C4 47FF 0000            00000   235+         B     0(15) ERROR EXIT
+                                    236 ISFILE   DTFIS DSKXTNT=3,IOROUT=RETRVE,TYPEFLE=RANDOM,                 X
+                                                       DEVICE=2314,HINDEX=2314,                                X
+                                                       RECFORM=FIXBLK,RECSIZE=75,NRECDS=4,                     X
+                                                       KEYLOC=3,KEYLEN=3,KEYARG=ISKEY,                         X
+                                                       IOAREAR=ISAMIOR,WORKR=ISREC,                            X
+                                                       INDAREA=ISAMIDX,INDSIZE=45
+                                    237+* 360N-IO-457 DTFIS    CHANGE LEVEL 3-12                           3-12
+                                    238+* 360N-IO-457 DTFIS1  CHANGE LEVEL 3-9                              3-9
+0003C8                              239+         DC    0D'0' 3-4
+0003C8 0000                         240+ISFILE   DC    XL2'00' 3-8
+0003CA 88                           241+         DC    B'10001000' 3-11
+0003CB 0000000000                   242+         DC    XL5'0' 3-4
+0003D0 000004C8                     243+         DC    A(ISFILEB) CCW ADDR
+0003D4 00000000                     244+         DC    XL4'0'
+0003D8 00                           245+         DC    B'00000000' FLAG BYTE                    3-9
+0003D9 000000                       246+         DC    VL3(IJHZRRCZ) LOGIC MODULE ADDR            3-9
+0003DC 26                           247+         DC    AL1(38) TYPE FILE INDICATOR          3-9
+0003DD 18                           248+         DC    B'00011000' OPTION CO3-4
+0003DE C9E2C6C9D3C540               249+         DC    CL7'ISFILE' FILE NAME
+       ISAM DEMONSTRATION-RANDOM RETRIEVAL                                                                     PAGE    6
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+0003E5 01                           250+         DC    AL1(1) PRIME DATA DEVICE TYPE INDICATOR
+0003E6 00                           251+ISFILEC  DC    XL1'0' STATUS INDICATORS
+0003E7 01                           252+         DC    AL1(1) INDEX DEVICE TYPE INDICATOR
+0003E8 50                           253+         DC    AL1((ISFILEE-ISFILE)/4) REL POS XTNT-CELL TABLE
+0003E9 000000                       254+         DC    XL3'000000' HHR FIRST DATA RECORD IN CYL.
+0003EC 0000                         255+         DC    H'0' HH LAST PRIME DATA TRK IN CYL
+0003EE 00                           256+         DC    XL1'00' HI RECORD # ON MAST.NDX/CYL.NDX
+0003EF 00                           257+         DC    XL1'00' HI RECORD # ON PRIME DATA TRACK
+0003F0 00                           258+         DC    XL1'00' HI RECORD # ON OVFLO TRACK
+0003F1 00                           259+         DC    XL1'00' HI RECORD # ON SHARED TRACK
+0003F2 00                           260+         DC    XL1'00' HI RECORD # ON TI TRACK
+0003F3 80                           261+         DC    B'10000000' RETRIEVAL SWITCH             3-9
+0003F4 00000000000000               262+         DC    XL7'00' PRIME DATA START
+0003FB 00000000000000               263+         DC    XL7'00' MBBCCH CYL INDEX START
+000402 00000000000000               264+         DC    XL7'00' MBBCCH MST INDEX START
+000409 00                           265+         DC    X'00' INDEX LEVEL NUMBER
+00040A 0000000000000000             266+         DC    XL8'00' MBBCCHHR LAST PR.DATA RCD ADDR.
+000412 0000                         267+         DC    H'0' RECORD LENGTH
+000414 0000                         268+         DC    H'0' KEY LENGTH
+000416 012C                         269+         DC    H'300' BLOCK LENGTH                3-10
+000418 0000                         270+         DC    H'0' RL+10
+00041A 0000                         271+         DC    H'0' BLOCKING FACTOR
+00041C 0000                         272+         DC    H'0' INDEX ENTRY LENGTH KL+10
+00041E 0000                         273+         DC    H'0' PR.DATA REC. KEY+DATA
+000420 0000                         274+         DC    H'0' OVFLO KEY AND DATA KL+NRCDS$RL
+000422 0000                         275+         DC    H'0' KL+NRCDS*RL+8
+000424 0000                         276+         DC    H'0' KL+RL+18
+000426 0000                         277+         DC    H'0' KEY LOCATION
+000428 0005                         278+         DC    H'5' 5
+00042A 000A                         279+         DC    H'10'
+00042C 007C                         280+         DC    Y(ISFILE2-ISFILE) BASE FOR TABLE2
+00042E 0100                         281+         DC    Y(ISFILEB-ISFILE) BASE FOR TABLE3
+000430 0000000000000000             282+ISFILES  DC    5H'0' COMMON SEEK/SEARCH BUC.
+00043A 0000000000000000             283+ISFILEW  DC    5H'0' CWORKAREA USED IN MACRO
+000444                              284+ISFILEM  EQU   *
+                                    285+******************** SECOND PART OF TABLE ********************
+000444                              286+ISFILE2  EQU   *
+000444 00000433                     287+         DC    A(ISFILES+3) ADDR OF COMMON SEEK/SEARCH BUC.
+000448 0000043A                     288+         DC    A(ISFILEW) ADDR OF RANDOM SEQ BUCKET
+00044C 00000000                     289+         DC    F'0' ADDR OF IOAREAS              3-9
+000450 00000548                     290+         DC    A(ISAMIOR) ADDR OF IOAREAR
+000454 00000261                     291+         DC    A(ISKEY) ADDR OF KEYARG
+000458 00000264                     292+         DC    A(ISREC) ADDR OF WORKR
+00045C 00000000                     293+         DC    F'0' SEQ CURRENT IOAREA           3-9
+000460 4700 0000            00000   294+         NOP   0 3-9
+000464 00                           295+         DC    X'00' NO VERIFY
+000465 00                           296+         DC    X'00' BLOCKED                      3-9
+000466 000000000000                 297+         DC    3H'0' CCHHR          LIMITS FOR SEQ.
+00046C 0000                         298+         DC    H'0' BLOCKED.
+00046E C7                           299+         DC    X'C7'
+00046F 0000000000                   300+         DC    X'0000000000' 3-9
+       ISAM DEMONSTRATION-RANDOM RETRIEVAL                                                                     PAGE    7
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+000474 0000000000000000             301+ISFILEH  DC    4H'0' MBBCCHHR       CURRENT DISKADDR FOR SEQ
+00047C 0000000000000000             302+         DC    4H'0' MBBCCHHR       CURRENT OVFL. ENTRY FOR SEQ.
+000484 0000                         303+         DC    H'0' SEQ RECORD COUNTER
+000486 0000                         304+         DC    H'0' HR CURRENT TRCNDX ENTRY FOR SEQ.
+000488 0000                         305+ISFILET  DC    H'0' NUMBER OF RECORDS TAGGED
+00048A 0700                         306+         NOPR  0 3-9
+00048C 0000000000000000             307+ISFILEG  DC    4H'0' MBBCCHHR       DISKADDR.FROM READ TO WRITE
+000494 00000000                     308+         DC    F'0' RECORD-POINTER FOR WRITE
+000498 00000000                     309+ISFILER  DC    F'0' NON 1ST OVFL REC.COUNT
+0004A0                              310+         DS    0D
+0004A0 00000674                     311+         DC    A(ISAMIDX) START OF CORE INDEX.
+0004A4 002D                         312+         DC    AL2(45) CORE AVAILABLE FOR INDEX.
+0004A6                              313+         DS    C'MBBCCHHR' NEXT CYLINDER INDEX ENTRY TO BE
+                                    314+*                                         READ (INITIATED TO CYLINDER
+                                    315+*                                         INDEX START BY TRANSIENT).
+0004AE                              316+         DS    C'CCHHR' LAST CYLINDER INDEX ENTRY.
+0004B3 00                           317+         DC    B'00000000' CORE INDEX BYTE.
+0004B4                              318+         DS    F POINTER TO KEY.
+0004B8                              319+         DS    2D RESERVED.                   3-9
+                                    320+******************** THIRD PART OF TABLE *********************
+0004C8 0700043140000006             321+ISFILEB  CCW   X'07',ISFILES+1,X'40',6 SEEK
+0004D0 0000000000000000             322+         DC    7D'0'
+000508 0000000000000000             323+ISFILEE  DC    3F'0' MODULE CELL TABLE
+000514 FFFFFFFF                     324+         DC    X'FFFFFFFF'
+                                    325 * CYL.IDX. IN CORE IS (CYL+1+3)*(KL+6)  CYL=1,KL=3
+                                    326 PRINTER  DTFPR DEVADDR=SYSLST,BLKSIZE=133,CTLCHR=ASA,                  X
+                                                       IOAREA1=PRNTOUT1,IOAREA2=PRNTOUT2,IOREG=(10)
+                                    327+* 360 N-CL-453 DTFPR       CHANGE LEVEL 3-9                         3-9
+000518                              328+         DC    0D'0'
+000518 000080000000                 329+PRINTER  DC    X'000080000000' RES. COUNT, COM. BYTES, STATUS BYTES 3-9
+00051E 00                           330+         DC    AL1(0) LOGICAL UNIT CLASS
+00051F 03                           331+         DC    AL1(3) LOGICAL UNIT
+000520 00000540                     332+         DC    A(*+32) CCW  ADDR.
+000524 00000000                     333+         DC    4X'00' CCB-ST BYTE,CSW CCW ADDRESS
+000528 00                           334+         DC    AL1(0) 3-9
+000529 000000                       335+         DC    VL3(IJDFAZIZ) ADDR OF LOGIC MODUL3-8
+00052C 08                           336+         DC    X'08' DTF TYPE  (PRINTER)
+00052D 34                           337+         DC    AL1(52) SWITCHES
+00052E 09                           338+         DC    X'09' NORMAL  COMM. CODE
+00052F 09                           339+         DC    X'09' CONTROL COMM. CODE
+000530 000006A2                     340+         DC    A(PRNTOUT1+1) ADDRESS OF DATA IN IOAREA1
+000534 00000000                     341+         DC    4X'00' BUCKET                      3-5
+000538 0700                         342+         NOPR  0 PUT LENGTH IN REG12 (ONLY UNDEF.
+00053A 41AE 0000            00000   343+         LA    10,0(14) LOAD USER POINTER REG
+00053E 0000                         344+         DC    2X'00' NOT USED                    3-5
+000540 0900072720000084             345+         CCW   9,PRNTOUT2+1,X'20',133-1
+000548                              346+IJJZ0012 EQU   *
+000548                              347 ISAMIOR  DS    CL300
+000674                              348 ISAMIDX  DS    CL45
+0006A1                              349 PRNTOUT1 DS    CL133
+000726                              350 PRNTOUT2 DS    CL133
+       ISAM DEMONSTRATION-RANDOM RETRIEVAL                                                                     PAGE    8
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                    351          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      0C     000038
+   01       01      0C     00003C
+   01       01      0C     000040
+   01       01      0C     000044
+   01       01      0C     0000F0
+   01       01      0C     000128
+   01       01      0C     00012C
+   01       01      0C     000130
+   01       01      08     0002E1
+   01       02      18     0002E9
+   01       01      08     000305
+   01       01      08     000319
+   01       01      08     000331
+   01       01      08     000339
+   01       01      08     000341
+   01       01      08     000349
+   01       01      0C     0003D0
+   01       03      18     0003D9
+   01       01      0C     000444
+   01       01      0C     000448
+   01       01      0C     000450
+   01       01      0C     000454
+   01       01      0C     000458
+   01       01      0C     0004A0
+   01       01      08     0004C9
+   01       01      0C     000520
+   01       04      18     000529
+   01       01      0C     000530
+   01       01      08     000541
+                                             CROSS-REFERENCE                                                   PAGE    1
+
+
+SYMBOL    LEN  VALUE  DEFN     REFERENCES                                                                       03/29/70
+
+CANCEL   00006 000138 00125   0082
+CARDIN   00080 000211 00169   0212  0232
+CEMPNO   00003 000211 00170   0070  0085
+DEMOISAR 00001 000000 00003   0176
+DOUBLE   00008 000200 00166   0057  0058
+ENDOFJOB 00004 0000EC 00099   0219
+EOPSW    00001 000210 00168   0067  0145  0155
+FOUND    00006 0000B6 00085
+HEADING  00006 000156 00135   0059  0069
+IJJA0010 00002 000312 00216   0229  0230
+IJJB0010 00001 000324 00224
+IJJC0006 00004 000124 00117   0106  0108  0109  0111  0112  0114
+IJJD0010 00008 000330 00229   0194  0231
+IJJO0001 00004 000034 00042   0027  0029  0031  0033  0034  0036  0037  0039
+IJJZ0012 00001 000548 00346
+ISAMIDX  00045 000674 00348   0311
+ISAMIOR  00300 000548 00347   0290
+ISFILE   00002 0003C8 00240   0045  0071  0119  0253  0280  0281
+ISFILEB  00008 0004C8 00321   0243  0281
+ISFILEC  00001 0003E6 00251
+ISFILEE  00004 000508 00323   0253
+ISFILEG  00002 00048C 00307
+ISFILEH  00002 000474 00301
+ISFILEM  00001 000444 00284
+ISFILER  00004 000498 00309
+ISFILES  00002 000430 00282   0287  0321
+ISFILET  00002 000488 00305
+ISFILEW  00002 00043A 00283   0288
+ISFILE2  00001 000444 00286   0280
+ISKEY    00003 000261 00172   0070  0090  0291
+ISREC    00075 000264 00173   0086  0086  0292
+LINCT    00002 0001FC 00164   0087  0092  0144  0153
+MAINLOOP 00004 000074 00061   0089  0094
+MERR1    00014 0001C8 00160   0128  0128  0161  0161
+MERR1C   00014 0001D3 00161   0125  0126  0127
+MHEAD1   00035 0001D6 00162   0136  0136
+NORECFND 00006 0000D0 00090   0084
+PAGENO   00003 0001F9 00163   0137  0140
+PRDSECT  00001 000000 00174   0022
+PRINT    00004 000192 00147   0088  0093  0129  0142
+PRINTER  00006 000518 00329   0046  0120  0147
+PRNTOUT1 00133 0006A1 00349   0340
+PRNTOUT2 00133 000726 00350   0345
+PRTLINE  00133 000000 00175   0048  0049  0049  0085  0086  0090  0091  0128  0135  0136  0138  0139  0140  0141  0143
+                              0156  0157  0157
+READER   00002 0002D8 00189   0044  0061  0118
+R0       00001 000000 00004
+R1       00001 000001 00005   0054  0056  0061  0071  0081  0083  0125  0147
+R10      00001 00000A 00014   0022
+R11      00001 00000B 00015
+R12      00001 00000C 00016   0020  0021
+                                             CROSS-REFERENCE                                                   PAGE    2
+
+
+SYMBOL    LEN  VALUE  DEFN     REFERENCES                                                                       03/29/70
+
+R13      00001 00000D 00017
+R14      00001 00000E 00018
+R15      00001 00000F 00019
+R2       00001 000002 00006   0055  0055  0056  0057  0088  0093  0129  0142  0158
+R3       00001 000003 00007   0059  0069  0146
+R4       00001 000004 00008
+R5       00001 000005 00009
+R6       00001 000006 00010
+R7       00001 000007 00011
+R8       00001 000008 00012
+R9       00001 000009 00013
+SYSLC    00002 0001FE 00165   0058  0153
+TODAY    00008 000208 00167   0054  0135  0135
+TRTABLE  00016 0001B8 00159   0127
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// LBLTYP NSD(3)
+// EXEC LNKEDT
+
+JOB  DEMOISAR  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST   AUTOLINK   IJDFAZIZ
+LIST   AUTOLINK   IJHZRRCZ
+LIST   AUTOLINK   IJJFCIZD
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        PHASE***  006090  006090  0070E1  1B 06 4  CSECT     DEMOISAR  006090  006090
+
+                                                   CSECT     IJJFCIZD  006FB0  006FB0
+
+                                                   CSECT     IJHZRRCZ  006920  006920
+                                                   *  ENTRY  IJHZRRZZ  006920
+
+                                                   CSECT     IJDFAZIZ  006840  006840
+// ASSGN SYS004,X'192'
+// DLBL ISFILE,'DEMO.ISAM.FILE',0,ISC
+// EXTENT SYS004,WRK14A,4,1,600,10
+// EXTENT SYS004,WRK14A,1,2,620,20
+// EXTENT SYS004,WRK14A,2,3,610,10
+// EXEC
+03/29/70                     ISAM DEMONSTRATION-RANDOM RETRIEVAL                                              PAGE     1
+
+    304   20304FROMM, STEVE V.            01200005002            2300267832122500037
+    030   30030ALLOREN, RUTH W.           00000000002            7647982367130000055
+    031            NOT FOUND
+    105   50105BETTINARDI, RONALD J       01500500003            1125666601110000022
+    960   10960WINGLAND, KEITH E.         00350000003            4215679672085000026
+    060   50060BASEL, DEBORAH L           00900191003            1043781234130000040
+EOJ DEMOISAR                                                            12.16.34,DURATION 00.00.00
+// JOB DEMOISRR DEMONSTRATE ISAM RPG RANDOM RETRIEVE                    12.16.34
+// OPTION LINK
+// EXEC RPG
+
+     DOS/360*RPG*CL 3-9                 DEMOISRR                      03/29/70             PAGE 0001
+
+                    H                                                                    ISAMRR
+     001            FREADER  IPE F  80  80    2      EREAD01 SYSIPT
+     002            FISFILE  IC  F 300  75R 3KI     3 DISK14 SYS000S
+     003            FREPORT  O   V 132 132     OF    LPRINTERSYSLST
+     004            EAAC1READER  ISFILE
+     005            LREPORT  001010070201303019040250503106037070430804609049100531105712
+     006            IREADER  AA  01
+     007            I                                        1   3 CEMPNO  C1
+     008            IISFILE  AA  02
+     009            I                                        1  75 ISREC
+     010            C                     SETOF                     H0
+     011            OREPORT  H  2 1   1P
+     012            O       OR        OF
+     013            O                         UDATE      8 ' 0/  /  '
+     014            O                                   33 'ISAM'
+     015            O                                   47 'DEMONSTRATION'
+     016            O                                   55 'RANDOM-'
+     017            O                                   64 'RETRIEVAL'
+     018            O                                  116 'PAGE'
+     019            O                         PAGE  Z  120
+     020            O        H  2     1P
+     021            O       OR        OF
+     022            O                                    7 'KEY'
+     023            O                                   20 'RECORD'
+     024            O        D  1     01
+     025            O                         CEMPNO     5
+     026            O                 02      ISREC     86
+     027            O                N02                15 'NOT FOUND'
+
+     DOS/360*RPG*CL 3-9                 DEMOISRR                      03/29/70             PAGE 0002
+
+                                                  SYMBOL  TABLES
+
+RESULTING  INDICATORS
+
+ADDRESS RI      ADDRESS RI      ADDRESS RI      ADDRESS RI      ADDRESS RI      ADDRESS RI      ADDRESS RI
+
+ 000011 OF       000014 1P       000015 LR       000016 00       000017 01       000018 02       00007A L0
+ 000085 H0       000086 H1       000087 H2       000088 H3       000089 H4       00008A H5       00008B H6
+ 00008C H7       00008D H8       00008E H9
+FIELD  NAMES
+
+ADDRESS FIELD         ADDRESS FIELD         ADDRESS FIELD         ADDRESS FIELD         ADDRESS FIELD
+
+000123  CEMPNO        000126  ISREC         000171  UDATE         000175  PAGE
+
+LITERALS
+
+ADDRESS LITERAL                    ADDRESS LITERAL                    ADDRESS LITERAL
+
+000178   ½½À/½½/½½                 000182  ISAM                       000186  DEMONSTRATION
+000193  RANDOM-                    00019A  RETRIEVAL                  0001A3  PAGE
+0001A7  KEY                        0001AA  RECORD                     0001B0  NOT FOUND
+
+
+
+
+                                            MEMORY MAP
+
+INPUT/OUTPUT INTERCEPT                                      000514
+CHAINING                                                    0001BC
+TABLE (INPUT AND OUTPUT)                                    000510
+DETERMINE RECORD TYPE                                       000728
+DATA SPECIFICATION                                          00053C
+GET INPUT RECORD                                            0009E4
+DETAIL CALCULATIONS                                         000B7C
+TOTAL CALCULATIONS                                          000B94
+DETAIL LINES                                                000C98
+TOTAL LINES                                                 000BAC
+INPUT/OUTPUT REQUEST BLOCKS POINTER                         001C60
+LOCATION OF DTF TABLE POINTERS                              000DF8
+INPUT/OUTPUT INTERFACE ROUTINES                             001020
+LINE COUNTER                                                001A3C
+LINE COUNTER TABLE                                          001CC0
+WORK AREA POINTER                                           002000
+OVERFLOW BYPASS                                             000C8C
+TABLE(ASSEMBLE 4)                                           000D4C
+OVERFLOW LINES                                              000BD6
+LINKAGE PROGRAM                                             001E10
+
+
+PROGRAM LENGTH  002164
+
+'END OF COMPILATION'
+// LBLTYP NSD(3)
+// EXEC LNKEDT
+
+JOB  DEMOISRR  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST           INCLUDE      IJCFZII3                                          ISAM0165
+LIST           INCLUDE      IJDFYPZW                                          ISAM0166
+LIST           INCLUDE      IJHZRRZZ                                          ISAM0167
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        PHASE***  007EA0  006090  0088EF  1B 06 4  CSECT     ISAMRR    006090  006090
+
+                                                   CSECT     IJCFZII3  0081F8  0081F8
+
+                                                   CSECT     IJDFYPZW  008280  008280
+                                                   *  ENTRY  IJDFYZZW  008280
+
+                                                   CSECT     IJHZRRZZ  008318  008318
+// ASSGN SYS004,X'192'
+// DLBL ISFILE,'DEMO.ISAM.FILE',0,ISC
+// EXTENT SYS004,WRK14A,4,1,600,10
+// EXTENT SYS004,WRK14A,1,2,620,20
+// EXTENT SYS004,WRK14A,2,3,610,10
+// EXEC
+ 3/29/70                     ISAM DEMONSTRATION RANDOM-RETRIEVAL                                                PAGE   1
+
+    KEY       RECORD
+
+  304      20304FROMM, STEVE V.            01200005002            2300267832122500037
+  030      30030ALLOREN, RUTH W.           00000000002            7647982367130000055
+  031 NOT FOUND
+  105      50105BETTINARDI, RONALD J       01500500003            1125666601110000022
+  960      10960WINGLAND, KEITH E.         00350000003            4215679672085000026
+  060      50060BASEL, DEBORAH L           00900191003            1043781234130000040
+
+EOJ DEMOISRR                                                            12.16.35,DURATION 00.00.00
+// JOB DEMOISCR DEMONSTRATE ISAM FCOBOL RANDOM RETRIEVE                 12.16.35
+// OPTION LINK SYM,LISTX NOXREF
+// EXEC FCOBOL
+
+     1                                  IBM DOS AMERICAN NATIONAL STANDARD COBOL                CBF CL3-6       03/29/70
+
+
+ CBL BUF=1024,SUPMAP,NOTRUNC
+00001          IDENTIFICATION DIVISION.
+00002          PROGRAM-ID. ISAMRR.
+00003          AUTHOR. A PROGRAMMER.
+00004          ENVIRONMENT DIVISION.
+00005          CONFIGURATION SECTION.
+00006          SOURCE-COMPUTER. IBM-360.
+00007          OBJECT-COMPUTER. IBM-360.
+00008          INPUT-OUTPUT SECTION.
+00009          FILE-CONTROL.
+00010              SELECT READER ASSIGN TO SYS007-UR-2501-S.
+00011              SELECT ISFILE ASSIGN TO SYS000-DA-2314-I-ISFILE
+00012                  ACCESS IS RANDOM
+00013                  NOMINAL KEY IS WS-KEY
+00014                  RECORD KEY IS ISKEY.
+00015              SELECT PRINT-FILE ASSIGN TO SYS009-UR-1403-S.
+00016          I-O-CONTROL.
+00017              APPLY CORE-INDEX TO ISFILE-CORE-INDEX ON ISFILE.
+00018          DATA DIVISION.
+00019          FILE SECTION.
+00020          FD  READER
+00021              LABEL RECORDS ARE OMITTED
+00022              RECORDING MODE IS F
+00023              RECORD CONTAINS 80 CHARACTERS
+00024              DATA RECORD IS CARDIN.
+00025          01  CARDIN.
+00026              02  CD-KEY              PIC X(3).
+00027              02  FILLER              PIC X(77).
+00028          FD  ISFILE
+00029              LABEL RECORDS ARE STANDARD
+00030              RECORDING MODE IS F
+00031              RECORD CONTAINS 75 CHARACTERS
+00032              BLOCK CONTAINS 4 RECORDS
+00033              DATA RECORD IS ISREC.
+00034          01  ISREC.
+00035              05  FILLER              PIC XX.
+00036              05  ISKEY               PIC XXX.
+00037              05  FILLER              PIC X(70).
+00038          FD  PRINT-FILE
+00039              LABEL RECORDS ARE OMITTED
+00040              RECORDING MODE IS F
+00041              RECORD CONTAINS 133 CHARACTERS
+00042              DATA RECORD IS PRINTOUT.
+00043          01  PRINTOUT.
+00044              02  ASA                 PIC X.
+00045              02  FILLER              PIC X(132).
+00046          01  HEADING1.
+00047              02  FILLER              PIC X.
+00048              02  H1-TODAY            PIC X(8).
+00049              02  FILLER              PIC X(25).
+00050              02  H1-TITLE            PIC X(35).
+00051              02  FILLER              PIC X(44).
+00052              02  H1-PAGE             PIC X(4).
+     2
+
+
+00053              02  FILLER              PIC X.
+00054              02  H1-PAGENUM          PIC ZZ9.
+00055              02  FILLER              PIC X(12).
+00056          01  DETAIL-LINE-LISTING.
+00057              02  FILLER              PIC X.
+00058              02  FILLER              PIC X.
+00059              02  DL-KEY              PIC X(3).
+00060              02  FILLER              PIC X(5).
+00061              02  DL-REC              PIC X(75).
+00062              02  FILLER              PIC X(48).
+00063          WORKING-STORAGE SECTION.
+00064          01  FILLER.
+00065              05  WS-KEY              PIC XXX.
+00066              05  WS-TODAY            PIC X(8).
+00067              05  WS-SYSLC    COMP-3  PIC S999.
+00068              05  WS-LC       COMP-3  PIC S999 VALUE ZERO.
+00069              05  WS-PAGENUM  COMP-3  PIC S999 VALUE ZERO.
+00070              05  WS-EOF              PIC X VALUE 'N'.
+00071              05  WS-EOP              PIC X.
+00072              05  WS-NRF              PIC X.
+00073         * CYL.IDX. IN CORE IS (CYL+1+3)*(KL+6)  CYL=1,KL=3
+00074              05  ISFILE-CORE-INDEX   PIC X(45).
+00075          PROCEDURE DIVISION.
+00076              OPEN INPUT READER, ISFILE
+00077                   OUTPUT PRINT-FILE.
+00078              MOVE SPACES TO PRINTOUT.
+00079              MOVE CURRENT-DATE TO WS-TODAY
+00080              CALL 'FCOBSLC' USING WS-SYSLC
+00081              PERFORM HEADING-ROUTINE THRU HEADING-ROUTINE-EXIT.
+00082              READ READER AT END MOVE 'Y' TO WS-EOF.
+00083              PERFORM DETAIL-ROUTINE THRU DETAIL-ROUTINE-EXIT
+00084                  UNTIL WS-EOF = 'Y'
+00085              CLOSE READER, ISFILE, PRINT-FILE
+00086              STOP RUN.
+00087
+00088          DETAIL-ROUTINE.
+00089              IF WS-EOP = 'Y'
+00090                  PERFORM HEADING-ROUTINE THRU HEADING-ROUTINE-EXIT.
+00091              MOVE CD-KEY TO WS-KEY
+00092              MOVE 'N' TO WS-NRF
+00093              READ ISFILE
+00094                 INVALID KEY MOVE 'Y' TO WS-NRF.
+00095              IF WS-NRF = 'N'
+00096                      MOVE ISKEY TO DL-KEY
+00097                      MOVE ISREC TO DL-REC
+00098              ELSE
+00099                  MOVE ISKEY                TO DL-KEY
+00100                  MOVE '  RECORD NOT FOUND' TO DL-REC.
+00101              ADD 1 TO WS-LC
+00102              PERFORM PRINT-LINE THRU PRINT-LINE-EXIT.
+00103              READ READER AT END MOVE 'Y' TO WS-EOF.
+00104          DETAIL-ROUTINE-EXIT.
+00105              EXIT.
+     3
+
+
+00106
+00107          HEADING-ROUTINE.
+00108              MOVE WS-TODAY   TO H1-TODAY
+00109              MOVE 'ISAM DEMONSTRATION-RANDOM RETRIEVAL' TO H1-TITLE
+00110              MOVE 'PAGE'     TO H1-PAGE
+00111              ADD 1 TO WS-PAGENUM
+00112              MOVE WS-PAGENUM TO H1-PAGENUM
+00113              MOVE '1' TO ASA
+00114              PERFORM PRINT-LINE THRU PRINT-LINE-EXIT
+00115              MOVE '0' TO ASA
+00116              MOVE 2 TO WS-LC
+00117              MOVE 'N' TO WS-EOP.
+00118          HEADING-ROUTINE-EXIT.
+00119              EXIT.
+00120
+00121          PRINT-LINE.
+00122              WRITE PRINTOUT AFTER POSITIONING ASA.
+00123              IF WS-LC NOT LESS THAN WS-SYSLC
+00124                  THEN MOVE 'Y' TO WS-EOP.
+00125              MOVE SPACES TO PRINTOUT.
+00126          PRINT-LINE-EXIT.
+00127              EXIT.
+     4
+
+
+                                              CROSS-REFERENCE DICTIONARY
+
+
+ DATA NAMES                       DEFN       REFERENCE
+
+ READER                           00010      00076  00076  00082  00082  00085  00103  00103
+ CD-KEY                           00026      00091
+ ISFILE                           00011      00076  00076  00085  00093  00093
+ ISREC                            00034      00097
+ ISKEY                            00036      00096  00099
+ PRINT-FILE                       00015      00076  00076  00085  00122
+ PRINTOUT                         00043      00078  00078  00078  00122  00125  00125  00125
+ ASA                              00044      00113  00115  00122  00122
+ H1-TODAY                         00048      00108
+ H1-TITLE                         00050      00109
+ H1-PAGE                          00052      00110
+ H1-PAGENUM                       00054      00112
+ DL-KEY                           00059      00096  00099
+ DL-REC                           00061      00097  00100  00100  00100  00100
+ WS-KEY                           00065      00091
+ WS-TODAY                         00066      00079  00108
+ WS-SYSLC                         00067      00080  00123
+ WS-LC                            00068      00101  00116  00123
+ WS-PAGENUM                       00069      00111  00112
+ WS-EOF                           00070      00082  00083  00103
+ WS-EOP                           00071      00089  00117  00124
+ WS-NRF                           00072      00092  00094  00095
+
+
+ PROCEDURE NAMES                  DEFN       REFERENCE
+
+ DETAIL-ROUTINE                   00088      00083
+ DETAIL-ROUTINE-EXIT              00104      00083
+ HEADING-ROUTINE                  00107      00081  00090
+ HEADING-ROUTINE-EXIT             00118      00081  00090
+ PRINT-LINE                       00121      00102  00114
+ PRINT-LINE-EXIT                  00126      00102  00114
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+FCOBSLC   SD  01 000000 000030
+       GET SYSTEM LINE COUNT FOR FCOBOL                                                                        PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      2          PRINT NOGEN
+000000                                3 FCOBSLC  CSECT
+000000                                4 R0       EQU   0                   WORK REGISTER                        C1R10400
+000001                                5 R1       EQU   1                   WORK, ALSO POINTER TO I/O CCB        C1R10500
+000002                                6 R2       EQU   2                   LINKAGE FOR INTERNAL SUBROUTINES     C1R10600
+000003                                7 R3       EQU   3                   CYLINDER COUNT REMAINING             C1R10700
+000004                                8 R4       EQU   4                   CURRENT CYLINDER NR                  C1R10800
+000005                                9 R5       EQU   5                   TRACK COUNT REMAINING                C1R10900
+000006                               10 R6       EQU   6                   CURRENT TRACK NR                     C1R11000
+000007                               11 R7       EQU   7                   RECORD COUNT REMAINING               C1R11100
+000008                               12 R8       EQU   8                   CURRENT RECORD NR                    C1R11200
+000009                               13 R9       EQU   9                                                        C1R11300
+00000A                               14 R10      EQU   10                                                       C1R11400
+00000B                               15 R11      EQU   11                  PROGRAM BASE REGISTER 1              C1R11500
+00000C                               16 R12      EQU   12                  PROGRAM BASE REGISTER 2              C1R11600
+00000D                               17 R13      EQU   13                                                       C1R11700
+00000E                               18 R14      EQU   14                  WORK REGISTER                        C1R11800
+00000F                               19 R15      EQU   15                  WORK REGISTER                        C1R11900
+000000                               20          USING *,R12
+                                     21          SAVE  (14,12)             SAVE COBOL REGISTERS
+000004 18CF                          24          LR    R12,R15
+000006 5891 0000            00000    25          L     R9,0(R1)            GET ADDR. OF COBOL FIELD
+                                     26          COMRG
+000010 1B22                          30          SR    R2,R2               GET SYSTEM LINE COUNT
+000012 4321 004E            0004E    31          IC    R2,78(R1)
+000016 4E20 C028            00028    32          CVD   R2,DOUBLE           CONVERT TO PACKED
+00001A F817 9000 C028 00000 00028    33          ZAP   0(2,R9),DOUBLE      MOVE LINE COUNT TO COBOL
+                                     34          RETURN (14,12)            RESTORE COBOL REGISTERS AND RETURN
+000028                               38 DOUBLE   DS    D
+                                     39          END
+                                             CROSS-REFERENCE                                                   PAGE    1
+
+
+SYMBOL    LEN  VALUE  DEFN     REFERENCES                                                                       03/29/70
+
+DOUBLE   00008 000028 00038   0032  0033
+FCOBSLC  00001 000000 00003
+R0       00001 000000 00004
+R1       00001 000001 00005   0025  0031
+R10      00001 00000A 00014
+R11      00001 00000B 00015
+R12      00001 00000C 00016   0020  0024
+R13      00001 00000D 00017
+R14      00001 00000E 00018
+R15      00001 00000F 00019   0024
+R2       00001 000002 00006   0030  0030  0031  0032
+R3       00001 000003 00007
+R4       00001 000004 00008
+R5       00001 000005 00009
+R6       00001 000006 00010
+R7       00001 000007 00011
+R8       00001 000008 00012
+R9       00001 000009 00013   0025  0033
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// LBLTYP NSD(3)
+// EXEC LNKEDT
+
+JOB  DEMOISCR  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST   AUTOLINK   IJCFZII3
+LIST   AUTOLINK   IJDFAPIZ
+LIST   AUTOLINK   IJHZRRCZ
+LIST   AUTOLINK   ILBDISM0
+LIST   AUTOLINK   ILBDISE0
+LIST   AUTOLINK   ILBDMNS0
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        PHASE***  006090  006090  0078E8  1B 06 4  CSECT     ISAMRR    006090  006090
+
+                                                   CSECT     IJCFZII3  006D88  006D88
+
+                                                   CSECT     IJHZRRCZ  006F28  006F28
+                                                   *  ENTRY  IJHZRRZZ  006F28
+
+                                                   CSECT     IJDFAPIZ  006E10  006E10
+                                                   *  ENTRY  IJDFAZIZ  006E10
+
+                                                   CSECT     ILBDMNS0  0078E8  0078E8
+
+                                                   CSECT     FCOBSLC   006D58  006D58
+
+                                                   CSECT     ILBDISM0  0075B8  0075B8
+                                                      ENTRY  ILBDISM2  00766A
+                                                   *  ENTRY  ILBDISM1  007610
+                                                   *  ENTRY  ILBDISM3  00768E
+                                                   *  ENTRY  ILBDISM4  0076BE
+                                                   *  ENTRY  ILBDISM5  0076F0
+
+                                                   CSECT     ILBDISE0  007730  007730
+                                                   *  ENTRY  ILBDISE1  007748
+// ASSGN SYS007,X'00C'
+// ASSGN SYS009,X'00E'
+// ASSGN SYS004,X'192'
+// DLBL ISFILE,'DEMO.ISAM.FILE',0,ISC
+// EXTENT SYS004,WRK14A,4,1,600,10
+// EXTENT SYS004,WRK14A,1,2,620,20
+// EXTENT SYS004,WRK14A,2,3,610,10
+// EXEC
+03/29/70                         ISAM DEMONSTRATION-RANDOM RETRIEVAL                                            PAGE   1
+
+ 304     20304FROMM, STEVE V.            01200005002            2300267832122500037
+ 030     30030ALLOREN, RUTH W.           00000000002            7647982367130000055
+ 030       RECORD NOT FOUND
+ 105     50105BETTINARDI, RONALD J       01500500003            1125666601110000022
+ 960     10960WINGLAND, KEITH E.         00350000003            4215679672085000026
+ 060     50060BASEL, DEBORAH L           00900191003            1043781234130000040
+EOJ DEMOISCR                                                            12.16.36,DURATION 00.00.00
+// JOB DEMOISPR ISAM PL/I RANDOM RETRIEVE                               12.16.36
+// OPTION LINK SYM,LISTX,DUMP
+// EXEC PL/I
+
+         DOS PL/I COMPILER  360N-PL-464 CL3-13             DEMOISPR            03/29/70            PAGE 001
+
+
+                                                    O P T I O N S  L I S T
+
+* PROCESS STMT
+
+OPTIONS TAKEN ARE 60C,LIST,XREF,ERRS,OPT,STMT.
+         DOS PL/I COMPILER  360N-PL-464 CL3-13             DEMOISPR            03/29/70            PAGE 002
+
+
+ /* ISAM DEMONSTRATION-RANDOM RETRIEVAL */
+
+                     /* ISAM DEMONSTRATION-RANDOM RETRIEVAL */
+     1               ISAMRR: PROC OPTIONS (MAIN);
+     2                       DCL PLISLC ENTRY,
+                                 1 CARDIN,
+                                   5 CDKEY      PIC '(3)X',
+                                   5 FILLER2    PIC '(77)X',
+                                 1 ISREC,
+                                   5 FILLER1    PIC '(75)X',
+                                 READER FILE INPUT RECORD
+                                      ENV(MEDIUM(SYS007,2501) BUFFERS(2) F(80)),
+                                 ISFILE FILE INPUT RECORD DIRECT KEYED
+                                      ENV(MEDIUM(SYS000,2314) F(300,75) INDEXED
+                                          KEYLENGTH(3) KEYLOC(3)
+                                          EXTENTNUMBER(3) INDEXAREA(45)),
+                                 PRINTR FILE OUTPUT STREAM PRINT
+                                      ENV(MEDIUM(SYS009,1403) BUFFERS(2) F(133)),
+                                 SYSLC FIXED DEC(3,0),
+                                 LINES FIXED DEC(3,0) STATIC INIT (0),
+                                 PAGE FIXED DEC(5,0) STATIC INIT (0),
+                                 DATE BUILTIN,
+                                 TODAY CHAR(8) STATIC INIT ('  /  /  '),
+                                 WNRF CHAR(1);
+     3                       SUBSTR(TODAY,1,2) = SUBSTR(DATE,3,2);
+     4                       SUBSTR(TODAY,4,2) = SUBSTR(DATE,5,2);
+     5                       SUBSTR(TODAY,7,2) = SUBSTR(DATE,1,2);
+     6                       CALL PLISLC(SYSLC);
+     7                       OPEN FILE (READER), FILE (ISFILE), FILE (PRINTR);
+     8                       ON ENDFILE (READER) GO TO ENDJOB;
+     9                       ON KEY (ISFILE) GO TO NRF;
+    10                       ON ENDPAGE (PRINTR);
+    11                       CALL HEDING;
+    12               MAINLP: READ FILE (READER) INTO (CARDIN);
+    13                       WNRF = 'N';
+    14                       READ FILE (ISFILE) INTO (ISREC) KEY(CDKEY);
+    15                       GO TO READOK;
+    16               NRF:    WNRF = 'Y';
+    17               READOK: IF LINES >= SYSLC THEN CALL HEDING;
+    18                       IF WNRF = 'N'
+                                THEN PUT FILE (PRINTR) SKIP EDIT
+                                             (CDKEY, ISREC)
+                                             (X(5), A, X(3), A);
+    19                          ELSE PUT FILE (PRINTR) SKIP EDIT
+                                             (CDKEY, '  RECORD NOT FOUND')
+                                             (X(1), A, X(12), A);
+    20                       LINES = LINES + 1;
+    21                       GO TO MAINLP;
+
+    22               ENDJOB: CLOSE FILE (READER), FILE (ISFILE), FILE (PRINTR);
+
+    23               HEDING: PROC;
+    24                       PAGE = PAGE + 1;  /* INCREMENT PAGE COUNTER */
+         DOS PL/I COMPILER  360N-PL-464 CL3-13             DEMOISPR            03/29/70            PAGE 003
+
+
+ /* ISAM DEMONSTRATION-RANDOM RETRIEVAL */
+
+    25                       IF PAGE > 1  THEN PUT FILE (PRINTR) PAGE;
+    26                       PUT FILE (PRINTR) EDIT
+                                 (TODAY, 'ISAM DEMONSTRATION-RANDOM RETRIEVAL',
+                                         'PAGE', PAGE)
+                                 (A, X(6), A, X(44), A, F(4,0), SKIP);
+    27                       PUT FILE (PRINTR) SKIP;
+    28                       LINES = 2;  /* RESET LINE COUNTER */
+    29                       RETURN;
+    30               END HEDING;
+    31               END ISAMRR;
+         DOS PL/I COMPILER  360N-PL-464 CL3-13             DEMOISPR            03/29/70            PAGE 004
+
+
+                        C R O S S     R E F E R E N C E     L I S T I N G
+
+ CARDIN                          0102 01   12
+ CDKEY                           0103 01   14   18   19
+ DATE                            010D 01
+ ENDJOB                          0113 01    8   22
+ FILLER1                         0106 01
+ FILLER2                         0104 01
+ HEDING                          0114 01   11   17   23
+ ISAMRR                          0100 00    1
+ ISFILE                          0108 01    7    9   14   22
+ ISREC                           0105 01   14   18
+ LINES                           010B 01   17   20   20   28
+ MAINLP                          0110 01   12   21
+ NRF                             0111 01    9   16
+ PAGE                            010C 01   24   24   25   26
+ PLISLC                          0101 01    6
+ PRINTR                          0109 01    7   10   18   19   22   25   26   27
+ READER                          0107 01    7    8   12   22
+ READOK                          0112 01   15   17
+ SYSLC                           010A 01    6   17
+ TODAY                           010E 01    3    4    5   26
+ WNRF                            010F 01   13   16   18
+         DOS PL/I COMPILER  360N-PL-464 CL3-13             DEMOISPR            03/29/70            PAGE 005
+
+
+                          DECLARE STATEMENT DIAGNOSTICS.
+
+ 5C076I 0002 W RECORDSIZE OF RECORD NOT DIVISIBLE BY 8 IN FILE ISFILE
+         DOS PL/I COMPILER  360N-PL-464 CL3-13             DEMOISPR            03/29/70            PAGE 006
+
+
+DIAGNOSTIC MESSAGES
+
+5E03I POSSIBLE ERRORS IN SOURCE PROGRAM.
+         DOS PL/I COMPILER  360N-PL-464 CL3-13             DEMOISPR            03/29/70            PAGE 007
+
+
+  5W01I    SUCCESSFUL   COMPILATION
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+PLISLC    SD  01 000000 000030
+       GET SYSTEM LINE COUNT FOR PL/I                                                                          PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      2          PRINT NOGEN
+000000                                3 PLISLC   CSECT
+000000                                4 R0       EQU   0                   WORK REGISTER                        C1R10400
+000001                                5 R1       EQU   1                   WORK, ALSO POINTER TO I/O CCB        C1R10500
+000002                                6 R2       EQU   2                   LINKAGE FOR INTERNAL SUBROUTINES     C1R10600
+000003                                7 R3       EQU   3                   CYLINDER COUNT REMAINING             C1R10700
+000004                                8 R4       EQU   4                   CURRENT CYLINDER NR                  C1R10800
+000005                                9 R5       EQU   5                   TRACK COUNT REMAINING                C1R10900
+000006                               10 R6       EQU   6                   CURRENT TRACK NR                     C1R11000
+000007                               11 R7       EQU   7                   RECORD COUNT REMAINING               C1R11100
+000008                               12 R8       EQU   8                   CURRENT RECORD NR                    C1R11200
+000009                               13 R9       EQU   9                                                        C1R11300
+00000A                               14 R10      EQU   10                                                       C1R11400
+00000B                               15 R11      EQU   11                  PROGRAM BASE REGISTER 1              C1R11500
+00000C                               16 R12      EQU   12                  PROGRAM BASE REGISTER 2              C1R11600
+00000D                               17 R13      EQU   13                                                       C1R11700
+00000E                               18 R14      EQU   14                  WORK REGISTER                        C1R11800
+00000F                               19 R15      EQU   15                  WORK REGISTER                        C1R11900
+000000                               20          USING *,R12
+                                     21          SAVE  (14,12)             SAVE PL/I REGISTERS
+000004 18CF                          24          LR    R12,R15
+000006 5891 0000            00000    25          L     R9,0(R1)            GET ADDR. OF PL/I FIELD
+                                     26          COMRG
+000010 1B22                          30          SR    R2,R2               GET SYSTEM LINE COUNT
+000012 4321 004E            0004E    31          IC    R2,78(R1)
+000016 4E20 C028            00028    32          CVD   R2,DOUBLE           CONVERT TO PACKED
+00001A F817 9000 C028 00000 00028    33          ZAP   0(2,R9),DOUBLE      MOVE LINE COUNT TO PL/I
+                                     34          RETURN (14,12)            RESTORE PL/I REGISTERS AND RETURN
+000028                               38 DOUBLE   DS    D
+                                     39          END
+                                             CROSS-REFERENCE                                                   PAGE    1
+
+
+SYMBOL    LEN  VALUE  DEFN     REFERENCES                                                                       03/29/70
+
+DOUBLE   00008 000028 00038   0032  0033
+PLISLC   00001 000000 00003
+R0       00001 000000 00004
+R1       00001 000001 00005   0025  0031
+R10      00001 00000A 00014
+R11      00001 00000B 00015
+R12      00001 00000C 00016   0020  0024
+R13      00001 00000D 00017
+R14      00001 00000E 00018
+R15      00001 00000F 00019   0024
+R2       00001 000002 00006   0030  0030  0031  0032
+R3       00001 000003 00007
+R4       00001 000004 00008
+R5       00001 000005 00009
+R6       00001 000006 00010
+R7       00001 000007 00011
+R8       00001 000008 00012
+R9       00001 000009 00013   0025  0033
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// LBLTYP NSD(3)
+// EXEC LNKEDT
+
+JOB  DEMOISPR  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST   AUTOLINK   IJCFZII3
+LIST   AUTOLINK   IJDFAZIZ
+LIST   AUTOLINK   IJHZRRCZ
+LIST   AUTOLINK   IJKSDTM
+LIST   AUTOLINK   IJKSYSA
+LIST   AUTOLINK   IJJCPD1N
+LIST   AUTOLINK   IJKSZBA
+LIST   AUTOLINK   IJKSZLM
+LIST   AUTOLINK   IJKTCBM
+LIST   AUTOLINK   IJKTDIM
+LIST   AUTOLINK   IJKTFDM
+LIST   AUTOLINK   IJKTFMM
+LIST   AUTOLINK   IJKTSTM
+LIST   AUTOLINK   IJKTXCF
+LIST   AUTOLINK   IJKVCEM
+LIST   AUTOLINK   IJKVPCM
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        PHASE***  0065B8  006090  008E2B  1B 06 4  CSECT     READER    006090  006090
+
+                                                   CSECT     IJCFZII3  006AD0  006AD0
+
+                                                   CSECT     IJKTXCF   008728  008728
+                                                      ENTRY  IJKTXCE   008868
+                                                   *  ENTRY  IJKTXCR   008750
+                                                   *  ENTRY  IJKTXCW   00875A
+
+                                                   CSECT     PRINTR    006180  006180
+
+                                                   CSECT     IJDFAZIZ  006B58  006B58
+
+                                                   CSECT     ISFILE    0062E0  0062E0
+
+                                                   CSECT     IJHZRRCZ  006C38  006C38
+                                                   *  ENTRY  IJHZRRZZ  006C38
+
+                                                   CSECT     ISAMRR    0065B8  0065B8
+
+                                                   CSECT     PLISLC    006AA0  006AA0
+
+                                                   CSECT     IJKSZCN   007600  007600
+                                                      ENTRY  IJKSZCA   00782E
+                                                      ENTRY  IJKSZCM   007836
+                                                      ENTRY  IJKTOPM   007868
+                                                      ENTRY  IJKTCLM   007878
+                                                      ENTRY  IJKSZBA   007832
+                                                   *  ENTRY  IJKSZCI   007692
+                                                   *  ENTRY  IJKSZCP   0077C0
+                                                      ENTRY  IJKSZCS   0076B6
+                                                   *  ENTRY  IJKSZCT   007856
+                                                   *  ENTRY  IJKTRNS   007A60
+                                                      ENTRY  IJKZWSA   0078E8
+                                                   *  ENTRY  IJKZWSI   007A0C
+
+                                                   CSECT     IJKSZLM   007D10  007D10
+
+                                                   CSECT     IJKTDIM   007FA0  007FA0
+
+                                                   CSECT     IJKTFDM   0081D8  0081D8
+
+                                                   CSECT     IJKTFMM   0083B8  0083B8
+                                                      ENTRY  IJKTFMR   0083CC
+
+                                                   CSECT     IJKTSTM   008480  008480
+                                                      ENTRY  IJKTSTR   008684
+                                                      ENTRY  IJKTSTN   0084FA
+
+                                                   CSECT     IJKVPCM   008DE8  008DE8
+
+                                                   CSECT     IJKVCEM   0089E8  0089E8
+
+                                                   CSECT     IJKSYSA   007308  007308
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+                                                   CSECT     IJKTCBM   007D50  007D50
+
+                                                   CSECT     IJKSDTM   0072C8  0072C8
+
+                                                   CSECT     IJJCPD1N  007440  007440
+                                                   *  ENTRY  IJJCPD3   007440
+// ASSGN SYS007,X'00C'
+// ASSGN SYS009,X'00E'
+// ASSGN SYS004,X'192'
+// DLBL ISFILE,'DEMO.ISAM.FILE',0,ISC
+// EXTENT SYS004,WRK14A,4,1,600,10
+// EXTENT SYS004,WRK14A,1,2,620,20
+// EXTENT SYS004,WRK14A,2,3,610,10
+// EXEC
+03/29/70      ISAM DEMONSTRATION-RANDOM RETRIEVAL                                            PAGE   1
+
+     304   20304FROMM, STEVE V.            01200005002            2300267832122500037
+     030   30030ALLOREN, RUTH W.           00000000002            7647982367130000055
+ 031              RECORD NOT FOUND
+     105   50105BETTINARDI, RONALD J       01500500003            1125666601110000022
+     960   10960WINGLAND, KEITH E.         00350000003            4215679672085000026
+     060   50060BASEL, DEBORAH L           00900191003            1043781234130000040
+EOJ DEMOISPR                                                            12.16.37,DURATION 00.00.00

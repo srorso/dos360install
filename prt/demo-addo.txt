@@ -1,0 +1,2139 @@
+
+// JOB DEMOADDO DEMO ADDROUT CONCEPT                                    12.15.07
+* BUILD A SEQUENTIAL DISK FILE IN EMPLOYEE NUMBER ORDER
+// ASSGN SYS004,X'00C' INPUT
+// ASSGN SYS005,X'192' OUTPUT
+// DLBL UOUT,'PEOPLE',0
+// EXTENT SYS005,WRK14A,,,2600,2   OVERLAPS IJSYS04
+// EXEC CDDK
+
+// UCD TR,FF,A=(80,80),B=(80,160),E=(2314)
+// END
+CARD TO DISK UTILITY
+INPUT RECORD LENGTH 0080
+OUTPUT RECORD LENGTH  0080
+INPUT BLOCK LENGTH 00080
+OUTPUT BLOCK LENGTH 00160
+INPUT OPTION CARD BCD
+OUTPUT OPTION    DISK WRITE CHECK
+2 INPUT,2 OUTPUT AREAS ASSIGNED
+RECORD FORMAT FIXED
+TYPE REBLOCK
+STARTING RECORD NUMBER  00000001
+OUTPUT DEVICE TYPE  2314
+FILEMARK WRITTEN IN
+XT. NO.  B1   C1   C2   H1   H2   R
+   000  000  000  130  000  000  026
+NUMBER OF INPUT BLOCKS PROCESSED  000049
+NUMBER OF OUTPUT BLOCKS PROCESSED 000025
+END OF JOB
+// RESET PROG
+* USE SORT TO READ THE FILE AND BUILD THE ADDRESS OUT FILE
+// ASSGN SYS001,X'192' OUTPUT
+// ASSGN SYS002,X'192' INPUT
+// ASSGN SYS003,X'192' WORK1
+// DLBL SORTOUT,'PEOPLE.ADDROUT',0
+// EXTENT SYS001,WRK14A,,,2602,1
+// DLBL SORTIN1,'PEOPLE'
+// EXTENT SYS002,WRK14A
+// DLBL SORTWK1,,0
+// EXTENT SYS003,WRK14A,,,2700,20
+// EXEC SORT
+
+7000I  SORT WORK=1,FILES=1,FORMAT=BI,FIELDS=(1,5,A)
+7000I  RECORD TYPE=F,LENGTH=(80,15,10)  (RL,10+CF,10)
+7000I  INPFIL BLKSIZE=160
+7000I  OUTFIL BLKSIZE=100
+7000I  OPTION PRINT=ALL,LABEL=(S,S),ADDROUT=A
+7000I  END
+7050I NMAX = 00004738
+7051I B = 00007291
+7052I G = 00015761
+7001I PHASE 0 END,NO DETECTED ERRORS
+
+// RESET PROG
+* PRINT THE ADDRESS OUT FILE SO YOU CAN SEE IT
+// ASSGN SYS006,X'192'
+// UPSI 1
+// EXEC DITTO
+$$DITTO  DDR   INPUT=SYS006,BEGIN=13002,END=13002,RECSIZE=00010
+
+* * * * DEVICE  192  SYS006,  CYLINDER 130, HEAD 02,  OPERATIVE PRIMARY TRACK                                                * * * *
+
+
+CYL  130     DATA  100    CHAR
+HEAD  02                  ZONE  0000800000
+REC    1                  NUMR  0000200100
+                               01...5...10
+
+                          CHAR           &
+                          ZONE  0000800005
+                          NUMR  0000200600
+                               01...5...10
+
+                          CHAR           &
+                          ZONE  0000800005
+                          NUMR  0000200900
+                               01...5...10
+
+                          CHAR
+                          ZONE  0000800000
+                          NUMR  0000200E00
+                               01...5...10
+
+                          CHAR           &
+                          ZONE  0000800105
+                          NUMR  0000200300
+                               01...5...10
+
+                          CHAR
+                          ZONE  0000800100
+                          NUMR  0000200900
+                               01...5...10
+
+                          CHAR
+                          ZONE  0000800000
+                          NUMR  0000200400
+                               01...5...10
+
+                          CHAR
+                          ZONE  0000800000
+                          NUMR  0000200A00
+                               01...5...10
+
+                          CHAR           &
+                          ZONE  0000800105
+                          NUMR  0000200100
+                               01...5...10
+
+                          CHAR
+                          ZONE  0000800100
+                          NUMR  0000200500
+                               01...5...10
+
+
+
+CYL  130     DATA  100    CHAR           &
+HEAD  02                  ZONE  0000800105
+REC    2                  NUMR  0000200800
+                               01...5...10                          CHAR
+                          ZONE  0000800000
+                          NUMR  0000200200
+                               01...5...10
+
+                          CHAR
+                          ZONE  0000800000
+                          NUMR  0000200600
+                               01...5...10
+
+                          CHAR           &
+                          ZONE  0000800005
+                          NUMR  0000200B00
+                               01...5...10
+
+                          CHAR
+                          ZONE  0000800000
+                          NUMR  0000200D00
+                               01...5...10
+
+                          CHAR           &
+                          ZONE  0000800005
+                          NUMR  0000200F00
+                               01...5...10
+
+                          CHAR           &
+                          ZONE  0000800105
+                          NUMR  0000200700
+                               01...5...10
+
+                          CHAR           &
+                          ZONE  0000800005
+                          NUMR  0000200100
+                               01...5...10
+
+                          CHAR
+                          ZONE  0000800000
+                          NUMR  0000200500
+                               01...5...10
+
+                          CHAR           &
+                          ZONE  0000800005
+                          NUMR  0000200C00
+                               01...5...10
+
+
+
+CYL  130     DATA  100    CHAR
+HEAD  02                  ZONE  0000800100
+REC    3                  NUMR  0000200300
+                               01...5...10
+
+                          CHAR
+                          ZONE  0000800100
+                          NUMR  0000200400
+                               01...5...10                          CHAR
+                          ZONE  0000800100
+                          NUMR  0000200600
+                               01...5...10
+
+                          CHAR           &
+                          ZONE  0000800005
+                          NUMR  0000200400
+                               01...5...10
+
+                          CHAR
+                          ZONE  0000800000
+                          NUMR  0000200700
+                               01...5...10
+
+                          CHAR           &
+                          ZONE  0000800005
+                          NUMR  0000200A00
+                               01...5...10
+
+                          CHAR           &
+                          ZONE  0000800105
+                          NUMR  0000200000
+                               01...5...10
+
+                          CHAR
+                          ZONE  0000800100
+                          NUMR  0000200800
+                               01...5...10
+
+                          CHAR           &
+                          ZONE  0000800005
+                          NUMR  0000200200
+                               01...5...10
+
+                          CHAR           &
+                          ZONE  0000800005
+                          NUMR  0000200500
+                               01...5...10
+
+
+
+CYL  130     DATA  100    CHAR
+HEAD  02                  ZONE  0000800000
+REC    4                  NUMR  0000200900
+                               01...5...10
+
+                          CHAR
+                          ZONE  0000800000
+                          NUMR  0000200F00
+                               01...5...10
+
+                          CHAR
+                          ZONE  0000800100
+                          NUMR  0000200200
+                               01...5...10                          CHAR
+                          ZONE  0000800100
+                          NUMR  0000200700
+                               01...5...10
+
+                          CHAR           &
+                          ZONE  0000800005
+                          NUMR  0000200700
+                               01...5...10
+
+                          CHAR
+                          ZONE  0000800000
+                          NUMR  0000200B00
+                               01...5...10
+
+                          CHAR           &
+                          ZONE  0000800005
+                          NUMR  0000200E00
+                               01...5...10
+
+                          CHAR           &
+                          ZONE  0000800105
+                          NUMR  0000200200
+                               01...5...10
+
+                          CHAR           &
+                          ZONE  0000800105
+                          NUMR  0000200500
+                               01...5...10
+
+                          CHAR
+                          ZONE  0000800000
+                          NUMR  0000200300
+                               01...5...10
+
+
+
+CYL  130     DATA   90    CHAR           &
+HEAD  02                  ZONE  0000800005
+REC    5                  NUMR  0000200800
+                               01...5...10
+
+                          CHAR           &
+                          ZONE  0000800005
+                          NUMR  0000200D00
+                               01...5...10
+
+                          CHAR
+                          ZONE  0000800100
+                          NUMR  0000200000
+                               01...5...10
+
+                          CHAR           &
+                          ZONE  0000800005
+                          NUMR  0000200300
+                               01...5...10                          CHAR
+                          ZONE  0000800000
+                          NUMR  0000200800
+                               01...5...10
+
+                          CHAR
+                          ZONE  0000800000
+                          NUMR  0000200C00
+                               01...5...10
+
+                          CHAR
+                          ZONE  0000800100
+                          NUMR  0000200100
+                               01...5...10
+
+                          CHAR           &
+                          ZONE  0000800105
+                          NUMR  0000200400
+                               01...5...10
+
+                          CHAR           &
+                          ZONE  0000800105
+                          NUMR  0000200600
+                               01...5...10
+
+
+
+CYL  130     DATA    0          END OF FILE RECORD
+HEAD  02
+REC    6
+
+
+$$DITTO  EOJ
+
+
+* READ FILES USING ASSEMBLER PIOCS
+// OPTION LINK,NOXREF,DUMP
+// PAUSE
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+DEMOADDO  SD  01 005068 0004F0
+       DEMOSTRATE ADDRESS OUT FILES USING PIOCS                                                                PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      2 *        PRINT NOGEN
+005068                                3 DEMOADDO START X'5068'
+000000                                4 R0       EQU   0
+000001                                5 R1       EQU   1
+000002                                6 R2       EQU   2
+000003                                7 R3       EQU   3
+000004                                8 R4       EQU   4
+000005                                9 R5       EQU   5
+000006                               10 R6       EQU   6
+000007                               11 R7       EQU   7
+000008                               12 R8       EQU   8
+000009                               13 R9       EQU   9
+00000A                               14 R10      EQU   10
+00000B                               15 R11      EQU   11
+00000C                               16 R12      EQU   12
+00000D                               17 R13      EQU   13
+00000E                               18 R14      EQU   14
+00000F                               19 R15      EQU   15
+005068 05C0                          20          BALR  R12,0
+00506A                               21          USING *,R12
+000000                               22          USING ADDDSECT,R8
+000000                               23          USING EMDSECT,R7
+                                     24          OPEN  ADDFILE,EMFILE,PRINTER
+                                     25+* 360N-CL-453 OPEN     CHANGE LEVEL 3-3                             3-3
+00506A 0700                          26+         CNOP  0,4
+00506C                               27+         DC    0F'0'
+00506C 4110 C206            05270    28+         LA    1,=C'$$BOPEN '
+005070 4500 C016            05080    29+IJJO0001 BAL   0,*+4+4*(4-1)
+005074 00005490                      30+         DC    A(ADDFILE)
+005078 00005508                      31+         DC    A(EMFILE)
+00507C 00005548                      32+         DC    A(PRINTER)
+005080 0A02                          33+         SVC   2
+005082 9604 C429      05493          34          OI    ADDFILE+3,X'04'     DISALLOW NO RECORD FOUND
+005086 9604 C4A1      0550B          35          OI    EMFILE+3,X'04'      DISALLOW NO RECORD FOUND
+00508A D201 C4A4 C4BC 0550E 05526    36          MVC   EMFILE+6(2),EMFILE+30   SET LOG.UNIT FROM EXTENT
+                                     37          COMRG
+                                     38+* 360N-CL-453 COMRG    CHANGE LEVEL 3-0
+005090 5810 0014            00014    39+         L     1,20
+005094 0A21                          40+         SVC   33
+005096 D207 C275 1000 052DF 00000    41          MVC   TODAY,0(R1)     GET TODAY'S DATE
+00509C 4540 C1A4            0520E    42          BAL   R4,HEADING
+0050A0                               43 MAINLOOP EQU   *
+                                     44          EXCP  ADDFILE         READ ADDROUT FILE BLOCK
+                                     45+* 360N-CL-453 EXCP     CHANGE LEVEL 3-0
+0050A0 5810 C236            052A0    46+         L     1,=A(ADDFILE)
+0050A4 0A00                          47+         SVC   0
+                                     48          WAIT  (1)
+                                     49+* 360N-CL-453 WAIT     CHANGE LEVEL 3-0
+0050A6 9180 1002      00002          50+         TM    2(1),X'80'
+0050AA 4710 C046            050B0    51+         BO    *+6
+0050AE 0A07                          52+         SVC   7
+       DEMOSTRATE ADDRESS OUT FILES USING PIOCS                                                                PAGE    2
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+0050B0 9101 C42A      05494          53          TM    ADDFILE+4,X'01' CHECK FOR END OF FILE
+0050B4 4710 C168            051D2    54          BO    ENDOFJOB
+0050B8 9140 C42B      05495          55          TM    ADDFILE+5,X'40' IF NO WRONG LENGTH RECORD,
+0050BC 4780 C078            050E2    56          BZ    ADDOKAY           GO PROCESS FULL BLOCK
+0050C0 4820 C426            05490    57          LH    R2,ADDFILE      ELSE GET RESIDUAL COUNT
+0050C4 1222                          58          LTR   R2,R2           IF ZERO,
+0050C6 4780 C196            05200    59          BZ    CANCEL            PHYSICAL RECORD TOO BIG
+0050CA 4830 C424            0548E    60          LH    R3,ADDCCWR+6    GET BLOCK SIZE
+0050CE 1B32                          61          SR    R3,R2           CALC. BYTES ACTUALLY READ
+0050D0 1B22                          62          SR    R2,R2
+0050D2 5D20 C23A            052A4    63          D     R2,=A(L'ADDREC) DIVIDE BY RECORD SIZE
+0050D6 1222                          64          LTR   R2,R2           IS BLOCK SIZE A MULTIPLE OF REC.SIZE
+0050D8 4770 C196            05200    65          BNZ   CANCEL          IF NOT, BAD BLOCK
+0050DC 1893                          66          LR    R9,R3           SAVE NUMBER OF RECORDS IN SHORT BLOCK
+0050DE 47F0 C07C            050E6    67          B     *+8
+0050E2 4190 000A            0000A    68 ADDOKAY  LA    R9,10           FULL BLOCK HAS 10 LOGICAL RECORDS
+0050E6 4180 C27E            052E8    69          LA    R8,ADDBLK
+0050EA 4550 C0F8            05162    70 BLKLOOP  BAL   R5,GETREC       PROCESS RECORD
+0050EE 4188 000A            0000A    71          LA    R8,L'ADDREC(R8) POINT TO NEXT RECORD
+0050F2 4690 C080            050EA    72          BCT   R9,BLKLOOP
+0050F6 9524 C466      054D0          73          CLI   ADDFILE4+4,RECTRK   IF END OF TRACK
+0050FA 47B0 C0A4            0510E    74          BNL   NEWTRK                GO TO NEXT TRACK
+0050FE 4320 C466            054D0    75          IC    R2,ADDFILE4+4       INCREASE RECORD NO.
+005102 4122 0001            00001    76          LA    R2,1(R2)
+005106 4220 C466            054D0    77          STC   R2,ADDFILE4+4
+00510A 47F0 C036            050A0    78          B     MAINLOOP
+00510E D501 C464 C45E 054CE 054C8    79 NEWTRK   CLC   ADDFILE4+2(2),ADDFILE2+2    IF END OF CYLINDER
+005114 47B0 C0C2            0512C    80          BNL   NEWCYL                        GO TO NEXT CYLINDER
+005118 4820 C464            054CE    81          LH    R2,ADDFILE4+2       INCREASE HEAD NO.
+00511C 4122 0001            00001    82          LA    R2,1(R2)
+005120 4020 C464            054CE    83          STH   R2,ADDFILE4+2
+005124 9201 C466      054D0          84          MVI   ADDFILE4+4,1        RESET RECORD NO.
+005128 47F0 C036            050A0    85          B     MAINLOOP
+00512C D501 C462 C45C 054CC 054C6    86 NEWCYL   CLC   ADDFILE4(2),ADDFILE2        IF END OF EXTENT
+005132 47B0 C0E6            05150    87          BNL   NEWEXT                        GO GET NEXT EXTENT
+005136 4820 C462            054CC    88          LH    R2,ADDFILE4         INCREASE CYL. NO.
+00513A 4122 0001            00001    89          LA    R2,1(R2)
+00513E 4020 C462            054CC    90          STH   R2,ADDFILE4
+005142 D201 C464 C45A 054CE 054C4    91          MVC   ADDFILE4+2(2),ADDFILE1 RESET HEAD NO.
+005148 9201 C466      054D0          92          MVI   ADDFILE4+4,1        RESET RECORD NO.
+00514C 47F0 C036            050A0    93          B     MAINLOOP
+                                     94 NEWEXT   OPEN  ADDFILE             GET NEXT EXTENT
+                                     95+* 360N-CL-453 OPEN     CHANGE LEVEL 3-3                             3-3
+005150                               96+         CNOP  0,4
+005150                               97+NEWEXT   DC    0F'0'
+005150 4110 C206            05270    98+         LA    1,=C'$$BOPEN '
+005154 4500 C0F2            0515C    99+IJJO0005 BAL   0,*+4+4*(2-1)
+005158 00005490                     100+         DC    A(ADDFILE)
+00515C 0A02                         101+         SVC   2
+00515E 47F0 C036            050A0   102          B     MAINLOOP
+                                    103 *
+       DEMOSTRATE ADDRESS OUT FILES USING PIOCS                                                                PAGE    3
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+005162 95F1 C27D      052E7         104 GETREC   CLI   EOPSW,C'1'          IF END OF PAGE,
+005166 4770 C104            0516E   105          BNE   *+8
+00516A 4540 C1A4            0520E   106          BAL   R4,HEADING            PRINT HEADING
+00516E D506 C4C6 8001 05530 00001   107          CLC   EMID,ADDID+1        IF BLOCK ALREADY IN CORE,
+005174 4780 C142            051AC   108          BE    EMBLKOK               GO PROCESS RECORD
+005178 D206 C4C6 8001 05530 00001   109          MVC   EMID,ADDID+1        READ IN BLOCK
+                                    110          EXCP  EMFILE
+                                    111+* 360N-CL-453 EXCP     CHANGE LEVEL 3-0
+00517E 5810 C23E            052A8   112+         L     1,=A(EMFILE)
+005182 0A00                         113+         SVC   0
+                                    114          WAIT  (1)
+                                    115+* 360N-CL-453 WAIT     CHANGE LEVEL 3-0
+005184 9180 1002      00002         116+         TM    2(1),X'80'
+005188 4710 C124            0518E   117+         BO    *+6
+00518C 0A07                         118+         SVC   7
+00518E 9140 C4A3      0550D         119          TM    EMFILE+5,X'40'      IF NO WRONG LENGTH RECORD,
+005192 4780 C142            051AC   120          BZ    EMBLKOK               GO PROCESS BLOCK
+005196 4830 C49E            05508   121          LH    R3,EMFILE           GET RESIDUAL COUNT
+00519A 1233                         122          LTR   R3,R3               IF RESIDUAL COUNT IS ZERO,
+00519C 4780 C196            05200   123          BZ    CANCEL                BLOCK IS TOO BIG
+0051A0 1B22                         124          SR    R2,R2
+0051A2 5D20 C242            052AC   125          D     R2,=A(L'EMREC)      DIVIDE BY RECORD SIZE
+0051A6 1222                         126          LTR   R2,R2               IF BLOCK NOT MULTIPLE OF REC.SIZE,
+0051A8 4770 C196            05200   127          BNZ   CANCEL                BAD BLOCK
+0051AC 4170 C2E2            0534C   128 EMBLKOK  LA    R7,EMBLK            POINT TO RECORD
+0051B0 4A70 8008            00008   129          AH    R7,ADDDISP
+0051B4 D201 C387 7000 053F1 00000   130          MVC   PRTLINE+5(L'EMDEPT),EMDEPT
+0051BA D202 C38C 7002 053F6 00002   131          MVC   PRTLINE+10(L'EMNUM),EMNUM
+0051C0 D218 C391 7005 053FB 00005   132          MVC   PRTLINE+15(L'EMNAME),EMNAME
+0051C6 4520 C1DC            05246   133          BAL   R2,PRINT
+0051CA FA20 C251 C250 052BB 052BA   134          AP    COUNT,=P'1'
+0051D0 07F5                         135          BR    R5
+0051D2 D205 C386 C24A 053F0 052B4   136 ENDOFJOB MVC   PRTLINE+4(6),=X'402020202120'
+0051D8 DE05 C386 C251 053F0 052BB   137          ED    PRTLINE+4(6),COUNT
+0051DE D20F C38D C20E 053F7 05278   138          MVC   PRTLINE+11(16),=C'EMPLOYEES LISTED'
+0051E4 4520 C1DC            05246   139          BAL   R2,PRINT
+                                    140          CLOSE ADDFILE,EMFILE,PRINTER
+                                    141+* 360N-CL-453 CLOSE    CHANGE LEVEL 3-3                             3-3
+0051E8                              142+         CNOP  0,4
+0051E8                              143+         DC    0F'0'
+0051E8 4110 C21E            05288   144+         LA    1,=C'$$BCLOSE'
+0051EC 4500 C192            051FC   145+IJJC0008 BAL   0,*+4+4*(4-1)
+0051F0 00005490                     146+         DC    A(ADDFILE)
+0051F4 00005508                     147+         DC    A(EMFILE)
+0051F8 00005548                     148+         DC    A(PRINTER)
+0051FC 0A02                         149+         SVC   2
+                                    150          EOJ
+                                    151+* 360N-CL-453 EOJ      CHANGE LEVEL 3-0
+0051FE 0A0E                         152+         SVC   14
+                                    153 CANCEL   PDUMP DEMOADDO,DEMOADDO+4096
+                                    154+* 360N-CL-453 PDUMP    CHANGE LEVEL 3-0
+       DEMOSTRATE ADDRESS OUT FILES USING PIOCS                                                                PAGE    4
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+005200 4110 C226            05290   155+CANCEL   LA    1,=CL8'$$BPDUMP'
+005204 4100 C22E            05298   156+         LA    0,=A(DEMOADDO,DEMOADDO+4096)
+005208 0A02                         157+         SVC   2
+                                    158          CANCEL
+                                    159+* 360N-CL-453 CANCEL   CHANGE LEVEL 3-6                             3-6
+00520A 1B00                         160+         SR    0,0 3-3
+00520C 0A06                         161+         SVC   6 3-3
+                                    162 *
+00520E D207 C383 C275 053ED 052DF   163 HEADING  MVC   PRTLINE+1(L'TODAY),TODAY
+005214 D220 C391 C254 053FB 052BE   164          MVC   PRTLINE+15(L'MHEAD1),MHEAD1
+00521A 928B C4CE      05538         165          MVI   PRCCWS,X'8B'        SKIP TO NEW PAGE
+00521E 9211 C4D6      05540         166          MVI   PRCCWP,X'11'        SPACE 2 AFTER
+005222 4530 C1C6            05230   167          BAL   R3,PRINTS           PRINT HEADING
+005226 9209 C4D6      05540         168          MVI   PRCCWP,X'09'
+00522A 92F0 C27D      052E7         169          MVI   EOPSW,C'0'          RESET BOTTOM-OF-PAGE SWITCH
+00522E 07F4                         170          BR    R4
+005230 4120 C4CE            05538   171 PRINTS   LA    R2,PRCCWS           USE SPACE/SKIP CCW
+005234 5020 C4E6            05550   172          ST    R2,PRINTER+8
+005238 4520 C1DC            05246   173          BAL   R2,PRINT
+00523C 4120 C4D6            05540   174          LA    R2,PRCCWP           DO NOT USE SPACE/SKIP CCW
+005240 5020 C4E6            05550   175          ST    R2,PRINTER+8
+005244 07F3                         176          BR    R3
+                                    177 PRINT    EXCP  PRINTER
+                                    178+* 360N-CL-453 EXCP     CHANGE LEVEL 3-0
+005246 5810 C246            052B0   179+PRINT    L     1,=A(PRINTER)
+00524A 0A00                         180+         SVC   0
+                                    181          WAIT  (1)
+                                    182+* 360N-CL-453 WAIT     CHANGE LEVEL 3-0
+00524C 9180 1002      00002         183+         TM    2(1),X'80'
+005250 4710 C1EC            05256   184+         BO    *+6
+005254 0A07                         185+         SVC   7
+005256 9101 C4E2      0554C         186          TM    PRINTER+4,X'01'     CHECK FOR CH. 12
+00525A 4780 C1F8            05262   187          BZ    NOTEOP
+00525E 92F1 C27D      052E7         188          MVI   EOPSW,C'1'          INDICATE BOTTOM OF PAGE
+005262 9240 C382      053EC         189 NOTEOP   MVI   PRTLINE,C' '        CLEAR PRINT LINE
+005266 D282 C383 C382 053ED 053EC   190          MVC   PRTLINE+1(131),PRTLINE
+00526C 07F2                         191          BR    R2
+005270                              192          LTORG
+005270 5B5BC2D6D7C5D540             193                =C'$$BOPEN '
+005278 C5D4D7D3D6E8C5C5             194                =C'EMPLOYEES LISTED'
+005288 5B5BC2C3D3D6E2C5             195                =C'$$BCLOSE'
+005290 5B5BC2D7C4E4D4D7             196                =CL8'$$BPDUMP'
+005298 0000506800006068             197                =A(DEMOADDO,DEMOADDO+4096)
+0052A0 00005490                     198                =A(ADDFILE)
+0052A4 0000000A                     199                =A(L'ADDREC)
+0052A8 00005508                     200                =A(EMFILE)
+0052AC 00000050                     201                =A(L'EMREC)
+0052B0 00005548                     202                =A(PRINTER)
+0052B4 402020202120                 203                =X'402020202120'
+0052BA 1C                           204                =P'1'
+0052BB 00000C                       205 COUNT    DC    PL3'0'
+       DEMOSTRATE ADDRESS OUT FILES USING PIOCS                                                                PAGE    5
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+0052BE C1C4C4D9D6E4E340             206 MHEAD1   DC    C'ADDROUT DEMONSTRATION USING PIOCS'
+0052DF                              207 TODAY    DS    CL8
+0052E7                              208 EOPSW    DS    C
+                                    209 *
+0052E8                              210          DS    0H
+0052E8                              211 ADDBLK   DS    CL100
+000000                              212 ADDDSECT DSECT
+000000                              213 ADDREC   DS    0CL10
+000000                              214 ADDID    DS    XL8     MBBCCHHR
+000008                              215 ADDDISP  DS    H       DISPLACEMENT
+005068                              216 DEMOADDO CSECT
+                                    217 *
+00534C                              218 EMBLK    DS    CL160
+000000                              219 EMDSECT  DSECT
+000000                              220 EMREC    DS    0CL80
+000000                              221 EMDEPT   DS    CL2     EMPLOYEE DEPARTMENT
+000002                              222 EMNUM    DS    CL3     EMPLOYEE NUMBER
+000005                              223 EMNAME   DS    CL25    EMPLOYEE NAME
+00001E                              224          DS    CL50
+005068                              225 DEMOADDO CSECT
+                                    226 *
+0053EC 4040404040404040             227 PRTLINE  DC    CL132' '
+                                    228 *
+005470 070054CA40000006             229 ADDCCW   CCW   X'07',ADDFILE3,X'40',6  SEEK
+005478 310054CC40000005             230          CCW   X'31',ADDFILE4,X'40',5  SIDE
+005480 0800547800000000             231          CCW   X'08',*-8,0,0           TIC
+005488 060052E800000064             232 ADDCCWR  CCW   X'06',ADDBLK,0,L'ADDBLK READ
+                                    233 * 2311 CODING
+                                    234 *ADDFILE  DTFPH TYPEFLE=INPUT,DEVICE=2311,MOUNTED=SINGLE,CCWADDR=ADDCCW
+                                    235 ** CALCULATE 2314 RECORDS PER TRACK
+                                    236 *RECTRKS  EQU   L'ADDBLK*537/512+61
+                                    237 *RECTRKN  EQU   3625/RECTRKS
+                                    238 *RECTRKX  EQU   (3625-(RECTRKS*RECTRKN))/L'ADDBLK  (0 OR 1)
+                                    239 *RECTRK   EQU   RECTRKN+RECTRKX
+                                    240 *
+                                    241 * 2314 CODING
+                                    242 ADDFILE  DTFPH TYPEFLE=INPUT,DEVICE=2314,MOUNTED=SINGLE,CCWADDR=ADDCCW
+                                    243+* 360N-CL-453 DTFPH CHANGE LEVEL 3-9                                3-9
+005490                              244+         DC    0D'0' ALIGN TO A BOUNDARY
+005490 0000                         245+ADDFILE  DC    XL2'0' RESIDUAL COUNT
+005492 0000                         246+         DC    XL2'0000' COMMUNICATION BYTES
+005494 0000                         247+         DC    XL2'0000' CSW STATUS BYTES
+005496 FF                           248+         DC    AL1(255) LOGICAL UNIT CLASS
+005497 FF                           249+         DC    AL1(255) LOGICAL UNIT NUMBER
+005498 00                           250+         DC    XL1'0'
+005499 005470                       251+         DC    AL3(ADDCCW) CCW ADDRESS
+00549C 00                           252+         DC    XL1'0' STATUS BYTE
+00549D 000000                       253+         DC    AL3(0) CSW CCW ADDRESS
+0054A0 00000000                     254+         DC    A(0)
+0054A4 21                           255+         DC    AL1(33) DIF TABLE TYPE BYTE
+0054A5 0A                           256+         DC    B'00001010'
+       DEMOSTRATE ADDRESS OUT FILES USING PIOCS                                                                PAGE    6
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+0054A6 C1C4C4C6C9D3C5               257+         DC    CL7'ADDFILE' FILE NAME
+0054AD 01                           258+         DC    X'01' INDICATE 2314
+0054AE 0000000000000000             259+         DC    XL8'00'
+0054B6 080000                       260+         DC    X'080000'
+0054B9 000000                       261+         DC    XL3'00'
+0054BC 00000000                     262+         DC    XL4'00'
+0054C0 80000000                     263+         DC    X'80000000' LABEL TRACK
+0054C4 0000                         264+ADDFILE1 DC    XL2'00' LOWER HEAD LIMIT
+0054C6 00000000                     265+ADDFILE2 DC    XL4'00' EXTENT UPPER LIMIT
+0054CA 0000                         266+ADDFILE3 DC    XL2'00' BB SEEK ADDRESS
+0054CC 0000FF00                     267+ADDFILE4 DC    X'0000FF00' EXTENT LOWER LIMIT
+0054D0 00                           268+         DC    X'00' RECORD NUMBER
+0054D1 000000                       269+         DC    XL3'00'
+0054D4 0000000000                   270+ADDFILE5 DC    XL5'00' CCHHR CONTROL BUCKET
+0054D9 000000                       271+         DC    XL3'00'
+0054DC 0000000000                   272+ADDFILE6 DC    XL5'00' CCHHR BUCKET, EXTENT LOWER LIMIT
+0054E1 000000                       273+         DC    XL3'00'
+                                    274 * CALCULATE 2314 RECORDS PER TRACK
+0000CD                              275 RECTRKS  EQU   L'ADDBLK*2137/2048+101
+000023                              276 RECTRKN  EQU   7294/RECTRKS
+000001                              277 RECTRKX  EQU   (7294-(RECTRKS*RECTRKN))/L'ADDBLK  (0 OR 1)
+000024                              278 RECTRK   EQU   RECTRKN+RECTRKX
+                                    279 *
+0054E4 00000000
+0054E8 0700553040000006             280 EMCCW    CCW   X'07',EMBIN,X'40',6     SEEK
+0054F0 3100553240000005             281          CCW   X'31',EMCC,X'40',5      SIDE
+0054F8 080054F000000000             282          CCW   X'08',*-8,0,0           TIC
+005500 0600534C000000A0             283          CCW   X'06',EMBLK,0,L'EMBLK   READ
+                                    284 *EMFILE   DTFPH TYPEFLE=INPUT,DEVICE=2311,MOUNTED=ALL,CCWADDR=EMCCW
+                                    285 EMFILE   DTFPH TYPEFLE=INPUT,DEVICE=2314,MOUNTED=ALL,CCWADDR=EMCCW
+                                    286+* 360N-CL-453 DTFPH CHANGE LEVEL 3-9                                3-9
+005508                              287+         DC    0D'0' ALIGN TO A BOUNDARY
+005508 0000                         288+EMFILE   DC    XL2'0' RESIDUAL COUNT
+00550A 0000                         289+         DC    XL2'0000' COMMUNICATION BYTES
+00550C 0000                         290+         DC    XL2'0000' CSW STATUS BYTES
+00550E FF                           291+         DC    AL1(255) LOGICAL UNIT CLASS
+00550F FF                           292+         DC    AL1(255) LOGICAL UNIT NUMBER
+005510 00                           293+         DC    XL1'0'
+005511 0054E8                       294+         DC    AL3(EMCCW) CCW ADDRESS
+005514 00                           295+         DC    XL1'0' STATUS BYTE
+005515 000000                       296+         DC    AL3(0) CSW CCW ADDRESS
+005518 00000000                     297+         DC    A(0)
+00551C 23                           298+         DC    AL1(35) DTF TABLE TYPE
+00551D 00                           299+         DC    B'00000000'
+00551E C5D4C6C9D3C540               300+         DC    CL7'EMFILE' FILE NAME
+005525 01                           301+         DC    X'01' INDICATE 2314
+005526 0000                         302+IJJC0015 DC    H'0'
+005528 00000000                     303+         DC    F'0'
+00552C 00000000                     304+         DC    F'0'
+005530                              305 EMID     DS    0XL7
+005530 0000                         306 EMBIN    DC    H'0'    BIN
+       DEMOSTRATE ADDRESS OUT FILES USING PIOCS                                                                PAGE    7
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+005532 0000                         307 EMCC     DC    H'0'    CYLINDER
+005534 0000                         308 EMHH     DC    H'0'    HEAD
+005536 00                           309 EMR      DC    X'0'    RECORD
+                                    310 *
+005537 00
+005538 0300000040000001             311 PRCCWS   CCW   X'03',0,X'40',1     SPACE OR SKIP BEFORE
+005540 090053EC00000084             312 PRCCWP   CCW   X'09',PRTLINE,0,132 PRINT AND SPACE AFTER
+                                    313 PRINTER  CCB   SYSLST,PRCCWP
+                                    314+* 360N-CL-453  CCB  CHANGE LEVEL 3-9                                3-9
+005548 0000                         315+PRINTER  DC    XL2'0' RESIDUAL COUNT
+00554A 0000                         316+         DC    XL2'0' COMMUNICATIONS BYTES
+00554C 0000                         317+         DC    XL2'0' CSW STATUS BYTES
+00554E 00                           318+         DC    AL1(0) LOGICAL UNIT CLASS
+00554F 03                           319+         DC    AL1(3) LOGICAL UNIT
+005550 00                           320+         DC    XL1'0'
+005551 005540                       321+         DC    AL3(PRCCWP) CCW ADDRESS
+005554 00                           322+         DC    B'00000000' STATUS BYTE
+005555 000000                       323+         DC    AL3(0) CSW CCW ADDRESS
+                                    324          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      0C     005074
+   01       01      0C     005078
+   01       01      0C     00507C
+   01       01      0C     005158
+   01       01      0C     0051F0
+   01       01      0C     0051F4
+   01       01      0C     0051F8
+   01       01      0C     005298
+   01       01      0C     00529C
+   01       01      0C     0052A0
+   01       01      0C     0052A8
+   01       01      0C     0052B0
+   01       01      08     005471
+   01       01      08     005479
+   01       01      08     005481
+   01       01      08     005489
+   01       01      08     005499
+   01       01      08     0054E9
+   01       01      08     0054F1
+   01       01      08     0054F9
+   01       01      08     005501
+   01       01      08     005511
+   01       01      08     005541
+   01       01      08     005551
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// PAUSE
+// LBLTYP NSD(1)
+// EXEC LNKEDT
+
+JOB  DEMOADDO  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        PHASE***  006068  006068  006557  1B 06 4  CSECT     DEMOADDO  006068  001000
+// ASSGN SYS006,X'192'
+// DLBL ADDFILE,'PEOPLE.ADDROUT'
+// EXTENT SYS006,WRK14A
+// DLBL EMFILE,'PEOPLE',,DA
+// EXTENT SYS006,WRK14A,1,0,2600,2
+// EXEC
+ 03/29/70      ADDROUT DEMONSTRATION USING PIOCS
+
+     10   004  ACHER, WILLIAM C.
+     10   185  DONNEMAN, THOMAS M.
+     10   300  FELDMAN, MIKE R.
+     10   325  HATFIELD, MARK I.
+     10   730  REEDE, OWEN W.
+     10   960  WINGLAND, KEITH E.
+     20   111  CARTOLER, VIOLET B.
+     20   304  FROMM, STEVE V.
+     20   590  NEIL, CLARENCE N.
+     20   801  SCHEIBER, HARRY T.
+     20   956  WANGLEY, THEO. A.
+     30   030  ALLOREN, RUTH W.
+     30   181  DELBERT, EDWARD D.
+     30   311  GROLER, GRACE B.
+     30   318  HANEY, CAROL S.
+     30   487  KING, MILDRED J.
+     30   834  TRAWLEY, HARRIS T.
+     40   027  ALHOUER, ELAINE E.
+     40   171  COSTA, NAN S.
+     40   317  HANBEE, ALETTA O.
+     40   721  RASSMUSEN, JOHN J.
+     40   739  RIDEL, ROBERT R.
+     40   806  STOCKTON, NORMAN Q.
+     50   122  CENNA, DICK L.
+     50   207  EBERHARDT, RON G.
+     50   308  GLEASON, JAMES E.
+     50   568  LYNNE, GERALD H.
+     50   909  UDSON, DORIS M.
+     60   100  BATES, TONY F.
+     60   179  DAMSON, ERIC C.
+     60   292  EVERLY, DONNA M.
+     60   409  ICK, MICK W.
+     60   607  ODELLE, NICHOLAS P.
+     60   825  TILLMAN, DON M.
+     70   214  EDMONSON, RICK T.
+     70   310  GORMALLY, MARIE N.
+     70   332  HELD, ANNA J.
+     70   689  OWNEY, REED M.
+     70   802  SHEA, MICHAEL H.
+     80   102  BELLSLEY, ARTHUR A.
+     80   282  ESTEBAN, JUAN L.
+     80   322  HARLETON, JEAN H.
+     80   505  LAMBERT, JERRY O.
+     90   105  BOYLE, RALPH P.
+     90   215  EDSON, WILBUR S.
+     90   315  HALE, ALAN A.
+     90   574  MELTZ, FRANK K.
+     90   740  RIDGEFIELD, SUZY S.
+     90   820  TELLER, STEPHEN U.
+        49 EMPLOYEES LISTED
+
+* READ FILES USING ASSEMBLER LIOCS-SAM
+// OPTION LINK
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+DEMOADDO  SD  01 005000 00052D
+IJGFIZZZ  ER  02
+IJDFAPZW  ER  03
+IJDFAPZW  SD  04 005530 000112
+IJDFAZZW  LD     005530         04
+       DEMOSTRATE ADDRESS OUT FILES USING LIOCS-SAM                                                            PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      2 *        PRINT NOGEN
+005000                                3 DEMOADDO START X'5000'
+000000                                4 R0       EQU   0
+000001                                5 R1       EQU   1
+000002                                6 R2       EQU   2
+000003                                7 R3       EQU   3
+000004                                8 R4       EQU   4
+000005                                9 R5       EQU   5
+000006                               10 R6       EQU   6
+000007                               11 R7       EQU   7
+000008                               12 R8       EQU   8
+000009                               13 R9       EQU   9
+00000A                               14 R10      EQU   10
+00000B                               15 R11      EQU   11
+00000C                               16 R12      EQU   12
+00000D                               17 R13      EQU   13
+00000E                               18 R14      EQU   14
+00000F                               19 R15      EQU   15
+005000 05C0                          20          BALR  R12,0
+005002                               21          USING *,R12
+000000                               22          USING EMDSECT,R7
+                                     23          OPEN  ADDFILE,EMFILE,PRINTER
+                                     24+* 360N-CL-453 OPEN     CHANGE LEVEL 3-3                             3-3
+005002 0700                          25+         CNOP  0,4
+005004                               26+         DC    0F'0'
+005004 4110 C266            05268    27+         LA    1,=C'$$BOPEN '
+005008 4500 C016            05018    28+IJJO0001 BAL   0,*+4+4*(4-1)
+00500C 000052A0                      29+         DC    A(ADDFILE)
+005010 00005328                      30+         DC    A(EMFILE)
+005014 000053B0                      31+         DC    A(PRINTER)
+005018 0A02                          32+         SVC   2
+                                     33          COMRG
+                                     34+* 360N-CL-453 COMRG    CHANGE LEVEL 3-0
+00501A 5810 0014            00014    35+         L     1,20
+00501E 0A21                          36+         SVC   33
+005020 D207 C12D 1000 0512F 00000    37          MVC   TODAY,0(R1)         GET TODAY'S DATE
+005026 4530 C0B2            050B4    38          BAL   R3,HEADING
+00502A                               39 MAINLOOP EQU   *
+                                     40          GET   ADDFILE,ADDREC
+                                     41+* 360N-CL-453 GET      CHANGE LEVEL 3-0
+00502A 5810 C286            05288    42+         L     1,=A(ADDFILE) GET DTF TABLE ADDRESS
+00502E 5800 C28A            0528C    43+         L     0,=A(ADDREC) GET WORK AREA ADDRESS
+005032 58F1 0010            00010    44+         L     15,16(1) GET LOGIC MODULE ADDRESS
+005036 45EF 0008            00008    45+         BAL   14,8(15) BRANCH TO GET ROUTINE
+00503A D506 C0FE C137 05100 05139    46          CLC   SAVEID,ADDID+1      IF BLOCK ALREADY READ IN
+005040 4780 C05A            0505C    47          BE    READIN                GO PROCESS RECORD
+005044 D206 C360 C137 05362 05139    48          MVC   EMFILES(7),ADDID+1  SET DISK ID OF DESIRED BLOCK
+                                     49          GET   EMFILE              READ IN CORRECT BLOCK
+                                     50+* 360N-CL-453 GET      CHANGE LEVEL 3-0
+00504A 5810 C28E            05290    51+         L     1,=A(EMFILE) GET DTF TABLE ADDRESS
+00504E 58F1 0010            00010    52+         L     15,16(1) GET LOGIC MODULE ADDRESS
+       DEMOSTRATE ADDRESS OUT FILES USING LIOCS-SAM                                                            PAGE    2
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+005052 45EF 0008            00008    53+         BAL   14,8(15) BRANCH TO GET ROUTINE
+005056 D206 C0FE C137 05100 05139    54          MVC   SAVEID,ADDID+1      SAVE ID OF BLOCK
+00505C 4170 C140            05142    55 READIN   LA    R7,EMBLK            POINT TO RECORD
+005060 4A70 C13E            05140    56          AH    R7,ADDDISP
+005064 D201 C1E5 7000 051E7 00000    57          MVC   PRTLINE+5(L'EMDEPT),EMDEPT
+00506A D202 C1EA 7002 051EC 00002    58          MVC   PRTLINE+10(L'EMNUM),EMNUM
+005070 D218 C1EF 7005 051F1 00005    59          MVC   PRTLINE+15(L'EMNAME),EMNAME
+005076 4520 C0D0            050D2    60          BAL   R2,PRINT
+00507A FA20 C105 C298 05107 0529A    61          AP    COUNT,=P'1'
+005080 47F0 C028            0502A    62          B     MAINLOOP
+005084 D205 C1E4 C292 051E6 05294    63 ENDOFJOB MVC   PRTLINE+4(6),=X'402020202120'
+00508A DE05 C1E4 C105 051E6 05107    64          ED    PRTLINE+4(6),COUNT
+005090 D20F C1EB C26E 051ED 05270    65          MVC   PRTLINE+11(16),=C'EMPLOYEES LISTED'
+005096 4520 C0D0            050D2    66          BAL   R2,PRINT
+                                     67          CLOSE ADDFILE,EMFILE,PRINTER
+                                     68+* 360N-CL-453 CLOSE    CHANGE LEVEL 3-3                             3-3
+00509A 0700                          69+         CNOP  0,4
+00509C                               70+         DC    0F'0'
+00509C 4110 C27E            05280    71+         LA    1,=C'$$BCLOSE'
+0050A0 4500 C0AE            050B0    72+IJJC0005 BAL   0,*+4+4*(4-1)
+0050A4 000052A0                      73+         DC    A(ADDFILE)
+0050A8 00005328                      74+         DC    A(EMFILE)
+0050AC 000053B0                      75+         DC    A(PRINTER)
+0050B0 0A02                          76+         SVC   2
+                                     77          EOJ
+                                     78+* 360N-CL-453 EOJ      CHANGE LEVEL 3-0
+0050B2 0A0E                          79+         SVC   14
+                                     80 *
+0050B4 D207 C1E1 C12D 051E3 0512F    81 HEADING  MVC   PRTLINE+1(L'TODAY),TODAY
+0050BA D224 C1EF C108 051F1 0510A    82          MVC   PRTLINE+15(L'MHEAD1),MHEAD1
+0050C0 92F1 C1E0      051E2          83          MVI   PRTLINE,C'1'        SKIP TO NEW PAGE
+0050C4 4520 C0D0            050D2    84          BAL   R2,PRINT
+0050C8 92F0 C1E0      051E2          85          MVI   PRTLINE,C'0'        DOUBLE SPACE NEXT TIME
+0050CC 92F0 C135      05137          86          MVI   EOPSW,C'0'          RESET BOTTOM-OF-PAGE SWITCH
+0050D0 07F3                          87          BR    R3
+0050D2 4100 C1E0            051E2    88 PRINT    LA    R0,PRTLINE
+0050D6 4110 C3AE            053B0    89          LA    R1,PRINTER
+                                     90          PUT   (1),(0)
+                                     91+* 360N-CL-453 PUT          CHANGE LEVEL 3-5                         3-5
+0050DA                               92+         DC    0H'0'
+0050DA 58F1 0010            00010    93+         L     15,16(1) GET LOGIC MODULE ADDRESS     3-5
+0050DE 45EF 000C            0000C    94+         BAL   14,12(15) BRANCH TO PUT ROUTINE        3-5
+0050E2 4100 C0F8            050FA    95          LA    R0,EOP
+                                     96          PRTOV (1),12,(0)          CHECK FOR BOTTOM OF PAGE
+                                     97+* 360N-CL-453 PRTOV    CHANGE LEVEL 3-0
+0050E6                               98+         DC    0H'0'
+0050E6 58F1 0010            00010    99+         L     15,16(1) GET LOGIC MODULE ADDRESS
+0050EA 45EF 0004            00004   100+         BAL   14,4(15) BRANCH TO PRTOV ROUTINE
+0050EE 9240 C1E0      051E2         101          MVI   PRTLINE,C' '
+0050F2 D283 C1E1 C1E0 051E3 051E2   102          MVC   PRTLINE+1(132),PRTLINE
+0050F8 07F2                         103          BR    R2
+       DEMOSTRATE ADDRESS OUT FILES USING LIOCS-SAM                                                            PAGE    3
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+0050FA 92F1 C135      05137         104 EOP      MVI   EOPSW,C'1'          INDICATE BOTTOM OF PAGE
+0050FE 07FE                         105          BR    R14
+005100 00000000000000               106 SAVEID   DC    XL7'0'
+005107 00000C                       107 COUNT    DC    PL3'0'
+00510A C1C4C4D9D6E4E340             108 MHEAD1   DC    C'ADDROUT DEMONSTRATION USING LIOCS-SAM'
+00512F                              109 TODAY    DS    CL8
+005137                              110 EOPSW    DS    C
+                                    111 *
+005138                              112          DS    0H
+005138                              113 ADDREC   DS    0CL10
+005138                              114 ADDID    DS    XL8     MBBCCHHR
+005140                              115 ADDDISP  DS    H       DISPLACEMENT
+                                    116 *
+005142                              117 EMBLK    DS    CL160
+000000                              118 EMDSECT  DSECT
+000000                              119 EMREC    DS    0CL80
+000000                              120 EMDEPT   DS    CL2     EMPLOYEE DEPARTMENT
+000002                              121 EMNUM    DS    CL3     EMPLOYEE NUMBER
+000005                              122 EMNAME   DS    CL25    EMPLOYEE NAME
+00001E                              123          DS    CL50
+005000                              124 DEMOADDO CSECT
+                                    125 *
+0051E2 4040404040404040             126 PRTLINE  DC    CL133' '
+005268                              127          LTORG
+005268 5B5BC2D6D7C5D540             128                =C'$$BOPEN '
+005270 C5D4D7D3D6E8C5C5             129                =C'EMPLOYEES LISTED'
+005280 5B5BC2C3D3D6E2C5             130                =C'$$BCLOSE'
+005288 000052A0                     131                =A(ADDFILE)
+00528C 00005138                     132                =A(ADDREC)
+005290 00005328                     133                =A(EMFILE)
+005294 402020202120                 134                =X'402020202120'
+00529A 1C                           135                =P'1'
+                                    136 ADDFILE  DTFSD DEVICE=2314,EOFADDR=ENDOFJOB,                           X
+                                                       RECFORM=FIXBLK,BLKSIZE=100,RECSIZE=10,                  X
+                                                       IOAREA1=ADIO1,IOAREA2=ADIO2,WORKA=YES
+                                    137+* 360N-IO-455  DTFSD  CHANGE LEVEL  3-11                           3-11
+00529B 0000000000
+0052A0                              138+         DC    0D'0'
+0052A0 000080040000                 139+ADDFILE  DC    X'000080040000' CCB
+0052A6 FF                           140+         DC    AL1(255) LOGICAL UNIT CLASS
+0052A7 FF                           141+         DC    AL1(255) LOGICAL UNIT NUMBER
+0052A8 00005308                     142+         DC    A(IJGC0009) CCB-CCW ADDRESS
+0052AC 00000000                     143+         DC    4X'00' CCB-ST BYTE,CSW CCW ADDRESS
+0052B0 00                           144+         DC    AL1(0) 3-3
+0052B1 000000                       145+         DC    VL3(IJGFIZZZ) 3-8
+0052B4 20                           146+         DC    X'20' DTF TYPE
+0052B5 5A                           147+         DC    AL1(90) OPEN/CLOSE INDICATORS
+0052B6 C1C4C4C6C9D3C5               148+         DC    CL7'ADDFILE' FILENAME
+0052BD 01                           149+         DC    X'01' INDICATE 2314
+0052BE 000000000000                 150+         DC    6X'00' BCCHHR ADDR OF F1 LABEL IN VTOC
+0052C4 0000                         151+         DC    2X'00' VOL SEQ NUMBER
+       DEMOSTRATE ADDRESS OUT FILES USING LIOCS-SAM                                                            PAGE    4
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+0052C6 08                           152+         DC    X'08' OPEN COMMUNICATIONS BYTE
+0052C7 00                           153+         DC    X'00' XTENT SEQ NO OF CURRENT EXTENT
+0052C8 00                           154+         DC    X'00' XTENT SEQ NO LAST XTENT OPENED
+0052C9 0052C9                       155+         DC    AL3(*) USER'S LABEL ADDRESS
+0052CC 00005444                     156+         DC    A(ADIO2) ADDRESS OF SECOND IOAREA
+0052D0 80000000                     157+         DC    X'80000000' CCHH ADDR OF USER LABEL TRACK
+0052D4 0000                         158+         DC    2X'00' LOWER HEAD LIMIT
+0052D6 00000000                     159+         DC    4X'00' XTENT UPPER LIMIT
+0052DA 0000                         160+ADDFILES DC    2X'00' SEEK ADDRESS-BB
+0052DC 0000FF00                     161+         DC    X'0000FF00' SEARCH ADDRESS-CCHH
+0052E0 00                           162+         DC    X'00' RECORD NUMBER
+0052E1 005084                       163+         DC    AL3(ENDOFJOB) EOF ADDRESS
+0052E4 00000000                     164+         DC    4X'00' CCHH CONTROL FIELD
+0052E8 24                           165+         DC    AL1(36) R    CONTROL FIELD
+0052E9 04                           166+         DC    B'00000100' 3-2
+0052EA 0063                         167+         DC    H'99' SIZE OF BLOCK-1
+0052EC FFFFFFFFFF                   168+         DC    5X'FF' CCHHR BUCKET                 3-7
+0052F1 000000                       169+         DC    3X'00'
+0052F4 4700 0000            00000   170+         NOP   0
+0052F8 000053E0                     171+         DC    A(ADIO1) DEBLOCKER-INITIAL POINTER   3-11
+0052FC 0000000A                     172+         DC    F'10' DEBLOCKER-RECORD SIZE
+005300 00005443                     173+         DC    A(ADIO1+100-1) DEBLOCKER LIMIT       3-11
+005304 0A                           174+         DC    AL1(10) LOGICAL INDICATORS
+005305 000000                       175+         DC    AL3(0) USER'S ERROR ROUTINE
+005308 070052DA40000006             176+IJGC0009 CCW   7,*-46,64,6 SEEK
+005310 310052DC40000005             177+         CCW   X'31',*-52,64,5 SEARCH ID EQUAL
+005318 0800531000000000             178+         CCW   8,*-8,0,0 TIC
+005320 060053E000000064             179+         CCW   6,ADIO1,0,100 READ DATA             3-11
+005328                              180+IJJZ0009 EQU   *
+                                    181 EMFILE   DTFSD DEVICE=2314,EOFADDR=*,                                  X
+                                                       RECFORM=FIXUNB,BLKSIZE=160,                             X
+                                                       IOAREA1=EMBLK
+                                    182+* 360N-IO-455  DTFSD  CHANGE LEVEL  3-11                           3-11
+005328                              183+         DC    0D'0'
+005328 000080040000                 184+EMFILE   DC    X'000080040000' CCB
+00532E FF                           185+         DC    AL1(255) LOGICAL UNIT CLASS
+00532F FF                           186+         DC    AL1(255) LOGICAL UNIT NUMBER
+005330 00005390                     187+         DC    A(IJGC0010) CCB-CCW ADDRESS
+005334 00000000                     188+         DC    4X'00' CCB-ST BYTE,CSW CCW ADDRESS
+005338 00                           189+         DC    AL1(0) 3-3
+005339 000000                       190+         DC    VL3(IJGFIZZZ) 3-8
+00533C 20                           191+         DC    X'20' DTF TYPE
+00533D 0A                           192+         DC    AL1(10) OPEN/CLOSE INDICATORS
+00533E C5D4C6C9D3C540               193+         DC    CL7'EMFILE' FILENAME
+005345 01                           194+         DC    X'01' INDICATE 2314
+005346 000000000000                 195+         DC    6X'00' BCCHHR ADDR OF F1 LABEL IN VTOC
+00534C 0000                         196+         DC    2X'00' VOL SEQ NUMBER
+00534E 08                           197+         DC    X'08' OPEN COMMUNICATIONS BYTE
+00534F 00                           198+         DC    X'00' XTENT SEQ NO OF CURRENT EXTENT
+005350 00                           199+         DC    X'00' XTENT SEQ NO LAST XTENT OPENED
+005351 005351                       200+         DC    AL3(*) USER'S LABEL ADDRESS
+       DEMOSTRATE ADDRESS OUT FILES USING LIOCS-SAM                                                            PAGE    5
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+005354 00005142                     201+         DC    A(EMBLK) ADDRESS OF IOAREA           3-11
+005358 80000000                     202+         DC    X'80000000' CCHH ADDR OF USER LABEL TRACK
+00535C 0000                         203+         DC    2X'00' LOWER HEAD LIMIT
+00535E 00000000                     204+         DC    4X'00' XTENT UPPER LIMIT
+005362 0000                         205+EMFILES  DC    2X'00' SEEK ADDRESS-BB
+005364 0000FF00                     206+         DC    X'0000FF00' SEARCH ADDRESS-CCHH
+005368 00                           207+         DC    X'00' RECORD NUMBER
+005369 005369                       208+         DC    AL3(*) EOF ADDRESS
+00536C 00000000                     209+         DC    4X'00' CCHH CONTROL FIELD
+005370 1B                           210+         DC    AL1(27) R    CONTROL FIELD
+005371 04                           211+         DC    B'00000100' 3-2
+005372 009F                         212+         DC    H'159' SIZE OF BLOCK-1
+005374 FFFFFFFFFF                   213+         DC    5X'FF' CCHHR BUCKET                 3-7
+005379 000000                       214+         DC    3X'00'
+00537C 4700 0000            00000   215+         NOP   0
+005380 00005142                     216+         DC    A(EMBLK) DEBLOCKER-INITIAL POINTER   3-11
+005384 000000A0                     217+         DC    F'160' DEBLOCKER-RECORD SIZE
+005388 000051E1                     218+         DC    A(EMBLK+160-1) DEBLOCKER LIMIT       3-11
+00538C 02                           219+         DC    AL1(2) LOGICAL INDICATORS
+00538D 000000                       220+         DC    AL3(0) USER'S ERROR ROUTINE
+005390 0700536240000006             221+IJGC0010 CCW   7,*-46,64,6 SEEK
+005398 3100536440000005             222+         CCW   X'31',*-52,64,5 SEARCH ID EQUAL
+0053A0 0800539800000000             223+         CCW   8,*-8,0,0 TIC
+0053A8 06005142000000A0             224+         CCW   6,EMBLK,0,160 READ DATA             3-11
+0053B0                              225+IJJZ0010 EQU   *
+                                    226 PRINTER  DTFPR DEVADDR=SYSLST,BLKSIZE=133,IOAREA1=PRNTOUT1,            X
+                                                       WORKA=YES,PRINTOV=YES,CTLCHR=ASA
+                                    227+* 360 N-CL-453 DTFPR       CHANGE LEVEL 3-9                         3-9
+0053B0                              228+         DC    0D'0'
+0053B0 000084000400                 229+PRINTER  DC    X'000084000400' RES. COUNT, COM. BYTES, STATUS BYTES 3-9
+0053B6 00                           230+         DC    AL1(0) LOGICAL UNIT CLASS
+0053B7 03                           231+         DC    AL1(3) LOGICAL UNIT
+0053B8 000053D8                     232+         DC    A(*+32) CCW  ADDR.
+0053BC 00000000                     233+         DC    4X'00' CCB-ST BYTE,CSW CCW ADDRESS
+0053C0 00                           234+         DC    AL1(0) 3-9
+0053C1 000000                       235+         DC    VL3(IJDFAPZW) ADDR OF LOGIC MODUL3-8
+0053C4 08                           236+         DC    X'08' DTF TYPE  (PRINTER)
+0053C5 32                           237+         DC    AL1(50) SWITCHES
+0053C6 09                           238+         DC    X'09' NORMAL  COMM. CODE
+0053C7 09                           239+         DC    X'09' CONTROL COMM. CODE
+0053C8 000054A9                     240+         DC    A(PRNTOUT1+1) ADDRESS OF DATA IN IOAREA1
+0053CC 00000000                     241+         DC    4X'00' BUCKET                      3-5
+0053D0 0700                         242+         NOPR  0 PUT LENGTH IN REG12 (ONLY UNDEF.
+0053D2 4700 0000            00000   243+         NOP   0 LOAD USER POINTER REG
+0053D6 0000                         244+         DC    2X'00' NOT USED                    3-5
+0053D8 090054A920000084             245+         CCW   9,PRNTOUT1+1,X'20',133-1
+0053E0                              246+IJJZ0011 EQU   *
+0053E0                              247 ADIO1    DS    CL100
+005444                              248 ADIO2    DS    CL100
+0054A8                              249 PRNTOUT1 DS    CL133
+                                    250          PRMOD WORKA=YES,CTLCHR=ASA,PRINTOV=YES
+       DEMOSTRATE ADDRESS OUT FILES USING LIOCS-SAM                                                            PAGE    6
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                    251+* 360N-CL-453 PRMOD         CHANGE LEVEL 3-9                        3-9
+000000                              252+IJDPD012 DSECT
+000000                              253+IJDP0012 DS    CL2 RESIDUAL COUNT
+000002                              254+IJDP1012 DS    CL1 COMMUNICATION BYTE 1
+000003                              255+IJDP2012 DS    CL1 COMMUNICATION BYTE 2
+000004                              256+IJDPO012 DS    CL2 CSW STATUS BYTES
+000006                              257+IJDP3012 DS    CL2 LOGICAL UNIT ADDRESS
+000008                              258+         DS    CL1 NOT USED
+000009                              259+IJDP4012 DS    CL3 ADDRESS OF CCW
+00000C                              260+         DS    CL1 STATUS BYTE
+00000D                              261+         DS    CL3 CSW CCW ADDR.
+000010                              262+         DS    CL4 ADDRESS OF  LOGICAL MODULE
+000014                              263+IJDP5012 DS    CL1 DTF TYPE
+000015                              264+IJDP6012 DS    CL1 SWITCHES
+000016                              265+IJDP9012 DS    CL1 NORMAL COMMAND CODE
+000017                              266+IJDPA012 DS    CL1 CONTROL COMMAND CODE
+000018                              267+IJDP7012 DS    CL4 ADDRESS OF  IOAREA 1
+00001C                              268+IJDP8012 DS    CL4 BUCKET
+000020                              269+IJDPB012 DS    CL2 L 12,&RECSIZE
+000022                              270+IJDPC012 DS    CL4 LA &IOREG,0(14)
+000026                              271+IJDPE012 DS    CL1 BUCKET FOR PRTOV IF ASA CH 9
+000027                              272+IJDPF012 DS    CL1 BUCKET FOR PRTOV IF ASA CH 12
+000028                              273+IJDPG012 DS    CL1 COMMAND CODE
+000029                              274+IJDPH012 DS    CL3 ADDRESS IOAREA 2
+00002C                              275+IJDPI012 DS    CL1 FLAGS =X'20'
+00002D                              276+         DS    CL1 NOT USED
+00002E                              277+IJDPJ012 DS    CL2 COUNT
+005530                              278+IJDFAPZW CSECT
+                                    279+         ENTRY IJDFAZZW
+005530                              280+IJDFAZZW EQU   *
+000000                              281+         USING IJDP0012,1
+005530                              282+         USING *,15
+005530 0A32                         283+         SVC   IJDL6012 CONTROL  ERROR
+005532 0000                         284+         DC    1H'0'
+005534 47F0 F0A6            055D6   285+         B     IJDPM012
+005538 0A32                         286+         SVC   IJDL6012 GET ERROR
+00553A 0000                         287+         DC    1H'0'
+00553C 47F0 F01A            0554A   288+         B     IJDPR012 BRANCH TO PUT
+005540 C9D1C4C6C1D7E9E6             289+         DC    CL8'IJDFAPZW' MODULE NAME
+005548 F3F9                         290+         DC    CL2'39' 3-9
+00554A                              291+IJDPR012 EQU   *
+00554A 9180 1002      00002         292+         TM    IJDP1012,IJDL8012 WAIT CHANNEL END             3-9
+00554E 4710 F024            05554   293+         BO    *+6
+005552 0A07                         294+         SVC   7
+005554 90CE F0E0            05610   295+         STM   IJDL2012,IJDL4012,IJDPS012 SAVE REGS 12,13,14   3-3
+005558 58E0 1018            00018   296+         L     IJDL4012,IJDP7012 LOAD REG14 ADDR IOAREA1
+00555C 06E0                         297+         BCTR  IJDL4012,0 SUBTRACT ONE FROM REG 14
+00555E 18D0                         298+         LR    IJDL3012,0 LOAD REG13 WITH WORKA ADDR.
+005560 D200 1017 D000 00017 00000   299+         MVC   IJDPA012(1),0(IJDL3012) MOVE CTLCHR TO CONCMD
+005566 48C0 102E            0002E   300+         LH    IJDL2012,IJDPJ012 LOAD COUNT IN REG12
+00556A 44C0 F0EC            0561C   301+         EX    IJDL2012,IJDPT012 MOVE WORKA TO IOAREA
+       DEMOSTRATE ADDRESS OUT FILES USING LIOCS-SAM                                                            PAGE    7
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+00556E 1BCC                         302+         SR    IJDL2012,IJDL2012 CLEAR REG 12
+005570 18DC                         303+         LR    IJDL3012,IJDL2012 CLEAR REG 13
+005572 43C0 1017            00017   304+         IC    IJDL2012,IJDPA012 PUT CONCMD IN REG12
+005576 41E0 0010            00010   305+         LA    IJDL4012,16 PUT 16 IN REG 14
+00557A 43DE F0F1            05621   306+IJDPU012 IC    IJDL3012,IJDPV012-1(IJDL4012) INSERT ASA TABLE CHR
+00557E 19DC                         307+         CR    IJDL3012,IJDL2012 COMPARE REGS 12 AND 13
+005580 4780 F05A            0558A   308+         BE    IJDPW012
+005584 46E0 F04A            0557A   309+         BCT   IJDL4012,IJDPU012
+005588 0A32                         310+         SVC   IJDL6012 ABNORMAL EOJ
+00558A 43DE F101            05631   311+IJDPW012 IC    IJDL3012,IJDPX012-1(IJDL4012) INSERT 360 CHR IN R13
+00558E 43C0 1016            00016   312+         IC    IJDL2012,IJDP9012 INSERT PREVIOUS OP CODE IN R12
+005592 19CD                         313+         CR    IJDL2012,IJDL3012 COMPARE REGS 12,13
+005594 4770 F080            055B0   314+         BNE   IJDPY012
+005598 9180 1016      00016         315+         TM    IJDP9012,IJDL8012 TEST IF IT WAS A SKIP COMM.
+00559C 4780 F080            055B0   316+         BZ    IJDPY012
+0055A0 920B 1028      00028         317+         MVI   IJDPG012,IJDLJ012 PUT SPACE ONE LINE CODE IN CCW
+0055A4 0A00                         318+         SVC   IJDL7012 EXCP
+0055A6 9180 1002      00002         319+         TM    IJDP1012,IJDL8012 WAIT CHANNEL END
+0055AA 4710 F080            055B0   320+         BO    *+6
+0055AE 0A07                         321+         SVC   7
+0055B0 42D0 1028            00028   322+IJDPY012 STC   IJDL3012,IJDPG012 PUT CONCMD IN CCW
+0055B4 42D0 1016            00016   323+         STC   IJDL3012,IJDP9012 SAVE OP CODE IN NORCMD
+0055B8 0A00                         324+         SVC   IJDL7012 EXCP
+0055BA 9180 1002      00002         325+         TM    IJDP1012,IJDL8012 WAIT FOR CHAN. END           3-9
+0055BE 4710 F094            055C4   326+         BO    *+6 3-9
+0055C2 0A07                         327+         SVC   7 3-9
+0055C4 D201 1026 1003 00026 00003   328+         MVC   IJDPE012(2),IJDP2012 SAVE C. BYTE2 AND CSW STATUS 3-9
+0055CA 9201 1028      00028         329+         MVI   IJDPG012,IJDLF012 MOVE PRINT NO SPACE CODE TO CCW
+0055CE 98CE F0E0            05610   330+         LM    IJDL2012,IJDL4012,IJDPS012 RESTORE REGS 12,13,143-3
+0055D2 0A00                         331+         SVC   IJDL7012 EXCP
+0055D4 07FE                         332+         BR    IJDL4012 BACK TO USER                     3-9
+0055D6 9180 1002      00002         333+IJDPM012 TM    IJDP1012,IJDL8012 WAIT CHANNEL END
+0055DA 4710 F0B0            055E0   334+         BO    *+6
+0055DE 0A07                         335+         SVC   7
+0055E0 9101 1015      00015         336+         TM    IJDP6012,IJDLF012 TEST WHICH CH.TO CONSIDER
+0055E4 4780 F0C6            055F6   337+         BZ    IJDPZ012
+0055E8 94FE 1015      00015         338+         NI    IJDP6012,IJDLI012 PUT CH9 BIT OFF
+0055EC 9102 1026      00026         339+         TM    IJDPE012,IJDLG012 TEST IF CH9 REACHED
+0055F0 078E                         340+         BCR   8,IJDL4012 IF NOT, GO BACK TO USER
+0055F2 47F0 F0CC            055FC   341+         B     IJDQ0012
+0055F6                              342+IJDPZ012 EQU   *
+0055F6 9101 1027      00027         343+         TM    IJDPF012,IJDLF012 TEST IF CH12 REACHED
+0055FA 078E                         344+         BCR   8,IJDL4012 IF NOT, BACK TO USER
+0055FC 1200                         345+IJDQ0012 LTR   0,0 TEST IF USER HAS HIS OWN ROUTINE
+0055FE 4780 F0D6            05606   346+         BZ    IJDQ1012
+005602 18F0                         347+         LR    IJDL5012,0 LOAD REG15 WITH USER ROUT ADDR.
+005604 07FF                         348+         BR    IJDL5012 GO TO USER ROUT.
+005606 928B 1028      00028         349+IJDQ1012 MVI   IJDPG012,IJDLH012 PUT SKIP TO CH1 OP CODE IN CCW
+00560A 0A00                         350+         SVC   IJDL7012 EXCP
+00560C 07FE                         351+         BR    IJDL4012 BACK TO USER
+00000B                              352+IJDL1012 EQU   11 REG 11                       3-3
+       DEMOSTRATE ADDRESS OUT FILES USING LIOCS-SAM                                                            PAGE    8
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+00000C                              353+IJDL2012 EQU   12 REG 12
+00000D                              354+IJDL3012 EQU   13 REG 13
+00000E                              355+IJDL4012 EQU   14 REG 14
+00000F                              356+IJDL5012 EQU   15 REG 15
+000032                              357+IJDL6012 EQU   50 ABEOJ
+000000                              358+IJDL7012 EQU   0 EXCP
+000080                              359+IJDL8012 EQU   X'80'
+000040                              360+IJDL9012 EQU   X'40'
+000020                              361+IJDLA012 EQU   X'20'
+000008                              362+IJDLB012 EQU   X'08'
+000010                              363+IJDLC012 EQU   X'10'
+000004                              364+IJDLD012 EQU   X'04'
+000006                              365+IJDLE012 EQU   X'06'
+000001                              366+IJDLF012 EQU   X'01'
+000002                              367+IJDLG012 EQU   X'02'
+00008B                              368+IJDLH012 EQU   X'8B'
+0000FE                              369+IJDLI012 EQU   X'FE'
+00000B                              370+IJDLJ012 EQU   X'0B'
+0000BF                              371+IJDLK012 EQU   X'BF'
+0000F8                              372+IJDLL012 EQU   X'F8' CCB+3  ERROR PASSBACK BITS             3-9
+000040                              373+IJDLM012 EQU   X'40' CCB+2  ERROR PASSBACK BITS             3-9
+000001                              374+IJDLN012 EQU   1 REG 1                                  3-9
+00560E 0000
+005610 0000000000000000             375+IJDPS012 DC    3F'0' 3-3
+00561C D200 E000 D000 00000 00000   376+IJDPT012 MVC   0(0,IJDL4012),0(IJDL3012) MOVE WORKA TO IOAREA
+005622 F2C2C1F9F8F7F6F5             377+IJDPV012 DC    C'2BA9876543C1+-0 '
+005632 93DBD3CBC3BBB3AB             378+IJDPX012 DC    X'93DBD3CBC3BBB3ABA39BE38B031B130B'
+005000                              379+DEMOADDO CSECT
+                                    380          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      0C     00500C
+   01       01      0C     005010
+   01       01      0C     005014
+   01       01      0C     0050A4
+   01       01      0C     0050A8
+   01       01      0C     0050AC
+   01       01      0C     005288
+   01       01      0C     00528C
+   01       01      0C     005290
+   01       01      0C     0052A8
+   01       02      18     0052B1
+   01       01      08     0052C9
+   01       01      0C     0052CC
+   01       01      08     0052E1
+   01       01      0C     0052F8
+   01       01      0C     005300
+   01       01      08     005309
+   01       01      08     005311
+   01       01      08     005319
+   01       01      08     005321
+   01       01      0C     005330
+   01       02      18     005339
+   01       01      08     005351
+   01       01      0C     005354
+   01       01      08     005369
+   01       01      0C     005380
+   01       01      0C     005388
+   01       01      08     005391
+   01       01      08     005399
+   01       01      08     0053A1
+   01       01      08     0053A9
+   01       01      0C     0053B8
+   01       03      18     0053C1
+   01       01      0C     0053C8
+   01       01      08     0053D9
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC LNKEDT
+
+JOB  DEMOADDO  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST   AUTOLINK   IJGFIZZZ
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        PHASE***  006000  006000  00681D  1B 06 4  CSECT     DEMOADDO  006000  001000
+
+                                                   CSECT     IJGFIZZZ  006648  006648
+
+                                                   CSECT     IJDFAPZW  006530  001000
+                                                   *  ENTRY  IJDFAZZW  006530
+// ASSGN SYS006,X'192'
+// DLBL ADDFILE,'PEOPLE.ADDROUT'
+// EXTENT SYS006,WRK14A
+// DLBL EMFILE,'PEOPLE'
+// EXTENT SYS006,WRK14A
+// EXEC
+03/29/70      ADDROUT DEMONSTRATION USING LIOCS-SAM
+
+    10   004  ACHER, WILLIAM C.
+    10   185  DONNEMAN, THOMAS M.
+    10   300  FELDMAN, MIKE R.
+    10   325  HATFIELD, MARK I.
+    10   730  REEDE, OWEN W.
+    10   960  WINGLAND, KEITH E.
+    20   111  CARTOLER, VIOLET B.
+    20   304  FROMM, STEVE V.
+    20   590  NEIL, CLARENCE N.
+    20   801  SCHEIBER, HARRY T.
+    20   956  WANGLEY, THEO. A.
+    30   030  ALLOREN, RUTH W.
+    30   181  DELBERT, EDWARD D.
+    30   311  GROLER, GRACE B.
+    30   318  HANEY, CAROL S.
+    30   487  KING, MILDRED J.
+    30   834  TRAWLEY, HARRIS T.
+    40   027  ALHOUER, ELAINE E.
+    40   171  COSTA, NAN S.
+    40   317  HANBEE, ALETTA O.
+    40   721  RASSMUSEN, JOHN J.
+    40   739  RIDEL, ROBERT R.
+    40   806  STOCKTON, NORMAN Q.
+    50   122  CENNA, DICK L.
+    50   207  EBERHARDT, RON G.
+    50   308  GLEASON, JAMES E.
+    50   568  LYNNE, GERALD H.
+    50   909  UDSON, DORIS M.
+    60   100  BATES, TONY F.
+    60   179  DAMSON, ERIC C.
+    60   292  EVERLY, DONNA M.
+    60   409  ICK, MICK W.
+    60   607  ODELLE, NICHOLAS P.
+    60   825  TILLMAN, DON M.
+    70   214  EDMONSON, RICK T.
+    70   310  GORMALLY, MARIE N.
+    70   332  HELD, ANNA J.
+    70   689  OWNEY, REED M.
+    70   802  SHEA, MICHAEL H.
+    80   102  BELLSLEY, ARTHUR A.
+    80   282  ESTEBAN, JUAN L.
+    80   322  HARLETON, JEAN H.
+    80   505  LAMBERT, JERRY O.
+    90   105  BOYLE, RALPH P.
+    90   215  EDSON, WILBUR S.
+    90   315  HALE, ALAN A.
+    90   574  MELTZ, FRANK K.
+    90   740  RIDGEFIELD, SUZY S.
+    90   820  TELLER, STEPHEN U.
+       49 EMPLOYEES LISTED
+* READ FILE USING ASSEMBLER LIOCS-DAM
+// OPTION LINK,NOXREF
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+DEMOADDO  SD  01 005068 0005D5
+IJGFIZZZ  ER  02
+IJIFZZZZ  ER  03
+IJDFAPZW  ER  04
+IJDFAPZW  SD  05 005640 000112
+IJDFAZZW  LD     005640         05
+       DEMOSTRATE ADDRESS OUT FILES USING LIOCS-DAM                                                            PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      2 *        PRINT NOGEN
+005068                                3 DEMOADDO START X'5068'
+000000                                4 R0       EQU   0
+000001                                5 R1       EQU   1
+000002                                6 R2       EQU   2
+000003                                7 R3       EQU   3
+000004                                8 R4       EQU   4
+000005                                9 R5       EQU   5
+000006                               10 R6       EQU   6
+000007                               11 R7       EQU   7
+000008                               12 R8       EQU   8
+000009                               13 R9       EQU   9
+00000A                               14 R10      EQU   10
+00000B                               15 R11      EQU   11
+00000C                               16 R12      EQU   12
+00000D                               17 R13      EQU   13
+00000E                               18 R14      EQU   14
+00000F                               19 R15      EQU   15
+005068 05C0                          20          BALR  R12,0
+00506A                               21          USING *,R12
+000000                               22          USING EMDSECT,R7
+                                     23          OPEN  ADDFILE,EMFILE,PRINTER
+                                     24+* 360N-CL-453 OPEN     CHANGE LEVEL 3-3                             3-3
+00506A 0700                          25+         CNOP  0,4
+00506C                               26+         DC    0F'0'
+00506C 4110 C2A6            05310    27+         LA    1,=C'$$BOPEN '
+005070 4500 C016            05080    28+IJJO0001 BAL   0,*+4+4*(4-1)
+005074 00005358                      29+         DC    A(ADDFILE)
+005078 000053E0                      30+         DC    A(EMFILE)
+00507C 000054C0                      31+         DC    A(PRINTER)
+005080 0A02                          32+         SVC   2
+                                     33          COMRG
+                                     34+* 360N-CL-453 COMRG    CHANGE LEVEL 3-0
+005082 5810 0014            00014    35+         L     1,20
+005086 0A21                          36+         SVC   33
+005088 D207 C15D 1000 051C7 00000    37          MVC   TODAY,0(R1)     GET TODAY'S DATE
+00508E 4530 C0EC            05156    38          BAL   R3,HEADING
+005092                               39 MAINLOOP EQU   *
+                                     40          GET   ADDFILE,ADDREC
+                                     41+* 360N-CL-453 GET      CHANGE LEVEL 3-0
+005092 5810 C2D6            05340    42+         L     1,=A(ADDFILE) GET DTF TABLE ADDRESS
+005096 5800 C2DA            05344    43+         L     0,=A(ADDREC) GET WORK AREA ADDRESS
+00509A 58F1 0010            00010    44+         L     15,16(1) GET LOGIC MODULE ADDRESS
+00509E 45EF 0008            00008    45+         BAL   14,8(15) BRANCH TO GET ROUTINE
+0050A2 D507 C169 C174 051D3 051DE    46          CLC   EMID,ADDREC     IF BLOCK ALREADY READ IN,
+0050A8 4780 C088            050F2    47          BE    BLKOK             GO PROCESS RECORD
+0050AC D207 C169 C174 051D3 051DE    48          MVC   EMID,ADDREC     READ IN CORRECT BLOCK
+                                     49          READ  EMFILE,ID
+                                     50+* 360N-CL-453 READ     CHANGE LEVEL 3-0
+0050B2 5810 C2DE            05348    51+         L     1,=A(EMFILE) GET DTF TABLE ADDRESS
+0050B6 58F1 0010            00010    52+         L     15,16(1) GET LOGIC MODULE ADDRESS
+       DEMOSTRATE ADDRESS OUT FILES USING LIOCS-DAM                                                            PAGE    2
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+0050BA 45EF 001C            0001C    53+         BAL   14,28(15) BR TO READID
+                                     54          WAITF (1)
+                                     55+* 360N-CL-453 WAITF  CHANGE LEVEL 3-3                               3-3
+0050BE 58F1 0010            00010    56+         L     15,16(1) GET LOGIC MODULE ADDRESS
+0050C2 45EF 0004            00004    57+         BAL   14,4(15) BRANCH TO WAITF ROUTINE
+0050C6 D601 C171 C171 051DB 051DB    58          OC    EMERRS,EMERRS   IF NO ERRORS,
+0050CC 4780 C088            050F2    59          BZ    BLKOK             GO PROCESS BLOCK
+0050D0 9140 C171      051DB          60          TM    EMERRS,X'40'    IF WRONG LENGTH RECORD,
+0050D4 4710 C072            050DC    61          BO    WLR               TEST FOR SHORT BLOCK
+0050D8 47F0 C0DE            05148    62          B     CANCEL          ANYTHING ELSE IS A PROBLEM
+0050DC 4830 C376            053E0    63 WLR      LH    R3,EMFILE       GET RESIDUAL COUNT
+0050E0 1233                          64          LTR   R3,R3           IF ZERO,
+0050E2 4780 C0DE            05148    65          BZ    CANCEL            BLOCK IS TOO BIG
+0050E6 1B22                          66          SR    R2,R2
+0050E8 5D20 C2E2            0534C    67          D     R2,=A(L'EMREC)  DIVIDE BY RECORD SIZE
+0050EC 1222                          68          LTR   R2,R2           IF BLOCK NOT MULTIPLE OF REC.SIZE,
+0050EE 4770 C0DE            05148    69          BNZ   CANCEL            BAD BLOCK
+0050F2 4170 C17E            051E8    70 BLKOK    LA    R7,EMBLK        POINT TO RECORD
+0050F6 4A70 C17C            051E6    71          AH    R7,ADDDISP
+0050FA D201 C223 7000 0528D 00000    72          MVC   PRTLINE+5(L'EMDEPT),EMDEPT
+005100 D202 C228 7002 05292 00002    73          MVC   PRTLINE+10(L'EMNUM),EMNUM
+005106 D218 C22D 7005 05297 00005    74          MVC   PRTLINE+15(L'EMNAME),EMNAME
+00510C 4520 C10A            05174    75          BAL   R2,PRINT
+005110 FA20 C166 C2EC 051D0 05356    76          AP    COUNT,=P'1'
+005116 47F0 C028            05092    77          B     MAINLOOP
+00511A D205 C222 C2E6 0528C 05350    78 ENDOFJOB MVC   PRTLINE+4(6),=X'402020202120'
+005120 DE05 C222 C166 0528C 051D0    79          ED    PRTLINE+4(6),COUNT
+005126 D20F C229 C2AE 05293 05318    80          MVC   PRTLINE+11(16),=C'EMPLOYEES LISTED'
+00512C 4520 C10A            05174    81          BAL   R2,PRINT
+                                     82          CLOSE ADDFILE,EMFILE,PRINTER
+                                     83+* 360N-CL-453 CLOSE    CHANGE LEVEL 3-3                             3-3
+005130                               84+         CNOP  0,4
+005130                               85+         DC    0F'0'
+005130 4110 C2BE            05328    86+         LA    1,=C'$$BCLOSE'
+005134 4500 C0DA            05144    87+IJJC0006 BAL   0,*+4+4*(4-1)
+005138 00005358                      88+         DC    A(ADDFILE)
+00513C 000053E0                      89+         DC    A(EMFILE)
+005140 000054C0                      90+         DC    A(PRINTER)
+005144 0A02                          91+         SVC   2
+                                     92          EOJ
+                                     93+* 360N-CL-453 EOJ      CHANGE LEVEL 3-0
+005146 0A0E                          94+         SVC   14
+                                     95 CANCEL   PDUMP DEMOADDO,DEMOADDO+4096
+                                     96+* 360N-CL-453 PDUMP    CHANGE LEVEL 3-0
+005148 4110 C2C6            05330    97+CANCEL   LA    1,=CL8'$$BPDUMP'
+00514C 4100 C2CE            05338    98+         LA    0,=A(DEMOADDO,DEMOADDO+4096)
+005150 0A02                          99+         SVC   2
+                                    100          CANCEL
+                                    101+* 360N-CL-453 CANCEL   CHANGE LEVEL 3-6                             3-6
+005152 1B00                         102+         SR    0,0 3-3
+005154 0A06                         103+         SVC   6 3-3
+       DEMOSTRATE ADDRESS OUT FILES USING LIOCS-DAM                                                            PAGE    3
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                    104 *
+005156 D207 C21F C15D 05289 051C7   105 HEADING  MVC   PRTLINE+1(L'TODAY),TODAY
+00515C D224 C22D C138 05297 051A2   106          MVC   PRTLINE+15(L'MHEAD1),MHEAD1
+005162 92F1 C21E      05288         107          MVI   PRTLINE,C'1'        SKIP TO NEW PAGE
+005166 4520 C10A            05174   108          BAL   R2,PRINT
+00516A 92F0 C21E      05288         109          MVI   PRTLINE,C'0'        DOUBLE SPACE NEXT TIME
+00516E 92F0 C165      051CF         110          MVI   EOPSW,C'0'          RESET BOTTOM-OF-PAGE SWITCH
+005172 07F3                         111          BR    R3
+005174 4100 C21E            05288   112 PRINT    LA    R0,PRTLINE
+005178 4110 C456            054C0   113          LA    R1,PRINTER
+                                    114          PUT   (1),(0)
+                                    115+* 360N-CL-453 PUT          CHANGE LEVEL 3-5                         3-5
+00517C                              116+         DC    0H'0'
+00517C 58F1 0010            00010   117+         L     15,16(1) GET LOGIC MODULE ADDRESS     3-5
+005180 45EF 000C            0000C   118+         BAL   14,12(15) BRANCH TO PUT ROUTINE        3-5
+005184 4100 C132            0519C   119          LA    R0,EOP
+                                    120          PRTOV (1),12,(0)          CHECK FOR BOTTOM OF PAGE
+                                    121+* 360N-CL-453 PRTOV    CHANGE LEVEL 3-0
+005188                              122+         DC    0H'0'
+005188 58F1 0010            00010   123+         L     15,16(1) GET LOGIC MODULE ADDRESS
+00518C 45EF 0004            00004   124+         BAL   14,4(15) BRANCH TO PRTOV ROUTINE
+005190 9240 C21E      05288         125          MVI   PRTLINE,C' '
+005194 D283 C21F C21E 05289 05288   126          MVC   PRTLINE+1(132),PRTLINE
+00519A 07F2                         127          BR    R2
+00519C 92F1 C165      051CF         128 EOP      MVI   EOPSW,C'1'          INDICATE BOTTOM OF PAGE
+0051A0 07FE                         129          BR    R14
+0051A2 C1C4C4D9D6E4E340             130 MHEAD1   DC    C'ADDROUT DEMONSTRATION USING LIOCS-DAM'
+0051C7                              131 TODAY    DS    CL8
+0051CF                              132 EOPSW    DS    C
+0051D0 00000C                       133 COUNT    DC    PL3'0'
+0051D3 0000000000000000             134 EMID     DC    XL8'0'
+0051DB                              135 EMERRS   DS    CL2
+                                    136 *
+0051DE                              137          DS    0H
+0051DE                              138 ADDREC   DS    0CL10
+0051DE                              139 ADDID    DS    XL8     MBBCCHHR
+0051E6                              140 ADDDISP  DS    H       DISPLACEMENT
+                                    141 *
+0051E8                              142 EMBLK    DS    CL160
+000000                              143 EMDSECT  DSECT
+000000                              144 EMREC    DS    0CL80
+000000                              145 EMDEPT   DS    CL2     EMPLOYEE DEPARTMENT
+000002                              146 EMNUM    DS    CL3     EMPLOYEE NUMBER
+000005                              147 EMNAME   DS    CL25    EMPLOYEE NAME
+00001E                              148          DS    CL50
+005068                              149 DEMOADDO CSECT
+                                    150 *
+005288 4040404040404040             151 PRTLINE  DC    CL133' '
+005310                              152          LTORG
+005310 5B5BC2D6D7C5D540             153                =C'$$BOPEN '
+005318 C5D4D7D3D6E8C5C5             154                =C'EMPLOYEES LISTED'
+       DEMOSTRATE ADDRESS OUT FILES USING LIOCS-DAM                                                            PAGE    4
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+005328 5B5BC2C3D3D6E2C5             155                =C'$$BCLOSE'
+005330 5B5BC2D7C4E4D4D7             156                =CL8'$$BPDUMP'
+005338 0000506800006068             157                =A(DEMOADDO,DEMOADDO+4096)
+005340 00005358                     158                =A(ADDFILE)
+005344 000051DE                     159                =A(ADDREC)
+005348 000053E0                     160                =A(EMFILE)
+00534C 00000050                     161                =A(L'EMREC)
+005350 402020202120                 162                =X'402020202120'
+005356 1C                           163                =P'1'
+                                    164 ADDFILE  DTFSD DEVICE=2314,EOFADDR=ENDOFJOB,                           X
+                                                       RECFORM=FIXBLK,BLKSIZE=100,RECSIZE=10,                  X
+                                                       IOAREA1=ADIN1,IOAREA2=ADIN2,WORKA=YES
+                                    165+* 360N-IO-455  DTFSD  CHANGE LEVEL  3-11                           3-11
+005357 00
+005358                              166+         DC    0D'0'
+005358 000080040000                 167+ADDFILE  DC    X'000080040000' CCB
+00535E FF                           168+         DC    AL1(255) LOGICAL UNIT CLASS
+00535F FF                           169+         DC    AL1(255) LOGICAL UNIT NUMBER
+005360 000053C0                     170+         DC    A(IJGC0012) CCB-CCW ADDRESS
+005364 00000000                     171+         DC    4X'00' CCB-ST BYTE,CSW CCW ADDRESS
+005368 00                           172+         DC    AL1(0) 3-3
+005369 000000                       173+         DC    VL3(IJGFIZZZ) 3-8
+00536C 20                           174+         DC    X'20' DTF TYPE
+00536D 5A                           175+         DC    AL1(90) OPEN/CLOSE INDICATORS
+00536E C1C4C4C6C9D3C5               176+         DC    CL7'ADDFILE' FILENAME
+005375 01                           177+         DC    X'01' INDICATE 2314
+005376 000000000000                 178+         DC    6X'00' BCCHHR ADDR OF F1 LABEL IN VTOC
+00537C 0000                         179+         DC    2X'00' VOL SEQ NUMBER
+00537E 08                           180+         DC    X'08' OPEN COMMUNICATIONS BYTE
+00537F 00                           181+         DC    X'00' XTENT SEQ NO OF CURRENT EXTENT
+005380 00                           182+         DC    X'00' XTENT SEQ NO LAST XTENT OPENED
+005381 005381                       183+         DC    AL3(*) USER'S LABEL ADDRESS
+005384 00005554                     184+         DC    A(ADIN2) ADDRESS OF SECOND IOAREA
+005388 80000000                     185+         DC    X'80000000' CCHH ADDR OF USER LABEL TRACK
+00538C 0000                         186+         DC    2X'00' LOWER HEAD LIMIT
+00538E 00000000                     187+         DC    4X'00' XTENT UPPER LIMIT
+005392 0000                         188+ADDFILES DC    2X'00' SEEK ADDRESS-BB
+005394 0000FF00                     189+         DC    X'0000FF00' SEARCH ADDRESS-CCHH
+005398 00                           190+         DC    X'00' RECORD NUMBER
+005399 00511A                       191+         DC    AL3(ENDOFJOB) EOF ADDRESS
+00539C 00000000                     192+         DC    4X'00' CCHH CONTROL FIELD
+0053A0 24                           193+         DC    AL1(36) R    CONTROL FIELD
+0053A1 04                           194+         DC    B'00000100' 3-2
+0053A2 0063                         195+         DC    H'99' SIZE OF BLOCK-1
+0053A4 FFFFFFFFFF                   196+         DC    5X'FF' CCHHR BUCKET                 3-7
+0053A9 000000                       197+         DC    3X'00'
+0053AC 4700 0000            00000   198+         NOP   0
+0053B0 000054F0                     199+         DC    A(ADIN1) DEBLOCKER-INITIAL POINTER   3-11
+0053B4 0000000A                     200+         DC    F'10' DEBLOCKER-RECORD SIZE
+0053B8 00005553                     201+         DC    A(ADIN1+100-1) DEBLOCKER LIMIT       3-11
+0053BC 0A                           202+         DC    AL1(10) LOGICAL INDICATORS
+       DEMOSTRATE ADDRESS OUT FILES USING LIOCS-DAM                                                            PAGE    5
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+0053BD 000000                       203+         DC    AL3(0) USER'S ERROR ROUTINE
+0053C0 0700539240000006             204+IJGC0012 CCW   7,*-46,64,6 SEEK
+0053C8 3100539440000005             205+         CCW   X'31',*-52,64,5 SEARCH ID EQUAL
+0053D0 080053C800000000             206+         CCW   8,*-8,0,0 TIC
+0053D8 060054F000000064             207+         CCW   6,ADIN1,0,100 READ DATA             3-11
+0053E0                              208+IJJZ0012 EQU   *
+                                    209 EMFILE   DTFDA BLKSIZE=160,DEVICE=2314,ERRBYTE=EMERRS,IOAREA1=EMBLK,   X
+                                                       READID=YES,RECFORM=FIXUNB,SEEKADR=EMID,TYPEFLE=INPUT
+                                    210+*  360N-IO-454   DTFDA    CHANGE LEVEL  3-11                       3-11
+
+
+
+                                    212+***************************************                             3-3
+                                    213+*                                     *                             3-3
+                                    214+** DTF TABLE FOR DIRECT ACCESS METHOD**                             3-3
+                                    215+*                                     *                             3-3
+                                    216+***************************************                             3-3
+0053E0                              217+         DC    0D'0' 3-3
+0053E0 0000                         218+EMFILE   DC    H'0' FIRST CCB BYTES
+0053E2 88                           219+         DC    X'88' 3-3
+0053E3 000000                       220+         DC    3X'00'
+0053E6 00                           221+         DC    AL1(0) LOGICAL UNIT CLASS
+0053E7 00                           222+         DC    AL1(0) LOGICAL UNIT NUMBER
+0053E8 00005478                     223+         DC    AL4(EMFILEB) CCW ADDR IN CCB
+0053EC 00000000                     224+         DC    F'0'
+0053F0 00                           225+         DC    AL1(0) 3-2
+0053F1 000000                       226+         DC    VL3(IJIFZZZZ) DAMOD ADDRESS                3-9
+0053F4 22                           227+         DC    X'22' FILE TYPE                    3-2
+0053F5 00                           228+         DC    B'00000000' OPTION SWITCHES   3-6
+0053F6 C5D4C6C9D3C540               229+         DC    CL7'EMFILE' FILENAME
+0053FD 01                           230+         DC    X'01' INDICATE 2314
+0053FE FFFF                         231+         DC    X'FFFF' 3-4
+005400 00000000                     232+         DC    F'0' LABEL ROUTINE EXIT ADDR      3-2
+005404 00000000                     233+         DC    F'0' EXTENT ROUTINE EXIT ADDR
+005408 00                           234+         DC    X'0' 3-2
+005409 0051DB                       235+         DC    AL3(EMERRS) ERRBYTE ADDR
+00540C 0000                         236+         DC    H'0' TEST SWITCH
+00540E 0078                         237+         DC    Y(EMFILEB-EMFILE-32) POINTER
+005410 0000                         238+         DC    H'0' IJICB2
+005412 88                           239+         DC    X'88'
+005413 0000000000                   240+         DC    5X'0'
+005418 00005420                     241+         DC    AL4(EMFILEZ)
+00541C 00000000                     242+         DC    4X'0'
+005420 070051D400000006             243+EMFILEZ  CCW   X'07',EMID+1,X'00',6 SEEK CCW                   3-2
+005428 97F0 2024      00024         244+         XI    36(2),C'0' EXCLUSIVE OR                3-2
+00542C 00A0                         245+         DC    H'160' MAXIMUM DATA LENGTH          3-4
+00542E 8F                           246+         DC    YL1(EMFILE0-EMFILE-1) POINTER TO READID STRING     3-2
+00542F 00                           247+         DC    YL1(EMFILE1-EMFILE-1) POINTER TO READKEY STRING    3-2
+005430 00                           248+         DC    YL1(EMFILE2-EMFILE-1) POINTER TO WRITEID STRING      3-2
+005431 00                           249+         DC    YL1(EMFILE3-EMFILE-1) POINTER TO WRITEKY STRING    3-2
+005432 00                           250+         DC    YL1(EMFILE4-EMFILE-1) POINTER TO RZERO STRING      3-2
+       DEMOSTRATE ADDRESS OUT FILES USING LIOCS-DAM                                                            PAGE    6
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+005433 00                           251+         DC    YL1(EMFILE5-EMFILE-1) POINTER TO AFTER STRING      3-2
+005434 0000                         252+         DC    H'0' TRACK CONSTANT                   3-2
+005436 0065                         253+         DC    H'101' RIC CONSTANT                     3-2
+005438 0000                         254+         DC    H'0' USED TO SET ERROR CODES      3-2
+00543A 000000000000                 255+         DC    6X'00' STORED LABEL TRACK ADDRESS  3-2
+                                    256+**********************************************************************
+                                    257+****BASIC CCW'S TO BUILD CHANNEL PROGRAM***********                 3-2
+005440 310051D640000005             258+EMFILEL  CCW   X'31',EMID+3,X'40',5 SEARCH ID EQ CCW            3-2
+005448 00000000                     259+         DC    1F'0'
+00544C 0000                         260+         DC    H'0'
+00544E 0000                         261+         DC    H'0'
+005450 060051E8400000A0             262+         CCW   X'06',EMBLK+0,X'40',160
+005458 1200545840000005             263+         CCW   X'12',*,X'40',5 READ ID CCW                  3-2
+005460 390051D640000004             264+         CCW   X'39',EMID+3,X'40',4 SEARCH HOME ADDRESS CCW    3-2
+005468 0E0051E8400000A0             265+         CCW   X'0E',EMBLK+0,X'40',160 READ KEY AND DATA  3-2
+                                    266+**********************************************************************
+                                    267+*  STRING SECTION   SIZE FUNCTION OF PARAMETERS
+005470                              268+EMFILE0  EQU   * READ  ID
+005470 871814                       269+         DC    X'871814' FIXUNB
+0053E1                              270+EMFILE1  EQU   EMFILE+1
+0053E1                              271+EMFILE2  EQU   EMFILE+1
+0053E1                              272+EMFILE3  EQU   EMFILE+1
+0053E1                              273+EMFILE4  EQU   EMFILE+1
+0053E1                              274+EMFILE5  EQU   EMFILE+1
+                                    275+********************************************************************3-6
+                                    276+* BUILDING PROGRAM AREA FROM 4 TO 17 CCWS - VARIABLE SIZE           3-6
+005473 0000000000
+005478 070051D440000006             277+EMFILEB  CCW   X'07',EMID+1,X'40',6 SEEK CCW                   3-2
+005480 0000000000000000             278+         DC    8D'0' 3-6
+0053E0                              279+EMFILEX  EQU   EMFILE 3-2
+005068                              280+DEMOADDO CSECT  3-2
+0054C0                              281+IJJZ0013 EQU   * 3-2
+                                    282 PRINTER  DTFPR DEVADDR=SYSLST,BLKSIZE=133,IOAREA1=PRNTOUT1,            X
+                                                       WORKA=YES,PRINTOV=YES,CTLCHR=ASA
+                                    283+* 360 N-CL-453 DTFPR       CHANGE LEVEL 3-9                         3-9
+0054C0                              284+         DC    0D'0'
+0054C0 000084000400                 285+PRINTER  DC    X'000084000400' RES. COUNT, COM. BYTES, STATUS BYTES 3-9
+0054C6 00                           286+         DC    AL1(0) LOGICAL UNIT CLASS
+0054C7 03                           287+         DC    AL1(3) LOGICAL UNIT
+0054C8 000054E8                     288+         DC    A(*+32) CCW  ADDR.
+0054CC 00000000                     289+         DC    4X'00' CCB-ST BYTE,CSW CCW ADDRESS
+0054D0 00                           290+         DC    AL1(0) 3-9
+0054D1 000000                       291+         DC    VL3(IJDFAPZW) ADDR OF LOGIC MODUL3-8
+0054D4 08                           292+         DC    X'08' DTF TYPE  (PRINTER)
+0054D5 32                           293+         DC    AL1(50) SWITCHES
+0054D6 09                           294+         DC    X'09' NORMAL  COMM. CODE
+0054D7 09                           295+         DC    X'09' CONTROL COMM. CODE
+0054D8 000055B9                     296+         DC    A(PRNTOUT1+1) ADDRESS OF DATA IN IOAREA1
+0054DC 00000000                     297+         DC    4X'00' BUCKET                      3-5
+0054E0 0700                         298+         NOPR  0 PUT LENGTH IN REG12 (ONLY UNDEF.
+0054E2 4700 0000            00000   299+         NOP   0 LOAD USER POINTER REG
+       DEMOSTRATE ADDRESS OUT FILES USING LIOCS-DAM                                                            PAGE    7
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+0054E6 0000                         300+         DC    2X'00' NOT USED                    3-5
+0054E8 090055B920000084             301+         CCW   9,PRNTOUT1+1,X'20',133-1
+0054F0                              302+IJJZ0014 EQU   *
+0054F0                              303 ADIN1    DS    CL100
+005554                              304 ADIN2    DS    CL100
+0055B8                              305 PRNTOUT1 DS    CL133
+                                    306          PRMOD WORKA=YES,CTLCHR=ASA,PRINTOV=YES
+                                    307+* 360N-CL-453 PRMOD         CHANGE LEVEL 3-9                        3-9
+000000                              308+IJDPD015 DSECT
+000000                              309+IJDP0015 DS    CL2 RESIDUAL COUNT
+000002                              310+IJDP1015 DS    CL1 COMMUNICATION BYTE 1
+000003                              311+IJDP2015 DS    CL1 COMMUNICATION BYTE 2
+000004                              312+IJDPO015 DS    CL2 CSW STATUS BYTES
+000006                              313+IJDP3015 DS    CL2 LOGICAL UNIT ADDRESS
+000008                              314+         DS    CL1 NOT USED
+000009                              315+IJDP4015 DS    CL3 ADDRESS OF CCW
+00000C                              316+         DS    CL1 STATUS BYTE
+00000D                              317+         DS    CL3 CSW CCW ADDR.
+000010                              318+         DS    CL4 ADDRESS OF  LOGICAL MODULE
+000014                              319+IJDP5015 DS    CL1 DTF TYPE
+000015                              320+IJDP6015 DS    CL1 SWITCHES
+000016                              321+IJDP9015 DS    CL1 NORMAL COMMAND CODE
+000017                              322+IJDPA015 DS    CL1 CONTROL COMMAND CODE
+000018                              323+IJDP7015 DS    CL4 ADDRESS OF  IOAREA 1
+00001C                              324+IJDP8015 DS    CL4 BUCKET
+000020                              325+IJDPB015 DS    CL2 L 12,&RECSIZE
+000022                              326+IJDPC015 DS    CL4 LA &IOREG,0(14)
+000026                              327+IJDPE015 DS    CL1 BUCKET FOR PRTOV IF ASA CH 9
+000027                              328+IJDPF015 DS    CL1 BUCKET FOR PRTOV IF ASA CH 12
+000028                              329+IJDPG015 DS    CL1 COMMAND CODE
+000029                              330+IJDPH015 DS    CL3 ADDRESS IOAREA 2
+00002C                              331+IJDPI015 DS    CL1 FLAGS =X'20'
+00002D                              332+         DS    CL1 NOT USED
+00002E                              333+IJDPJ015 DS    CL2 COUNT
+005640                              334+IJDFAPZW CSECT
+                                    335+         ENTRY IJDFAZZW
+005640                              336+IJDFAZZW EQU   *
+000000                              337+         USING IJDP0015,1
+005640                              338+         USING *,15
+005640 0A32                         339+         SVC   IJDL6015 CONTROL  ERROR
+005642 0000                         340+         DC    1H'0'
+005644 47F0 F0A6            056E6   341+         B     IJDPM015
+005648 0A32                         342+         SVC   IJDL6015 GET ERROR
+00564A 0000                         343+         DC    1H'0'
+00564C 47F0 F01A            0565A   344+         B     IJDPR015 BRANCH TO PUT
+005650 C9D1C4C6C1D7E9E6             345+         DC    CL8'IJDFAPZW' MODULE NAME
+005658 F3F9                         346+         DC    CL2'39' 3-9
+00565A                              347+IJDPR015 EQU   *
+00565A 9180 1002      00002         348+         TM    IJDP1015,IJDL8015 WAIT CHANNEL END             3-9
+00565E 4710 F024            05664   349+         BO    *+6
+005662 0A07                         350+         SVC   7
+       DEMOSTRATE ADDRESS OUT FILES USING LIOCS-DAM                                                            PAGE    8
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+005664 90CE F0E0            05720   351+         STM   IJDL2015,IJDL4015,IJDPS015 SAVE REGS 12,13,14   3-3
+005668 58E0 1018            00018   352+         L     IJDL4015,IJDP7015 LOAD REG14 ADDR IOAREA1
+00566C 06E0                         353+         BCTR  IJDL4015,0 SUBTRACT ONE FROM REG 14
+00566E 18D0                         354+         LR    IJDL3015,0 LOAD REG13 WITH WORKA ADDR.
+005670 D200 1017 D000 00017 00000   355+         MVC   IJDPA015(1),0(IJDL3015) MOVE CTLCHR TO CONCMD
+005676 48C0 102E            0002E   356+         LH    IJDL2015,IJDPJ015 LOAD COUNT IN REG12
+00567A 44C0 F0EC            0572C   357+         EX    IJDL2015,IJDPT015 MOVE WORKA TO IOAREA
+00567E 1BCC                         358+         SR    IJDL2015,IJDL2015 CLEAR REG 12
+005680 18DC                         359+         LR    IJDL3015,IJDL2015 CLEAR REG 13
+005682 43C0 1017            00017   360+         IC    IJDL2015,IJDPA015 PUT CONCMD IN REG12
+005686 41E0 0010            00010   361+         LA    IJDL4015,16 PUT 16 IN REG 14
+00568A 43DE F0F1            05731   362+IJDPU015 IC    IJDL3015,IJDPV015-1(IJDL4015) INSERT ASA TABLE CHR
+00568E 19DC                         363+         CR    IJDL3015,IJDL2015 COMPARE REGS 12 AND 13
+005690 4780 F05A            0569A   364+         BE    IJDPW015
+005694 46E0 F04A            0568A   365+         BCT   IJDL4015,IJDPU015
+005698 0A32                         366+         SVC   IJDL6015 ABNORMAL EOJ
+00569A 43DE F101            05741   367+IJDPW015 IC    IJDL3015,IJDPX015-1(IJDL4015) INSERT 360 CHR IN R13
+00569E 43C0 1016            00016   368+         IC    IJDL2015,IJDP9015 INSERT PREVIOUS OP CODE IN R12
+0056A2 19CD                         369+         CR    IJDL2015,IJDL3015 COMPARE REGS 12,13
+0056A4 4770 F080            056C0   370+         BNE   IJDPY015
+0056A8 9180 1016      00016         371+         TM    IJDP9015,IJDL8015 TEST IF IT WAS A SKIP COMM.
+0056AC 4780 F080            056C0   372+         BZ    IJDPY015
+0056B0 920B 1028      00028         373+         MVI   IJDPG015,IJDLJ015 PUT SPACE ONE LINE CODE IN CCW
+0056B4 0A00                         374+         SVC   IJDL7015 EXCP
+0056B6 9180 1002      00002         375+         TM    IJDP1015,IJDL8015 WAIT CHANNEL END
+0056BA 4710 F080            056C0   376+         BO    *+6
+0056BE 0A07                         377+         SVC   7
+0056C0 42D0 1028            00028   378+IJDPY015 STC   IJDL3015,IJDPG015 PUT CONCMD IN CCW
+0056C4 42D0 1016            00016   379+         STC   IJDL3015,IJDP9015 SAVE OP CODE IN NORCMD
+0056C8 0A00                         380+         SVC   IJDL7015 EXCP
+0056CA 9180 1002      00002         381+         TM    IJDP1015,IJDL8015 WAIT FOR CHAN. END           3-9
+0056CE 4710 F094            056D4   382+         BO    *+6 3-9
+0056D2 0A07                         383+         SVC   7 3-9
+0056D4 D201 1026 1003 00026 00003   384+         MVC   IJDPE015(2),IJDP2015 SAVE C. BYTE2 AND CSW STATUS 3-9
+0056DA 9201 1028      00028         385+         MVI   IJDPG015,IJDLF015 MOVE PRINT NO SPACE CODE TO CCW
+0056DE 98CE F0E0            05720   386+         LM    IJDL2015,IJDL4015,IJDPS015 RESTORE REGS 12,13,143-3
+0056E2 0A00                         387+         SVC   IJDL7015 EXCP
+0056E4 07FE                         388+         BR    IJDL4015 BACK TO USER                     3-9
+0056E6 9180 1002      00002         389+IJDPM015 TM    IJDP1015,IJDL8015 WAIT CHANNEL END
+0056EA 4710 F0B0            056F0   390+         BO    *+6
+0056EE 0A07                         391+         SVC   7
+0056F0 9101 1015      00015         392+         TM    IJDP6015,IJDLF015 TEST WHICH CH.TO CONSIDER
+0056F4 4780 F0C6            05706   393+         BZ    IJDPZ015
+0056F8 94FE 1015      00015         394+         NI    IJDP6015,IJDLI015 PUT CH9 BIT OFF
+0056FC 9102 1026      00026         395+         TM    IJDPE015,IJDLG015 TEST IF CH9 REACHED
+005700 078E                         396+         BCR   8,IJDL4015 IF NOT, GO BACK TO USER
+005702 47F0 F0CC            0570C   397+         B     IJDQ0015
+005706                              398+IJDPZ015 EQU   *
+005706 9101 1027      00027         399+         TM    IJDPF015,IJDLF015 TEST IF CH12 REACHED
+00570A 078E                         400+         BCR   8,IJDL4015 IF NOT, BACK TO USER
+00570C 1200                         401+IJDQ0015 LTR   0,0 TEST IF USER HAS HIS OWN ROUTINE
+       DEMOSTRATE ADDRESS OUT FILES USING LIOCS-DAM                                                            PAGE    9
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+00570E 4780 F0D6            05716   402+         BZ    IJDQ1015
+005712 18F0                         403+         LR    IJDL5015,0 LOAD REG15 WITH USER ROUT ADDR.
+005714 07FF                         404+         BR    IJDL5015 GO TO USER ROUT.
+005716 928B 1028      00028         405+IJDQ1015 MVI   IJDPG015,IJDLH015 PUT SKIP TO CH1 OP CODE IN CCW
+00571A 0A00                         406+         SVC   IJDL7015 EXCP
+00571C 07FE                         407+         BR    IJDL4015 BACK TO USER
+00000B                              408+IJDL1015 EQU   11 REG 11                       3-3
+00000C                              409+IJDL2015 EQU   12 REG 12
+00000D                              410+IJDL3015 EQU   13 REG 13
+00000E                              411+IJDL4015 EQU   14 REG 14
+00000F                              412+IJDL5015 EQU   15 REG 15
+000032                              413+IJDL6015 EQU   50 ABEOJ
+000000                              414+IJDL7015 EQU   0 EXCP
+000080                              415+IJDL8015 EQU   X'80'
+000040                              416+IJDL9015 EQU   X'40'
+000020                              417+IJDLA015 EQU   X'20'
+000008                              418+IJDLB015 EQU   X'08'
+000010                              419+IJDLC015 EQU   X'10'
+000004                              420+IJDLD015 EQU   X'04'
+000006                              421+IJDLE015 EQU   X'06'
+000001                              422+IJDLF015 EQU   X'01'
+000002                              423+IJDLG015 EQU   X'02'
+00008B                              424+IJDLH015 EQU   X'8B'
+0000FE                              425+IJDLI015 EQU   X'FE'
+00000B                              426+IJDLJ015 EQU   X'0B'
+0000BF                              427+IJDLK015 EQU   X'BF'
+0000F8                              428+IJDLL015 EQU   X'F8' CCB+3  ERROR PASSBACK BITS             3-9
+000040                              429+IJDLM015 EQU   X'40' CCB+2  ERROR PASSBACK BITS             3-9
+000001                              430+IJDLN015 EQU   1 REG 1                                  3-9
+00571E 0000
+005720 0000000000000000             431+IJDPS015 DC    3F'0' 3-3
+00572C D200 E000 D000 00000 00000   432+IJDPT015 MVC   0(0,IJDL4015),0(IJDL3015) MOVE WORKA TO IOAREA
+005732 F2C2C1F9F8F7F6F5             433+IJDPV015 DC    C'2BA9876543C1+-0 '
+005742 93DBD3CBC3BBB3AB             434+IJDPX015 DC    X'93DBD3CBC3BBB3ABA39BE38B031B130B'
+005068                              435+DEMOADDO CSECT
+                                    436          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      0C     005074
+   01       01      0C     005078
+   01       01      0C     00507C
+   01       01      0C     005138
+   01       01      0C     00513C
+   01       01      0C     005140
+   01       01      0C     005338
+   01       01      0C     00533C
+   01       01      0C     005340
+   01       01      0C     005344
+   01       01      0C     005348
+   01       01      0C     005360
+   01       02      18     005369
+   01       01      08     005381
+   01       01      0C     005384
+   01       01      08     005399
+   01       01      0C     0053B0
+   01       01      0C     0053B8
+   01       01      08     0053C1
+   01       01      08     0053C9
+   01       01      08     0053D1
+   01       01      08     0053D9
+   01       01      0C     0053E8
+   01       03      18     0053F1
+   01       01      08     005409
+   01       01      0C     005418
+   01       01      08     005421
+   01       01      08     005441
+   01       01      08     005451
+   01       01      08     005459
+   01       01      08     005461
+   01       01      08     005469
+   01       01      08     005479
+   01       01      0C     0054C8
+   01       04      18     0054D1
+   01       01      0C     0054D8
+   01       01      08     0054E9
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// LBLTYP NSD(1)
+// EXEC LNKEDT
+
+JOB  DEMOADDO  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST   AUTOLINK   IJGFIZZZ
+LIST   AUTOLINK   IJIFZZZZ
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        PHASE***  006068  006068  006BAF  1B 06 4  CSECT     DEMOADDO  006068  001000
+
+                                                   CSECT     IJGFIZZZ  006758  006758
+
+                                                   CSECT     IJIFZZZZ  006930  006930
+
+                                                   CSECT     IJDFAPZW  006640  001000
+                                                   *  ENTRY  IJDFAZZW  006640
+// ASSGN SYS006,X'192'
+// DLBL ADDFILE,'PEOPLE.ADDROUT'
+// EXTENT SYS006,WRK14A
+// DLBL EMFILE,'PEOPLE',,DA
+// EXTENT SYS006,WRK14A,,,2600,2
+// EXEC
+03/29/70      ADDROUT DEMONSTRATION USING LIOCS-DAM
+
+    10   004  ACHER, WILLIAM C.
+    10   185  DONNEMAN, THOMAS M.
+    10   300  FELDMAN, MIKE R.
+    10   325  HATFIELD, MARK I.
+    10   730  REEDE, OWEN W.
+    10   960  WINGLAND, KEITH E.
+    20   111  CARTOLER, VIOLET B.
+    20   304  FROMM, STEVE V.
+    20   590  NEIL, CLARENCE N.
+    20   801  SCHEIBER, HARRY T.
+    20   956  WANGLEY, THEO. A.
+    30   030  ALLOREN, RUTH W.
+    30   181  DELBERT, EDWARD D.
+    30   311  GROLER, GRACE B.
+    30   318  HANEY, CAROL S.
+    30   487  KING, MILDRED J.
+    30   834  TRAWLEY, HARRIS T.
+    40   027  ALHOUER, ELAINE E.
+    40   171  COSTA, NAN S.
+    40   317  HANBEE, ALETTA O.
+    40   721  RASSMUSEN, JOHN J.
+    40   739  RIDEL, ROBERT R.
+    40   806  STOCKTON, NORMAN Q.
+    50   122  CENNA, DICK L.
+    50   207  EBERHARDT, RON G.
+    50   308  GLEASON, JAMES E.
+    50   568  LYNNE, GERALD H.
+    50   909  UDSON, DORIS M.
+    60   100  BATES, TONY F.
+    60   179  DAMSON, ERIC C.
+    60   292  EVERLY, DONNA M.
+    60   409  ICK, MICK W.
+    60   607  ODELLE, NICHOLAS P.
+    60   825  TILLMAN, DON M.
+    70   214  EDMONSON, RICK T.
+    70   310  GORMALLY, MARIE N.
+    70   332  HELD, ANNA J.
+    70   689  OWNEY, REED M.
+    70   802  SHEA, MICHAEL H.
+    80   102  BELLSLEY, ARTHUR A.
+    80   282  ESTEBAN, JUAN L.
+    80   322  HARLETON, JEAN H.
+    80   505  LAMBERT, JERRY O.
+    90   105  BOYLE, RALPH P.
+    90   215  EDSON, WILBUR S.
+    90   315  HALE, ALAN A.
+    90   574  MELTZ, FRANK K.
+    90   740  RIDGEFIELD, SUZY S.
+    90   820  TELLER, STEPHEN U.
+       49 EMPLOYEES LISTED
+* READ FILE USING RPG LIOCS-DAM
+// OPTION LINK
+// EXEC RPG
+
+     DOS/360*RPG*CL 3-9                 DEMOADDO                      03/29/70             PAGE 0001
+
+                    H
+     001            FADDFILE IRE F 100  10 10 T      EDISK14 SYS000S
+     002            FEMFILE  IP  F 160  80R  ID       DISK14 SYS000S
+     003            FREPORT  O   F 132 132     OF     PRINTERSYSLST
+     004            E    ADDFILE EMFILE
+     005            IEMFILE  AA  01
+     006            I                                        1   2 EMDEPT
+     007            I                                        3   5 EMPNUM
+     008            I                                        6  30 EMNAME
+     009            C   01      COUNT     ADD  1         COUNT   50
+     010            OREPORT  H  2 1   1P
+     011            O       OR        OF
+     012            O                         UDATE      8 '0 /  /  '
+     013            O                                   34 'RPG ADDRESS OUT DEMO'
+     014            O                                   50 'USING LIOCS-DAM'
+     015            O        D  1     01
+     016            O                         EMDEPT     6
+     017            O                         EMPNUM    12
+     018            O                         EMNAME    40
+     019            O        T  0     LR
+     020            O                         COUNT Z    9
+     021            O                                   26 'EMPLOYEES LISTED'
+
+     DOS/360*RPG*CL 3-9                 DEMOADDO                      03/29/70             PAGE 0002
+
+                                                  SYMBOL  TABLES
+
+RESULTING  INDICATORS
+
+ADDRESS RI      ADDRESS RI      ADDRESS RI      ADDRESS RI      ADDRESS RI      ADDRESS RI      ADDRESS RI
+
+ 000011 OF       000014 1P       000015 LR       000016 00       000017 01       00007A L0       000085 H0
+ 000086 H1       000087 H2       000088 H3       000089 H4       00008A H5       00008B H6       00008C H7
+ 00008D H8       00008E H9
+FIELD  NAMES
+
+ADDRESS FIELD         ADDRESS FIELD         ADDRESS FIELD         ADDRESS FIELD         ADDRESS FIELD
+
+000123  CONTD  ENTRY  00012D  EMDEPT        00012F  EMPNUM        000132  EMNAME        00014B  COUNT
+00014E  UDATE
+
+LITERALS
+
+ADDRESS LITERAL                    ADDRESS LITERAL                    ADDRESS LITERAL
+
+000152   1                         000153   ½À½/½½/½½                 00015D  RPG ADDRESS OUT DEMO
+000171  USING LIOCS-DAM            000180  EMPLOYEES LISTED
+
+
+
+                                            MEMORY MAP
+
+INPUT/OUTPUT INTERCEPT                                      0001AC
+RECORD ADDRESS FILE                                         0001D4
+CHAINING                                                    000190
+TABLE (INPUT AND OUTPUT)                                    0001A8
+DETERMINE RECORD TYPE                                       0004B8
+DATA SPECIFICATION                                          0002F0
+GET INPUT RECORD                                            000710
+DETAIL CALCULATIONS                                         0008A8
+TOTAL CALCULATIONS                                          0008CA
+DETAIL LINES                                                0009CE
+TOTAL LINES                                                 0008E2
+INPUT/OUTPUT REQUEST BLOCKS POINTER                         001470
+LOCATION OF DTF TABLE POINTERS                              000AE0
+INPUT/OUTPUT INTERFACE ROUTINES                             000D88
+WORK AREA POINTER                                           0017CC
+OVERFLOW BYPASS                                             0009C2
+TABLE(ASSEMBLE 4)                                           000A60
+OVERFLOW LINES                                              000936
+LINKAGE PROGRAM                                             0015DC
+
+
+PROGRAM LENGTH  001930
+
+'END OF COMPILATION'
+// LBLTYP NSD(1)
+// EXEC LNKEDT
+
+JOB  DEMOADDO  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST           INCLUDE      IJDFYPZW                                          RPGO0127
+LIST           INCLUDE      IJGFIZZZ                                          RPGO0128
+LIST           INCLUDE      IJIBZZZZ                                          RPGO0129
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        PHASE***  007644  006068  007F5F  1B 06 4  CSECT     RPGOBJ    006068  006068
+                                                   *  ENTRY  CONTD     00618B
+
+                                                   CSECT     IJDFYPZW  007998  007998
+                                                   *  ENTRY  IJDFYZZW  007998
+
+                                                   CSECT     IJGFIZZZ  007A30  007A30
+
+                                                   CSECT     IJIBZZZZ  007C08  007C08
+                                                   *  ENTRY  IJIFZZZZ  007C08
+// ASSGN SYS006,X'192'
+// DLBL ADDFILE,'PEOPLE.ADDROUT'
+// EXTENT SYS006,WRK14A
+// DLBL EMFILE,'PEOPLE',,DA
+// EXTENT SYS006,WRK14A,,,2600,2
+// EXEC
+ 3/29/70      RPG ADDRESS OUT DEMO USING LIOCS-DAM
+
+    10   004   ACHER, WILLIAM C.
+    10   185   DONNEMAN, THOMAS M.
+    10   300   FELDMAN, MIKE R.
+    10   325   HATFIELD, MARK I.
+    10   730   REEDE, OWEN W.
+    10   960   WINGLAND, KEITH E.
+    20   111   CARTOLER, VIOLET B.
+    20   304   FROMM, STEVE V.
+    20   590   NEIL, CLARENCE N.
+    20   801   SCHEIBER, HARRY T.
+    20   956   WANGLEY, THEO. A.
+    30   030   ALLOREN, RUTH W.
+    30   181   DELBERT, EDWARD D.
+    30   311   GROLER, GRACE B.
+    30   318   HANEY, CAROL S.
+    30   487   KING, MILDRED J.
+    30   834   TRAWLEY, HARRIS T.
+    40   027   ALHOUER, ELAINE E.
+    40   171   COSTA, NAN S.
+    40   317   HANBEE, ALETTA O.
+    40   721   RASSMUSEN, JOHN J.
+    40   739   RIDEL, ROBERT R.
+    40   806   STOCKTON, NORMAN Q.
+    50   122   CENNA, DICK L.
+    50   207   EBERHARDT, RON G.
+    50   308   GLEASON, JAMES E.
+    50   568   LYNNE, GERALD H.
+    50   909   UDSON, DORIS M.
+    60   100   BATES, TONY F.
+    60   179   DAMSON, ERIC C.
+    60   292   EVERLY, DONNA M.
+    60   409   ICK, MICK W.
+    60   607   ODELLE, NICHOLAS P.
+    60   825   TILLMAN, DON M.
+    70   214   EDMONSON, RICK T.
+    70   310   GORMALLY, MARIE N.
+    70   332   HELD, ANNA J.
+    70   689   OWNEY, REED M.
+    70   802   SHEA, MICHAEL H.
+    80   102   BELLSLEY, ARTHUR A.
+    80   282   ESTEBAN, JUAN L.
+    80   322   HARLETON, JEAN H.
+    80   505   LAMBERT, JERRY O.
+    90   105   BOYLE, RALPH P.
+    90   215   EDSON, WILBUR S.
+    90   315   HALE, ALAN A.
+    90   574   MELTZ, FRANK K.
+    90   740   RIDGEFIELD, SUZY S.
+    90   820   TELLER, STEPHEN U.
+       49 EMPLOYEES LISTED
+EOJ DEMOADDO                                                            12.15.22,DURATION 00.00.15

@@ -1,0 +1,534 @@
+
+// JOB DEMORASF SAMPLE RPG-ASSEMBLY-FORTRAN                             12.14.58
+// OPTION LINK,LISTX
+// EXEC RPG
+
+     DOS/360*RPG*CL 3-9                 DEMORASF                      03/29/70             PAGE 0001
+
+                     * DEMONSTRATES RPG LINKAGE CONVENTIONS TO AN
+                     *   ASSEMBLER PROGRAM
+                    H
+     001            FCARDS   IPE F  80  80    2       READ01 SYSIPT
+     002            FOUTPUT  O   F  60  60     OF     PRINTERSYSLST
+     003            ICARDS   AA  01
+     004            I                                        1   20SCORE
+     005            C   01                EXIT ASSEM
+     006            C                     RLABL          SCORE
+     007            C                     ULABL          PSQRE   50
+     008            C                     ULABL          PCUBE   50
+     009            C                     ULABL          PSQRTR  53
+     010            C                     ULABL          PSQRTI  53
+     011            OOUTPUT  H  2     1P
+     012            O       OR        OF
+     013            O                                   20 'MATH STATS.'
+     014            O                                   45 'PAGE'
+     015            O                         PAGE  Z   50
+     016            O        H  2     1P
+     017            O       OR        OF
+     018            O                                   10 'NUMBER'
+     019            O                                   20 'SQUARE'
+     020            O                                   30 'CUBE'
+     021            O                                   40 'SQ.ROOT-R'
+     022            O                                   50 '+SQ.ROOT-I'
+     023            O        D  1     01
+     024            O                         SCORE     10 '    0-'
+     025            O                         PSQRE     20 '    0-'
+     026            O                         PCUBE     30 '    0-'
+     027            O                         PSQRTR    40 ' -0.   '
+     028            O                         PSQRTI    50 ' -0.   '
+     029            O                                   51 'I'
+
+     DOS/360*RPG*CL 3-9                 DEMORASF                      03/29/70             PAGE 0002
+
+                                                  SYMBOL  TABLES
+
+RESULTING  INDICATORS
+
+ADDRESS RI      ADDRESS RI      ADDRESS RI      ADDRESS RI      ADDRESS RI      ADDRESS RI      ADDRESS RI
+
+ 000011 OF       000014 1P       000015 LR       000016 00       000017 01       00007A L0       000085 H0
+ 000086 H1       000087 H2       000088 H3       000089 H4       00008A H5       00008B H6       00008C H7
+ 00008D H8       00008E H9
+FIELD  NAMES
+
+ADDRESS FIELD         ADDRESS FIELD         ADDRESS FIELD         ADDRESS FIELD         ADDRESS FIELD
+
+000123  SCORE  ENTRY  000128  ASSEM  EXTRN  00012C  PSQRE  EXTRN  000130  PCUBE  EXTRN  000134  PSQRTR EXTRN
+000138  PSQRTI EXTRN  00013C  PAGE
+
+LITERALS
+
+ADDRESS LITERAL                    ADDRESS LITERAL                    ADDRESS LITERAL
+
+00013F  MATH STATS.                00014A  PAGE                       00014E  NUMBER
+000154  SQUARE                     00015A  CUBE                       00015E  SQ.ROOT-R
+000167  +SQ.ROOT-I                 000171   ½½½½À-                    000178   ½-À.½½½
+000180  I
+
+
+
+                                            MEMORY MAP
+
+INPUT/OUTPUT INTERCEPT                                      000188
+TABLE (INPUT AND OUTPUT)                                    000184
+DETERMINE RECORD TYPE                                       000378
+DATA SPECIFICATION                                          0001B0
+GET INPUT RECORD                                            0005D4
+DETAIL CALCULATIONS                                         00076C
+TOTAL CALCULATIONS                                          00078E
+DETAIL LINES                                                00088E
+TOTAL LINES                                                 0007A6
+INPUT/OUTPUT REQUEST BLOCKS POINTER                         001164
+LOCATION OF DTF TABLE POINTERS                              000A48
+INPUT/OUTPUT INTERFACE ROUTINES                             000B10
+WORK AREA POINTER                                           001394
+OVERFLOW BYPASS                                             000882
+TABLE(ASSEMBLE 4)                                           000940
+OVERFLOW LINES                                              0007D0
+LINKAGE PROGRAM                                             0011A4
+
+
+PROGRAM LENGTH  0014B9
+
+'END OF COMPILATION'
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+ASSEM     SD  01 000000 0001D0
+PSQRE     LD     0001C4         01
+PCUBE     LD     0001C7         01
+PSQRTR    LD     0001CA         01
+PSQRTI    LD     0001CD         01
+SCORE     ER  02
+FORT      ER  03
+       ASSEMBLER SUBROUTINE FROM RPG                                                                           PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      2          MACRO
+                                      3 &NAME    FLTPK &FROM,&DEC,&TO
+                                      4          LCLC  &DECA
+                                      5          AIF   (N'&SYSLIST NE 3).ERROR1
+                                      6          AIF   ('&DEC' LT '0').ERROR2
+                                      7          AIF   ('&DEC' GT '75').ERROR3
+                                      8          AIF   ('&FROM'(1,1) EQ '(' AND '&FROM(1)' EQ '1').ERROR4
+                                      9 &DECA    SETC  '&DEC'
+                                     10 .TRY     CNOP  6,8
+                                     11          AIF   ('&FROM'(1,1) EQ '(').REG1
+                                     12 &NAME    LD    0,&FROM
+                                     13          AGO   .NREG1
+                                     14 .REG1    ANOP
+                                     15 &NAME    LD    0,0(&FROM(1))
+                                     16 .NREG1   LDR   2,0
+                                     17          MD    0,=D'1E&DECA'
+                                     18          LPDR  0,0
+                                     19          AD    0,=D'.5'
+                                     20          AW    0,*+34
+                                     21          STD   0,*+30
+                                     22          L     1,*+30
+                                     23          LTDR  2,2
+                                     24          BNM   *+6
+                                     25          LNR   1,1
+                                     26          AIF   ('&TO'(1,1) EQ '(').REG2
+                                     27          CVD   1,&TO
+                                     28          AGO   .NREG2
+                                     29 .REG2    CVD   1,0(&TO(1))
+                                     30 .NREG2   MVC   *+10(8),=X'4E00000000000000'
+                                     31          B     *+12
+                                     32          DC    XL8'4E00000000000000'
+                                     33          MEXIT
+                                     34 .ERROR1  MNOTE 255,'NUMBER OF OPERANDS NOT 3, GENERATION TERMINATED'
+                                     35          MEXIT
+                                     36 .ERROR2  MNOTE 1,DECIMAL POINTS NOT NUMERIC, ''0'' ASSUMED'
+                                     37 &DECA    SETC  '0'
+                                     38          AGO   .TRY
+                                     39 .ERROR3  MNOTE 1,'DECIMAL POINTS TOO LARGE, ''75'' ASSUMED'
+                                     40 &DECA    SETC  '75'
+                                     41          AGO   .TRY
+                                     42 .ERROR4  MNOTE 255,'USE OF REG. 1 NOT ALLOWED', GENERATION TERMINATED'
+                                     43          MEND
+000000                               44 ASSEM    CSECT
+000000                               45 R0       EQU   0
+000001                               46 R1       EQU   1
+000002                               47 R2       EQU   2
+000003                               48 R3       EQU   3
+000004                               49 R4       EQU   4
+000005                               50 R5       EQU   5
+000006                               51 R6       EQU   6
+000007                               52 R7       EQU   7
+       ASSEMBLER SUBROUTINE FROM RPG                                                                           PAGE    2
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+000008                               53 R8       EQU   8
+000009                               54 R9       EQU   9
+00000A                               55 R10      EQU   10
+00000B                               56 R11      EQU   11
+00000C                               57 R12      EQU   12
+00000D                               58 R13      EQU   13
+00000E                               59 R14      EQU   14
+00000F                               60 R15      EQU   15
+000000                               61          USING *,R15
+                                     62          ENTRY PSQRE,PCUBE,PSQRTR,PSQRTI MAKE ADDRS. AVAIL. TO RPG
+000000 900F F170            00170    63          STM   R0,R15,SAVERPG  SAVE RPG'S REGISTERS
+000004 18CF                          64          LR    R12,R15         USE R12 FOR OUR BASE
+                                     65          DROP  R15
+000000                               66          USING ASSEM,R12
+                                     67 *
+000006 5830 C118            00118    68          L     R3,=V(SCORE)    GET ADDR. OF RPG'S FIELD
+00000A F871 C120 3000 00120 00000    69          ZAP   DOUBLE,0(2,R3)  GET THE PACKED ARGUMENT
+000010 4F40 C120            00120    70          CVB   R4,DOUBLE       CONVERT TO BINARY FOR FORTRAN
+000014 5040 C1B0            001B0    71          ST    R4,ISCORE
+                                     72 *
+000018 41D0 C128            00128    73          LA    R13,SAVEAREA    FOR STANDARD LINKAGE CONVENTIONS
+                                     74          CALL  FORT,(ISCORE,ISQRE,ICUBE,CSQRT)
+                                     75+* 360N-CL-453  CALL  CHANGE LEVEL 3-9                               3-9
+00001C 0700                          76+         CNOP  2,4
+00001E 58F0 C11C            0011C    77+         L     15,=V(FORT)
+000022 41E0 C038            00038    78+         LA    14,*+6+4*4
+000026 051F                          79+         BALR  1,15
+000028 000001B0000001B4              80+         DC    A(ISCORE,ISQRE,ICUBE,CSQRT)
+000034                               81+         ORG   *-4 3-7
+000034 80                            82+         DC    X'80' 3-7
+000038                               83+         ORG   *+3 3-9
+                                     84 *
+000038 5840 C1B4            001B4    85          L     R4,ISQRE        CONVERT SQUARE TO PACKED FOR RPG
+00003C 4E40 C120            00120    86          CVD   R4,DOUBLE
+000040 F827 C1C4 C120 001C4 00120    87          ZAP   PSQRE,DOUBLE    LEAVE IT SO RPG CAN GET IT LATER
+                                     88 *
+000046 5840 C1B8            001B8    89          L     R4,ICUBE        CONVERT CUBE TO PACKED FOR RPG
+00004A 4E40 C120            00120    90          CVD   R4,DOUBLE
+00004E F827 C1C7 C120 001C7 00120    91          ZAP   PCUBE,DOUBLE    LEAVE IT SO RPG CAN GET IT LATER
+                                     92 *
+000054 D707 C120 C120 00120 00120    93          XC    DOUBLE,DOUBLE   CONVERT SQUARE ROOT REAL PART TO PACKED
+00005A D203 C120 C1BC 00120 001BC    94          MVC   DOUBLE(4),CSQRT
+                                     95          FLTPK DOUBLE,3,DOUBLE
+000060 070007000700                  96+         CNOP  6,8
+000066 6800 C120            00120    97+         LD    0,DOUBLE
+00006A 2820                          98+         LDR   2,0
+00006C 6C00 C100            00100    99+         MD    0,=D'1E3'
+000070 2000                         100+         LPDR  0,0
+000072 6A00 C108            00108   101+         AD    0,=D'.5'
+000076 6E00 C098            00098   102+         AW    0,*+34
+00007A 6000 C098            00098   103+         STD   0,*+30
+       ASSEMBLER SUBROUTINE FROM RPG                                                                           PAGE    3
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+00007E 5810 C09C            0009C   104+         L     1,*+30
+000082 2222                         105+         LTDR  2,2
+000084 47B0 C08A            0008A   106+         BNM   *+6
+000088 1111                         107+         LNR   1,1
+00008A 4E10 C120            00120   108+         CVD   1,DOUBLE
+00008E D207 C098 C110 00098 00110   109+         MVC   *+10(8),=X'4E00000000000000'
+000094 47F0 C0A0            000A0   110+         B     *+12
+000098 4E00000000000000             111+         DC    XL8'4E00000000000000'
+0000A0 F827 C1CA C120 001CA 00120   112          ZAP   PSQRTR,DOUBLE   LEAVE IT SO RPG CAN GET IT LATER
+                                    113 *
+0000A6 D707 C120 C120 00120 00120   114          XC    DOUBLE,DOUBLE   CONVERT SQUARE ROOT IMAG. PART TO PACKED
+0000AC D203 C120 C1C0 00120 001C0   115          MVC   DOUBLE(4),CSQRT+4
+                                    116          FLTPK DOUBLE,3,DOUBLE
+0000B2 07000700                     117+         CNOP  6,8
+0000B6 6800 C120            00120   118+         LD    0,DOUBLE
+0000BA 2820                         119+         LDR   2,0
+0000BC 6C00 C100            00100   120+         MD    0,=D'1E3'
+0000C0 2000                         121+         LPDR  0,0
+0000C2 6A00 C108            00108   122+         AD    0,=D'.5'
+0000C6 6E00 C0E8            000E8   123+         AW    0,*+34
+0000CA 6000 C0E8            000E8   124+         STD   0,*+30
+0000CE 5810 C0EC            000EC   125+         L     1,*+30
+0000D2 2222                         126+         LTDR  2,2
+0000D4 47B0 C0DA            000DA   127+         BNM   *+6
+0000D8 1111                         128+         LNR   1,1
+0000DA 4E10 C120            00120   129+         CVD   1,DOUBLE
+0000DE D207 C0E8 C110 000E8 00110   130+         MVC   *+10(8),=X'4E00000000000000'
+0000E4 47F0 C0F0            000F0   131+         B     *+12
+0000E8 4E00000000000000             132+         DC    XL8'4E00000000000000'
+0000F0 F827 C1CD C120 001CD 00120   133          ZAP   PSQRTI,DOUBLE   LEAVE IT SO RPG CAN GET IT LATER
+                                    134 *
+0000F6 980F C170            00170   135          LM    R0,R15,SAVERPG  RESTORE RPG'S REGISTERS
+0000FA 07FE                         136          BR    R14             RETURN TO RPG
+000100                              137          LTORG
+000100 433E800000000000             138                =D'1E3'
+000108 4080000000000000             139                =D'.5'
+000110 4E00000000000000             140                =X'4E00000000000000'
+000118 00000000                     141                =V(SCORE)
+00011C 00000000                     142                =V(FORT)
+000120                              143 DOUBLE   DS    D       WORK AREA
+000128                              144 SAVEAREA DS    9D      STANDARD LINKAGE SAVE AREA FOR FORTRAN
+000170                              145 SAVERPG  DS    16F     RPG REGISTER SAVE AREA
+0001B0                              146 ISCORE   DS    F
+0001B4                              147 ISQRE    DS    F
+0001B8                              148 ICUBE    DS    F
+0001BC                              149 CSQRT    DS    2E
+0001C4                              150 PSQRE    DS    PL3
+0001C7                              151 PCUBE    DS    PL3
+0001CA                              152 PSQRTR   DS    PL3
+0001CD                              153 PSQRTI   DS    PL3
+                                    154          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      0C     000028
+   01       01      0C     00002C
+   01       01      0C     000030
+   01       01      0C     000034
+   01       02      1C     000118
+   01       03      1C     00011C
+                                             CROSS-REFERENCE                                                   PAGE    1
+
+
+SYMBOL    LEN  VALUE  DEFN     REFERENCES                                                                       03/29/70
+
+ASSEM    00001 000000 00044   0066
+CSQRT    00004 0001BC 00149   0080  0094  0115
+DOUBLE   00008 000120 00143   0069  0070  0086  0087  0090  0091  0093  0093  0094  0097  0108  0112  0114  0114  0115
+                              0118  0129  0133
+ICUBE    00004 0001B8 00148   0080  0089
+ISCORE   00004 0001B0 00146   0071  0080
+ISQRE    00004 0001B4 00147   0080  0085
+PCUBE    00003 0001C7 00151   0062  0091
+PSQRE    00003 0001C4 00150   0062  0087
+PSQRTI   00003 0001CD 00153   0062  0133
+PSQRTR   00003 0001CA 00152   0062  0112
+R0       00001 000000 00045   0063  0135
+R1       00001 000001 00046
+R10      00001 00000A 00055
+R11      00001 00000B 00056
+R12      00001 00000C 00057   0064  0066
+R13      00001 00000D 00058   0073
+R14      00001 00000E 00059   0136
+R15      00001 00000F 00060   0061  0063  0064  0065  0135
+R2       00001 000002 00047
+R3       00001 000003 00048   0068  0069
+R4       00001 000004 00049   0070  0071  0085  0086  0089  0090
+R5       00001 000005 00050
+R6       00001 000006 00051
+R7       00001 000007 00052
+R8       00001 000008 00053
+R9       00001 000009 00054
+SAVEAREA 00008 000128 00144   0073
+SAVERPG  00004 000170 00145   0063  0135
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC FFORTRAN
+
+  DOS FORTRAN IV 360N-FO-479 3-8
+
+    OPTIONS IN EFFECT
+    -----------------
+
+    LOAD   =4
+
+    DECK   NO
+
+    LIST   YES
+
+    LISTX  YES
+
+    EBCDIC
+  DOS FORTRAN IV 360N-FO-479 3-8         FORT              DATE   03/29/70     TIME    12.15.06      PAGE 0001
+
+   0001              SUBROUTINE FORT (ISCORE,ISQRE,ICUBE,COSQRT)
+   0002              COMPLEX COSQRT
+   0003              ISQRE=ISCORE*ISCORE
+   0004              ICUBE=ISQRE*ISCORE
+   0005              COSQRT=CSQRT(CMPLX(FLOAT(ISCORE),0.0))
+   0006              RETURN
+   0007              END
+  DOS FORTRAN IV 360N-FO-479 3-8         FORT              DATE   03/29/70     TIME    12.15.06      PAGE 0002
+
+
+                               SCALAR MAP
+ SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION
+ COSQRT        90        ISQRE         98        ISCORE        9C        ICUBE         A0
+
+
+                               SUBPROGRAMS CALLED
+ SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION
+ CSQRT         A4
+
+
+  DOS FORTRAN IV 360N-FO-479 3-8         FORT              DATE   03/29/70     TIME    12.15.06      PAGE 0003
+
+  LOCATION   STA NUM     LABEL   OP         OPERAND                  BCD OPERAND
+   000000                        BC         15,12(0,15)
+   000004                        DC         07C6D6D9
+   000008                        DC         E3404040
+   00000C                        STM        14,12,12(13)
+   000010                        LM         2,3,40(15)
+   000014                        LR         4,13
+   000016                        L          13,36(0,15)
+   00001A                        ST         13,8(0,4)
+   00001E                        STM        3,4,0(13)
+   000022                        BCR        15,2
+   000024                        DC         00000000                 A4
+   000028                        DC         00000000                 A20
+   00002C                        DC         00000000                 A36
+   000100                A20     L          2,0(0,1)
+   000104                        MVC        108(3,13),0(2)
+   00010A                        L          2,4(0,1)
+   00010E                        MVC        104(3,13),0(2)
+   000114                        L          2,8(0,1)
+   000118                        MVC        112(3,13),0(2)
+   00011E                        L          2,12(0,1)
+   000122                        MVC        96(7,13),0(2)
+   000128                        BALR       2,0
+   00012A                        L          3,6(0,2)
+   00012E                        BCR        15,3
+   000130                        DC         00000000                 A52
+   000134                A36     L          1,4(0,13)
+   000138                        L          1,24(0,1)
+   00013C                        L          2,0(0,1)
+   000140                        MVC        0(3,2),108(13)
+   000146                        L          2,4(0,1)
+   00014A                        MVC        0(3,2),104(13)
+   000150                        L          2,8(0,1)
+   000154                        MVC        0(3,2),112(13)
+   00015A                        L          2,12(0,1)
+   00015E                        MVC        0(7,2),96(13)
+   000164                        L          13,4(0,13)
+   000168                        L          14,12(0,13)
+   00016C                        LM         2,12,28(13)
+   000170                        MVI        12(13),255
+   000174                        BCR        15,14
+   000176        3       A52     L          1,108(0,13)              ISCORE
+   00017A                        M          0,108(0,13)              ISCORE
+   00017E                        ST         1,104(0,13)              ISQRE
+   000182        4               L          1,104(0,13)              ISQRE
+   000186                        M          0,108(0,13)              ISCORE
+   00018A                        ST         1,112(0,13)              ICUBE
+   00018E        5               L          0,108(0,13)              ISCORE
+   000192                        LPR        1,0
+   000194                        ST         1,156(0,13)
+   000198                        LD         0,152(0,13)
+   00019C                        AD         0,136(0,13)
+   0001A0                        LTR        0,0
+   0001A2                        BALR       14,0
+  DOS FORTRAN IV 360N-FO-479 3-8         FORT              DATE   03/29/70     TIME    12.15.06      PAGE 0004
+
+   0001A4                        BC         11,6(0,14)
+   0001A8                        LCDR       0,0
+   0001AA                        STE        0,192(0,13)
+   0001AE                        LE         2,136(0,13)
+   0001B2                        LE         0,192(0,13)
+   0001B6                        STE        0,200(0,13)
+   0001BA                        STE        2,204(0,13)
+   0001BE                        LA         1,120(0,13)
+   0001C2                        L          15,116(0,13)             CSQRT
+   0001C6                        BALR       14,15
+   0001C8                        BC         0,5(0,0)
+   0001CC                        STE        0,96(0,13)               COSQRT
+   0001D0                        STE        2,100(0,13)
+   0001D4        6               SR         15,15
+   0001D6                        L          1,0(0,13)
+   0001DA                        BCR        15,1
+                                 END
+    TOTAL MEMORY REQUIREMENTS 0001DC BYTES
+
+    HIGHEST SEVERITY LEVEL OF ERRORS FOR THIS MODULE WAS 0
+    12.15.06,TOTAL COMPILATION TIME,00.00.00
+// EXEC LNKEDT
+
+JOB  DEMORASF  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST           INCLUDE      IJCFZII3                                          RPGO0113
+LIST           INCLUDE      IJDFYPZW                                          RPGO0114
+LIST   AUTOLINK   ILFCSSQT
+LIST   AUTOLINK   ILFCSABS
+LIST   AUTOLINK   ILFSSQRT
+LIST   AUTOLINK   ILFIBCOM
+LIST   AUTOLINK   ILFADCON
+LIST   AUTOLINK   ILFFINT
+LIST   AUTOLINK   ILFFIOCS
+LIST   AUTOLINK   IJJCPD1
+LIST   AUTOLINK   ILFUNTAB
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        PHASE***  0071A4  006000  00B3A7  1B 06 4  CSECT     RPGOBJ    006000  006000
+                                                      ENTRY  SCORE     006123
+
+                                                   CSECT     ASSEM     0075E0  0075E0
+                                                      ENTRY  PSQRE     0077A4
+                                                      ENTRY  PCUBE     0077A7
+                                                      ENTRY  PSQRTR    0077AA
+                                                      ENTRY  PSQRTI    0077AD
+
+                                                   CSECT     IJCFZII3  0074C0  0074C0
+
+                                                   CSECT     IJDFYPZW  007548  007548
+                                                   *  ENTRY  IJDFYZZW  007548
+
+                                                   CSECT     FORT      0077B0  0077B0
+
+                                                   CSECT     ILFCSSQT  007990  007990
+                                                      ENTRY  CSQRT     007990
+
+                                                   CSECT     ILFCSABS  007A50  007A50
+                                                      ENTRY  CABS      007A50
+
+                                                   CSECT     ILFSSQRT  007AF0  007AF0
+                                                      ENTRY  SQRT      007AF0
+                                                   *  ENTRY  IJTSSQT   007AF0
+
+                                                   CSECT     ILFIBCOM  007BA0  007BA0
+                                                      ENTRY  IBCOM#    007BA0
+                                                      ENTRY  READSW    008A30
+                                                   *  ENTRY  OPSYS     0088D4
+                                                      ENTRY  INTSW     008A32
+                                                      ENTRY  PDPAR     008848
+                                                      ENTRY  DUMPSW#   0087D2
+                                                   *  ENTRY  IJTINTSW  008A32
+                                                      ENTRY  IOSWF     007C91
+
+                                                   CSECT     ILFFINT   009C60  009C60
+                                                      ENTRY  SAVERR    00A140
+
+                                                   CSECT     ILFADCON  008B80  008B80
+                                                      ENTRY  ILFFCVEO  00966A
+                                                      ENTRY  ILFFCVLO  008E02
+                                                      ENTRY  ILFFCVIO  009140
+                                                      ENTRY  ILFFCVCO  009884
+                                                      ENTRY  ILFFCVAO  008D72
+                                                      ENTRY  ILFFCVZO  008CCC
+                                                      ENTRY  INT6SW    009C48
+
+                                                   CSECT     ILFFIOCS  00A230  00A230
+                                                      ENTRY  ILFFBORG  00AEBC
+                                                      ENTRY  ILFBFORG  00AEB8
+                                                      ENTRY  IJSYSLO   00AFC8
+                                                   *  ENTRY  ADIOCR#   00AE0C
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+                                                   *  ENTRY  UBRSAVE   00AEB4
+
+                                                   CSECT     ILFUNTAB  00B2A8  00B2A8
+
+                                                   CSECT     IJJCPD1   00B0B0  00B0B0
+                                                   *  ENTRY  IJJCPD1N  00B0B0
+                                                   *  ENTRY  IJJCPD3   00B0B0
+
+                                                   CSECT     IJ2L0005  00B040  00A230
+// EXEC
+         MATH STATS.                     PAGE    1
+
+    NUMBER    SQUARE      CUBE SQ.ROOT-R+SQ.ROOT-I
+
+       11       121      1331      3.317      .000I
+       11-      121      1331-      .000     3.317I
+       19       361      6859      4.359      .000I
+
+EOJ DEMORASF                                                            12.15.07,DURATION 00.00.09

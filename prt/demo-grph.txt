@@ -1,0 +1,988 @@
+
+// JOB DEMOGRPH PRINT GRAPH OF A FUNCTION                               12.13.32
+// OPTION LINK,LISTX,NOXREF
+// EXEC FFORTRAN
+
+  DOS FORTRAN IV 360N-FO-479 3-8
+
+// FTC NAME=GRAPH,LINECNT=80
+
+    OPTIONS IN EFFECT
+    -----------------
+
+    LOAD   =4
+
+    DECK   NO
+
+    LIST   YES
+
+    LISTX  YES
+
+    EBCDIC
+  DOS FORTRAN IV 360N-FO-479 3-8         GRAPH             DATE   03/29/70     TIME    12.13.46      PAGE 0001
+
+               C  GRAPH - PRINT THE GRAPH OF A FUNCTION
+               C    PRINT ONE GRAPH ON AN 14 7/8" X 11" PIECE OF PAPER AT 8LPI
+               C  DEMONSTRATES THE USE OF COMMON FOR A GLOBAL SWITCH
+               C  DEMONSTRATES CALLING AN ASSEMBLER SUBROUTINE
+               C  DEMONSTRATES USING A FORTRAN FUNCTION
+               C
+   0001              DIMENSION TODAY(2), TITLE(12), COORD(101,2), LINE(101)
+   0002              LOGICAL GLBLSW
+   0003              COMMON GLBLSW
+   0004              DATA IASTR/'*'/, IPLUS/'+'/, IHYPH/'-'/, IBLNK/' '/,
+                    -     LETRI/'I'/, LETRX/'X'/, LETRY/'Y'/
+   0005              CALL DATE(TODAY)
+               C
+               C  READ SCALES AND TITLE TO BE USED ON GRAPH
+   0006           10 READ (1,1,END=999) XAXIS, YAXIS, TITLE
+   0007              GLBLSW = .FALSE.
+               C--CALCULATE 'X' VALUES BASED ON LENGTH OF X-AXIS
+   0008              DO 20 I = 1, 101
+   0009                R = I - 1
+   0010                COORD(I,1) = -(XAXIS - R * XAXIS / 50.)
+   0011           20 CONTINUE
+               C--CALCULATE 'Y' VALUES FROM 'X' VALUES
+   0012              DO 30 I = 1, 101
+   0013                X = COORD(I,1)
+   0014                COORD(I,2) = EQU(X)
+   0015           30 CONTINUE
+               C--CONVERT X,Y VALUES TO PRINT POSITIONS (X) OR LINE NUMBER (Y)
+   0016              DO 40 I = 1, 101
+   0017                COORD(I,1) = I
+   0018                IF (ABS(COORD(I,2)) .LE. YAXIS) GO TO 41
+   0019                COORD(I,2) = 0.
+   0020                GO TO 40
+   0021           41   Z = 40. * (COORD(I,2) / YAXIS+1.)
+   0022                IF (COORD(I,2) .GE. 0.) GO TO 46
+   0023                N = Z + 1.49
+   0024                GO TO 47
+   0025           46   N = Z + 1.5
+   0026           47   COORD(I,2) = 82 - N
+   0027           40 CONTINUE
+               C--PRINT THE GRAPH
+               C    PRINT TITLE OR COMMENTS
+   0028              PRINT 2, TODAY, TITLE
+               C    PRINT 'Y' AND LENGTH AT TOP OF Y-AXIS
+   0029              PRINT 3, LETRY, YAXIS
+   0030              DO 90 I = 1, 81
+               C    INITIALIZE PRINT AREA TO BLANKS
+   0031                DO 51 J = 1, 101
+   0032                  LINE(J) = IBLNK
+   0033           51   CONTINUE
+               C    CHECK FOR X-AXIS
+   0034                IF (I .NE. 41) GO TO 52
+   0035                DO 55 J = 2, 100
+   0036                  LINE(J) = IHYPH
+   0037           55   CONTINUE
+   0038                DO 57 J = 6, 96, 5
+   0039                  LINE(J) = IPLUS
+   0040           57   CONTINUE
+   0041                LINE(1) = LETRX
+   0042                LINE(101) = LETRX
+   0043           52   LINE(51) = LETRI
+               C    CHECK FOR 1/2" Y-AXIS MARKERS
+   0044                IF (MOD(I,4) .NE. 1) GO TO 60
+   0045                LINE(51) = IPLUS
+               C    PLOT POINTS FROM EQUATION
+   0046           60   DO 70 J = 1, 101
+   0047                  T = I
+   0048                  IF (COORD(J,2) .NE. T) GO TO 70
+   0049                  M = COORD(J,1)
+   0050                  LINE(M) = IASTR
+   0051           70   CONTINUE
+               C    IF X-AXIS, PRINT SCALES AT EACH END
+   0052                IF (I .EQ. 41) GO TO 81
+   0053                PRINT 4, LINE
+   0054                GO TO 90
+   0055           81   XAXISM = -XAXIS
+   0056                PRINT 5, XAXISM, LINE, XAXIS
+   0057           90 CONTINUE
+               C  PRINT BOTTOM 'Y' ON Y-AXIS
+  DOS FORTRAN IV 360N-FO-479 3-8         GRAPH             DATE   03/29/70     TIME    12.13.46      PAGE 0002
+
+   0058              YAXIS = -YAXIS
+   0059              PRINT 3, LETRY, YAXIS
+   0060              GO TO 10
+               C
+   0061          999 STOP
+   0062            1 FORMAT (2F10.0, 12A4)
+   0063            2 FORMAT (1H1, 2A4, 27X, 12A4)
+   0064            3 FORMAT (1H , 60X, A1, F10.4)
+   0065            4 FORMAT (1H , 10X, 101A1)
+   0066            5 FORMAT (1H , F9.4, 1X, 101A1, F10.4)
+   0067              END
+  DOS FORTRAN IV 360N-FO-479 3-8         GRAPH             DATE   03/29/70     TIME    12.13.46      PAGE 0003
+
+
+                               COMMON BLOCK /        / MAP SIZE       4
+ SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION
+ GLBLSW         0
+
+
+                               SCALAR MAP
+ SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION
+ IASTR        120        IPLUS        124        IHYPH        128        IBLNK        12C        LETRI        130
+ LETRX        134        LETRY        138        XAXIS        13C        YAXIS        140        I            144
+ R            148        X            14C        Z            150        N            154        J            158
+ T            15C        M            160        XAXISM       164
+
+
+                               ARRAY MAP
+ SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION
+ TODAY        168        TITLE        170        COORD        1A0        LINE         4C8
+
+
+                               SUBPROGRAMS CALLED
+ SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION
+ DATE         65C        IBCOM#       660        EQU          664
+
+
+                               FORMAT STATEMENT MAP
+ SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION
+      1       67C             2       687             3       696             4       6A2             5       6AD
+
+
+  DOS FORTRAN IV 360N-FO-479 3-8         GRAPH             DATE   03/29/70     TIME    12.13.46      PAGE 0004
+
+  LOCATION   STA NUM     LABEL   OP         OPERAND                  BCD OPERAND
+   000000                        BALR       15,0
+   000002                        LM         2,3,34(15)
+   000006                        L          13,30(0,15)
+   00000A                        LA         15,2(0,15)
+   00000E                        ST         15,4(0,13)
+   000012                        BCR        15,2
+   000014                A4      DC         00000000                 A4
+   000018                        DC         07C7D9C1
+   00001C                        DC         D7C84040
+   000020                        DC         00000000                 A20
+   000024                        DC         00000000                 A36
+   000028                        DC         00000000                 A52
+   00072C                A52     L          13,4(0,13)
+   000730                        L          14,12(0,13)
+   000734                        LM         2,12,28(13)
+   000738                        MVI        12(13),255
+   00073C                        BCR        15,14
+   00073E                A36     L          15,1588(0,13)            IBCOM#
+   000742                        LR         12,13
+   000744                        LR         13,4
+   000746                        BAL        14,64(0,15)
+   00074A                        LR         13,12
+   00074C        5               LA         1,1596(0,13)
+   000750                        L          15,1584(0,13)            DATE
+   000754                        BALR       14,15
+   000756                        BC         0,5(0,0)
+   00075A        6       10      L          15,1588(0,13)            IBCOM#
+   00075E                        BCR        0,0
+   000760                        BAL        14,0(0,15)
+   000764                        DC         10000001
+   000768                        DC         0000067C
+   00076C                        DC         00000094
+   000770                        L          15,1588(0,13)            IBCOM#
+   000774                        BAL        14,8(0,15)
+   000778                        DC         0470D110
+   00077C                        BAL        14,8(0,15)
+   000780                        DC         0470D114
+   000784                        BAL        14,12(0,15)
+   000788                        DC         00000170
+   00078C                        DC         0470000C
+   000790                        BAL        14,16(0,15)
+   000794        7               L          0,1684(0,13)
+   000798                        L          10,72(0,13)
+   00079C                        ST         0,0(0,10)                GLBLSW
+   0007A0        8               L          7,1724(0,13)
+   0007A4                        L          0,1744(0,13)
+   0007A8                L92     ST         0,280(0,13)              I
+   0007AC        9               L          0,280(0,13)              I
+   0007B0                        S          0,1744(0,13)
+   0007B4                        LPR        1,0
+   0007B6                        ST         1,1704(0,13)
+   0007BA                        LD         0,1700(0,13)
+   0007BE                        AD         0,1684(0,13)
+   0007C2                        LTR        0,0
+   0007C4                        BALR       14,0
+   0007C6                        BC         11,6(0,14)
+   0007CA                        LCDR       0,0
+   0007CC                        STE        0,284(0,13)              R
+   0007D0       10               LE         0,284(0,13)              R
+   0007D4                        ME         0,272(0,13)              XAXIS
+   0007D8                        DE         0,1748(0,13)
+   0007DC                        SE         0,272(0,13)              XAXIS
+   0007E0                        STE        0,416(0,7)               COORD
+   0007E4       11       20      A          7,1752(0,13)
+   0007E8                        L          0,280(0,13)              I
+   0007EC                        L          1,144(0,13)              L92
+   0007F0                        LA         2,1(0,0)
+   0007F4                        LA         3,101(0,0)
+   0007F8                        BXLE       0,2,0(1)
+   0007FC       12               L          7,1724(0,13)
+   000800                        L          0,1744(0,13)
+   000804                L100    ST         0,280(0,13)              I
+   000808       13               LE         0,416(0,7)               COORD
+   00080C                        STE        0,288(0,13)              X
+   000810       14               LA         1,1600(0,13)
+   000814                        L          15,1592(0,13)            EQU
+   000818                        BALR       14,15
+  DOS FORTRAN IV 360N-FO-479 3-8         GRAPH             DATE   03/29/70     TIME    12.13.46      PAGE 0005
+
+   00081A                        BC         0,14(0,0)
+   00081E                        STE        0,820(0,7)               COORD
+   000822       15       30      A          7,1752(0,13)
+   000826                        L          0,280(0,13)              I
+   00082A                        L          1,148(0,13)              L100
+   00082E                        LA         2,1(0,0)
+   000832                        LA         3,101(0,0)
+   000836                        BXLE       0,2,0(1)
+   00083A       16               L          7,1724(0,13)
+   00083E                        L          0,1744(0,13)
+   000842                L108    ST         0,280(0,13)              I
+   000846       17               L          0,280(0,13)              I
+   00084A                        LPR        1,0
+   00084C                        ST         1,1704(0,13)
+   000850                        LD         0,1700(0,13)
+   000854                        AD         0,1684(0,13)
+   000858                        LTR        0,0
+   00085A                        BALR       14,0
+   00085C                        BC         11,6(0,14)
+   000860                        LCDR       0,0
+   000862                        STE        0,416(0,7)               COORD
+   000866       18               LE         0,820(0,7)               COORD
+   00086A                        LPER       0,0
+   00086C                        CE         0,276(0,13)              YAXIS
+   000870                        L          14,112(0,13)             41
+   000874                        BCR        13,14
+   000876       19               LE         0,1684(0,13)
+   00087A                        STE        0,820(0,7)               COORD
+   00087E       20               L          14,108(0,13)             40
+   000882                        BCR        15,14
+   000884       21       41      LE         0,820(0,7)               COORD
+   000888                        DE         0,276(0,13)              YAXIS
+   00088C                        AE         0,1756(0,13)
+   000890                        ME         0,1760(0,13)
+   000894                        STE        0,292(0,13)              Z
+   000898       22               LE         0,820(0,7)               COORD
+   00089C                        CE         0,1684(0,13)
+   0008A0                        L          14,116(0,13)             46
+   0008A4                        BCR        11,14
+   0008A6       23               LE         0,292(0,13)              Z
+   0008AA                        AE         0,1764(0,13)
+   0008AE                        SDR        2,2
+   0008B0                        LER        2,0
+   0008B2                        AW         2,1716(0,13)
+   0008B6                        STD        2,1708(0,13)
+   0008BA                        L          0,1712(0,13)
+   0008BE                        LTDR       2,2
+   0008C0                        BALR       14,0
+   0008C2                        BC         11,6(0,14)
+   0008C6                        LCR        0,0
+   0008C8                        ST         0,296(0,13)              N
+   0008CC       24               L          14,120(0,13)             47
+   0008D0                        BCR        15,14
+   0008D2       25       46      LE         0,292(0,13)              Z
+   0008D6                        AE         0,1768(0,13)
+   0008DA                        SDR        2,2
+   0008DC                        LER        2,0
+   0008DE                        AW         2,1716(0,13)
+   0008E2                        STD        2,1708(0,13)
+   0008E6                        L          0,1712(0,13)
+   0008EA                        LTDR       2,2
+   0008EC                        BALR       14,0
+   0008EE                        BC         11,6(0,14)
+   0008F2                        LCR        0,0
+   0008F4                        ST         0,296(0,13)              N
+   0008F8       26       47      L          0,1772(0,13)
+   0008FC                        S          0,296(0,13)              N
+   000900                        LPR        1,0
+   000902                        ST         1,1704(0,13)
+   000906                        LD         0,1700(0,13)
+   00090A                        AD         0,1684(0,13)
+   00090E                        LTR        0,0
+   000910                        BALR       14,0
+   000912                        BC         11,6(0,14)
+   000916                        LCDR       0,0
+   000918                        STE        0,820(0,7)               COORD
+   00091C       27       40      A          7,1752(0,13)
+   000920                        L          0,280(0,13)              I
+  DOS FORTRAN IV 360N-FO-479 3-8         GRAPH             DATE   03/29/70     TIME    12.13.46      PAGE 0006
+
+   000924                        L          1,152(0,13)              L108
+   000928                        LA         2,1(0,0)
+   00092C                        LA         3,101(0,0)
+   000930                        BXLE       0,2,0(1)
+   000934       28               L          15,1588(0,13)            IBCOM#
+   000938                        BAL        14,4(0,15)
+   00093C                        DC         04000002
+   000940                        DC         00000687
+   000944                        L          15,1588(0,13)            IBCOM#
+   000948                        BAL        14,12(0,15)
+   00094C                        DC         00000168
+   000950                        DC         04700002
+   000954                        BAL        14,12(0,15)
+   000958                        DC         00000170
+   00095C                        DC         0470000C
+   000960                        BAL        14,16(0,15)
+   000964       29               L          15,1588(0,13)            IBCOM#
+   000968                        BAL        14,4(0,15)
+   00096C                        DC         04000002
+   000970                        DC         00000696
+   000974                        BAL        14,8(0,15)
+   000978                        DC         0450D10C
+   00097C                        BAL        14,8(0,15)
+   000980                        DC         0470D114
+   000984                        BAL        14,16(0,15)
+   000988       30               L          6,1724(0,13)
+   00098C                        L          0,1744(0,13)
+   000990                L116    ST         0,280(0,13)              I
+   000994       31               L          7,1724(0,13)
+   000998                        L          0,1744(0,13)
+   00099C                L124    ST         0,300(0,13)              J
+   0009A0       32               L          0,256(0,13)              IBLNK
+   0009A4                        ST         0,1224(0,7)              LINE
+   0009A8       33       51      A          7,1752(0,13)
+   0009AC                        L          0,300(0,13)              J
+   0009B0                        L          1,160(0,13)              L124
+   0009B4                        LA         2,1(0,0)
+   0009B8                        LA         3,101(0,0)
+   0009BC                        BXLE       0,2,0(1)
+   0009C0       34               L          0,280(0,13)              I
+   0009C4                        C          0,1776(0,13)
+   0009C8                        L          14,128(0,13)             52
+   0009CC                        BCR        7,14
+   0009CE       35               L          7,1724(0,13)
+   0009D2                        L          0,1780(0,13)
+   0009D6                L132    ST         0,300(0,13)              J
+   0009DA       36               L          0,252(0,13)              IHYPH
+   0009DE                        ST         0,1228(0,7)              LINE
+   0009E2       37       55      A          7,1752(0,13)
+   0009E6                        L          0,300(0,13)              J
+   0009EA                        L          1,164(0,13)              L132
+   0009EE                        LA         2,1(0,0)
+   0009F2                        LA         3,100(0,0)
+   0009F6                        BXLE       0,2,0(1)
+   0009FA       38               L          7,1724(0,13)
+   0009FE                        L          0,1784(0,13)
+   000A02                L140    ST         0,300(0,13)              J
+   000A06       39               L          0,248(0,13)              IPLUS
+   000A0A                        ST         0,1244(0,7)              LINE
+   000A0E       40       57      A          7,1788(0,13)
+   000A12                        L          0,300(0,13)              J
+   000A16                        L          1,168(0,13)              L140
+   000A1A                        LA         2,5(0,0)
+   000A1E                        LA         3,96(0,0)
+   000A22                        BXLE       0,2,0(1)
+   000A26       41               L          0,264(0,13)              LETRX
+   000A2A                        ST         0,1224(0,6)              LINE
+   000A2E       42               L          0,264(0,13)              LETRX
+   000A32                        ST         0,1624(0,6)              LINE
+   000A36       43       52      L          0,260(0,13)              LETRI
+   000A3A                        ST         0,1424(0,6)              LINE
+   000A3E       44               L          0,280(0,13)              I
+   000A42                        SRDA       0,32(0)
+   000A46                        D          0,1752(0,13)
+   000A4A                        M          0,1752(0,13)
+   000A4E                        S          1,280(0,13)              I
+   000A52                        LCR        1,1
+   000A54                        C          1,1744(0,13)
+  DOS FORTRAN IV 360N-FO-479 3-8         GRAPH             DATE   03/29/70     TIME    12.13.46      PAGE 0007
+
+   000A58                        L          14,132(0,13)             60
+   000A5C                        BCR        7,14
+   000A5E       45               L          0,248(0,13)              IPLUS
+   000A62                        ST         0,1424(0,6)              LINE
+   000A66       46       60      L          7,1724(0,13)
+   000A6A                        L          0,1744(0,13)
+   000A6E                L148    ST         0,300(0,13)              J
+   000A72       47               L          0,280(0,13)              I
+   000A76                        LPR        1,0
+   000A78                        ST         1,1704(0,13)
+   000A7C                        LD         0,1700(0,13)
+   000A80                        AD         0,1684(0,13)
+   000A84                        LTR        0,0
+   000A86                        BALR       14,0
+   000A88                        BC         11,6(0,14)
+   000A8C                        LCDR       0,0
+   000A8E                        STE        0,304(0,13)              T
+   000A92       48               LE         0,820(0,7)               COORD
+   000A96                        CE         0,304(0,13)              T
+   000A9A                        L          14,136(0,13)             70
+   000A9E                        BCR        7,14
+   000AA0       49               SDR        0,0
+   000AA2                        LE         0,416(0,7)               COORD
+   000AA6                        AW         0,1716(0,13)
+   000AAA                        STD        0,1708(0,13)
+   000AAE                        L          0,1712(0,13)
+   000AB2                        LTDR       0,0
+   000AB4                        BALR       14,0
+   000AB6                        BC         11,6(0,14)
+   000ABA                        LCR        0,0
+   000ABC                        ST         0,308(0,13)              M
+   000AC0       50               L          0,244(0,13)              IASTR
+   000AC4                        L          8,308(0,13)              M
+   000AC8                        SLA        8,2(0)
+   000ACC                        ST         0,1176(8,13)             LINE
+   000AD0       51       70      A          7,1752(0,13)
+   000AD4                        L          0,300(0,13)              J
+   000AD8                        L          1,172(0,13)              L148
+   000ADC                        LA         2,1(0,0)
+   000AE0                        LA         3,101(0,0)
+   000AE4                        BXLE       0,2,0(1)
+   000AE8       52               L          0,280(0,13)              I
+   000AEC                        C          0,1776(0,13)
+   000AF0                        L          14,140(0,13)             81
+   000AF4                        BCR        8,14
+   000AF6       53               L          15,1588(0,13)            IBCOM#
+   000AFA                        BCR        0,0
+   000AFC                        BAL        14,4(0,15)
+   000B00                        DC         04000002
+   000B04                        DC         000006A2
+   000B08                        BAL        14,12(0,15)
+   000B0C                        DC         000004C8
+   000B10                        DC         04500065
+   000B14                        BAL        14,16(0,15)
+   000B18       54               L          14,124(0,13)             90
+   000B1C                        BCR        15,14
+   000B1E       55       81      LE         0,272(0,13)              XAXIS
+   000B22                        LCER       0,0
+   000B24                        STE        0,312(0,13)              XAXISM
+   000B28       56               L          15,1588(0,13)            IBCOM#
+   000B2C                        BAL        14,4(0,15)
+   000B30                        DC         04000002
+   000B34                        DC         000006AD
+   000B38                        BAL        14,8(0,15)
+   000B3C                        DC         0470D138
+   000B40                        BAL        14,12(0,15)
+   000B44                        DC         000004C8
+   000B48                        DC         04500065
+   000B4C                        BAL        14,8(0,15)
+   000B50                        DC         0470D110
+   000B54                        BAL        14,16(0,15)
+   000B58       57       90      L          0,280(0,13)              I
+   000B5C                        L          1,156(0,13)              L116
+   000B60                        LA         2,1(0,0)
+   000B64                        LA         3,81(0,0)
+   000B68                        BXLE       0,2,0(1)
+   000B6C       58               LE         0,276(0,13)              YAXIS
+   000B70                        LCER       0,0
+  DOS FORTRAN IV 360N-FO-479 3-8         GRAPH             DATE   03/29/70     TIME    12.13.46      PAGE 0008
+
+   000B72                        STE        0,276(0,13)              YAXIS
+   000B76       59               L          15,1588(0,13)            IBCOM#
+   000B7A                        BCR        0,0
+   000B7C                        BAL        14,4(0,15)
+   000B80                        DC         04000002
+   000B84                        DC         00000696
+   000B88                        BAL        14,8(0,15)
+   000B8C                        DC         0450D10C
+   000B90                        BAL        14,8(0,15)
+   000B94                        DC         0470D114
+   000B98                        BAL        14,16(0,15)
+   000B9C       60               L          14,100(0,13)             10
+   000BA0                        BCR        15,14
+   000BA2       61       999     L          15,1588(0,13)            IBCOM#
+   000BA6                        BAL        14,52(0,15)
+   000BAA                        DC         05404040
+   000BAE                        DC         4040
+                                 END
+    TOTAL MEMORY REQUIREMENTS 000BB0 BYTES
+
+    HIGHEST SEVERITY LEVEL OF ERRORS FOR THIS MODULE WAS 0
+  DOS FORTRAN IV 360N-FO-479 3-8         MAINPGM           DATE   03/29/70     TIME    12.13.46      PAGE 0001
+
+               C FUNCTION FOR F(X)
+   0001              FUNCTION EQU(X)
+   0002              DIMENSION C(8)
+   0003              LOGICAL GLBLSW
+   0004              COMMON GLBLSW
+               C
+               C FUNCTION FOR A GENERAL POLYNOMIAL
+   0005              IF (GLBLSW) GO TO 10
+   0006              READ (1,1) C
+   0007            1 FORMAT (8F10.0)
+   0008              GLBLSW = .TRUE.
+   0009           10 X2 = X * X
+   0010              X4 = X2 * X2
+   0011              EQU = C(1) + C(2)*X + C(3)*X2 +
+                    -      C(4)*X2*X + C(5)*X4 +
+                    -      C(6)*X4*X + C(7)*X4*X2 +
+                    -      C(8)*X4*X2*X
+               C
+               C FUNCTION FOR TRIGONOMETRY
+               C      T = SIN(X)
+               C   OPTIONAL-MULTIPLY BY AN AMPLITUDE
+               C      EQU = 4 * T
+               C
+   0012              RETURN
+   0013              END
+  DOS FORTRAN IV 360N-FO-479 3-8         EQU               DATE   03/29/70     TIME    12.13.46      PAGE 0002
+
+
+                               COMMON BLOCK /        / MAP SIZE       4
+ SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION
+ GLBLSW         0
+
+
+                               EQUIVALENCE DATA MAP
+ SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION
+ EQU           A0
+
+
+                               SCALAR MAP
+ SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION
+ X2            A4        X             A8        X4            AC
+
+
+                               ARRAY MAP
+ SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION
+ C             B0
+
+
+                               SUBPROGRAMS CALLED
+ SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION
+ IBCOM#        D0
+
+
+                               FORMAT STATEMENT MAP
+ SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION
+      1        D4
+
+
+  DOS FORTRAN IV 360N-FO-479 3-8         EQU               DATE   03/29/70     TIME    12.13.46      PAGE 0003
+
+  LOCATION   STA NUM     LABEL   OP         OPERAND                  BCD OPERAND
+   000000                        BC         15,12(0,15)
+   000004                        DC         07C5D8E4
+   000008                        DC         40404040
+   00000C                        STM        14,12,12(13)
+   000010                        LM         2,3,40(15)
+   000014                        LR         4,13
+   000016                        L          13,36(0,15)
+   00001A                        ST         13,8(0,4)
+   00001E                        STM        3,4,0(13)
+   000022                        BCR        15,2
+   000024                        DC         00000000                 A4
+   000028                        DC         00000000                 A20
+   00002C                        DC         00000000                 A36
+   00011C                A20     L          2,0(0,1)
+   000120                        MVC        120(3,13),0(2)
+   000126                        BCR        0,0
+   000128                        BALR       2,0
+   00012A                        L          3,6(0,2)
+   00012E                        BCR        15,3
+   000130                        DC         00000000                 A52
+   000134                A36     L          1,4(0,13)
+   000138                        L          1,24(0,1)
+   00013C                        L          2,0(0,1)
+   000140                        MVC        0(3,2),120(13)
+   000146                        LE         0,112(0,13)              EQU
+   00014A                        L          13,4(0,13)
+   00014E                        L          14,12(0,13)
+   000152                        LM         2,12,28(13)
+   000156                        MVI        12(13),255
+   00015A                        BCR        15,14
+   00015C        5       A52     L          10,72(0,13)
+   000160                        L          0,0(0,10)                GLBLSW
+   000164                        LTR        0,0
+   000166                        L          14,100(0,13)             10
+   00016A                        BCR        7,14
+   00016C        6               L          15,160(0,13)             IBCOM#
+   000170                        BAL        14,0(0,15)
+   000174                        DC         00000001
+   000178                        DC         000000D4
+   00017C                        L          15,160(0,13)             IBCOM#
+   000180                        BAL        14,12(0,15)
+   000184                        DC         000000B0
+   000188                        DC         04700008
+   00018C                        BAL        14,16(0,15)
+   000190        8               L          0,232(0,13)
+   000194                        ST         0,0(0,10)                GLBLSW
+   000198        9       10      LE         0,120(0,13)              X
+   00019C                        ME         0,120(0,13)              X
+   0001A0                        STE        0,116(0,13)              X2
+   0001A4       10               LE         0,116(0,13)              X2
+   0001A8                        ME         0,116(0,13)              X2
+   0001AC                        STE        0,124(0,13)              X4
+   0001B0       11               LE         0,132(0,13)              C
+   0001B4                        ME         0,120(0,13)              X
+   0001B8                        AE         0,128(0,13)              C
+   0001BC                        LE         2,136(0,13)              C
+   0001C0                        ME         2,116(0,13)              X2
+   0001C4                        AER        2,0
+   0001C6                        LE         0,140(0,13)              C
+   0001CA                        ME         0,116(0,13)              X2
+   0001CE                        ME         0,120(0,13)              X
+   0001D2                        AER        0,2
+   0001D4                        LE         2,144(0,13)              C
+   0001D8                        ME         2,124(0,13)              X4
+   0001DC                        AER        2,0
+   0001DE                        LE         0,148(0,13)              C
+   0001E2                        ME         0,124(0,13)              X4
+   0001E6                        ME         0,120(0,13)              X
+   0001EA                        AER        0,2
+   0001EC                        LE         2,152(0,13)              C
+   0001F0                        ME         2,124(0,13)              X4
+   0001F4                        ME         2,116(0,13)              X2
+   0001F8                        AER        2,0
+   0001FA                        LE         0,156(0,13)              C
+   0001FE                        ME         0,124(0,13)              X4
+   000202                        ME         0,116(0,13)              X2
+   000206                        ME         0,120(0,13)              X
+  DOS FORTRAN IV 360N-FO-479 3-8         EQU               DATE   03/29/70     TIME    12.13.46      PAGE 0004
+
+   00020A                        AER        0,2
+   00020C                        STE        0,112(0,13)              EQU
+   000210       12               SR         15,15
+   000212                        L          1,0(0,13)
+   000216                        BCR        15,1
+                                 END
+    TOTAL MEMORY REQUIREMENTS 000218 BYTES
+
+    HIGHEST SEVERITY LEVEL OF ERRORS FOR THIS MODULE WAS 0
+    12.13.46,TOTAL COMPILATION TIME,00.00.00
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+DATE      SD  01 000000 00001A
+       GET CURRENT DATE FOR FFORTRAN                                                                           PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+000000                                2 DATE     CSECT
+000001                                3 R1       EQU   1
+000002                                4 R2       EQU   2
+00000C                                5 R12      EQU   12
+00000D                                6 R13      EQU   13
+00000E                                7 R14      EQU   14
+00000F                                8 R15      EQU   15
+000000                                9          USING *,R15
+000000 90EC D00C            0000C    10          STM   R14,R12,12(R13)
+000004 5821 0000            00000    11          L     R2,0(R1)
+                                     12          COMRG
+                                     13+* 360N-CL-453 COMRG    CHANGE LEVEL 3-0
+000008 5810 0014            00014    14+         L     1,20
+00000C 0A21                          15+         SVC   33
+00000E D207 2000 1000 00000 00000    16          MVC   0(8,R2),0(R1)
+000014 98EC D00C            0000C    17          LM    R14,R12,12(R13)
+000018 07FE                          18          BR    R14
+                                     19          END
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC LNKEDT
+
+JOB  DEMOGRPH  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST   AUTOLINK   ILFIBCOM
+LIST   AUTOLINK   ILFADCON
+LIST   AUTOLINK   ILFFINT
+LIST   AUTOLINK   ILFFIOCS
+LIST   AUTOLINK   IJJCPD1
+LIST   AUTOLINK   ILFUNTAB
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+COMMON                                             COM                 006000  000004
+
+        PHASE***  006008  006008  00A5F7  1B 06 4  CSECT     GRAPH     006008  006008
+
+                                                   CSECT     DATE      006DD0  006DD0
+
+                                                   CSECT     ILFIBCOM  006DF0  006DF0
+                                                      ENTRY  IBCOM#    006DF0
+                                                      ENTRY  READSW    007C80
+                                                   *  ENTRY  OPSYS     007B24
+                                                      ENTRY  INTSW     007C82
+                                                      ENTRY  PDPAR     007A98
+                                                      ENTRY  DUMPSW#   007A22
+                                                   *  ENTRY  IJTINTSW  007C82
+                                                      ENTRY  IOSWF     006EE1
+
+                                                   CSECT     EQU       006BB8  006BB8
+
+                                                   CSECT     ILFFINT   008EB0  008EB0
+                                                      ENTRY  SAVERR    009390
+
+                                                   CSECT     ILFADCON  007DD0  007DD0
+                                                      ENTRY  ILFFCVEO  0088BA
+                                                      ENTRY  ILFFCVLO  008052
+                                                      ENTRY  ILFFCVIO  008390
+                                                      ENTRY  ILFFCVCO  008AD4
+                                                      ENTRY  ILFFCVAO  007FC2
+                                                      ENTRY  ILFFCVZO  007F1C
+                                                      ENTRY  INT6SW    008E98
+
+                                                   CSECT     ILFFIOCS  009480  009480
+                                                      ENTRY  ILFFBORG  00A10C
+                                                      ENTRY  ILFBFORG  00A108
+                                                      ENTRY  IJSYSLO   00A218
+                                                   *  ENTRY  ADIOCR#   00A05C
+                                                   *  ENTRY  UBRSAVE   00A104
+
+                                                   CSECT     ILFUNTAB  00A4F8  00A4F8
+
+                                                   CSECT     IJJCPD1   00A300  00A300
+                                                   *  ENTRY  IJJCPD1N  00A300
+                                                   *  ENTRY  IJJCPD3   00A300
+
+                                                   CSECT     IJ2L0005  00A290  009480
+// EXEC
+
+03/29/70                           Y = X
+                                                            Y   10.0000
+                                                            +                                                 *
+                                                            I                                                *
+                                                            I                                              **
+                                                            I                                             *
+                                                            +                                            *
+                                                            I                                           *
+                                                            I                                         **
+                                                            I                                        *
+                                                            +                                       *
+                                                            I                                      *
+                                                            I                                    **
+                                                            I                                   *
+                                                            +                                  *
+                                                            I                                 *
+                                                            I                               **
+                                                            I                              *
+                                                            +                             *
+                                                            I                            *
+                                                            I                          **
+                                                            I                         *
+                                                            +                        *
+                                                            I                       *
+                                                            I                     **
+                                                            I                    *
+                                                            +                   *
+                                                            I                  *
+                                                            I                **
+                                                            I               *
+                                                            +              *
+                                                            I             *
+                                                            I           **
+                                                            I          *
+                                                            +         *
+                                                            I        *
+                                                            I      **
+                                                            I     *
+                                                            +    *
+                                                            I   *
+                                                            I **
+                                                            I*
+ -10.0000 X----+----+----+----+----+----+----+----+----+----*----+----+----+----+----+----+----+----+----+----X   10.0000
+                                                           *I
+                                                         ** I
+                                                        *   I
+                                                       *    +
+                                                      *     I
+                                                    **      I
+                                                   *        I
+                                                  *         +
+                                                 *          I
+                                               **           I
+                                              *             I
+                                             *              +
+                                            *               I
+                                          **                I
+                                         *                  I
+                                        *                   +
+                                       *                    I
+                                     **                     I
+                                    *                       I
+                                   *                        +
+                                  *                         I
+                                **                          I
+                               *                            I
+                              *                             +
+                             *                              I
+                           **                               I
+                          *                                 I
+                         *                                  +
+                        *                                   I
+                      **                                    I
+                     *                                      I
+                    *                                       +
+                   *                                        I
+                 **                                         I
+                *                                           I
+               *                                            +
+              *                                             I
+            **                                              I
+           *                                                I
+          *                                                 +
+                                                            Y  -10.0000
+03/29/70                           Y = X ** 2
+                                                            Y   10.0000
+                                                            +
+                                                            I
+                                                            I
+                                                            I
+                                             *              +              *
+                                                            I
+                                                            I
+                                                            I
+                                                            +
+                                              *             I             *
+                                                            I
+                                                            I
+                                                            +
+                                               *            I            *
+                                                            I
+                                                            I
+                                                            +
+                                                *           I           *
+                                                            I
+                                                            I
+                                                            +
+                                                 *          I          *
+                                                            I
+                                                            I
+                                                  *         +         *
+                                                            I
+                                                            I
+                                                   *        I        *
+                                                            +
+                                                            I
+                                                    *       I       *
+                                                            I
+                                                     *      +      *
+                                                            I
+                                                      *     I     *
+                                                            I
+                                                       *    +    *
+                                                        *   I   *
+                                                            I
+                                                         ** I **
+ -10.0000 X----+----+----+----+----+----+----+----+----+---***---+----+----+----+----+----+----+----+----+----X   10.0000
+                                                            I
+                                                            I
+                                                            I
+                                                            +
+                                                            I
+                                                            I
+                                                            I
+                                                            +
+                                                            I
+                                                            I
+                                                            I
+                                                            +
+                                                            I
+                                                            I
+                                                            I
+                                                            +
+                                                            I
+                                                            I
+                                                            I
+                                                            +
+                                                            I
+                                                            I
+                                                            I
+                                                            +
+                                                            I
+                                                            I
+                                                            I
+                                                            +
+                                                            I
+                                                            I
+                                                            I
+                                                            +
+                                                            I
+                                                            I
+                                                            I
+                                                            +
+                                                            I
+                                                            I
+                                                            I
+                                                            +
+                                                            Y  -10.0000
+03/29/70                           Y = X ** 3
+                                                            Y   10.0000
+                                                            +
+                                                            I
+                                                            I
+                                                            I
+                                                            +
+                                                            I
+                                                            I
+                                                            I
+                                                            +         *
+                                                            I
+                                                            I
+                                                            I
+                                                            +
+                                                            I
+                                                            I
+                                                            I
+                                                            +
+                                                            I        *
+                                                            I
+                                                            I
+                                                            +
+                                                            I
+                                                            I
+                                                            I
+                                                            +       *
+                                                            I
+                                                            I
+                                                            I
+                                                            +
+                                                            I      *
+                                                            I
+                                                            I
+                                                            +
+                                                            I     *
+                                                            I
+                                                            I
+                                                            +    *
+                                                            I
+                                                            I   *
+                                                            I  *
+ -10.0000 X----+----+----+----+----+----+----+----+----+--*****--+----+----+----+----+----+----+----+----+----X   10.0000
+                                                         *  I
+                                                        *   I
+                                                            I
+                                                       *    +
+                                                            I
+                                                            I
+                                                      *     I
+                                                            +
+                                                            I
+                                                            I
+                                                     *      I
+                                                            +
+                                                            I
+                                                            I
+                                                            I
+                                                    *       +
+                                                            I
+                                                            I
+                                                            I
+                                                            +
+                                                            I
+                                                            I
+                                                   *        I
+                                                            +
+                                                            I
+                                                            I
+                                                            I
+                                                            +
+                                                            I
+                                                            I
+                                                            I
+                                                  *         +
+                                                            I
+                                                            I
+                                                            I
+                                                            +
+                                                            I
+                                                            I
+                                                            I
+                                                            +
+                                                            Y  -10.0000
+EOJ DEMOGRPH                                                            12.13.47,DURATION 00.00.14

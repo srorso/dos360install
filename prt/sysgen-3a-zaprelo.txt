@@ -1,0 +1,354 @@
+
+// JOB SYSGEN03  ZAPRELO ASSEMBLE AND CATALOG                           12.00.42
+// OPTION CATAL
+ PHASE ZAPRELO,S
+// EXEC ASSEMBLY
+
+ZAPR                                          EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+ZAPRELO   SD  01 000000 000350
+IJGFIZZZ  ER  02
+IJGFOZZZ  ER  03
+ZAPR   APPLY REP CARDS TO RELOCATABLE MODULE                                                                   PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      2 ***********************************************************************
+                                      3 *
+                                      4 * COPY A SINGLE RELOCATABLE MODULE FROM A CARD IMAGE SYSPCH FILE,
+                                      5 * ADDING REP CARDS JUST PRIOR TO THE END CARD.
+                                      6 *
+                                      7 * IN REAL LIFE, DOS SYSTEMS HAD A CARD READER AND A PUNCH.  SO
+                                      8 * PUNCHING OUT THE RELOCATABLE MODULE, HAND-KEYING THE REP CARDS,
+                                      9 * ADDING THEM TO THE OBJECT DECK AT THE RIGHT POINT, AND CATALOGING
+                                     10 * THE UPDATED DECK WAS A TRIVIAL EXERCISE.
+                                     11 *
+                                     12 * IF DOS HAD INCLUDED AN OBJMAINT UTILITY, THIS PROGRAM WOULD NOT
+                                     13 * BE NEEDED.  BUT DOS WAS NEVER DESIGNED FOR CARDLESS OPERATION.
+                                     14 *
+                                     15 * INPUT
+                                     16 *   UIN, SYS004, UNBLOCKED CARD-IMAGE SYSPCH  FILE ON DISK (81-BYTE
+                                     17 *        RECORDS), CONTAINING EXACTLY ONE RELOCATABLE MODULE.  THIS
+                                     18 *        FILE IS TYPICALLY SYSPCH OUTPUT FROM THE RSERV PROGRAM.
+                                     19 *   CARDS, SYS004, REP CARDS TO BE ADDED JUST BEFORE THE RELOCATABLE
+                                     20 *        MODULE'S END CARD.  EACH CARD STARTS '+REP' AND OTHERWISE
+                                     21 *        FOLLOWS THE REP CARD FORMAT DOCUMENTED IN DOS SYSTEM CONTROL
+                                     22 *        AND SERVICE, GC24-5036.  SEE P. 233 OF THE -7 EDITION.
+                                     23 *
+                                     24 * OUTPUT
+                                     25 *   UOUT, SYS005, UNBLOCKED CARD IMAGE SYSIPT FILE ON DISK (80-BYTE
+                                     26 *        RECORDS).  THIS FILE A COPY OF THE INPUT FILE, WITH REP CARDS
+                                     27 *        FROM THE CARD READER ADDED JUST BEFORE THE END CARD.  THE
+                                     28 *        STACKER SELECTION BYTE IN COLUMN ONE IS REMOVED--COLUMNS 2-81
+                                     29 *        OF THE INPUT ARE PLACED IN 1-80 OF THE OUTPUT.  ANY REP CARDS
+                                     30 *        IN THE INPUT ARE REMOVED.  (SHOULD ONE WISH TO KEEP THEM,
+                                     31 *        INCLUDE THEM IN THE CARD INPUT STREAM.)  NOTE THAT THE '+' IN
+                                     32 *        THE REP CARD INPUT CARDS IS CHANGED TO X'02' BEFORE BEING
+                                     33 *        WRITTEN.
+                                     34 *
+                                     35 ***********************************************************************
+
+
+
+                                     37 ***********************************************************************
+                                     38 *
+                                     39 *
+000000                               40 ZAPRELO  START 0
+000000 05C0                          41          BALR  12,0                     LOAD BASE REG
+000002 06C0                          42          BCTR  12,0
+000004 06C0                          43          BCTR  12,0
+000000                               44          USING ZAPRELO,12
+                                     45 *
+                                     46          OPEN  UIN,UOUT            OPEN INPUT AND OUTPUT FILES
+                                     47+* 360N-CL-453 OPEN     CHANGE LEVEL 3-3                             3-3
+000006 0700                          48+         CNOP  0,4
+000008                               49+         DC    0F'0'
+000008 4110 C1F0            001F0    50+         LA    1,=C'$$BOPEN '
+ZAPR   APPLY REP CARDS TO RELOCATABLE MODULE                                                                   PAGE    2
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+00000C 4500 C018            00018    51+IJJO0001 BAL   0,*+4+4*(3-1)
+000010 00000228                      52+         DC    A(UIN)
+000014 000002B0                      53+         DC    A(UOUT)
+000018 0A02                          54+         SVC   2
+                                     55 *
+                                     56 *  COPY INPUT TO OUTFILE UNTIL END CARD READ.
+                                     57 *
+00001A                               58 READLOOP DS    0H                  LOOP UNTIL RELO MOD 'END' CARD
+                                     59          GET   UIN                 READ A CARD
+                                     60+* 360N-CL-453 GET      CHANGE LEVEL 3-0
+00001A 5810 C200            00200    61+         L     1,=A(UIN) GET DTF TABLE ADDRESS
+00001E 58F1 0010            00010    62+         L     15,16(1) GET LOGIC MODULE ADDRESS
+000022 45EF 0008            00008    63+         BAL   14,8(15) BRANCH TO GET ROUTINE
+000026 D503 C0E5 C1DD 000E5 001DD    64          CLC   INCARD(L'ENDTEST),ENDTEST  IS IT AN END CARD
+00002C 4780 C050            00050    65          BE    REPLOOP             ..YES, GO GET REP CARDS
+000030 D505 C0E5 C1E4 000E5 001E4    66          CLC   INCARD(L'REPTEST1),REPTEST1 IS IT A REP CARD
+000036 4780 C01A            0001A    67          BE    READLOOP            ..YES, DROP IT
+00003A D24F C13D C0E5 0013D 000E5    68          MVC   OUTCARD,INCARD      COPY TO OUTPUT
+                                     69          PUT   UOUT                WRITE CARD TO SYSPCH
+                                     70+* 360N-CL-453 PUT          CHANGE LEVEL 3-5                         3-5
+000040 5810 C204            00204    71+         L     1,=A(UOUT) GET DTF TABLE ADDRESS
+000044 58F1 0010            00010    72+         L     15,16(1) GET LOGIC MODULE ADDRESS     3-5
+000048 45EF 000C            0000C    73+         BAL   14,12(15) BRANCH TO PUT ROUTINE        3-5
+00004C 47F0 C01A            0001A    74          B     READLOOP            CONTINUE COPYING
+                                     75 *
+                                     76 * RELO MODULE 'END' CARD READ.  COPY REP CARDS UNTIL EOF
+                                     77 *
+000050                               78 REPLOOP  DS    0H                  COPY REP CARDS LOOP
+                                     79          EXCP  INREPS              READ A CARD
+                                     80+* 360N-CL-453 EXCP     CHANGE LEVEL 3-0
+000050 5810 C208            00208    81+         L     1,=A(INREPS)
+000054 0A00                          82+         SVC   0
+                                     83          WAIT  (1)                 WAIT FOR COMPLETION
+                                     84+* 360N-CL-453 WAIT     CHANGE LEVEL 3-0
+000056 9180 1002      00002          85+         TM    2(1),X'80'
+00005A 4710 C060            00060    86+         BO    *+6
+00005E 0A07                          87+         SVC   7
+000060 9101 1004      00004          88          TM    4(1),X'01'          UNIT EXCEPTION RAISED
+000064 4710 C096            00096    89          BO    REPDONE             ..YES, END OF DECK, DONE
+000068 D502 C18D C1E1 0018D 001E1    90          CLC   REPCARD(L'EOFTEST),EOFTEST  END OF FILE (/*)
+00006E 4780 C096            00096    91          BE    REPDONE             ..YES, END OF DECK, DONE
+000072 D503 C18D C1EA 0018D 001EA    92          CLC   REPCARD(L'REPTEST2),REPTEST2  +REP CARD
+000078 4770 C050            00050    93          BNE   REPLOOP             ..NO, SKIP/IGNORE IT
+00007C D24F C13D C18D 0013D 0018D    94          MVC   OUTCARD,REPCARD     COPY TO OUTPUT
+000082 9202 C13D      0013D          95          MVI   OUTCARD,X'02'       CREATE 12-2-9 MULTIPUNCH
+                                     96          PUT   UOUT                WRITE CARD TO SYSPCH
+                                     97+* 360N-CL-453 PUT          CHANGE LEVEL 3-5                         3-5
+000086 5810 C204            00204    98+         L     1,=A(UOUT) GET DTF TABLE ADDRESS
+00008A 58F1 0010            00010    99+         L     15,16(1) GET LOGIC MODULE ADDRESS     3-5
+00008E 45EF 000C            0000C   100+         BAL   14,12(15) BRANCH TO PUT ROUTINE        3-5
+000092 47F0 C050            00050   101          B     REPLOOP             CONTINUE COPYING
+ZAPR   APPLY REP CARDS TO RELOCATABLE MODULE                                                                   PAGE    3
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                    102 *
+                                    103 * EOF ON SYS000, END OF REP CARDS,  WRITE END CARD AND EXIT
+                                    104 *
+000096                              105 REPDONE  DS    0H                  END OF REP CARDS
+000096 D24F C13D C0E5 0013D 000E5   106          MVC   OUTCARD,INCARD      COPY TO OUTPUT
+                                    107          PUT   UOUT                WRITE CARD TO SYSPCH
+                                    108+* 360N-CL-453 PUT          CHANGE LEVEL 3-5                         3-5
+00009C 5810 C204            00204   109+         L     1,=A(UOUT) GET DTF TABLE ADDRESS
+0000A0 58F1 0010            00010   110+         L     15,16(1) GET LOGIC MODULE ADDRESS     3-5
+0000A4 45EF 000C            0000C   111+         BAL   14,12(15) BRANCH TO PUT ROUTINE        3-5
+                                    112 *
+                                    113 * END CARD PROCESSED.  DUPLICATE THE REST OF THE DECK
+                                    114 *
+0000A8                              115 ENDLOOP  DS    0H                  READ REMAINDER OF DECK
+                                    116          GET   UIN                 READ NEXT CARD
+                                    117+* 360N-CL-453 GET      CHANGE LEVEL 3-0
+0000A8 5810 C200            00200   118+         L     1,=A(UIN) GET DTF TABLE ADDRESS
+0000AC 58F1 0010            00010   119+         L     15,16(1) GET LOGIC MODULE ADDRESS
+0000B0 45EF 0008            00008   120+         BAL   14,8(15) BRANCH TO GET ROUTINE
+0000B4 D24F C13D C0E5 0013D 000E5   121          MVC   OUTCARD,INCARD      COPY TO OUTPUT
+                                    122          PUT   UOUT                WRITE IT
+                                    123+* 360N-CL-453 PUT          CHANGE LEVEL 3-5                         3-5
+0000BA 5810 C204            00204   124+         L     1,=A(UOUT) GET DTF TABLE ADDRESS
+0000BE 58F1 0010            00010   125+         L     15,16(1) GET LOGIC MODULE ADDRESS     3-5
+0000C2 45EF 000C            0000C   126+         BAL   14,12(15) BRANCH TO PUT ROUTINE        3-5
+0000C6 47F0 C0A8            000A8   127          B     ENDLOOP             CONTINUE THE COPY
+                                    128 *
+                                    129 * EOF.  WRITE AN EOF, CLOSE FILES AND EXIT.
+                                    130 *
+0000CA                              131 ENDINPUT DS    0H
+0000CA D202 C13D C1E1 0013D 001E1   132          MVC   OUTCARD(L'EOFTEST),EOFTEST MOVE '/* '
+                                    133          CLOSE UIN,UOUT            CLOSE FILES
+                                    134+* 360N-CL-453 CLOSE    CHANGE LEVEL 3-3                             3-3
+0000D0                              135+         CNOP  0,4
+0000D0                              136+         DC    0F'0'
+0000D0 4110 C1F8            001F8   137+         LA    1,=C'$$BCLOSE'
+0000D4 4500 C0E0            000E0   138+IJJC0010 BAL   0,*+4+4*(3-1)
+0000D8 00000228                     139+         DC    A(UIN)
+0000DC 000002B0                     140+         DC    A(UOUT)
+0000E0 0A02                         141+         SVC   2
+                                    142          EOJ                       ALL DONE.
+                                    143+* 360N-CL-453 EOJ      CHANGE LEVEL 3-0
+0000E2 0A0E                         144+         SVC   14
+
+
+0000E4                              146 INAREA   DS    0CL81               INPUT AREA
+0000E4 40                           147          DC    C' '                SPACE FOR STACKER SELECT
+0000E5 4040404040404040             148 INCARD   DC    CL80' '             INPUT CARD IMAGE
+                                    149 *
+000135                              150 OUTAREA  DS    0CL88               OUTPUT CARD IMAGE AREA
+000135 0000000000000000             151          DC    XL8'00'             COUNT FIELD FOR DISK OUTPUT
+ZAPR   APPLY REP CARDS TO RELOCATABLE MODULE                                                                   PAGE    4
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+00013D 4040404040404040             152 OUTCARD  DC    CL80' '             OUTPUT CARD IMAGE
+                                    153 *
+00018D 4040404040404040             154 REPCARD  DC    CL80' '             +REP CARD TO BE ADDED
+                                    155 *
+0001DD                              156 ENDTEST  DS    0CL4
+0001DD 02C5D5C4                     157          DC    X'02',C'END'        TEST FOR END CARD
+                                    158 *
+0001E1 615C40                       159 EOFTEST  DC    C'/* '              TEST FOR END OF FILE
+                                    160 *
+0001E4                              161 REPTEST1 DS    0CL6                TEST REP CARD IN MODULE
+0001E4 02                           162          DC    X'02'               12-2-9 MULTIPUNCH
+0001E5 D9C5D74040                   163          DC    C'REP  '
+                                    164 *
+0001EA 4ED9C5D7                     165 REPTEST2 DC    C'+REP'             TEST FOR +REP CARD
+                                    166 *
+0001F0                              167          LTORG ,                        LITERALS HERE...
+0001F0 5B5BC2D6D7C5D540             168                =C'$$BOPEN '
+0001F8 5B5BC2C3D3D6E2C5             169                =C'$$BCLOSE'
+000200 00000228                     170                =A(UIN)
+000204 000002B0                     171                =A(UOUT)
+000208 0000020C                     172                =A(INREPS)
+
+
+                                    174          PRINT  NOGEN
+                                    175 INREPS   CCB    SYS000,READCCW
+                                    186 *
+00021C 00000000
+000220 0200018D00000050             187 READCCW  CCW    X'02',REPCARD,X'00',L'REPCARD
+                                    188 *
+                                    189 *  INPUT FILE - RELOCATABLE MODULE
+                                    190 *
+                                    191 UIN      DTFSD DEVADDR=SYS004,          ASSIGNED TO SYS004             X
+                                                       DEVICE=2314,             RESIDES ON 2314                X
+                                                       TYPEFLE=INPUT,           READING                        X
+                                                       EOFADDR=ENDINPUT,        EOF ADDRESS                    X
+                                                       IOAREA1=INAREA,          CARD INPUT BUFFER              X
+                                                       RECFORM=FIXUNB,          FIXED LENGTH UNBLOCKED RECORDS X
+                                                       BLKSIZE=81               81-BYTE BLOCKS
+                                    236 *
+                                    237 * OUTPUT FILE - RELOCATABLE MODULE WITH REP CARDS ADDED
+                                    238 *
+                                    239 UOUT     DTFSD DEVADDR=SYS005,          ASSIGNED TO SYS005             X
+                                                       DEVICE=2314,             RESIDES ON 2314                X
+                                                       TYPEFLE=OUTPUT,          CREATING FILE                  X
+                                                       IOAREA1=OUTAREA,         ONE I/O AREA                   X
+                                                       RECFORM=FIXUNB,          FIXED LENGTH UNBLOCKED RECORDS X
+                                                       BLKSIZE=88               80-BYTE BLOCKS PLUS COUNT FLD
+                                    289 *
+                                    290          END
+ZAPR                                             RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      0C     000010
+   01       01      0C     000014
+   01       01      0C     0000D8
+   01       01      0C     0000DC
+   01       01      0C     000200
+   01       01      0C     000204
+   01       01      0C     000208
+   01       01      08     000215
+   01       01      08     000221
+   01       01      0C     000230
+   01       02      18     000239
+   01       01      08     000251
+   01       01      0C     000254
+   01       01      08     000269
+   01       01      0C     000280
+   01       01      0C     000288
+   01       01      08     000291
+   01       01      08     000299
+   01       01      08     0002A1
+   01       01      08     0002A9
+   01       01      0C     0002B8
+   01       03      18     0002C1
+   01       01      08     0002D9
+   01       01      0C     0002DC
+   01       01      0C     000308
+   01       01      0C     000310
+   01       01      08     000319
+   01       01      08     000321
+   01       01      08     000329
+   01       01      08     000331
+   01       01      08     000339
+   01       01      08     000341
+   01       01      08     000349
+ZAPR                                         CROSS-REFERENCE                                                   PAGE    1
+
+
+SYMBOL    LEN  VALUE  DEFN     REFERENCES                                                                       03/29/70
+
+ENDINPUT 00002 0000CA 00131   0218
+ENDLOOP  00002 0000A8 00115   0127
+ENDTEST  00004 0001DD 00156   0064  0064
+EOFTEST  00003 0001E1 00159   0090  0090  0132  0132
+IJGC0013 00008 000290 00231   0197
+IJGC0014 00008 000318 00281   0245
+IJJC0010 00004 0000D4 00138
+IJJO0001 00004 00000C 00051
+IJJZ0013 00001 0002B0 00235
+IJJZ0014 00001 000350 00288
+INAREA   00081 0000E4 00146   0211  0226  0228  0234
+INCARD   00080 0000E5 00148   0064  0066  0068  0106  0121
+INREPS   00002 00020C 00177   0081  0172
+OUTAREA  00088 000135 00150   0259  0276  0278  0284
+OUTCARD  00080 00013D 00152   0068  0094  0095  0106  0121  0132
+READCCW  00008 000220 00187   0183
+READLOOP 00002 00001A 00058   0067  0074
+REPCARD  00080 00018D 00154   0090  0092  0094  0187  0187
+REPDONE  00002 000096 00105   0089  0091
+REPLOOP  00002 000050 00078   0065  0093  0101
+REPTEST1 00006 0001E4 00161   0066  0066
+REPTEST2 00004 0001EA 00165   0092  0092
+UIN      00006 000228 00194   0052  0061  0118  0139  0170
+UINS     00001 000262 00215
+UOUT     00006 0002B0 00242   0053  0071  0098  0109  0124  0140  0171
+UOUTS    00001 0002EA 00263   0285
+ZAPRELO  00001 000000 00040   0044
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC LNKEDT
+
+JOB  SYSGEN03  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST   PHASE ZAPRELO,S
+LIST   AUTOLINK   IJGFIZZZ
+LIST   AUTOLINK   IJGFOZZZ
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        ZAPRELO   006000  006000  00676D  0F 08 3  CSECT     ZAPRELO   006000  006000
+
+                                                   CSECT     IJGFIZZZ  006350  006350
+
+                                                   CSECT     IJGFOZZZ  006528  006528
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 12 09 13              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        15 09 01                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             671                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE             1041                    17002                    23523
+LIBRARY   BLOCKS DELETED             116                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3323                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN03                                                            12.00.42,DURATION 00.00.00

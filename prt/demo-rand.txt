@@ -1,0 +1,301 @@
+
+// JOB DEMORAND SELECT RANDOM RECORDS                                   12.13.57
+// OPTION LINK,NOXREF
+// EXEC FFORTRAN
+
+  DOS FORTRAN IV 360N-FO-479 3-8
+
+    OPTIONS IN EFFECT
+    -----------------
+
+    LOAD   =4
+
+    DECK   NO
+
+    LIST   YES
+
+    LISTX  NO
+
+    EBCDIC
+  DOS FORTRAN IV 360N-FO-479 3-8         MAINPGM           DATE   03/29/70     TIME    12.14.04      PAGE 0001
+
+               C-----SELECT RANDOM RECORDS FROM A SEQUENTIAL FILE
+               C---USES ASSEMBLER AND FORTRAN SUBROUTINES
+               C---USES UNFORMATTED I/O STATEMENTS ON A WORK FILE
+               C---USES A 'RANDOM' NUMBER GENERATOR FROM SSP
+   0001              DIMENSION ISLSNM(5),IDATE(2)
+               C  GET DOS SYSTEM VALUES
+   0002              CALL FORDOS(ITIME,LCSYS,IDATE)
+               C  USE CURRENT TIME TO CREATE ODD RANDOM NUMBER SEED
+   0003              IY=ITIME/2*2+1
+               C  FORCE NEW PAGE
+   0004              LINES=LCSYS
+   0005              IPAGE=0
+               C  GET HOW MANY RANDOM RECORDS DESIRED
+   0006              READ 1, NUMRAN
+               C  ENSURE WORK FILE (SYS001) IS AT THE BEGINNING
+   0007              REWIND 4
+   0008              NUMREC=0
+               C
+               C--READ FILE FROM WHICH TO SELECT RANDOM RECORDS
+   0009           10 READ (1,2,END=12) IDEPT, ISLSNO, ISLSNM
+               C  WRITE DATA TO WORK FILE AND COUNT RECORDS
+   0010              WRITE (4) IDEPT, ISLSNO, ISLSNM
+   0011              NUMREC=NUMREC+1
+   0012              GO TO 10
+               C  CREATE END OF FILE AND REWIND WORK FILE
+   0013           12 END FILE 4
+   0014              REWIND 4
+   0015              ICUREC=0
+               C
+   0016              DO 50 I=1,NUMRAN
+               C--GET NEXT INTEGER 'RANDOM NUMBER' FROM 1 TO NUMREC
+   0017           21  IX=IY
+   0018               CALL RANDU(IX,IY,YFL)
+   0019               IRN=INT(YFL*FLOAT(NUMREC)+1.)
+   0020               IF(IRN.GT.NUMREC) GO TO 21
+               C
+               C--BYPASS CORRECT NUMBER OF RECORDS AND READ THE ONE WE WANT
+   0021               IF(IRN-ICUREC)23,30,25
+               C  BACKUP THE WORK FILE AND READ THE RECORD
+   0022           23  K=ICUREC-IRN+1
+   0023               DO 24 J=1,K
+   0024                BACKSPACE 4
+   0025                ICUREC=ICUREC-1
+   0026           24  CONTINUE
+   0027               READ (4) IDEPT, ISLSNO, ISLSNM
+   0028               ICUREC=ICUREC+1
+   0029               GO TO 30
+               C  READ FORWARD THE WORK FILE
+   0030           25  K=IRN-ICUREC
+   0031               DO 26 J=1,K
+   0032                READ (4) IDEPT, ISLSNO, ISLSNM
+   0033                ICUREC=ICUREC+1
+   0034           26  CONTINUE
+               C
+  DOS FORTRAN IV 360N-FO-479 3-8         MAINPGM           DATE   03/29/70     TIME    12.14.04      PAGE 0002
+
+               C--WE HAVE THE DESIRED RECORD, PRINT IT
+               C  CHECK FOR HEADINGS NEEDED
+   0035           30  IF(LINES.LT.LCSYS) GO TO 33
+   0036               IPAGE=IPAGE+1
+   0037               PRINT 3, IDATE, IPAGE
+   0038               LINES=3
+               C  PRINT RECORD
+   0039           33  PRINT 4, IRN, IDEPT, ISLSNO, ISLSNM
+   0040               LINES=LINES+1
+   0041           50 CONTINUE
+               C
+               C--END OF JOB ROUTINE
+               C  REWIND WORK FILE AT END OF JOB
+   0042              REWIND 4
+   0043              STOP
+   0044            1 FORMAT (I2)
+   0045            2 FORMAT (I2,I3,5A4)
+   0046            3 FORMAT (1H1,2A4,10X,'RANDOMLY CHOSEN SALESPEOPLE',10X,'PAGE ',I3/
+                    -        1H0,3X,'DEPT',5X,'SLS#',7X,'NAME'/)
+   0047            4 FORMAT (1H ,I3,2X,I2,5X,I3,5X,5A4)
+   0048              END
+  DOS FORTRAN IV 360N-FO-479 3-8         MAINPGM           DATE   03/29/70     TIME    12.14.04      PAGE 0003
+
+
+                               SCALAR MAP
+ SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION
+ ITIME         D8        LCSYS         DC        IY            E0        LINES         E4        IPAGE         E8
+ NUMRAN        EC        NUMREC        F0        IDEPT         F4        ISLSNO        F8        ICUREC        FC
+ I            100        IX           104        YFL          108        IRN          10C        K            110
+ J            114
+
+
+                               ARRAY MAP
+ SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION
+ ISLSNM       118        IDATE        12C
+
+
+                               SUBPROGRAMS CALLED
+ SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION
+ FORDOS       134        IBCOM#       138        RANDU        13C
+
+
+                               FORMAT STATEMENT MAP
+ SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION
+      1       160             2       164             3       16E             4       1BE
+
+
+  DOS FORTRAN IV 360N-FO-479 3-8         MAINPGM           DATE   03/29/70     TIME    12.14.04      PAGE 0004
+
+
+                               STATEMENT LABEL MAP
+  LOCATION   STA NUM     LABEL            LOCATION   STA NUM     LABEL            LOCATION   STA NUM     LABEL
+   000240        2                         00024E        3                         000266        4
+   00026E        5                         000276        6                         000298        7
+   0002A4        8                         0002AC        9       10                0002E0       10
+   00030C       11                         000318       12                         00031E       13       12
+   00032C       14                         000338       15                         000340       16
+   000348       17       21                000350       18                         00035E       19
+   0003A0       20                         0003AE       21                         0003C4       22       23
+   0003D4       23                         0003DC       24                         0003E8       25
+   0003F4       26       24                000408       27                         000438       28
+   000444       29                         00044A       30       25                000456       31
+   00045E       32                         00048C       33                         000498       34       26
+   0004AC       35       30                0004BA       36                         0004C6       37
+   0004F0       38                         0004F8       39       33                000530       40
+   00053C       41       50                000550       42                         00055C       43
+
+    TOTAL MEMORY REQUIREMENTS 00056A BYTES
+
+    HIGHEST SEVERITY LEVEL OF ERRORS FOR THIS MODULE WAS 0
+  DOS FORTRAN IV 360N-FO-479 3-8         RANDU             DATE   03/29/70     TIME    12.14.04      PAGE 0001
+
+   0001              SUBROUTINE RANDU(IX,IY,YFL)
+               C PSUEDO RANDOM NUMBER GENERATOR
+               C FROM SYSTEM/360 SCIENTIFIC SUBROUTINE PACKAGE (SSP) (360A-CM-03X)
+   0002              IY=IX*65539
+   0003              IF(IY)5,6,6
+   0004            5 IY=IY+2147483647+1
+   0005            6 YFL=IY
+   0006              YFL=YFL*.4656613E-9
+   0007              RETURN
+   0008              END
+  DOS FORTRAN IV 360N-FO-479 3-8         RANDU             DATE   03/29/70     TIME    12.14.04      PAGE 0002
+
+
+                               SCALAR MAP
+ SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION
+ IY            A0        IX            A4        YFL           A8
+
+
+  DOS FORTRAN IV 360N-FO-479 3-8         RANDU             DATE   03/29/70     TIME    12.14.04      PAGE 0003
+
+
+                               STATEMENT LABEL MAP
+  LOCATION   STA NUM     LABEL            LOCATION   STA NUM     LABEL            LOCATION   STA NUM     LABEL
+   00015C        1                         00015C        2                         000168        3
+   000174        4       5                 000184        5       6                 0001A4        6
+   0001B0        7
+    TOTAL MEMORY REQUIREMENTS 0001B8 BYTES
+
+    HIGHEST SEVERITY LEVEL OF ERRORS FOR THIS MODULE WAS 0
+    12.14.04,TOTAL COMPILATION TIME,00.00.00
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+FORDOS    SD  01 000000 000034
+       SUBROUTINE TO PASS DOS SYSTEM VALUES TO FORTRAN                                                         PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+000000                                2 FORDOS   CSECT
+000001                                3 R1       EQU   1
+000002                                4 R2       EQU   2
+000007                                5 R7       EQU   7
+000008                                6 R8       EQU   8
+000009                                7 R9       EQU   9
+00000F                                8 R15      EQU   15
+000000                                9          USING *,R15
+                                     10          SAVE  (14,12)         SAVE FORTRAN'S REGISTERS
+                                     11+* 360N-CL-453 SAVE     CHANGE LEVEL 3-8                             3-8
+000000 90EC D00C            0000C    12+         STM   14,12,12+4*(14+2-(14+2)/16*16)(13)
+000004 9879 1000            00000    13          LM    R7,R9,0(R1)     GET ADDRESSES OF FORTRAN'S FIELDS
+                                     14          GETIME TU             GET TIME OF DAY IN 300THS OF SEC.
+                                     15+* 360N-CL-453 GETIME   CHANGE LEVEL 3-0
+000008 0A22                          16+         SVC   34 GET TIMER VALUE IN
+00000A 9801 0050            00050    17+         LM    0,1,80 SEC/76800
+00000E 8800 0008            00008    18+         SRL   0,8 TIMER IN SEC/300
+000012 1F10                          19+         SLR   1,0 TIME OF DAY IN SEC/300
+000014 5017 0000            00000    20          ST    R1,0(R7)        STORE TIME IN FORTRAN
+                                     21          COMRG
+                                     22+* 360N-CL-453 COMRG    CHANGE LEVEL 3-0
+000018 5810 0014            00014    23+         L     1,20
+00001C 0A21                          24+         SVC   33
+00001E 1B22                          25          SR    R2,R2           GET SYSTEM LINE COUNT
+000020 4321 004E            0004E    26          IC    R2,78(R1)          FROM COMRG
+000024 5028 0000            00000    27          ST    R2,0(R8)        STORE SYS.LINE.CT. IN FORTRAN
+000028 D207 9000 1000 00000 00000    28          MVC   0(8,R9),0(R1)   MOVE DATE TO FORTRAN
+                                     29          RETURN (14,12)        RESTORE REGISTERS AND RETURN
+                                     30+* 360N-CL-453 RETURN   CHANGE LEVEL 3-0
+00002E 98EC D00C            0000C    31+         LM    14,12,12+4*(14+2-(14+2)/16*16)(13)
+000032 07FE                          32+         BR    14
+                                     33          END
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC LNKEDT
+
+JOB  DEMORAND  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST   AUTOLINK   ILFIBCOM
+LIST   AUTOLINK   ILFADCON
+LIST   AUTOLINK   ILFFINT
+LIST   AUTOLINK   ILFFIOCS
+LIST   AUTOLINK   IJJCPD1
+LIST   AUTOLINK   ILFUNTAB
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        PHASE***  006000  006000  009F67  1B 06 4  CSECT     MAINPGM   006000  006000
+
+                                                   CSECT     FORDOS    006728  006728
+
+                                                   CSECT     ILFIBCOM  006760  006760
+                                                      ENTRY  IBCOM#    006760
+                                                      ENTRY  READSW    0075F0
+                                                   *  ENTRY  OPSYS     007494
+                                                      ENTRY  INTSW     0075F2
+                                                      ENTRY  PDPAR     007408
+                                                      ENTRY  DUMPSW#   007392
+                                                   *  ENTRY  IJTINTSW  0075F2
+                                                      ENTRY  IOSWF     006851
+
+                                                   CSECT     RANDU     006570  006570
+
+                                                   CSECT     ILFFINT   008820  008820
+                                                      ENTRY  SAVERR    008D00
+
+                                                   CSECT     ILFADCON  007740  007740
+                                                      ENTRY  ILFFCVEO  00822A
+                                                      ENTRY  ILFFCVLO  0079C2
+                                                      ENTRY  ILFFCVIO  007D00
+                                                      ENTRY  ILFFCVCO  008444
+                                                      ENTRY  ILFFCVAO  007932
+                                                      ENTRY  ILFFCVZO  00788C
+                                                      ENTRY  INT6SW    008808
+
+                                                   CSECT     ILFFIOCS  008DF0  008DF0
+                                                      ENTRY  ILFFBORG  009A7C
+                                                      ENTRY  ILFBFORG  009A78
+                                                      ENTRY  IJSYSLO   009B88
+                                                   *  ENTRY  ADIOCR#   0099CC
+                                                   *  ENTRY  UBRSAVE   009A74
+
+                                                   CSECT     ILFUNTAB  009E68  009E68
+
+                                                   CSECT     IJJCPD1   009C70  009C70
+                                                   *  ENTRY  IJJCPD1N  009C70
+                                                   *  ENTRY  IJJCPD3   009C70
+
+                                                   CSECT     IJ2L0005  009C00  008DF0
+// EXEC
+
+03/29/70          RANDOMLY CHOSEN SALESPEOPLE          PAGE   1
+
+   DEPT     SLS#       NAME
+
+ 14  30     311     GROLER, GRACE B.
+ 27  50     568     LYNNE, GERALD H.
+ 40  80     102     BELLSLEY, ARTHUR A.
+  2  10     185     DONNEMAN, THOMAS M.
+ 49  90     740     RIDGEFIELD, SUZY S.
+ 32  60     409     ICK, MICK W.
+ 47  90     315     HALE, ALAN A.
+  1  10       4     ACHER, WILLIAM C.
+ 34  60     825     TILLMAN, DON M.
+ 44  80     921     ULL, GEORGE A.
+EOJ DEMORAND                                                            12.14.05,DURATION 00.00.08

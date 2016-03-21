@@ -1,0 +1,859 @@
+
+ASSGN SYS001,X'192'
+ASSGN SYS002,X'192'
+ASSGN SYS003,X'192'
+ASSGN SYSLNK,X'192'
+// JOB MIGR03A   RE-ALLOC DOSRES                                        00.00.21
+* CREATE PRIVATE RELO AND SOURCE ON SPOOL1 FOR EMULATORS
+// DLBL IJSYSRL,'DOS.SYSRLB.FILE.VOLUME.3',99/365,SD
+// EXTENT SYSRLB,SPOOL1,1,1,3320,100
+// DLBL IJSYSSL,'DOS.SYSSLB.FILE.VOLUME.3',99/365,SD
+// EXTENT SYSSLB,SPOOL1,1,1,3420,560
+// ASSGN SYSRLB,X'191'
+// ASSGN SYSSLB,X'191'
+// EXEC CORGZ
+
+ NEWVOL RL=5(5),SL=28(5)
+PRIVATE DIRECTORY               PRV-RELOCATABLE     PRV-SOURCE STATEMENT
+
+03/29/70                        ---------------DECIMAL----------------------
+
+                                    C  H  R  E          C  H  R  E
+DIRECTORY STARTING ADDRESS        166 00 01           171 00 01
+DIRECTORY NEXT ENTRY              166 00 01 05        171 00 01 05
+DIRECTORY LAST ENTRY              166 04 17 19        171 04 27 09
+
+LIBRARY   STARTING ADDRESS        166 05 01           171 05 01
+LIBRARY   NEXT AVAILABLE ENTRY    166 05 01           171 05 01
+LIBRARY   LAST AVAILABLE ENTRY    170 19 16           198 19 27
+
+                                ---------STATUS INFORMATION-----------------
+
+DIRECTORY ENTRIES ACTIVE           00                  00
+
+LIBRARY   BLOCKS ALLOCATED       1520               14985
+LIBRARY   BLOCKS ACTIVE            00                  00
+LIBRARY   BLOCKS DELETED           00                  00
+LIBRARY   BLOCKS AVAILABLE       1520               14985
+
+AUTOMATIC CONDENSE LIMIT           00                  00
+
+LIBRARY   ALLOCATED CYLINDERS      05                  28
+DIRECTORY ALLOCATED TRACKS         05                  05
+EOJ MIGR03A                                                             00.00.21,DURATION 00.00.00
+// JOB MIGR03B   LOAD STDLABEL DOSRES                                   00.00.21
+// OPTION STDLABEL
+// DLBL IJSYSLN,'DOS.BG.WORKFILE.LNK',0,SD
+// EXTENT SYSLNK,WRK14A,1,1,1400,300
+// DLBL IJSYS01,'DOS.BG.WORKFILE.001',0,SD
+// EXTENT SYS001,WRK14A,1,1,1700,300
+// DLBL IJSYS02,'DOS.BG.WORKFILE.002',0,SD
+// EXTENT SYS002,WRK14A,1,1,2000,300
+// DLBL IJSYS03,'DOS.BG.WORKFILE.003',0,SD
+// EXTENT SYS003,WRK14A,1,1,2300,300
+// DLBL IJSYS04,'DOS.BG.WORKFILE.004',0,SD
+// EXTENT SYS004,WRK14A,1,1,2600,300
+// DLBL SORTWK1,'DOS.BG.WORKFILE.001',0,SD
+// EXTENT SYS003,WRK14A,1,1,1700,300
+// DLBL SORTWK2,'DOS.BG.WORKFILE.002',0,SD
+// EXTENT SYS004,WRK14A,1,1,2000,300
+// DLBL SORTWK3,'DOS.BG.WORKFILE.003',0,SD
+// EXTENT SYS005,WRK14A,1,1,2300,300
+// DLBL SORTWK4,'DOS.BG.WORKFILE.004',0,SD
+// EXTENT SYS006,WRK14A,1,1,2600,300
+*    SYSTEM RESIDENCE FILE
+// DLBL IJSYSRS,'DOSRES.262.SYSTEM.RESIDENCE',99/365,SD
+// EXTENT SYSRES,DOSRES,1,1,1,3979
+// OPTION USRLABEL
+EOJ MIGR03B                                                             00.00.21,DURATION 00.00.00
+* MOUNT MIGRATE ON X'280'
+// JOB MIGR03C  LOAD RELO & SOURCE FROM RES11B AND RES11C               00.00.21
+// ASSGN SYSIPT,X'280'
+* LOADING ANS COBOL & SORT FROM PRIV RELO ON RES11C
+// EXEC MAINT
+
+    CATALR ILACBD,3.6                 00030                                  0000
+    CATALR ILACBL00,3.6               00059                                  0000
+    CATALR ILACBL01,3.6               00061                                  0000
+    CATALR ILACBL10,3.6               00123                                  0000
+    CATALR ILACBL11,3.6               00115                                  0000
+    CATALR ILACBL12,3.6               00141                                  0000
+    CATALR ILACBL20,3.6               00094                                  0000
+    CATALR ILACBL21,3.6               00117                                  0000
+    CATALR ILACBL22,3.6               00104                                  0000
+    CATALR ILACBL30,3.6               00053                                  0000
+    CATALR ILACBL40,3.6               00156                                  0000
+    CATALR ILACBL50,3.6               00134                                  0000
+    CATALR ILACBL51,3.6               00139                                  0000
+    CATALR ILACBL60,3.6               00108                                  0000
+    CATALR ILACBL61,3.1               00010                                  0000
+    CATALR ILACBL70,3.6               00183                                  0000
+    CATALR ILBDABX0,3.2               00003                                  0000
+    CATALR ILBDACP0,3.4               00006                                  0000
+    CATALR ILBDANE0,3.2               00003                                  0000
+    CATALR ILBDANF0,3.2               00002                                  0000
+    CATALR ILBDASY0,3.2               00002                                  0000
+    CATALR ILBDATB0,3.2               00002                                  0000
+    CATALR ILBDBID0,3.2               00002                                  0000
+    CATALR ILBDBIE0,3.2               00002                                  0000
+    CATALR ILBDBII0,3.2               00004                                  0000
+    CATALR ILBDCKP0,3.6               00006                                  0000
+    CATALR ILBDCLK0,3.2               00002                                  0000
+    CATALR ILBDCLS0,3.2               00002                                  0000
+    CATALR ILBDCRD0,3.2               00002                                  0000
+    CATALR ILBDDAE0,3.2               00003                                  0000
+    CATALR ILBDDCI0,3.2               00005                                  0000
+    CATALR ILBDDIO0,3.3               00004                                  0000
+    CATALR ILBDDSP0,3.4               00012                                  0000
+    CATALR ILBDDSR0,3.3               00004                                  0000
+    CATALR ILBDDUM0,3.2               00002                                  0000
+    CATALR ILBDEFL0,3.2               00006                                  0000
+    CATALR ILBDETB0,3.2               00004                                  0000
+    CATALR ILBDFMT0,3.2               00003                                  0000
+    CATALR ILBDFPW0,3.2               00005                                  0000
+    CATALR ILBDGPW0,3.2               00002                                  0000
+    CATALR ILBDIDA0,3.2               00002                                  0000
+    CATALR ILBDIDB0,3.3               00002                                  0000
+    CATALR ILBDIDR0,3.2               00008                                  0000
+    CATALR ILBDIDT0,3.2               00004                                  0000
+    CATALR ILBDIFB0,3.2               00003                                  0000
+    CATALR ILBDIFD0,3.2               00005                                  0000
+    CATALR ILBDIML0,3.2               00002                                  0000
+    CATALR ILBDISE0,3.4               00003                                  0000
+    CATALR ILBDISM0,3.6               00003                                  0000
+    CATALR ILBDITB0,3.3               00012                                  0000
+    CATALR ILBDIVL0,3.2               00002                                  0000
+    CATALR ILBDMFT0,3.4               00003                                  0000
+    CATALR ILBDMNS0,3.2               00002                                  0000
+    CATALR ILBDMOV0,3.2               00002                                  0000
+    CATALR ILBDMVE0,3.4               00003                                  0000
+    CATALR ILBDNSL0,3.6               00005                                  0000
+    CATALR ILBDOSY0,3.2               00002                                  0000
+    CATALR ILBDRCR0,3.2               00002                                  0000
+    CATALR ILBDRDI0,3.4               00004                                  0000
+    CATALR ILBDRDS0,3.2               00003                                  0000
+    CATALR ILBDRFM0,3.2               00002                                  0000
+    CATALR ILBDSAE0,3.6               00003                                  0000
+    CATALR ILBDSCH0,3.2               00004                                  0000
+    CATALR ILBDSEM0,3.6               00003                                  0000
+    CATALR ILBDSET0,3.2               00003                                  0000
+    CATALR ILBDSPA0,3.6               00007                                  0000
+    CATALR ILBDSRT0,3.6               00015                                  0000
+    CATALR ILBDSTI0,3.2               00004                                  0000
+    CATALR ILBDTEF0,3.2               00006                                  0000
+    CATALR ILBDTOD0,3.2               00002                                  0000
+    CATALR ILBDTRN0,3.2               00002                                  0000
+    CATALR ILBDUPS0,3.2               00002                                  0000
+    CATALR ILBDUSL0,3.2               00003                                  0000
+    CATALR ILBDUTB0,3.2               00012                                  0000
+    CATALR ILBDVBL0,3.6               00004                                  0000
+    CATALR ILBDVCO0,3.2               00003                                  0000
+    CATALR ILBDVMO0,3.2               00003                                  0000
+    CATALR ILBDVTR0,3.2               00002                                  0000
+    CATALR ILBDWTB0,3.2               00003                                  0000
+    CATALR ILBDXDI0,3.3               00003                                  0000
+    CATALR ILBDXMU0,3.2               00002                                  0000
+    CATALR ILBDXPR0,3.4               00006                                  0000
+    CATALR ILBDXTN0,3.2               00002                                  0000
+    CATALR IJOSMPH0,3.0               00023                                  0000
+    CATALR IJOSMPH1,3.0               00011                                  0000
+    CATALR IJOSMF23,3.0               00009                                  0000
+    CATALR IJOSMV23,3.0               00009                                  0000
+    CATALR IJOSMPH4,3.0               00005                                  0000
+    CATALR IJOSM,3.0                  00006                                  0000
+    CATALR IJOSMERG,3.0               00003                                  0000
+    CATALR IJOSMFOM,3.0               00005                                  0000
+    CATALR IJOSMFVS,3.0               00005                                  0000
+    CATALR IJOSMVOM,3.0               00005                                  0000
+    CATALR IJOSMVOS,3.0               00004                                  0000
+    CATALR IJOSMFOS,3.0               00004                                  0000
+    CATALR IJOSM010,3.4               00022                                  0000
+    CATALR IJOSM101,3.4               00007                                  0000
+    CATALR IJOSM201,3.4               00016                                  0000
+    CATALR IJOSM202,3.4               00020                                  0000
+    CATALR IJOSM402,3.4               00023                                  0000
+    CATALR IJOSM501,3.4               00003                                  0000
+    CATALR IJOSM002,3.4               00006                                  0000
+    CATALR IJOSM003,3.4               00011                                  0000
+    CATALR IJOSM006,3.4               00009                                  0000
+    CATALR IJOSM007,3.4               00017                                  0000
+    CATALR IJOSM009,3.4               00023                                  0000
+    CATALR IJOSM105,3.4               00009                                  0000
+    CATALR IJOSM203,3.5               00015                                  0000
+    CATALR IJOSM301,3.4               00021                                  0000
+    CATALR IJOSM302,3.4               00025                                  0000
+    CATALR IJOSM401,3.4               00019                                  0000
+    CATALR IJOSM102,3.6               00012                                  0000
+    CATALR IJOSM104,3.6               00019                                  0000
+    CATALR IJOSM204,3.6               00019                                  0000
+    CATALR IJOSM001,3.6               00020                                  0000
+    CATALR IJOSM004,3.6               00015                                  0000
+    CATALR IJOSM303,3.7               00021                                  0000
+    CATALR IJOSM304,3.7               00024                                  0000
+    CATALR IJOSM005,3.7               00017                                  0000
+    CATALR IJOSM103,3.9               00023                                  0000
+    CATALR IJOSM008,3.9               00015                                  0000
+// DLBL IJSYSRL,'DOS.SYSRLB.FILE.VOLUME.3',99/365,SD
+// EXTENT SYSRLB,SPOOL1,1,1,3320,100
+// DLBL IJSYSSL,'DOS.SYSSLB.FILE.VOLUME.3',99/365,SD
+// EXTENT SYSSLB,SPOOL1,1,1,3420,560
+// ASSGN SYSRLB,X'191'
+// ASSGN SYSSLB,X'191'
+* LOADING 14XX EMU'S & AUTOTEST FROM PRIVATE RELO
+// EXEC MAINT
+
+    CATALR IIQVT,3.0                  00016                                  0000
+    CATALR IIQOB,3.0                  00009                                  0000
+    CATALR IIQEJ,3.0                  00004                                  0000
+    CATALR IIQCC,3.0                  00009                                  0000
+    CATALR IIQMW,3.0                  00003                                  0000
+    CATALR IIQBF,3.0                  00002                                  0000
+    CATALR IIQSD,3.0                  00003                                  0000
+    CATALR IIQMT,3.0                  00004                                  0000
+    CATALR IIQMTP,3.0                 00004                                  0000
+    CATALR IIQPRE,3.0                 00030                                  0000
+    CATALR IIQPOST,3.0                00027                                  0000
+    CATALR IIQAP,3.0                  00003                                  0000
+    CATALR IIQBY,3.0                  00003                                  0000
+    CATALR IIQCP,3.0                  00004                                  0000
+    CATALR IIQEP,3.0                  00004                                  0000
+    CATALR IIQCN,3.0                  00004                                  0000
+    CATALR IIQDI,3.0                  00006                                  0000
+    CATALR IIQTP,3.0                  00008                                  0000
+    CATALR IIQNT,3.2                  00010                                  0000
+    CATALR IIQMC,3.2                  00004                                  0000
+    CATALR IIQDB,3.2                  00007                                  0000
+    CATALR IIQCF,3.2                  00013                                  0000
+    CATALR IIQDK,3.2                  00010                                  0000
+    CATALR IIQMD,3.2                  00006                                  0000
+    CATALR IIQCS,3.2                  00025                                  0000
+    CATALR IIQUR1,3.2                 00007                                  0000
+    CATALR IIQOA,3.2                  00008                                  0000
+    CATALR IIRVT,3.0                  00016                                  0000
+    CATALR IIROA,3.0                  00008                                  0000
+    CATALR IIROB,3.0                  00009                                  0000
+    CATALR IIREJ,3.0                  00004                                  0000
+    CATALR IIRCC,3.0                  00009                                  0000
+    CATALR IIRMW,3.0                  00003                                  0000
+    CATALR IIRBF,3.0                  00002                                  0000
+    CATALR IIRSD,3.0                  00003                                  0000
+    CATALR IIRMT,3.0                  00004                                  0000
+    CATALR IIRMTP,3.0                 00004                                  0000
+    CATALR IIRPRE,3.0                 00030                                  0000
+    CATALR IIRPOST,3.0                00027                                  0000
+    CATALR IIRCP,3.0                  00010                                  0000
+    CATALR IIRFP,3.0                  00014                                  0000
+    CATALR IIRPR,3.0                  00004                                  0000
+    CATALR IIRST,3.0                  00003                                  0000
+    CATALR IIRDL,3.0                  00013                                  0000
+    CATALR IIRTP,3.0                  00009                                  0000
+    CATALR IIRIS,3.0                  00006                                  0000
+    CATALR IIRDS,3.0                  00006                                  0000
+    CATALR IIRUR,3.1                  00008                                  0000
+    CATALR IIRNT,3.2                  00010                                  0000
+    CATALR IIRMI,3.2                  00007                                  0000
+    CATALR IIRDB,3.2                  00007                                  0000
+    CATALR IIRDK,3.2                  00019                                  0000
+    CATALR IJVTC110,3.0               00013                                  0000
+    CATALR IJVTC410,3.0               00018                                  0000
+    CATALR IJVTC510,3.0               00009                                  0000
+    CATALR IJVTC710,3.0               00013                                  0000
+    CATALR IJVSS110,3.0               00006                                  0000
+    CATALR IJVTE210,3.0               00009                                  0000
+    CATALR IJVSS310,3.0               00006                                  0000
+    CATALR IJVTF110,3.0               00030                                  0000
+    CATALR IJVTG110,3.0               00015                                  0000
+    CATALR IJVTH210,3.0               00010                                  0000
+    CATALR IJVTD110,3.0               00014                                  0000
+    CATALR IJVTD210,3.0               00011                                  0000
+    CATALR IJVTI110,3.0               00007                                  0000
+    CATALR IJVTJ110,3.0               00011                                  0000
+    CATALR IJVTA010,3.0               00005                                  0000
+    CATALR IJVTAB,3.0                 00007                                  0000
+    CATALR IJVPT,3.0                  00021                                  0000
+    CATALR IJVTE110,3.0               00008                                  0000
+    CATALR IJVTC310,3.1               00019                                  0000
+    CATALR IJVLE,3.2                  00087                                  0000
+    CATALR IJVTC210,3.3               00017                                  0000
+    CATALR IJVTH310,3.3               00023                                  0000
+PRIVATE DIRECTORY               PRV-RELOCATABLE     PRV-SOURCE STATEMENT
+
+03/29/70                        ---------------DECIMAL----------------------
+
+                                    C  H  R  E          C  H  R  E
+DIRECTORY STARTING ADDRESS        166 00 01           171 00 01
+DIRECTORY NEXT ENTRY              166 00 04 19        171 00 01 05
+DIRECTORY LAST ENTRY              166 04 17 19        171 04 27 09
+
+LIBRARY   STARTING ADDRESS        166 05 01           171 05 01
+LIBRARY   NEXT AVAILABLE ENTRY    168 16 12           171 05 01
+LIBRARY   LAST AVAILABLE ENTRY    170 19 16           198 19 27
+
+                                ---------STATUS INFORMATION-----------------
+
+DIRECTORY ENTRIES ACTIVE           74                  00
+
+LIBRARY   BLOCKS ALLOCATED       1520               14985
+LIBRARY   BLOCKS ACTIVE           827                  00
+LIBRARY   BLOCKS DELETED           00                  00
+LIBRARY   BLOCKS AVAILABLE        693               14985
+
+AUTOMATIC CONDENSE LIMIT           00                  00
+
+LIBRARY   ALLOCATED CYLINDERS      05                  28
+DIRECTORY ALLOCATED TRACKS         05                  05
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 11 08134              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        07 06 00                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             420                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              504                    17002                    23523
+LIBRARY   BLOCKS DELETED              00                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3976                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+* LOADING 14XX EMU PRIVATE SOURCE
+// EXEC MAINT
+
+         CATALS   A.EU4ER,3.5
+         CATALS   A.EU4RD,3.7
+         CATALS   A.EU4PH,3.7
+         CATALS   A.EU4MS,3.4
+         CATALS   A.EU4EJ,3.4
+         CATALS   A.EU4CG,3.3
+         CATALS   A.EU4FT,3.4
+         CATALS   A.EU4TP,3.6
+         CATALS   A.EU4IN,3.7
+         CATALS   A.EU4OS,3.7
+         CATALS   A.EU4DK,3.7
+         CATALS   A.EU40,3.7
+         CATALS   A.EU4PT,3.5
+         CATALS   Z.EU4SPRGM,3.4
+         CATALS   A.DIAG,3.0
+         CATALS   A.CCB,3.9
+         CATALS   A.COMRG,3.0
+         CATALS   A.EOJ,3.0
+         CATALS   A.EXCP,3.0
+         CATALS   A.EXIT,3.0
+         CATALS   A.FETCH,3.0
+         CATALS   A.GETIME,3.0
+         CATALS   A.LOAD,3.0
+         CATALS   A.PDUMP,3.0
+         CATALS   A.STXIT,3.3
+         CATALS   A.WAIT,3.0
+         CATALS   Z.AT1,3.0
+         CATALS   A.EU3CG,3.4
+         CATALS   A.EU3DK,3.8
+         CATALS   A.EU3EJ,3.7
+         CATALS   A.EU3ER,3.8
+         CATALS   A.EU3FT,3.6
+         CATALS   A.EU3MS,3.5
+         CATALS   A.EU3OS,3.6
+         CATALS   A.EU3PH,3.8
+         CATALS   A.EU3PT,3.8
+         CATALS   A.EU3RD,3.8
+         CATALS   A.EU3TP,3.8
+         CATALS   A.EU30,3.8
+         CATALS   Z.EU3SPRGM,3.5
+         CATALS   Z.SM2,3.0
+         CATALS   A.EMULATOR,3.0
+         CATALS   A.EMSUP,3.0
+         CATALS   A.EMRDR,3.0
+         CATALS   A.EMPNCH,3.0
+         CATALS   A.EMPTR,3.2
+         CATALS   A.EMCNSL,3.0
+         CATALS   A.EMTAPE,3.0
+         CATALS   A.EMDISK,3.0
+         CATALS   A.EMVERIFY,3.0
+         CATALS   A.EMEND,3.2
+         CATALS   A.DIL,3.0
+         CATALS   A.BDIL,3.0
+         CATALS   A.COMP,3.0
+         CATALS   A.ANUM,3.0
+         CATALS   A.MCPU,3.0
+         CATALS   A.MIO,3.0
+         CATALS   A.BIFLAG,3.0
+         CATALS   A.DSUB,3.2
+         CATALS   A.DDUB,3.2
+         CATALS   A.DBIB,3.0
+         CATALS   A.DDTF,3.0
+         CATALS   A.IIQBR,3.0
+         CATALS   A.IIQUR,3.0
+         CATALS   A.IIQCR,3.0
+         CATALS   A.DIIQCR,3.0
+         CATALS   A.IIQID,3.0
+         CATALS   A.IIQEI,3.0
+         CATALS   A.IIQDS,3.0
+         CATALS   A.IIQIU,3.1
+         CATALS   A.IIQOJ,3.0
+         CATALS   A.DECCB,3.0
+         CATALS   A.IIRID,3.0
+         CATALS   A.IIRDCC,3.0
+         CATALS   A.IIRCR,3.0
+         CATALS   A.DIIRCR,3.0
+         CATALS   A.IIREI,3.0
+         CATALS   A.IIRIU,3.0
+         CATALS   A.IIROJ,3.0
+         CATALS   Z.EMSPL01,3.0
+         CATALS   Z.EMSPL01S,3.0
+         CATALS   Z.EMSPL10,3.0
+         CATALS   Z.EMSPL10S,3.0
+PRIVATE DIRECTORY               PRV-RELOCATABLE     PRV-SOURCE STATEMENT
+
+03/29/70                        ---------------DECIMAL----------------------
+
+                                    C  H  R  E          C  H  R  E
+DIRECTORY STARTING ADDRESS        166 00 01           171 00 01
+DIRECTORY NEXT ENTRY              166 00 04 19        171 00 09 08
+DIRECTORY LAST ENTRY              166 04 17 19        171 04 27 09
+
+LIBRARY   STARTING ADDRESS        166 05 01           171 05 01
+LIBRARY   NEXT AVAILABLE ENTRY    168 16 12           197 16 03
+LIBRARY   LAST AVAILABLE ENTRY    170 19 16           198 19 27
+
+                                ---------STATUS INFORMATION-----------------
+
+DIRECTORY ENTRIES ACTIVE           74                  83
+
+LIBRARY   BLOCKS ALLOCATED       1520               14985
+LIBRARY   BLOCKS ACTIVE           827               14339
+LIBRARY   BLOCKS DELETED           00                  00
+LIBRARY   BLOCKS AVAILABLE        693                 646
+
+AUTOMATIC CONDENSE LIMIT           00                  00
+
+LIBRARY   ALLOCATED CYLINDERS      05                  28
+DIRECTORY ALLOCATED TRACKS         05                  05
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 11 08134              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        07 06 00                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             420                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              504                    17002                    23523
+LIBRARY   BLOCKS DELETED              00                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3976                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ MIGR03C                                                             00.00.39,DURATION 00.00.18
+// JOB MIGR03D  LOAD 14XX EMU PHASES, COBOL TRANSIENTS FROM RES11C      00.00.39
+// ASSGN SYSIPT,X'280'
+// OPTION CATAL
+ INCLUDE
+// EXEC LNKEDT
+
+JOB  MIGR03D   03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST   PHASE $$BCOBER,+X'000000'
+LIST   PHASE $$BCOBR1,+X'000000'
+LIST   PHASE $$BFCMUL,+X'000000'
+LIST   PHASE IIQOC,+X'000000'
+LIST   PHASE IIQOD,+X'000000'
+LIST   PHASE IIQOE,+X'000000'
+LIST   PHASE IIQOF,+X'000000'
+LIST   PHASE IIQOG,+X'000000'
+LIST   PHASE IIQOH,+X'000000'
+LIST   PHASE IIQOI,+X'000000'
+LIST   PHASE IIQOK,+X'000000'
+LIST   PHASE $$BIIQBD,+X'000000'
+LIST   PHASE $$BIIQBS,+X'000000'
+LIST   PHASE $$BIIQMW,+X'000000'
+LIST   PHASE $$BIIQSD,+X'000000'
+LIST   PHASE $$BIIQSS,+X'000000'
+LIST   PHASE $$BIIQT1,+X'000000'
+LIST   PHASE $$BIIQT2,+X'000000'
+LIST   PHASE $$BIIQT3,+X'000000'
+LIST   PHASE $$BIIQT4,+X'000000'
+LIST   PHASE $$BIIQT5,+X'000000'
+LIST   PHASE $$BIIQT6,+X'000000'
+LIST   PHASE IIROC,+X'000000'
+LIST   PHASE IIROD,+X'000000'
+LIST   PHASE IIROE,+X'000000'
+LIST   PHASE IIROF,+X'000000'
+LIST   PHASE IIROG,+X'000000'
+LIST   PHASE IIROH,+X'000000'
+LIST   PHASE IIROI,+X'000000'
+LIST   PHASE IIROK,+X'000000'
+LIST   PHASE $$BIIRBD,+X'000000'
+LIST   PHASE $$BIIRBS,+X'000000'
+LIST   PHASE $$BIIRMW,+X'000000'
+LIST   PHASE $$BIIRSD,+X'000000'
+LIST   PHASE $$BIIRT1,+X'000000'
+LIST   PHASE $$BIIRT2,+X'000000'
+LIST   PHASE $$BIIRT3,+X'000000'
+LIST   PHASE $$BIIRT4,+X'000000'
+LIST   PHASE $$BIIRT5,+X'000000'
+LIST   PHASE $$BIIRT6,+X'000000'
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        $$BCOBER  000000  000000  0004AF  07 06 0  CSECT     $$BCOBER  000000  000000
+
+        $$BCOBR1  000000  000000  000211  07 06 1  CSECT     $$BCOBR1  000000  000000
+
+        $$BFCMUL  00009C  000000  00009D  07 06 2  CSECT     $$BFCMUL  000000  000000
+
+        IIQOC     000000  000000  00043B  07 06 3  CSECT     IIQOC     000000  000000
+
+        IIQOD     000000  000000  000507  07 06 4  CSECT     IIQOD     000000  000000
+
+        IIQOE     000000  000000  000406  07 07 1  CSECT     IIQOE     000000  000000
+
+        IIQOF     000000  000000  00061E  07 07 2  CSECT     IIQOF     000000  000000
+
+        IIQOG     000000  000000  000375  07 07 3  CSECT     IIQOG     000000  000000
+
+        IIQOH     000000  000000  0008EB  07 07 4  CSECT     IIQOH     000000  000000
+
+        IIQOI     000000  000000  0004F9  07 08 2  CSECT     IIQOI     000000  000000
+
+        IIQOK     000000  000000  000302  07 08 3  CSECT     IIQOK     000000  000000
+
+        $$BIIQBD  000000  000000  00033F  07 08 4  CSECT     $$BIIQBD  000000  000000
+
+        $$BIIQBS  000000  000000  0003B7  07 09 1  CSECT     $$BIIQBS  000000  000000
+
+        $$BIIQMW  000000  000000  00023B  07 09 2  CSECT     $$BIIQMW  000000  000000
+
+        $$BIIQSD  000000  000000  00038D  07 09 3  CSECT     $$BIIQSD  000000  000000
+
+        $$BIIQSS  000000  000000  0004AF  07 09 4  CSECT     $$BIIQSS  000000  000000
+
+        $$BIIQT1  000000  000000  0003FB  07 0A 1  CSECT     $$BIIQT1  000000  000000
+
+        $$BIIQT2  000000  000000  0003FB  07 0A 2  CSECT     $$BIIQT2  000000  000000
+
+        $$BIIQT3  000000  000000  0003FB  07 0A 3  CSECT     $$BIIQT3  000000  000000
+
+        $$BIIQT4  000000  000000  0003FB  07 0A 4  CSECT     $$BIIQT4  000000  000000
+
+        $$BIIQT5  000000  000000  0003FB  07 0B 1  CSECT     $$BIIQT5  000000  000000
+
+        $$BIIQT6  000000  000000  0003FB  07 0B 2  CSECT     $$BIIQT6  000000  000000
+
+        IIROC     000000  000000  000479  07 0B 3  CSECT     IIROC     000000  000000
+
+        IIROD     000000  000000  000517  07 0B 4  CSECT     IIROD     000000  000000
+
+        IIROE     000000  000000  000464  07 0C 1  CSECT     IIROE     000000  000000
+
+        IIROF     000000  000000  0004A8  07 0C 2  CSECT     IIROF     000000  000000
+
+        IIROG     000000  000000  000351  07 0C 3  CSECT     IIROG     000000  000000
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        IIROH     000000  000000  000863  07 0C 4  CSECT     IIROH     000000  000000
+
+        IIROI     000000  000000  0004AB  07 0D 2  CSECT     IIROI     000000  000000
+
+        IIROK     000000  000000  000312  07 0D 3  CSECT     IIROK     000000  000000
+
+        $$BIIRBD  000000  000000  00036F  07 0D 4  CSECT     $$BIIRBD  000000  000000
+
+        $$BIIRBS  000000  000000  0003EB  07 0E 1  CSECT     $$BIIRBS  000000  000000
+
+        $$BIIRMW  000000  000000  00023B  07 0E 2  CSECT     $$BIIRMW  000000  000000
+
+        $$BIIRSD  000000  000000  000471  07 0E 3  CSECT     $$BIIRSD  000000  000000
+
+        $$BIIRT1  000000  000000  0003FB  07 0E 4  CSECT     $$BIIRT1  000000  000000
+
+        $$BIIRT2  000000  000000  0003FB  07 0F 1  CSECT     $$BIIRT2  000000  000000
+
+        $$BIIRT3  000000  000000  0003FB  07 0F 2  CSECT     $$BIIRT3  000000  000000
+
+        $$BIIRT4  000000  000000  0003FB  07 0F 3  CSECT     $$BIIRT4  000000  000000
+
+        $$BIIRT5  000000  000000  0003FB  07 0F 4  CSECT     $$BIIRT5  000000  000000
+
+        $$BIIRT6  000000  000000  0003FB  07 10 1  CSECT     $$BIIRT6  000000  000000
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 11 11 03              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        07 16 02                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             457                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              543                    17002                    23523
+LIBRARY   BLOCKS DELETED              03                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3934                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ MIGR03D                                                             00.00.40,DURATION 00.00.00
+// JOB LINKASM  LINK THE 44K ASSEMBLER FOR STEP SYSGEN01                00.00.40
+* LINK 44K ASSEMBLER
+// OPTION CATAL
+ INCLUDE IJYASM
+// EXEC LNKEDT
+
+JOB  LINKASM   03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST   INCLUDE IJYASM
+LIST           PHASE     ASSEMBLY,S,NOAUTO                                        0001
+LIST           INCLUDE   IJYF0,(IJYF0RT0,IJYF0MTM,IJYF0SDM,IJYF0GIO)              0002
+LIST           INCLUDE   IJYCM                                                    0003
+LIST           INCLUDE   IJYIN                                                    0004
+LIST           INCLUDE   IJYF2                                                    0005
+LIST           INCLUDE   IJYF1                                                    0006
+LIST           INCLUDE   IJYF0,(IJYF0TDF)                                         0007
+LIST           PHASE     ASSEM3,IJYCMORG,NOAUTO                                   0008
+LIST           INCLUDE   IJYF3                                                    0009
+LIST           PHASE     ASSEM3E,IJYCMORG,NOAUTO                                  0010
+LIST           INCLUDE   IJYF3E                                                   0011
+LIST           PHASE     ASSEM7,IJYF0GIO,NOAUTO                                   0012
+LIST           INCLUDE   IJYRTA                                                   0013
+LIST           INCLUDE   IJYF7I                                                   0014
+LIST           INCLUDE   IJYF7E                                                   0015
+LIST           INCLUDE   IJYF7D                                                   0016
+LIST           INCLUDE   IJYF7X                                                   0017
+LIST           INCLUDE   IJYF7N                                                   0018
+LIST           INCLUDE   IJYF7V                                                   0019
+LIST           INCLUDE   IJYF7L                                                   0020
+LIST           INCLUDE   IJYF7G                                                   0021
+LIST           INCLUDE   IJYF7C                                                   0022
+LIST           INCLUDE   IJYF7S                                                   0023
+LIST           PHASE     ASSEMFI,IJYRTA04,NOAUTO                                  0024
+LIST           INCLUDE   IJYRTB                                                   0025
+LIST           INCLUDE   IJYFI0                                                   0026
+LIST           PHASE     ASSEMF8,IJYFI0,NOAUTO                                    0027
+LIST           INCLUDE   IJYF8I                                                   0028
+LIST           INCLUDE   IJYF8C                                                   0029
+LIST           INCLUDE   IJYF8M                                                   0030
+LIST           INCLUDE   IJYF8A                                                   0031
+LIST           INCLUDE   IJYF8P                                                   0032
+LIST           INCLUDE   IJYF8D                                                   0033
+LIST           INCLUDE   IJYF8V                                                   0034
+LIST           INCLUDE   IJYF8S                                                   0035
+LIST           INCLUDE   IJYF8L                                                   0036
+LIST           INCLUDE   IJYF8N                                                   0037
+LIST           PHASE     ASSEMFPP,IJYFI0,NOAUTO                                   0038
+LIST           INCLUDE   IJYFPP                                                   0039
+LIST           INCLUDE   IJYFD                                                    0040
+LIST           PHASE     ASSEMABT,IJYFI0,NOAUTO                                   0041
+LIST           INCLUDE   IJYABT                                                   0042
+LIST           ENTRY     IJYF1BGN                                                 0043
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        ASSEMBLY  007760  001800  008547  07 10 2  CSECT     IJYF0RT0  001800  001800
+                                                      ENTRY  IJYF0S01  001820
+                                                      ENTRY  IJYF0S02  0018B8
+                                                      ENTRY  IJYF0S03  001950
+                                                      ENTRY  IJYF0ESW  00181C
+                                                   *  ENTRY  IJYF0ABT  001808
+
+                                                   CSECT     IJYF0SDM  001BC8  001800
+
+                                                   CSECT     IJYF0MTM  0019E8  001800
+
+                                                   CSECT     IJYF0GIO  002010  001800
+                                                      ENTRY  IJYF0CHK  002068
+                                                      ENTRY  IJYF0NTE  002116
+                                                      ENTRY  IJYF0PTR  0020C6
+                                                      ENTRY  IJYF0PTW  00208C
+                                                      ENTRY  IJYF0RED  00203C
+                                                      ENTRY  IJYF0WRT  002010
+
+                                                   CSECT     IJYF0TDF  0084A8  007B50
+
+                                                   CSECT     IJYCMCOM  002158  002158
+                                                   *  ENTRY  IJYCMORG  0021B0
+
+                                                   CSECT     IJYINIPT  002CA0  002CA0
+                                                      ENTRY  IJYINBF1  002D1C
+
+                                                   CSECT     IJJCPD2   002DC0  002CA0
+                                                      ENTRY  IJJCPD3   002DC0
+
+                                                   CSECT     IJYINLIB  002ED8  002CA0
+
+                                                   CSECT     IJYF2EDT  003248  003248
+                                                      ENTRY  IJYF2GLD  006B58
+                                                      ENTRY  IJYF2EDC  005244
+                                                      ENTRY  IJYF2DCL  0063D0
+                                                      ENTRY  IJYF2EOF  006906
+                                                      ENTRY  IJYF2ROF  0069FC
+                                                      ENTRY  IJYF2ENT  003250
+                                                      ENTRY  IJYF2GSC  00667E
+
+                                                   CSECT     IJYF1INT  007758  007758
+                                                   *  ENTRY  IJYF1BGN  007760
+
+        ASSEM3    0021B8  0021B0  004137  08 00 3  CSECT     IJYF3000  0021B0  0021B0
+
+        ASSEM3E   0021B8  0021B0  00251F  08 01 4  CSECT     IJYF3E00  0021B0  0021B0
+
+        ASSEM7    003612  002010  007E47  08 02 1  CSECT     IJYRTA    002010  002010
+
+                                                   CSECT     IJJCPDV   002118  002010
+                                                      ENTRY  IJYRTA01  002350
+                                                      ENTRY  IJYRTA02  002438
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+                                                   *  ENTRY  IJJCPDV1  002118
+                                                      ENTRY  IJJCPD0   002118
+                                                      ENTRY  IJJCPD0N  002118
+                                                      ENTRY  IJYRTA03  0024D0
+                                                   *  ENTRY  IJYRTA04  003128
+
+                                                   CSECT     IJYF7I    003128  003128
+
+                                                   CSECT     IJYF7E    003D40  003D40
+                                                      ENTRY  IJYF7E02  003D6C
+                                                      ENTRY  IJYF7E04  003E36
+                                                      ENTRY  IJYF7E05  003F08
+                                                      ENTRY  IJYF7E07  003FFA
+                                                      ENTRY  IJYF7E08  00408E
+                                                      ENTRY  IJYF7E06  003FCE
+                                                      ENTRY  IJYF7E09  004148
+                                                      ENTRY  IJYF7E10  0041D2
+                                                      ENTRY  IJYF7E11  004230
+                                                      ENTRY  IJYF7E12  0042C8
+                                                      ENTRY  IJYF7E03  003DC4
+                                                      ENTRY  IJYF7E01  003D40
+                                                      ENTRY  IJYF7E13  004318
+
+                                                   CSECT     IJYF7D    004720  004720
+
+                                                   CSECT     IJYF7X    005618  005618
+
+                                                   CSECT     IJYF7N    006080  006080
+
+                                                   CSECT     IJYF7S    007AF8  007AF8
+                                                      ENTRY  IJYF7SND  007E48
+                                                      ENTRY  IJYF7S01  007AF8
+                                                      ENTRY  IJYF7S02  007AFE
+                                                      ENTRY  IJYF7S03  007CE4
+
+                                                   CSECT     IJYF7V    006368  006368
+
+                                                   CSECT     IJYF7L    006C30  006C30
+
+                                                   CSECT     IJYF7G    006D00  006D00
+
+                                                   CSECT     IJYF7C    006DF8  006DF8
+
+        ASSEMFI   003858  003128  005B97  08 05 4  CSECT     IJYRTB    003128  003128
+                                                      ENTRY  IJYRTB01  003280
+                                                      ENTRY  IJYRTB02  00340C
+
+                                                   CSECT     IJYFI0    003850  003850
+
+        ASSEMF8   003C44  003850  0085A3  08 07 3  CSECT     IJYF8I    003850  003850
+
+                                                   CSECT     IJYF8C    003E28  003E28
+                                                      ENTRY  IJYF8C01  004054
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+                                                   CSECT     IJYF8M    0041F0  0041F0
+                                                      ENTRY  IJYF8M01  004888
+                                                      ENTRY  IJYF8M02  004A66
+
+                                                   CSECT     IJYF8A    004FB8  004FB8
+                                                      ENTRY  IJYF8A01  005850
+
+                                                   CSECT     IJYF8P    005B70  005B70
+                                                      ENTRY  IJYF8P03  006344
+                                                      ENTRY  IJYF8P02  0061B6
+                                                      ENTRY  IJYF8P04  00659E
+                                                      ENTRY  IJYF8P01  005E0A
+
+                                                   CSECT     IJYF8D    006948  006948
+                                                      ENTRY  IJYF8D01  007360
+                                                      ENTRY  IJYF8D02  0074CC
+
+                                                   CSECT     IJYF8S    007EE0  007EE0
+
+                                                   CSECT     IJYF8V    007668  007668
+
+                                                   CSECT     IJYF8L    007FA0  007FA0
+
+                                                   CSECT     IJYF8N    008070  008070
+
+                                                   CSECT     IJYF8P05  0067B8  005B70
+
+        ASSEMFPP  003858  003850  008AEF  08 0A 3  CSECT     IJYFPP    003850  003850
+
+                                                   CSECT     IJYFD     007338  007338
+                                                      ENTRY  IJYFDEND  008AF0
+
+        ASSEMABT  003858  003850  003E95  08 0D 4  CSECT     IJYABORT  003850  003850
+
+                                                   CSECT     IJ2M0012  003CC0  003850
+
+                                                   CSECT     IJJCPD1N  003CE0  003850
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 11 11 11              56 04 09 05             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        08 14 01                109 12 11                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             465                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE              614                    17002                    23523
+LIBRARY   BLOCKS DELETED              03                       00                       00
+LIBRARY   BLOCKS AVAILABLE          3863                     7478                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ LINKASM                                                             00.00.40,DURATION 00.00.00

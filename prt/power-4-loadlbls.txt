@@ -1,0 +1,10 @@
+
+ASSGN  SYSLST,UA
+// JOB POWER04   POWER LOAD F1 PARSTD                                   14.10.30
+// PAUSE MUST RUN IN F1
+// OPTION PARSTD
+// DLBL   IJSYSIN,'POWER360.STARTUP.JCL',99/365,SD
+// EXTENT SYSRDR,SPOOL1
+// OPTION USRLABEL
+EOJ POWER04                                                             14.11.28,DURATION 00.00.58
+UNBATCH
