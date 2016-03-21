@@ -1,0 +1,1029 @@
+
+// JOB DEMOPLI SAMPLE PL/I PROGRAM                                      12.14.37
+// OPTION LINK,SYM,LISTX
+// EXEC PL/I
+
+         DOS PL/I COMPILER  360N-PL-464 CL3-13             DEMOPLI             03/29/70            PAGE 001
+
+
+                                                    O P T I O N S  L I S T
+
+* PROCESS STMT  (PRINT STATEMENT NUMBER IF ABEND)
+
+OPTIONS TAKEN ARE 60C,LIST,LISTX,SYM,XREF,ERRS,OPT,STMT.
+         DOS PL/I COMPILER  360N-PL-464 CL3-13             DEMOPLI             03/29/70            PAGE 002
+
+
+ /* SAMPLE BUSINESS ORIENTED PL/I PROGRAM */
+
+                     /* SAMPLE BUSINESS ORIENTED PL/I PROGRAM */
+                     /* DEMONSTRATES RECORD ORIENTED I/O */
+     1               REVIEW: PROC OPTIONS (MAIN);
+     2                       DCL GETLC ENTRY,
+                                 1 CARDIN,
+                                   5 IDEPNUM    PIC 'XX',
+                                   5 ISALNUM    PIC 'XXX',
+                                   5 ISALNAM    PIC '(20)X',
+                                   5 IYTDSAL    PIC '99999V99',
+                                   5 ICURSAL    PIC '99999V99',
+                                   5 FILLER1    PIC 'XX',
+                                   5 IMONEMP    PIC '99',
+                                   5 IYTDRET    PIC '9999V99',
+                                   5 ICURRET    PIC '9999V99',
+                                   5 FILLER2    PIC '(25)X',
+                                 CARD CHAR(80) DEFINED CARDIN,
+                                 READER FILE INPUT RECORD
+                                      ENV(MEDIUM(SYS007,2501) BUFFERS(2) F(80)),
+                                 PRINTR FILE OUTPUT STREAM PRINT
+                                      ENV(MEDIUM(SYS009,1403) BUFFERS(2) F(133)),
+                                 SYSLC FIXED DEC(3,0),
+                                 LINES FIXED DEC(3,0),
+                                 PAGE FIXED DEC(5,0) STATIC INIT (0),
+                                 DATE BUILTIN,
+                                 TODAY CHAR(8) STATIC INIT ('  /  /  '),
+                                (WYTDSAL, WCURSAL, WYTDRET, WCURRET) FIXED DEC (7,2),
+                                 WMONEMP FIXED DEC (3,0),
+                                (WSALTOT, WAVESAL) FIXED DEC (7,2),
+                                 WFINTOT FIXED DEC (9,2) STATIC INIT (0);
+     3                       SUBSTR(TODAY,1,2) = SUBSTR(DATE,3,2);
+     4                       SUBSTR(TODAY,4,2) = SUBSTR(DATE,5,2);
+     5                       SUBSTR(TODAY,7,2) = SUBSTR(DATE,1,2);
+     6                       CALL GETLC (SYSLC);
+     7                       OPEN FILE (READER), FILE (PRINTR);
+                             /* IN THIS PL/I SUBSET COMPILER THE ON STATEMENT WILL ONLY
+                                ALLOW A 'GO TO'.  'ENDPAGE' WILL LOOK FOR CHANNEL 12.
+                                THIS WILL IGNORE IT; WE'LL USE A LINE COUNTER INSTEAD. */
+     8                       ON ENDFILE (READER)  GO TO ENDJOB;
+     9                       ON ENDPAGE (PRINTR);
+    10                       ON CONVERSION  GO TO INVALID;
+    11                       CALL HEDING;
+    12               MAINLOP: READ FILE (READER) INTO (CARDIN);
+    13                       IF LINES > SYSLC THEN CALL HEDING;
+                             /* IF THE INPUT RECORD HAS NON-NUMERIC DATA THE 'CONVERSION'
+                                SIGNAL WILL BE RAISED IN THE FOLLOWING GET. */
+    14                       GET STRING (CARD) EDIT
+                                 (WYTDSAL, WCURSAL, WMONEMP, WYTDRET, WCURRET)
+                                 (X(25), 2 F(7,2), X(2), F(2,0), 2 F(6,2));
+    15                       WSALTOT = WYTDSAL - WYTDRET + WCURSAL - WCURRET;
+    16                       WFINTOT = WFINTOT + WSALTOT;
+    17                       IF IMONEMP > 0
+         DOS PL/I COMPILER  360N-PL-464 CL3-13             DEMOPLI             03/29/70            PAGE 003
+
+
+ /* SAMPLE BUSINESS ORIENTED PL/I PROGRAM */
+
+    18                          THEN DO; WAVESAL = WSALTOT / WMONEMP;
+    19                                   PUT FILE (PRINTR) SKIP EDIT
+                                             (IDEPNUM, ISALNUM, ISALNAM, WSALTOT, WMONEMP,
+                                              WAVESAL)
+                                             (3(X(5), A), X(4), F(11,2), X(3), F(4,0),
+                                              X(5), F(11,2));
+    20                                   LINES = LINES + 1; /* INCREMENT LINE COUNTER */
+    21                               END;
+    22                          ELSE DO; PUT FILE (PRINTR) SKIP EDIT
+                                             (IDEPNUM, ISALNUM, ISALNAM, WSALTOT, '0')
+                                             (3(X(5), A), X(4), F(11,2), X(6), A);
+    24                                   LINES = LINES + 1; /* INCREMENT LINE COUNTER */
+    25                               END;
+    26                        GO TO MAINLOP;
+    27               INVALID: PUT FILE (PRINTR) SKIP EDIT
+                                  (IDEPNUM, ISALNUM, ISALNAM, SUBSTR(CARD, 26, 30),
+                                   '**NON-NUMERIC DATA**')
+                                  (4(X(5), A), X(2), A);
+    28                        LINES = LINES + 1; /* INCREMENT LINE COUNTER */
+    29                        GO TO MAINLOP;
+    30               ENDJOB:  PUT FILE (PRINTR) SKIP(2) EDIT
+                                  ('FINAL TOTAL $', WFINTOT, '*')
+                                  (X(30), A, F(12,2), X(1), A);
+    31                        CLOSE FILE (READER), FILE (PRINTR);
+    32               HEDING:  PROC;
+    33                        DCL HEAD1 CHAR(37) STATIC INIT ('A COMPUTER CENTER SALES STATU
+                     S REPORT'),
+                                  HEAD2 CHAR(77) STATIC INIT ('    DEPT. SALESMAN    SALESMA
+                     N                  TOTAL      MONTHS     AVERAGE'),
+                                  HEAD3 CHAR(76) STATIC INIT ('     NO.    NO.       NAME
+                                        SALES       EMP.       SALES');
+    34                        PAGE = PAGE + 1;  /* INCREMENT PAGE COUNTER */
+    35                        IF PAGE > 1  THEN PUT FILE (PRINTR) PAGE;
+    36                        PUT FILE (PRINTR) EDIT (TODAY, HEAD1, 'PAGE', PAGE)
+                                                     (X(4), A, X(6), A, X(8), A, F(4,0));
+    37                        PUT FILE (PRINTR) LINE(3) EDIT (HEAD2) (A);
+    38                        PUT FILE (PRINTR) LINE(4) EDIT (HEAD3) (A);
+    39                        PUT FILE (PRINTR) SKIP;
+    40                        LINES = 5;  /* RESET LINE COUNTER */
+    41               END HEDING;
+    42               END REVIEW;
+         DOS PL/I COMPILER  360N-PL-464 CL3-13             DEMOPLI             03/29/70            PAGE 004
+
+
+                         S Y M B O L     T A B L E     L I S T I N G
+
+ REVIEW                          0100 00 0 ENTRY       ARITHM. DECIMAL FLOAT   6          EXT
+ GETLC                           0101 01 1 ENTRY       ARITHM. DECIMAL FLOAT   6          EXT
+ CARDIN                          0102 01 1 STRUCT.   1                             AUTOM. INT
+ IDEPNUM                         0103 01 1 STRUCT.   2 STRING  UNAL.   CHAR.   2          INT
+ ISALNUM                         0104 01 1 STRUCT.   2 STRING  UNAL.   CHAR.   3          INT
+ ISALNAM                         0105 01 1 STRUCT.   2 STRING  UNAL.   CHAR.  20          INT
+ IYTDSAL                         0106 01 1 STRUCT.   2 PICTURE DECIMAL FIXED  7,2         INT
+ ICURSAL                         0107 01 1 STRUCT.   2 PICTURE DECIMAL FIXED  7,2         INT
+ FILLER1                         0108 01 1 STRUCT.   2 STRING  UNAL.   CHAR.   2          INT
+ IMONEMP                         0109 01 1 STRUCT.   2 PICTURE DECIMAL FIXED  2,0         INT
+ IYTDRET                         010A 01 1 STRUCT.   2 PICTURE DECIMAL FIXED  6,2         INT
+ ICURRET                         010B 01 1 STRUCT.   2 PICTURE DECIMAL FIXED  6,2         INT
+ FILLER2                         010C 01 1 STRUCT.   2 STRING  UNAL.   CHAR.  25          INT
+ CARD                            010D 01 1             STRING  UNAL.   CHAR.  80   DEFIN. INT
+ READER                          010E 01 1             FILE                               EXT
+ PRINTR                          010F 01 1             FILE                               EXT
+ SYSLC                           0110 01 1             ARITHM. DECIMAL FIXED  3,0  AUTOM. INT
+ LINES                           0111 01 1             ARITHM. DECIMAL FIXED  3,0  AUTOM. INT
+ PAGE                            0112 01 1             ARITHM. DECIMAL FIXED  5,0  STATIC INT
+ DATE                                 01 1 BUILTIN
+ TODAY                           0114 01 1             STRING  UNAL.   CHAR.   8   STATIC INT
+ WYTDSAL                         0115 01 1             ARITHM. DECIMAL FIXED  7,2  AUTOM. INT
+ WCURSAL                         0116 01 1             ARITHM. DECIMAL FIXED  7,2  AUTOM. INT
+ WYTDRET                         0117 01 1             ARITHM. DECIMAL FIXED  7,2  AUTOM. INT
+ WCURRET                         0118 01 1             ARITHM. DECIMAL FIXED  7,2  AUTOM. INT
+ WMONEMP                         0119 01 1             ARITHM. DECIMAL FIXED  3,0  AUTOM. INT
+ WSALTOT                         011A 01 1             ARITHM. DECIMAL FIXED  7,2  AUTOM. INT
+ WAVESAL                         011B 01 1             ARITHM. DECIMAL FIXED  7,2  AUTOM. INT
+ WFINTOT                         011C 01 1             ARITHM. DECIMAL FIXED  9,2  STATIC INT
+ MAINLOP                         011D 01 1             LABEL   CONST.                     INT
+ INVALID                         011E 01 1             LABEL   CONST.                     INT
+ ENDJOB                          011F 01 1             LABEL   CONST.                     INT
+ HEDING                          0120 01 1 ENTRY       ARITHM. DECIMAL FLOAT   6          INT
+ HEAD1                           0121 02 2             STRING  UNAL.   CHAR.  37   STATIC INT
+ HEAD2                           0122 02 2             STRING  UNAL.   CHAR.  77   STATIC INT
+ HEAD3                           0123 02 2             STRING  UNAL.   CHAR.  76   STATIC INT
+         DOS PL/I COMPILER  360N-PL-464 CL3-13             DEMOPLI             03/29/70            PAGE 005
+
+
+                        C R O S S     R E F E R E N C E     L I S T I N G
+
+ CARD                            010D 01   14   27
+ CARDIN                          0102 01   12
+ DATE                            0113 01
+ ENDJOB                          011F 01    8   30
+ FILLER1                         0108 01
+ FILLER2                         010C 01
+ GETLC                           0101 01    6
+ HEAD1                           0121 02   36
+ HEAD2                           0122 02   37
+ HEAD3                           0123 02   38
+ HEDING                          0120 01   11   13   32
+ ICURRET                         010B 01
+ ICURSAL                         0107 01
+ IDEPNUM                         0103 01   19   23   27
+ IMONEMP                         0109 01   17
+ INVALID                         011E 01   10   27
+ ISALNAM                         0105 01   19   23   27
+ ISALNUM                         0104 01   19   23   27
+ IYTDRET                         010A 01
+ IYTDSAL                         0106 01
+ LINES                           0111 01   13   20   20   24   24   28   28   40
+ MAINLOP                         011D 01   12   26   29
+ PAGE                            0112 01   34   34   35   36
+ PRINTR                          010F 01    7    9   19   23   27   30   31   35   36   37   38   39
+ READER                          010E 01    7    8   12   31
+ REVIEW                          0100 00    1
+ SYSLC                           0110 01    6   13
+ TODAY                           0114 01    3    4    5   36
+ WAVESAL                         011B 01   18   19
+ WCURRET                         0118 01   14   15
+ WCURSAL                         0116 01   14   15
+ WFINTOT                         011C 01   16   16   30
+ WMONEMP                         0119 01   14   18   19
+ WSALTOT                         011A 01   15   16   18   19   23
+ WYTDRET                         0117 01   14   15
+ WYTDSAL                         0115 01   14   15
+         DOS PL/I COMPILER  360N-PL-464 CL3-13             DEMOPLI             03/29/70            PAGE 006
+
+
+          INTERNAL NAME  OFFSET         TYPE           MODULE OFFSET         OFFSET TABLE
+
+          0100           002C           STATIC         0005B4
+          0101           009C           STATIC         000624
+          0102           0148           AUTOMATIC
+          010D           0148           AUTOMATIC
+          0110           013C           AUTOMATIC
+          0111           013E           AUTOMATIC
+          0112           01F0           STATIC         000778
+          0114           01E8           STATIC         000770
+          0115           0124           AUTOMATIC
+          0116           0128           AUTOMATIC
+          0117           012C           AUTOMATIC
+          0118           0130           AUTOMATIC
+          0119           0140           AUTOMATIC
+          011A           0134           AUTOMATIC
+          011B           0138           AUTOMATIC
+          011C           01F3           STATIC         00077B
+          0120           004C           STATIC         0005D4
+          0121           01F8           STATIC         000780
+          0122           021D           STATIC         0007A5
+          0123           026A           STATIC         0007F2
+         DOS PL/I COMPILER  360N-PL-464 CL3-13             DEMOPLI             03/29/70            PAGE 007
+
+
+ LOC.    OBJECT CODE          LABEL    OP.   OPERANDS
+
+ 000000  05F0                          BALR  F,0
+ 000002                       L'0100'  BEGIN OF BLOCK  01
+ 000002  0700                          BCR   0,0
+ 000004  45E0 F00A                     BAL   E,X'00A'(F)
+ 000008  00000588                      DC    A(N'FFFF')
+ 00000C  58C0 E000                     L     C,X'000'(E)
+ 000010  189F                          LR    9,F
+ 000012  1831                          LR    3,1
+ 000014  58F0 C098                     L     F,N'0011'
+ 000018  05E0                          BALR  E,0
+ 00001A  41E0 E00E                     LA    E,X'00E'(E)
+ 00001E  051F                          BALR  1,F
+ 000020  81                            DC    X'81'
+ 000021  0005B0                        DC    AL3(N'0124')
+ 000024  00000198                      DC    LENGTH OF DSA OF BLOCK 01
+ 000028  4110 C058                     LA    1,X'058'(C)
+ 00002C  58F0 C090                     L     F,N'0016'
+ 000030  05EF                          BALR  E,F
+ 000032  D203 D050 3000                MVC   X'050'(04,D),X'000'(3)
+ 000038  4700 0001                     BC    0,X'001'
+                                                                                          STATEMENT NUMBER  1
+ 00003C  4110 D0E0                     LA    1,X'0E0'(D)
+ 000040  58F0 C050                     L     F,N'0051'
+ 000044  05EF                          BALR  E,F
+ 000046  4150 D0E0                     LA    5,X'0E0'(D)
+ 00004A  5A50 C0C4                     A     5,X'0C4'(C)
+ 00004E  0650                          BCTR  5,0
+ 000050  D201 D0E6 5000                MVC   X'0E6'(02,D),X'000'(5)
+ 000056  4150 C1E8                     LA    5,N'0114'
+ 00005A  5A50 C0CC                     A     5,X'0CC'(C)
+ 00005E  0650                          BCTR  5,0
+ 000060  D201 5000 D0E6                MVC   X'000'(02,5),X'0E6'(D)
+ 000066  4700 0003                     BC    0,X'003'
+                                                                                          STATEMENT NUMBER  3
+ 00006A  4110 D0E0                     LA    1,X'0E0'(D)
+ 00006E  58F0 C050                     L     F,N'0051'
+ 000072  05EF                          BALR  E,F
+ 000074  4150 D0E0                     LA    5,X'0E0'(D)
+ 000078  5A50 C0D0                     A     5,X'0D0'(C)
+ 00007C  0650                          BCTR  5,0
+ 00007E  D201 D0E6 5000                MVC   X'0E6'(02,D),X'000'(5)
+ 000084  4150 C1E8                     LA    5,N'0114'
+ 000088  5A50 C0D4                     A     5,X'0D4'(C)
+ 00008C  0650                          BCTR  5,0
+ 00008E  D201 5000 D0E6                MVC   X'000'(02,5),X'0E6'(D)
+ 000094  4700 0004                     BC    0,X'004'
+                                                                                          STATEMENT NUMBER  4
+ 000098  4110 D0E0                     LA    1,X'0E0'(D)
+ 00009C  58F0 C050                     L     F,N'0051'
+ 0000A0  05EF                          BALR  E,F
+ 0000A2  4150 D0E0                     LA    5,X'0E0'(D)
+         DOS PL/I COMPILER  360N-PL-464 CL3-13             DEMOPLI             03/29/70            PAGE 008
+
+
+ LOC.    OBJECT CODE          LABEL    OP.   OPERANDS
+
+ 0000A6  5A50 C0CC                     A     5,X'0CC'(C)
+ 0000AA  0650                          BCTR  5,0
+ 0000AC  D201 D0E6 5000                MVC   X'0E6'(02,D),X'000'(5)
+ 0000B2  4150 C1E8                     LA    5,N'0114'
+ 0000B6  5A50 C0D8                     A     5,X'0D8'(C)
+ 0000BA  0650                          BCTR  5,0
+ 0000BC  D201 5000 D0E6                MVC   X'000'(02,5),X'0E6'(D)
+ 0000C2  4700 0005                     BC    0,X'005'
+                                                                                          STATEMENT NUMBER  5
+ 0000C6  41E0 D13C                     LA    E,N'0110'
+ 0000CA  90EE D058                     STM   E,E,X'058'(D)
+ 0000CE  9280 D058                     MVI   X'058'(D),X'80'
+ 0000D2  180D                          LR    0,D
+ 0000D4  58F0 C09C                     L     F,N'0101'
+ 0000D8  4110 D058                     LA    1,X'058'(D)
+ 0000DC  05EF                          BALR  E,F
+ 0000DE  4700 0006                     BC    0,X'006'
+                                                                                          STATEMENT NUMBER  6
+ 0000E2  4110 C010                     LA    1,X'010'(C)
+ 0000E6  58F0 C08C                     L     F,N'0018'
+ 0000EA  05EF                          BALR  E,F
+ 0000EC  4700 0007                     BC    0,X'007'
+                                                                                          STATEMENT NUMBER  7
+ 0000F0  4120 C028                     LA    2,N'0124'
+ 0000F4  4A20 2000                     AH    2,X'000'(2)
+ 0000F8  D201 C0A4 D048                MVC   X'0A4'(02,C),X'048'(D)
+ 0000FE  4150 C0A0                     LA    5,X'0A0'(C)
+ 000102  5050 2004                     ST    5,X'004'(2)
+ 000106  9208 2004                     MVI   X'004'(2),X'08'
+ 00010A  4700 0008                     BC    0,X'008'
+                                                                                          STATEMENT NUMBER  8
+ 00010E  4120 C028                     LA    2,N'0124'
+ 000112  4A20 2000                     AH    2,X'000'(2)
+ 000116  9200 200C                     MVI   X'00C'(2),X'00'
+ 00011A  4700 0009                     BC    0,X'009'
+                                                                                          STATEMENT NUMBER  9
+ 00011E  4120 C028                     LA    2,N'0124'
+ 000122  4A20 2000                     AH    2,X'000'(2)
+ 000126  D201 C0AC D048                MVC   X'0AC'(02,C),X'048'(D)
+ 00012C  4150 C0A8                     LA    5,X'0A8'(C)
+ 000130  5050 2014                     ST    5,X'014'(2)
+ 000134  9288 2014                     MVI   X'014'(2),X'88'
+ 000138  4700 0010                     BC    0,X'010'
+                                                                                          STATEMENT NUMBER  10
+ 00013C  58F0 C04C                     L     F,N'0120'
+ 000140  1B11                          SR    1,1
+ 000142  05EF                          BALR  E,F
+ 000144  4700 0011                     BC    0,X'011'
+                                                                                          STATEMENT NUMBER  11
+ 000148  4110 D148            L'011D'  LA    1,N'0102'
+ 00014C  5010 C020                     ST    1,X'020'(C)
+         DOS PL/I COMPILER  360N-PL-464 CL3-13             DEMOPLI             03/29/70            PAGE 009
+
+
+ LOC.    OBJECT CODE          LABEL    OP.   OPERANDS
+
+ 000150  4110 C018                     LA    1,X'018'(C)
+ 000154  58F0 C054                     L     F,N'0038'
+ 000158  05EF                          BALR  E,F
+ 00015A  4700 0012                     BC    0,X'012'
+                                                                                          STATEMENT NUMBER  12
+ 00015E  F911 D13E D13C                CP    N'0111'(2),N'0110'(2)
+ 000164  47D0 9178                     BC    D,N'0128'
+ 000168  4700 0013                     BC    0,X'013'
+                                                                                          STATEMENT NUMBER  13
+ 00016C  180D                          LR    0,D
+ 00016E  58F0 C04C                     L     F,N'0120'
+ 000172  1B11                          SR    1,1
+ 000174  05EF                          BALR  E,F
+ 000176  4700 0013                     BC    0,X'013'
+                                                                                          STATEMENT NUMBER  13
+ 00017A  58F0 C074            L'0128'  L     F,N'0024'
+ 00017E  4120 C0E4                     LA    2,X'0E4'(C)
+ 000182  4110 D148                     LA    1,N'0102'
+ 000186  05EF                          BALR  E,F
+ 000188  4110 C101                     LA    1,X'101'(C)
+ 00018C  58F0 C080                     L     F,N'0021'
+ 000190  05EF                          BALR  E,F
+ 000192  4120 C11C                     LA    2,X'11C'(C)
+ 000196  58F0 C07C                     L     F,N'0022'
+ 00019A  4110 D124                     LA    1,N'0115'
+ 00019E  05EF                          BALR  E,F
+ 0001A0  4110 D128                     LA    1,N'0116'
+ 0001A4  05EF                          BALR  E,F
+ 0001A6  4120 C11F                     LA    2,X'11F'(C)
+ 0001AA  4110 D140                     LA    1,N'0119'
+ 0001AE  05EF                          BALR  E,F
+ 0001B0  4120 C11C                     LA    2,X'11C'(C)
+ 0001B4  4110 D12C                     LA    1,N'0117'
+ 0001B8  05EF                          BALR  E,F
+ 0001BA  4110 D130                     LA    1,N'0118'
+ 0001BE  05EF                          BALR  E,F
+ 0001C0  4700 0014                     BC    0,X'014'
+                                                                                          STATEMENT NUMBER  14
+ 0001C4  F843 D0E0 D124                ZAP   X'0E0'(5,D),N'0115'(4)
+ 0001CA  FB43 D0E0 D12C                SP    X'0E0'(5,D),N'0117'(4)
+ 0001D0  F844 D0E5 D0E0                ZAP   X'0E5'(5,D),X'0E0'(5,D)
+ 0001D6  FA43 D0E5 D128                AP    X'0E5'(5,D),N'0116'(4)
+ 0001DC  D203 D134 D130                MVC   N'011A'(04),N'0118'
+ 0001E2  FB34 D134 D0E5                SP    N'011A'(4),X'0E5'(5,D)
+ 0001E8  9701 D137                     XI    N'011A'+3,X'01'
+ 0001EC  4700 0015                     BC    0,X'015'
+                                                                                          STATEMENT NUMBER  15
+ 0001F0  FA43 C1F3 D134                AP    N'011C'(5),N'011A'(4)
+ 0001F6  4700 0016                     BC    0,X'016'
+                                                                                          STATEMENT NUMBER  16
+ 0001FA  F211 D0D8 D171                PACK  X'0D8'(2,D),N'0102'+29(2)
+         DOS PL/I COMPILER  360N-PL-464 CL3-13             DEMOPLI             03/29/70            PAGE 010
+
+
+ LOC.    OBJECT CODE          LABEL    OP.   OPERANDS
+
+ 000200  F811 D0D8 D0D8                ZAP   X'0D8'(2,D),X'0D8'(2,D)
+ 000206  F910 D0D8 C100                CP    X'0D8'(2,D),X'100'(1,C)
+ 00020C  47D0 92B8                     BC    D,N'0129'
+ 000210  4700 0017                     BC    0,X'017'
+                                                                                          STATEMENT NUMBER  17
+ 000214  4700 0017                     BC    0,X'017'
+                                                                                          STATEMENT NUMBER  17
+ 000218  F853 D068 D134                ZAP   X'068'(6,D),N'011A'(4)
+ 00021E  D703 D06E D06E                XC    X'06E'(04,D),X'06E'(D)
+ 000224  94F0 D06D                     NI    X'06D'(D),X'F0'
+ 000228  D100 D071 D137                MVN   X'071'(01,D),N'011A'+3
+ 00022E  FD91 D068 D140                DP    X'068'(A,D),N'0119'(2)
+ 000234  D207 D058 D068                MVC   X'058'(08,D),X'068'(D)
+ 00023A  D100 D05B D05F                MVN   X'05B'(01,D),X'05F'(D)
+ 000240  D203 D138 D058                MVC   N'011B'(04),X'058'(D)
+ 000246  4700 0018                     BC    0,X'018'
+                                                                                          STATEMENT NUMBER  18
+ 00024A  4110 C024                     LA    1,X'024'(C)
+ 00024E  58F0 C078                     L     F,N'0023'
+ 000252  05EF                          BALR  E,F
+ 000254  4110 C122                     LA    1,X'122'(C)
+ 000258  58F0 C068                     L     F,N'002F'
+ 00025C  05EF                          BALR  E,F
+ 00025E  4110 C125                     LA    1,X'125'(C)
+ 000262  58F0 C080                     L     F,N'0021'
+ 000266  05EF                          BALR  E,F
+ 000268  4120 C0E6                     LA    2,X'0E6'(C)
+ 00026C  58F0 C084                     L     F,N'0020'
+ 000270  4110 D148                     LA    1,N'0102'
+ 000274  05EF                          BALR  E,F
+ 000276  4120 C0E8                     LA    2,X'0E8'(C)
+ 00027A  4110 D14A                     LA    1,N'0102'+2
+ 00027E  05EF                          BALR  E,F
+ 000280  4120 C0EA                     LA    2,X'0EA'(C)
+ 000284  4110 D14D                     LA    1,N'0102'+5
+ 000288  05EF                          BALR  E,F
+ 00028A  4120 C11C                     LA    2,X'11C'(C)
+ 00028E  4110 D134                     LA    1,N'011A'
+ 000292  05EF                          BALR  E,F
+ 000294  4120 C11F                     LA    2,X'11F'(C)
+ 000298  4110 D140                     LA    1,N'0119'
+ 00029C  05EF                          BALR  E,F
+ 00029E  4120 C11C                     LA    2,X'11C'(C)
+ 0002A2  4110 D138                     LA    1,N'011B'
+ 0002A6  05EF                          BALR  E,F
+ 0002A8  4700 0019                     BC    0,X'019'
+                                                                                          STATEMENT NUMBER  19
+ 0002AC  FA10 D13E C0F2                AP    N'0111'(2),X'0F2'(1,C)
+ 0002B2  4700 0020                     BC    0,X'020'
+                                                                                          STATEMENT NUMBER  20
+ 0002B6  47F0 931E                     BC    F,N'012A'
+         DOS PL/I COMPILER  360N-PL-464 CL3-13             DEMOPLI             03/29/70            PAGE 011
+
+
+ LOC.    OBJECT CODE          LABEL    OP.   OPERANDS
+
+ 0002BA  4700 0022            L'0129'  BC    0,X'022'
+                                                                                          STATEMENT NUMBER  22
+ 0002BE  4110 C024                     LA    1,X'024'(C)
+ 0002C2  58F0 C078                     L     F,N'0023'
+ 0002C6  05EF                          BALR  E,F
+ 0002C8  4110 C122                     LA    1,X'122'(C)
+ 0002CC  58F0 C068                     L     F,N'002F'
+ 0002D0  05EF                          BALR  E,F
+ 0002D2  4110 C149                     LA    1,X'149'(C)
+ 0002D6  58F0 C080                     L     F,N'0021'
+ 0002DA  05EF                          BALR  E,F
+ 0002DC  4120 C0E6                     LA    2,X'0E6'(C)
+ 0002E0  58F0 C084                     L     F,N'0020'
+ 0002E4  4110 D148                     LA    1,N'0102'
+ 0002E8  05EF                          BALR  E,F
+ 0002EA  4120 C0E8                     LA    2,X'0E8'(C)
+ 0002EE  4110 D14A                     LA    1,N'0102'+2
+ 0002F2  05EF                          BALR  E,F
+ 0002F4  4120 C0EA                     LA    2,X'0EA'(C)
+ 0002F8  4110 D14D                     LA    1,N'0102'+5
+ 0002FC  05EF                          BALR  E,F
+ 0002FE  4120 C11C                     LA    2,X'11C'(C)
+ 000302  4110 D134                     LA    1,N'011A'
+ 000306  05EF                          BALR  E,F
+ 000308  4120 C0EC                     LA    2,X'0EC'(C)
+ 00030C  4110 C1BC                     LA    1,X'1BC'(C)
+ 000310  05EF                          BALR  E,F
+ 000312  4700 0023                     BC    0,X'023'
+                                                                                          STATEMENT NUMBER  23
+ 000316  FA10 D13E C0F2                AP    N'0111'(2),X'0F2'(1,C)
+ 00031C  4700 0024                     BC    0,X'024'
+                                                                                          STATEMENT NUMBER  24
+ 000320  47F0 9146            L'012A'  BC    F,N'011D'
+ 000324  4700 0026                     BC    0,X'026'
+                                                                                          STATEMENT NUMBER  26
+ 000328  4110 C024            L'011E'  LA    1,X'024'(C)
+ 00032C  58F0 C078                     L     F,N'0023'
+ 000330  05EF                          BALR  E,F
+ 000332  4110 C122                     LA    1,X'122'(C)
+ 000336  58F0 C068                     L     F,N'002F'
+ 00033A  05EF                          BALR  E,F
+ 00033C  4110 C165                     LA    1,X'165'(C)
+ 000340  58F0 C080                     L     F,N'0021'
+ 000344  05EF                          BALR  E,F
+ 000346  4120 C0E6                     LA    2,X'0E6'(C)
+ 00034A  58F0 C084                     L     F,N'0020'
+ 00034E  4110 D148                     LA    1,N'0102'
+ 000352  05EF                          BALR  E,F
+ 000354  4120 C0E8                     LA    2,X'0E8'(C)
+ 000358  4110 D14A                     LA    1,N'0102'+2
+ 00035C  05EF                          BALR  E,F
+         DOS PL/I COMPILER  360N-PL-464 CL3-13             DEMOPLI             03/29/70            PAGE 012
+
+
+ LOC.    OBJECT CODE          LABEL    OP.   OPERANDS
+
+ 00035E  4120 C0EA                     LA    2,X'0EA'(C)
+ 000362  4110 D14D                     LA    1,N'0102'+5
+ 000366  05EF                          BALR  E,F
+ 000368  4700 0027                     BC    0,X'027'
+                                                                                          STATEMENT NUMBER  27
+ 00036C  4150 D148                     LA    5,N'0102'
+ 000370  5A50 C0DC                     A     5,X'0DC'(C)
+ 000374  0650                          BCTR  5,0
+ 000376  D21D D0E0 5000                MVC   X'0E0'(1E,D),X'000'(5)
+ 00037C  4120 C0EE                     LA    2,X'0EE'(C)
+ 000380  4110 D0E0                     LA    1,X'0E0'(D)
+ 000384  05EF                          BALR  E,F
+ 000386  4700 0027                     BC    0,X'027'
+                                                                                          STATEMENT NUMBER  27
+ 00038A  4120 C0EA                     LA    2,X'0EA'(C)
+ 00038E  4110 C1BD                     LA    1,X'1BD'(C)
+ 000392  05EF                          BALR  E,F
+ 000394  4700 0027                     BC    0,X'027'
+                                                                                          STATEMENT NUMBER  27
+ 000398  FA10 D13E C0F2                AP    N'0111'(2),X'0F2'(1,C)
+ 00039E  4700 0028                     BC    0,X'028'
+                                                                                          STATEMENT NUMBER  28
+ 0003A2  47F0 9146                     BC    F,N'011D'
+ 0003A6  4700 0029                     BC    0,X'029'
+                                                                                          STATEMENT NUMBER  29
+ 0003AA  4700 0030            L'011F'  BC    0,X'030'
+                                                                                          STATEMENT NUMBER  30
+ 0003AE  5850 C0C8                     L     5,X'0C8'(C)
+ 0003B2  5050 D100                     ST    5,X'100'(D)
+ 0003B6  4700 0030                     BC    0,X'030'
+                                                                                          STATEMENT NUMBER  30
+ 0003BA  4110 C024                     LA    1,X'024'(C)
+ 0003BE  58F0 C078                     L     F,N'0023'
+ 0003C2  05EF                          BALR  E,F
+ 0003C4  D200 C17B D103                MVC   X'17B'(01,C),X'103'(D)
+ 0003CA  4110 C179                     LA    1,X'179'(C)
+ 0003CE  58F0 C068                     L     F,N'002F'
+ 0003D2  05EF                          BALR  E,F
+ 0003D4  4110 C17C                     LA    1,X'17C'(C)
+ 0003D8  58F0 C080                     L     F,N'0021'
+ 0003DC  05EF                          BALR  E,F
+ 0003DE  4120 C0F0                     LA    2,X'0F0'(C)
+ 0003E2  58F0 C084                     L     F,N'0020'
+ 0003E6  4110 C1D1                     LA    1,X'1D1'(C)
+ 0003EA  05EF                          BALR  E,F
+ 0003EC  4120 C191                     LA    2,X'191'(C)
+ 0003F0  4110 C1F3                     LA    1,N'011C'
+ 0003F4  05EF                          BALR  E,F
+ 0003F6  4120 C0EC                     LA    2,X'0EC'(C)
+ 0003FA  4110 C1BD                     LA    1,X'1BD'(C)
+ 0003FE  05EF                          BALR  E,F
+         DOS PL/I COMPILER  360N-PL-464 CL3-13             DEMOPLI             03/29/70            PAGE 013
+
+
+ LOC.    OBJECT CODE          LABEL    OP.   OPERANDS
+
+ 000400  4700 0030                     BC    0,X'030'
+                                                                                          STATEMENT NUMBER  30
+ 000404  4110 C010                     LA    1,X'010'(C)
+ 000408  58F0 C088                     L     F,N'0019'
+ 00040C  05EF                          BALR  E,F
+ 00040E  4700 0031                     BC    0,X'031'
+                                                                                          STATEMENT NUMBER  31
+ 000412  58D0 D004                     L     D,X'004'(D)
+ 000416  98EC D00C                     LM    E,C,X'00C'(D)
+ 00041A  07FE                          BCR   F,E
+ 00041C                                END OF BLOCK
+ 00041C  4700 0042                     BC    0,X'042'
+                                                                                          STATEMENT NUMBER  42
+ 000420                       L'0120'  BEGIN OF BLOCK  02
+ 000420  90EC D00C                     STM   E,C,X'00C'(D)
+ 000424  0700                          BCR   0,0
+ 000426  05E0                          BALR  E,0
+ 000428  45E0 E008                     BAL   E,X'008'(E)
+ 00042C  00000588                      DC    A(N'FFFF')
+ 000430  58C0 E000                     L     C,X'000'(E)
+ 000434  189F                          LR    9,F
+ 000436  1831                          LR    3,1
+ 000438  58F0 C094                     L     F,N'0012'
+ 00043C  05E0                          BALR  E,0
+ 00043E  41E0 E00E                     LA    E,X'00E'(E)
+ 000442  051F                          BALR  1,F
+ 000444  83                            DC    X'83'
+ 000445  0005D0                        DC    AL3(N'0125')
+ 000448  00000068                      DC    LENGTH OF DSA OF BLOCK 02
+ 00044C  58B0 D04C                     L     B,X'04C'(D)
+ 000450  D203 D050 3000                MVC   X'050'(04,D),X'000'(3)
+ 000456  4700 0032                     BC    0,X'032'
+                                                                                          STATEMENT NUMBER  32
+ 00045A  FA20 C1F0 C0F2                AP    N'0112'(3),X'0F2'(1,C)
+ 000460  4700 0034                     BC    0,X'034'
+                                                                                          STATEMENT NUMBER  34
+ 000464  F920 C1F0 C0F2                CP    N'0112'(3),X'0F2'(1,C)
+ 00046A  47D0 906A                     BC    D,N'012B'
+ 00046E  4700 0035                     BC    0,X'035'
+                                                                                          STATEMENT NUMBER  35
+ 000472  4110 C024                     LA    1,X'024'(C)
+ 000476  58F0 C078                     L     F,N'0023'
+ 00047A  05EF                          BALR  E,F
+ 00047C  4110 C0F2                     LA    1,X'0F2'(C)
+ 000480  58F0 C068                     L     F,N'002F'
+ 000484  05EF                          BALR  E,F
+ 000486  4700 0035                     BC    0,X'035'
+                                                                                          STATEMENT NUMBER  35
+ 00048A  4110 C024            L'012B'  LA    1,X'024'(C)
+ 00048E  58F0 C078                     L     F,N'0023'
+ 000492  05EF                          BALR  E,F
+         DOS PL/I COMPILER  360N-PL-464 CL3-13             DEMOPLI             03/29/70            PAGE 014
+
+
+ LOC.    OBJECT CODE          LABEL    OP.   OPERANDS
+
+ 000494  4110 C194                     LA    1,X'194'(C)
+ 000498  58F0 C080                     L     F,N'0021'
+ 00049C  05EF                          BALR  E,F
+ 00049E  4120 C0F4                     LA    2,X'0F4'(C)
+ 0004A2  58F0 C084                     L     F,N'0020'
+ 0004A6  4110 C1E8                     LA    1,N'0114'
+ 0004AA  05EF                          BALR  E,F
+ 0004AC  4120 C0F6                     LA    2,X'0F6'(C)
+ 0004B0  4110 C1F8                     LA    1,N'0121'
+ 0004B4  05EF                          BALR  E,F
+ 0004B6  4120 C0F8                     LA    2,X'0F8'(C)
+ 0004BA  4110 C1DE                     LA    1,X'1DE'(C)
+ 0004BE  05EF                          BALR  E,F
+ 0004C0  4120 C1B1                     LA    2,X'1B1'(C)
+ 0004C4  4110 C1F0                     LA    1,N'0112'
+ 0004C8  05EF                          BALR  E,F
+ 0004CA  4700 0036                     BC    0,X'036'
+                                                                                          STATEMENT NUMBER  36
+ 0004CE  5850 C0C4                     L     5,X'0C4'(C)
+ 0004D2  5050 D060                     ST    5,X'060'(D)
+ 0004D6  4700 0037                     BC    0,X'037'
+                                                                                          STATEMENT NUMBER  37
+ 0004DA  4110 C024                     LA    1,X'024'(C)
+ 0004DE  58F0 C078                     L     F,N'0023'
+ 0004E2  05EF                          BALR  E,F
+ 0004E4  D200 C1B6 D063                MVC   X'1B6'(01,C),X'063'(D)
+ 0004EA  4110 C1B4                     LA    1,X'1B4'(C)
+ 0004EE  58F0 C064                     L     F,N'0030'
+ 0004F2  05EF                          BALR  E,F
+ 0004F4  4110 C1B7                     LA    1,X'1B7'(C)
+ 0004F8  58F0 C080                     L     F,N'0021'
+ 0004FC  05EF                          BALR  E,F
+ 0004FE  4120 C0FA                     LA    2,X'0FA'(C)
+ 000502  58F0 C084                     L     F,N'0020'
+ 000506  4110 C21D                     LA    1,N'0122'
+ 00050A  05EF                          BALR  E,F
+ 00050C  4700 0037                     BC    0,X'037'
+                                                                                          STATEMENT NUMBER  37
+ 000510  5850 C0D4                     L     5,X'0D4'(C)
+ 000514  5050 D060                     ST    5,X'060'(D)
+ 000518  4700 0038                     BC    0,X'038'
+                                                                                          STATEMENT NUMBER  38
+ 00051C  4110 C024                     LA    1,X'024'(C)
+ 000520  58F0 C078                     L     F,N'0023'
+ 000524  05EF                          BALR  E,F
+ 000526  D200 C1B6 D063                MVC   X'1B6'(01,C),X'063'(D)
+ 00052C  4110 C1B4                     LA    1,X'1B4'(C)
+ 000530  58F0 C064                     L     F,N'0030'
+ 000534  05EF                          BALR  E,F
+ 000536  4110 C1B7                     LA    1,X'1B7'(C)
+ 00053A  58F0 C080                     L     F,N'0021'
+         DOS PL/I COMPILER  360N-PL-464 CL3-13             DEMOPLI             03/29/70            PAGE 015
+
+
+ LOC.    OBJECT CODE          LABEL    OP.   OPERANDS
+
+ 00053E  05EF                          BALR  E,F
+ 000540  4120 C0FC                     LA    2,X'0FC'(C)
+ 000544  58F0 C084                     L     F,N'0020'
+ 000548  4110 C26A                     LA    1,N'0123'
+ 00054C  05EF                          BALR  E,F
+ 00054E  4700 0038                     BC    0,X'038'
+                                                                                          STATEMENT NUMBER  38
+ 000552  4110 C024                     LA    1,X'024'(C)
+ 000556  58F0 C078                     L     F,N'0023'
+ 00055A  05EF                          BALR  E,F
+ 00055C  4110 C122                     LA    1,X'122'(C)
+ 000560  58F0 C068                     L     F,N'002F'
+ 000564  05EF                          BALR  E,F
+ 000566  4700 0039                     BC    0,X'039'
+                                                                                          STATEMENT NUMBER  39
+ 00056A  D201 B13E C0FE                MVC   N'0111'(02),X'0FE'(C)
+ 000570  4700 0040                     BC    0,X'040'
+                                                                                          STATEMENT NUMBER  40
+ 000574  58D0 D004                     L     D,X'004'(D)
+ 000578  98EC D00C                     LM    E,C,X'00C'(D)
+ 00057C  07FE                          BCR   F,E
+ 00057E                                END OF BLOCK
+ 00057E  0700                          BCR   0,0
+ 000580  4700 0041                     BC    0,X'041'
+                                                                                          STATEMENT NUMBER  41
+ 000584                                DS    CL0004
+
+                              L'FFFF'  STATIC STORAGE
+ 000588  0000300040005000     L'0004'  DC    X'0000300040005000'
+         60007000                      DC    X'60007000'
+ 000594  00000000             L'0006'  DC    X'00000000'
+ 000598  00                   L'018A'  DC    X'00'
+ 000599  000000                        DC    VL3(N'010E')
+ 00059C  80                            DC    X'80'
+ 00059D  000000                        DC    VL3(N'010F')
+ 0005A0  5B                   L'018B'  DC    X'5B'
+ 0005A1  000000                        DC    VL3(N'010E')
+ 0005A4  00000050                      DC    X'00000050'
+ 0005A8  00000000                      DC    X'00000000'
+ 0005AC  A2                   L'0159'  DC    X'A2'
+ 0005AD  000000                        DC    VL3(N'010F')
+ 0005B0  000800F8             L'0124'  DC    X'000800F8'
+ 0005B4  00000002             L'0100'  DC    A(N'0100')
+ 0005B8  0A                            DC    X'0A'
+ 0005B9  000000                        DC    VL3(N'010E')
+ 0005BC  00000000                      DC    X'00000000'
+ 0005C0  0B                            DC    X'0B'
+ 0005C1  000000                        DC    VL3(N'010F')
+ 0005C4  00000000                      DC    X'00000000'
+ 0005C8  0600000080000000              DC    X'0600000080000000'
+ 0005D0  000800F8             L'0125'  DC    X'000800F8'
+         DOS PL/I COMPILER  360N-PL-464 CL3-13             DEMOPLI             03/29/70            PAGE 016
+
+
+ LOC.    OBJECT CODE          LABEL    OP.   OPERANDS
+
+ 0005D4  00000420             L'0120'  DC    A(N'0120')
+ 0005D8  00000000             L'0051'  DC    V(N'0051')
+ 0005DC  00000000             L'0038'  DC    V(N'0038')
+ 0005E0                       L'0005'  DC    X''
+ 0005E0  0F                   L'0037'  DC    X'0F'
+ 0005E1  000000                        DC    VL3(N'0037')
+ 0005E4  0D                   L'0035'  DC    X'0D'
+ 0005E5  000000                        DC    VL3(N'0035')
+ 0005E8  0B                   L'0033'  DC    X'0B'
+ 0005E9  000000                        DC    VL3(N'0033')
+ 0005EC  08                   L'0030'  DC    X'08'
+ 0005ED  000000                        DC    VL3(N'0030')
+ 0005F0  07                   L'002F'  DC    X'07'
+ 0005F1  000000                        DC    VL3(N'002F')
+ 0005F4  04                   L'002C'  DC    X'04'
+ 0005F5  000000                        DC    VL3(N'002C')
+ 0005F8  82                   L'002A'  DC    X'82'
+ 0005F9  000000                        DC    VL3(N'002A')
+ 0005FC  00000000             L'0024'  DC    V(N'0024')
+ 000600  00000000             L'0023'  DC    V(N'0023')
+ 000604  00000000             L'0022'  DC    V(N'0022')
+ 000608  00000000             L'0021'  DC    V(N'0021')
+ 00060C  00000000             L'0020'  DC    V(N'0020')
+ 000610  00000000             L'0019'  DC    V(N'0019')
+ 000614  00000000             L'0018'  DC    V(N'0018')
+ 000618  00000000             L'0016'  DC    V(N'0016')
+ 00061C  00000000             L'0012'  DC    V(N'0012')
+ 000620  00000000             L'0011'  DC    V(N'0011')
+ 000624  00000000             L'0101'  DC    V(N'0101')
+ 000628  00000002             L'0152'  DC    A(N'0100')
+ 00062C  000003A8                      DC    X'000003A8'
+ 000630  00000002             L'0153'  DC    A(N'0100')
+ 000634  00000326                      DC    X'00000326'
+ 000638  0000000000000000     L'0001'  DC    X'0000000000000000'
+ 000640  FFFFFFFFFFFFFFFF     L'0002'  DC    X'FFFFFFFFFFFFFFFF'
+ 000648  00FEFFFF             L'000A'  DC    X'00FEFFFF'
+ 00064C  00000003             L'012E'  DC    X'00000003'
+ 000650  00000002             L'012F'  DC    X'00000002'
+ 000654  00000001             L'012C'  DC    X'00000001'
+ 000658  00000005             L'0132'  DC    X'00000005'
+ 00065C  00000004             L'0130'  DC    X'00000004'
+ 000660  00000007             L'0134'  DC    X'00000007'
+ 000664  0000001A             L'013B'  DC    X'0000001A'
+ 000668  0000001E             L'013C'  DC    X'0000001E'
+ 00066C  3050                 L'0154'  DC    X'3050'
+ 00066E  3002                 L'015C'  DC    X'3002'
+ 000670  3003                 L'015D'  DC    X'3003'
+ 000672  3014                 L'015E'  DC    X'3014'
+ 000674  3001                 L'0169'  DC    X'3001'
+ 000676  301E                 L'0170'  DC    X'301E'
+ 000678  300D                 L'0175'  DC    X'300D'
+         DOS PL/I COMPILER  360N-PL-464 CL3-13             DEMOPLI             03/29/70            PAGE 017
+
+
+ LOC.    OBJECT CODE          LABEL    OP.   OPERANDS
+
+ 00067A  1C03                 L'0179'  DC    X'1C03'
+ 00067C  3008                 L'017C'  DC    X'3008'
+ 00067E  3025                 L'017D'  DC    X'3025'
+ 000680  3004                 L'017E'  DC    X'3004'
+ 000682  304D                 L'0183'  DC    X'304D'
+ 000684  304C                 L'0187'  DC    X'304C'
+ 000686  005C                 L'0143'  DC    X'005C'
+ 000688  0C                   L'000B'  DC    X'0C'
+ 000689  1C00190080021007     L'0155'  DC    X'1C00190080021007'
+         0480C01C00020010              DC    X'0480C01C00020010'
+         0200808002100604              DC    X'0200808002100604'
+         80C0F0                        DC    X'80C0F0'
+ 0006A4  080782               L'0156'  DC    X'080782'
+ 0006A7  080380               L'0157'  DC    X'080380'
+ 0006AA  1C0101               L'015A'  DC    X'1C0101'
+ 0006AD  80031C0005003000     L'015B'  DC    X'80031C0005003000'
+         0000C01C00040010              DC    X'0000C01C00040010'
+         0B04801C00030010              DC    X'0B04801C00030010'
+         0400801C00050010              DC    X'0400801C00050010'
+         0B0480F0                      DC    X'0B0480F0'
+ 0006D1  80031C0005003000     L'0164'  DC    X'80031C0005003000'
+         0000C01C00040010              DC    X'0000C01C00040010'
+         0B04801C00060030              DC    X'0B04801C00060030'
+         000000F0                      DC    X'000000F0'
+ 0006ED  80041C0005003000     L'016C'  DC    X'80041C0005003000'
+         0000C01C00020030              DC    X'0000C01C00020030'
+         000000F0                      DC    X'000000F0'
+ 000701  1C01E4               L'0173'  DC    X'1C01E4'
+ 000704  1C001E0030000000     L'0174'  DC    X'1C001E0030000000'
+         100C04801C000100              DC    X'100C04801C000100'
+         30000000F0                    DC    X'30000000F0'
+ 000719  080982               L'0176'  DC    X'080982'
+ 00071C  1C00040030000000     L'017B'  DC    X'1C00040030000000'
+         1C00060030000000              DC    X'1C00060030000000'
+         1C00080030000000              DC    X'1C00080030000000'
+         10040080F0                    DC    X'10040080F0'
+ 000739  080580               L'017F'  DC    X'080580'
+ 00073C  2001E4               L'0181'  DC    X'2001E4'
+ 00073F  30000000F0           L'0182'  DC    X'30000000F0'
+ 000744                       L'0003'  DC    C'0**NON-NUMERIC DATA**FINAL TOTAL'
+ 000764                                DC    C' $PAGE'
+                                       END
+         DOS PL/I COMPILER  360N-PL-464 CL3-13             DEMOPLI             03/29/70            PAGE 018
+
+
+  SYMBOL   TYPE   ESID    ADDR    LENGTH  ESID      EXTERNAL SYMBOL TABLE
+
+ READER     SD    0001   000000   0000F0
+ IJCFZII3   ER    0002
+ IJKTXCF    ER    0003
+ PRINTR     SD    0004   000000   00015A
+ IJDFAZIZ   ER    0005
+ REVIEW     SD    0001   000000   000840
+ GETLC      ER    0002
+ READER     ER    0003
+ PRINTR     ER    0004
+ IJKSZCA    ER    0005
+ IJKSZCM    ER    0006
+ IJKSZCN    ER    0007
+ IJKSZLM    ER    0008
+ IJKTOPM    ER    0009
+ IJKTCLM    ER    000A
+ IJKTFDM    ER    000B
+ IJKTFMM    ER    000C
+ IJKTGDS    ER    000D
+ IJKTSTM    ER    000E
+ IJKTGDI    ER    000F
+ IJKVPCM    ER    0010
+ IJKVECM    ER    0011
+ IJKTSTR    ER    0012
+ IJKTLCM    ER    0013
+ IJKVCPM    ER    0014
+ IJKVCEM    ER    0015
+ IJKSYSA    ER    0016
+ IJKTCBM    ER    0017
+ IJKSDTM    ER    0018
+ IJKSZBA    ER    0019
+         DOS PL/I COMPILER  360N-PL-464 CL3-13             DEMOPLI             03/29/70            PAGE 019
+
+
+  BLOCK     LENGTH OF DSA      BLOCKTABLE
+
+   01        0198
+   02        0068
+         DOS PL/I COMPILER  360N-PL-464 CL3-13             DEMOPLI             03/29/70            PAGE 020
+
+
+  5W01I    SUCCESSFUL   COMPILATION
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+GETLC     SD  01 000000 000030
+       GET SYSTEM LINE COUNT FOR PL/I                                                                          PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+000000                                2 GETLC    CSECT
+000001                                3 R1       EQU   1
+000002                                4 R2       EQU   2
+000009                                5 R9       EQU   9
+00000F                                6 R15      EQU   15
+000000                                7          USING *,R15
+                                      8          SAVE  (14,12)          SAVE PL/I'S REGISTERS
+                                      9+* 360N-CL-453 SAVE     CHANGE LEVEL 3-8                             3-8
+000000 90EC D00C            0000C    10+         STM   14,12,12+4*(14+2-(14+2)/16*16)(13)
+000004 5891 0000            00000    11          L     R9,0(R1)         GET ADDRESS OF PL/I'S PASSED FIELD
+                                     12          COMRG
+                                     13+* 360N-CL-453 COMRG    CHANGE LEVEL 3-0
+000008 5810 0014            00014    14+         L     1,20
+00000C 0A21                          15+         SVC   33
+00000E 1B22                          16          SR    R2,R2
+000010 4321 004E            0004E    17          IC    R2,78(R1)        GET SYSTEM LINE COUNT
+000014 4E20 F028            00028    18          CVD   R2,DOUBLE
+000018 F817 9000 F028 00000 00028    19          ZAP   0(2,R9),DOUBLE      AND MOVE TO PL/I
+                                     20          RETURN (14,12)         RESTORE PL/I'S REGISTERS AND RETURN
+                                     21+* 360N-CL-453 RETURN   CHANGE LEVEL 3-0
+00001E 98EC D00C            0000C    22+         LM    14,12,12+4*(14+2-(14+2)/16*16)(13)
+000022 07FE                          23+         BR    14
+000028                               24 DOUBLE   DS    D
+                                     25          END
+                                             CROSS-REFERENCE                                                   PAGE    1
+
+
+SYMBOL    LEN  VALUE  DEFN     REFERENCES                                                                       03/29/70
+
+DOUBLE   00008 000028 00024   0018  0019
+GETLC    00001 000000 00002
+R1       00001 000001 00003   0011  0017
+R15      00001 00000F 00006   0007
+R2       00001 000002 00004   0016  0016  0017  0018
+R9       00001 000009 00005   0011  0019
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC LNKEDT
+
+JOB  DEMOPLI   03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST   AUTOLINK   IJCFZII3
+LIST   AUTOLINK   IJDFAZIZ
+LIST   AUTOLINK   IJKSDTM
+LIST   AUTOLINK   IJKSYSA
+LIST   AUTOLINK   IJJCPD1N
+LIST   AUTOLINK   IJKSZBA
+LIST   AUTOLINK   IJKSZLM
+LIST   AUTOLINK   IJKTCBM
+LIST   AUTOLINK   IJKTFDM
+LIST   AUTOLINK   IJKTFMM
+LIST   AUTOLINK   IJKTGDI
+LIST   AUTOLINK   IJKTLCM
+LIST   AUTOLINK   IJKTXCF
+LIST   AUTOLINK   IJKVCEM
+LIST   AUTOLINK   IJKVCPM
+LIST   AUTOLINK   IJKVECM
+LIST   AUTOLINK   IJKVPCM
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        PHASE***  006250  006000  008A43  1B 06 4  CSECT     READER    006000  006000
+
+                                                   CSECT     IJCFZII3  006AC0  006AC0
+
+                                                   CSECT     IJKTXCF   0080D0  0080D0
+                                                      ENTRY  IJKTXCE   008210
+                                                   *  ENTRY  IJKTXCR   0080F8
+                                                   *  ENTRY  IJKTXCW   008102
+
+                                                   CSECT     PRINTR    0060F0  0060F0
+
+                                                   CSECT     IJDFAZIZ  006B48  006B48
+
+                                                   CSECT     REVIEW    006250  006250
+
+                                                   CSECT     GETLC     006A90  006A90
+
+                                                   CSECT     IJKSZCN   006F60  006F60
+                                                      ENTRY  IJKSZCA   00718E
+                                                      ENTRY  IJKSZCM   007196
+                                                      ENTRY  IJKTOPM   0071C8
+                                                      ENTRY  IJKTCLM   0071D8
+                                                      ENTRY  IJKSZBA   007192
+                                                   *  ENTRY  IJKSZCI   006FF2
+                                                   *  ENTRY  IJKSZCP   007120
+                                                      ENTRY  IJKSZCS   007016
+                                                   *  ENTRY  IJKSZCT   0071B6
+                                                   *  ENTRY  IJKTRNS   0073C0
+                                                      ENTRY  IJKZWSA   007248
+                                                   *  ENTRY  IJKZWSI   00736C
+
+                                                   CSECT     IJKSZLM   007670  007670
+
+                                                   CSECT     IJKTFDM   007900  007900
+
+                                                   CSECT     IJKTFMM   007AE0  007AE0
+                                                      ENTRY  IJKTFMR   007AF4
+
+                                                   CSECT     IJKTSTM   007D60  007D60
+                                                      ENTRY  IJKTSTR   007F64
+                                                      ENTRY  IJKTLCM   007FEC
+                                                      ENTRY  IJKTSTN   007DDA
+
+                                                   CSECT     IJKTGDI   007BA8  007BA8
+                                                      ENTRY  IJKTGDS   007BC4
+                                                   *  ENTRY  IJKTGDO   007BB0
+
+                                                   CSECT     IJKVPCM   008A00  008A00
+
+                                                   CSECT     IJKVECM   008868  008868
+
+                                                   CSECT     IJKVCPM   008790  008790
+
+                                                   CSECT     IJKVCEM   008390  008390
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+                                                   CSECT     IJKSYSA   006C68  006C68
+
+                                                   CSECT     IJKTCBM   0076B0  0076B0
+
+                                                   CSECT     IJKSDTM   006C28  006C28
+
+                                                   CSECT     IJJCPD1N  006DA0  006DA0
+                                                   *  ENTRY  IJJCPD3   006DA0
+// ASSGN SYS007,X'00C'
+// ASSGN SYS009,X'00E'
+// EXEC
+    03/29/70      A COMPUTER CENTER SALES STATUS REPORT        PAGE   1
+
+    DEPT. SALESMAN    SALESMAN                  TOTAL      MONTHS     AVERAGE
+     NO.    NO.       NAME                      SALES       EMP.       SALES
+
+     10     004     ACHER, WILLIAM C.           3674.25      4          918.56
+     40     027     ALHOUER, ELAINE E.         -4943.87      6         -823.97
+
+                              FINAL TOTAL $    -1269.62 *
+EOJ DEMOPLI                                                             12.14.43,DURATION 00.00.05

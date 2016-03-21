@@ -1,0 +1,5 @@
+# DISTRIB08 Initialize 2314 WRK14A on 192
+stop                                   # Halt CPU, required for IPL
+devinit 280 tape/k360n-ma108a.aws ro   # mount DOS/360 distrib vol 1 read-only
+ipl 280                                # IPL init disk
+devinit 00c jcl/distrib08.jcl          # initialize WRK14A

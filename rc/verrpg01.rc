@@ -1,0 +1,3 @@
+# Verify RPG
+devinit e prt/verify-5-rpg1.txt crlf
+devinit c jcl/verrpg01.jcl

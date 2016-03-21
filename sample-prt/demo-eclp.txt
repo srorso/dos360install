@@ -1,0 +1,660 @@
+
+// JOB DEMOECLP ECLIPTIC COORDINATE TABLE                               12.10.54
+// OPTION LINK
+// EXEC ASSEMBLY
+
+ECLP                                          EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+ECLIPTIC  SD  01 005000 0004ED
+ILFIBCOM  LD     00517E         01
+IBCOM#    LD     00517E         01
+INTSW     LD     0051F4         01
+DSIN      ER  02
+IJDFAPZW  ER  03
+IJDFAPZW  SD  04 0054F0 000112
+IJDFAZZW  LD     0054F0         04
+ECLP   ECLIPTIC COORDINATE TABLE                                                                               PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      2 * SAMPLE DOS ASSEMBLER LANGUAGE PROGRAM
+                                      3 * DEMONSTRATES TRAPPING PROGRAM AND INTERVAL TIMER INTERRUPTIONS
+                                      4 * DEMONSTRATES DOUBLE PRECISION FLOATING POINT INSTRUCTIONS
+                                      5 * DEMONSTRATES CALLING A FORTRAN IV FUNCTION
+                                      6 * USES PRINTER ASA CHARACTERS
+                                      7 *        PRINT NOGEN
+005000                                8 ECLIPTIC START X'5000'
+                                      9          ENTRY ILFIBCOM,IBCOM#,INTSW
+000000                               10 R0       EQU   0
+000001                               11 R1       EQU   1
+000002                               12 R2       EQU   2
+000003                               13 R3       EQU   3
+000004                               14 R4       EQU   4
+000005                               15 R5       EQU   5
+000006                               16 R6       EQU   6
+000007                               17 R7       EQU   7
+000008                               18 R8       EQU   8
+000009                               19 R9       EQU   9
+00000A                               20 R10      EQU   10
+00000B                               21 R11      EQU   11
+00000C                               22 R12      EQU   12
+00000D                               23 R13      EQU   13
+00000E                               24 R14      EQU   14
+00000F                               25 R15      EQU   15
+000000                               26 FR0      EQU   0
+000002                               27 FR2      EQU   2
+000004                               28 FR4      EQU   4
+000006                               29 FR6      EQU   6
+005000 05C0                          30          BALR  R12,0
+005002                               31          USING *,R12
+                                     32          STXIT PC,THATSALL,SAVEXIT     TRAP PROGRAM CHECK INTERRUPTIONS
+                                     33+* 360N-CL-453  STXIT  CHANGE LEVEL 3-3                              3-3
+005002                               34+         DC    0H'0'
+005002 5810 C2C6            052C8    35+         L     1,=A(SAVEXIT)
+005006 5800 C2CA            052CC    36+         L     0,=A(THATSALL)
+00500A 0A10                          37+         SVC   16
+                                     38          STXIT IT,THATSALL,SAVEXIT     END PROGRAM WITH DUMP AFTER
+                                     39+* 360N-CL-453  STXIT  CHANGE LEVEL 3-3                              3-3
+00500C                               40+         DC    0H'0'
+00500C 5810 C2C6            052C8    41+         L     1,=A(SAVEXIT)
+005010 5800 C2CA            052CC    42+         L     0,=A(THATSALL)
+005014 0A12                          43+         SVC   18
+                                     44          SETIME 15                       15 SECONDS IF NOT DONE
+                                     45+* 360N-CL-453 SETIME   CHANGE LEVEL 3-0
+005016 5810 C2CE            052D0    46+         L     1,=A(15)
+00501A 5C00 C2D2            052D4    47+         M     0,=F'76800' CONVERT TO 1/300 SECOND  IN BIT 23
+00501E 0A0A                          48+         SVC   10
+005020 6800 C1DE            051E0    49          LD    FR0,TWOPI               PI
+005024 6C00 C26E            05270    50          MD    FR0,=D'2'                TIMES 2
+005028 6000 C1DE            051E0    51          STD   FR0,TWOPI                 IS 2 PI
+                                     52          OPEN  PRINTER
+ECLP   ECLIPTIC COORDINATE TABLE                                                                               PAGE    2
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                     53+* 360N-CL-453 OPEN     CHANGE LEVEL 3-3                             3-3
+00502C                               54+         CNOP  0,4
+00502C                               55+         DC    0F'0'
+00502C 4110 C276            05278    56+         LA    1,=C'$$BOPEN '
+005030 4500 C036            05038    57+IJJO0004 BAL   0,*+4+4*(2-1)
+005034 00005438                      58+         DC    A(PRINTER)
+005038 0A02                          59+         SVC   2
+00503A 9240 C318      0531A          60          MVI   PRINTOUT,C' '           CLEAR PRINT LINE
+00503E D283 C319 C318 0531B 0531A    61          MVC   PRINTOUT+1(132),PRINTOUT
+005044 D21A C34D C2F6 0534F 052F8    62          MVC   PRINTOUT+53(27),=C'ECLIPTIC  COORDINATE  TABLE'
+00504A 92F1 C318      0531A          63          MVI   PRINTOUT,C'1'           START ON NEW PAGE
+00504E 4520 C18E            05190    64          BAL   R2,PRINT                PRINT HEADING
+005052 D275 C322 C1F5 05324 051F7    65          MVC   PRINTOUT+10(118),HEADING2
+005058 9260 C318      0531A          66          MVI   PRINTOUT,C'-'           TRIPLE SPACE
+00505C 4520 C18E            05190    67          BAL   R2,PRINT                PRINT COLUMN HEADINGS
+005060 D204 C31C C311 0531E 05313    68          MVC   PRINTOUT+4(5),=C'HOURS'
+005066 4520 C18E            05190    69          BAL   R2,PRINT
+                                     70 *
+00506A 41A0 0018            00018    71          LA    R10,24                  LOOP FOR 24 HOURS
+00506E                               72 LOOP     EQU   *
+00506E 4180 C323            05325    73          LA    R8,PRINTOUT+11          START AT BEGINNING OF LINE
+005072 4190 000C            0000C    74          LA    R9,12                   LOOP TWELVE PARTS OF HOUR
+005076 D205 C31B C2E6 0531D 052E8    75          MVC   PRINTOUT+3(6),=X'40202021F0F0'  MOVE HOURS
+00507C DE03 C31B C1F3 0531D 051F5    76          ED    PRINTOUT+3(4),HOURS
+005082                               77 LOOP1    EQU   *
+005082 6860 C1D6            051D8    78          LD    FR6,MIN
+005086 6D60 C27E            05280    79          DD    FR6,=D'12'              GET FRAC. OF HOUR
+00508A 6A60 C1CE            051D0    80          AD    FR6,HRS                 PLUS HOURS
+00508E 6C60 C1DE            051E0    81          MD    FR6,TWOPI               TIMES TWO PI
+005092 6D60 C286            05288    82          DD    FR6,=D'24'              GET RADIAN VALUE FROM 0 TO 2 PI
+005096 6060 C39E            053A0    83          STD   FR6,DOUBLE              STORE RADIAN VALUE
+00509A 41D0 C3A6            053A8    84          LA    R13,SAVEAREA            GET SINE
+                                     85          CALL  DSIN,(DOUBLE)             ANSWER RETURNED IN FPR0
+                                     86+* 360N-CL-453  CALL  CHANGE LEVEL 3-9                               3-9
+00509E                               87+         CNOP  2,4
+00509E 58F0 C2D6            052D8    88+         L     15,=V(DSIN)
+0050A2 41E0 C0AA            050AC    89+         LA    14,*+6+4*1
+0050A6 051F                          90+         BALR  1,15
+0050A8 000053A0                      91+         DC    A(DOUBLE)
+0050A8                               92+         ORG   *-4 3-7
+0050A8 80                            93+         DC    X'80' 3-7
+0050AC                               94+         ORG   *+3 3-9
+0050AC 6C00 C28E            05290    95          MD    FR0,=D'23.44305'        ALLOW FOR EARTH'S TILT
+0050B0 6C00 C296            05298    96          MD    FR0,=D'3600'            TO GET DEGREE SECONDS (60 X 60)
+0050B4 2200                          97          LTDR  FR0,FR0                 ROUND OFF
+0050B6 4740 C0C0            050C2    98          BM    *+12
+0050BA 6A00 C29E            052A0    99          AD    FR0,=D'.5'
+0050BE 47F0 C0C4            050C6   100          B     *+8
+0050C2 6B00 C29E            052A0   101          SD    FR0,=D'.5'
+0050C6 2820                         102          LDR   FR2,FR0                 SAVE SIGN
+0050C8 2000                         103          LPDR  FR0,FR0            GET ABSOLUTE VALUE (ENSURE POSITIVE)
+ECLP   ECLIPTIC COORDINATE TABLE                                                                               PAGE    3
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+0050CA 6E00 C1E6            051E8   104          AW    FR0,DCONS               CONVERT FP TO BINARY
+0050CE 6000 C39E            053A0   105          STD   FR0,DOUBLE
+0050D2 5810 C3A2            053A4   106          L     R1,DOUBLE+4
+0050D6 2222                         107          LTDR  FR2,FR2                 IF FP NEGATIVE,
+0050D8 47B0 C0DC            050DE   108          BNM   *+6
+0050DC 1111                         109          LNR   R1,R1                     MAKE BINARY NEGATIVE
+0050DE 1841                         110          LR    R4,R1                   SAVE SIGN
+0050E0 1011                         111          LPR   R1,R1              GET ABSOLUTE VALUE (ENSURE POSITIVE)
+0050E2 1700                         112          XR    R0,R0
+0050E4 5D00 C2DA            052DC   113          D     R0,=F'60'
+0050E8 4E00 C39E            053A0   114          CVD   R0,DOUBLE               GET DECL. DEGREE SECONDS
+0050EC D201 C1F0 C3A4 051F2 053A6   115          MVC   RESULT+2(2),DOUBLE+6    XXXX0SSF
+0050F2 1700                         116          XR    R0,R0
+0050F4 5D00 C2DA            052DC   117          D     R0,=F'60'
+0050F8 4E00 C39E            053A0   118          CVD   R0,DOUBLE               GET DECL. DEGREE MINUTES
+0050FC F121 C1EE C3A4 051F0 053A6   119          MVO   RESULT(3),DOUBLE+6(2)   00MMFSSF
+005102 F121 C1EE C1EE 051F0 051F0   120          MVO   RESULT(3),RESULT(2)     000MMSSF
+005108 4E10 C39E            053A0   121          CVD   R1,DOUBLE               GET DECL. DEGREES
+00510C 5810 C3A2            053A4   122          L     R1,DOUBLE+4             0000DDDF
+005110 8810 0004            00004   123          SRL   R1,4                    00000DDD
+005114 8910 0014            00014   124          SLL   R1,20                   DDD00000
+005118 5610 C1EE            051F0   125          O     R1,RESULT               DDDMMSSF
+00511C 5010 C1EE            051F0   126          ST    R1,RESULT               STORE PACKED RESULT
+005120 1244                         127          LTR   R4,R4                   IF BINARY NEGATIVE,
+005122 47B0 C12A            0512C   128          BNM   *+10
+005126 D100 C1F1 C316 051F3 05318   129          MVN   RESULT+3(1),=X'0D'        INDICATE PACKED NEGATIVE
+00512C D209 8000 C2EC 00000 052EE   130          MVC   0(10,R8),=X'402021204B20204B2020'
+005132 4118 0003            00003   131          LA    R1,3(R8)
+005136 DF09 8000 C1EE 00000 051F0   132          EDMK  0(10,R8),RESULT
+00513C 47B0 C144            05146   133          BNM   *+10                    IF NEGATIVE,
+005140 0610                         134          BCTR  R1,0
+005142 9260 1000      00000         135          MVI   0(R1),C'-'                PUT MINUS IN FRONT
+005146 4188 000A            0000A   136          LA    R8,10(R8)               POINT TO NEXT SLOT ON PRINT LINE
+00514A 6840 C1D6            051D8   137          LD    FR4,MIN          BUMP MINUTES TO NEXT TWELFTH OF AN HOUR
+00514E 6A40 C2A6            052A8   138          AD    FR4,=D'1'
+005152 6040 C1D6            051D8   139          STD   FR4,MIN
+005156 4690 C080            05082   140          BCT   R9,LOOP1
+00515A 92F0 C318      0531A         141          MVI   PRINTOUT,C'0'           DOUBLE SPACE
+00515E 4520 C18E            05190   142          BAL   R2,PRINT                PRINT THE HOUR LINE
+005162 6840 C1CE            051D0   143          LD    FR4,HRS                 BUMP HOUR BY ONE
+005166 6A40 C2A6            052A8   144          AD    FR4,=D'1'
+00516A 6040 C1CE            051D0   145          STD   FR4,HRS
+00516E D707 C1D6 C1D6 051D8 051D8   146          XC    MIN,MIN                 START MINUTES AT ZERO
+005174 FA10 C1F3 C317 051F5 05319   147          AP    HOURS,=P'1'             SET FOR NEXT HOUR
+00517A 46A0 C06C            0506E   148          BCT   R10,LOOP                LOOP FOR NEXT HOUR
+                                    149 *
+                                    150          CLOSE PRINTER
+                                    151+* 360N-CL-453 CLOSE    CHANGE LEVEL 3-3                             3-3
+00517E 0700                         152+         CNOP  0,4
+005180                              153+         DC    0F'0'
+005180 4110 C2AE            052B0   154+         LA    1,=C'$$BCLOSE'
+ECLP   ECLIPTIC COORDINATE TABLE                                                                               PAGE    4
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+005184 4500 C18A            0518C   155+IJJC0006 BAL   0,*+4+4*(2-1)
+005188 00005438                     156+         DC    A(PRINTER)
+00518C 0A02                         157+         SVC   2
+                                    158          EOJ
+                                    159+* 360N-CL-453 EOJ      CHANGE LEVEL 3-0
+00518E 0A0E                         160+         SVC   14
+005190                              161 PRINT    EQU   *
+                                    162          PRTOV PRINTER,12              IF EOP, SKIP TO NEW PAGE
+                                    163+* 360N-CL-453 PRTOV    CHANGE LEVEL 3-0
+005190 5810 C2DE            052E0   164+         L     1,=A(PRINTER) GET DTF TABLE ADDRESS
+005194 1B00                         165+         SR    0,0 DESIGNATES NO USER ROUTINE ADDRESS
+005196 58F1 0010            00010   166+         L     15,16(1) GET LOGIC MODULE ADDRESS
+00519A 45EF 0004            00004   167+         BAL   14,4(15) BRANCH TO PRTOV ROUTINE
+                                    168          PUT   PRINTER,PRINTOUT        PRINT LINE
+                                    169+* 360N-CL-453 PUT          CHANGE LEVEL 3-5                         3-5
+00519E 5810 C2DE            052E0   170+         L     1,=A(PRINTER) GET DTF TABLE ADDRESS
+0051A2 5800 C2E2            052E4   171+         L     0,=A(PRINTOUT) GET WORK AREA ADDRESS
+0051A6 58F1 0010            00010   172+         L     15,16(1) GET LOGIC MODULE ADDRESS     3-5
+0051AA 45EF 000C            0000C   173+         BAL   14,12(15) BRANCH TO PUT ROUTINE        3-5
+0051AE 9240 C318      0531A         174          MVI   PRINTOUT,C' '           CLEAR PRINT AREA
+0051B2 D283 C319 C318 0531B 0531A   175          MVC   PRINTOUT+1(132),PRINTOUT
+0051B8 07F2                         176          BR    R2
+00517E                              177 ILFIBCOM EQU   *-60
+00517E                              178 IBCOM#   EQU   ILFIBCOM
+0051BA 05C0                         179 THATSALL BALR  R12,0
+0051BC                              180          USING *,R12
+                                    181          PDUMP ECLIPTIC,ECLIPTIC+4096  DUMP PROGRAM ONLY, NOT SUPVR.
+                                    182+* 360N-CL-453 PDUMP    CHANGE LEVEL 3-0
+0051BC 4110 C0FC            052B8   183+         LA    1,=CL8'$$BPDUMP'
+0051C0 4100 C104            052C0   184+         LA    0,=A(ECLIPTIC,ECLIPTIC+4096)
+0051C4 0A02                         185+         SVC   2
+                                    186          CANCEL
+                                    187+* 360N-CL-453 CANCEL   CHANGE LEVEL 3-6                             3-6
+0051C6 1B00                         188+         SR    0,0 3-3
+0051C8 0A06                         189+         SVC   6 3-3
+0051CA 000000000000
+0051D0 0000000000000000             190 HRS      DC    D'0'                    START AT ZERO HOURS
+0051D8 0000000000000000             191 MIN      DC    D'0'                    START AT ZERO MINUTES
+0051E0 413243F6A8885A30             192 TWOPI    DC    D'3.1415926535897932'   PI X 2 IN INIT.
+0051E8 4E00000000000000             193 DCONS    DC    X'4E00000000000000'
+0051F0 00000000                     194 RESULT   DC    F'0'
+0051F4 00                           195 INTSW    DC    X'0'
+0051F5 000C                         196 HOURS    DC    PL2'0'                  START AT ZERO HOURS
+                                    197 HEADING2 DC    C'MINS  00        05        10        15        20      -
+0051F7 D4C9D5E24040F0F0                                  25        30        35        40        45        50 '
+005264 404040404040F5F5             198          DC    C'      55'
+005270                              199          LTORG
+005270 4120000000000000             200                =D'2'
+005278 5B5BC2D6D7C5D540             201                =C'$$BOPEN '
+005280 41C0000000000000             202                =D'12'
+005288 4218000000000000             203                =D'24'
+ECLP   ECLIPTIC COORDINATE TABLE                                                                               PAGE    5
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+005290 4217716BB98C7E28             204                =D'23.44305'
+005298 43E1000000000000             205                =D'3600'
+0052A0 4080000000000000             206                =D'.5'
+0052A8 4110000000000000             207                =D'1'
+0052B0 5B5BC2C3D3D6E2C5             208                =C'$$BCLOSE'
+0052B8 5B5BC2D7C4E4D4D7             209                =CL8'$$BPDUMP'
+0052C0 0000500000006000             210                =A(ECLIPTIC,ECLIPTIC+4096)
+0052C8 000053F0                     211                =A(SAVEXIT)
+0052CC 000051BA                     212                =A(THATSALL)
+0052D0 0000000F                     213                =A(15)
+0052D4 00012C00                     214                =F'76800'
+0052D8 00000000                     215                =V(DSIN)
+0052DC 0000003C                     216                =F'60'
+0052E0 00005438                     217                =A(PRINTER)
+0052E4 0000531A                     218                =A(PRINTOUT)
+0052E8 40202021F0F0                 219                =X'40202021F0F0'
+0052EE 402021204B20204B             220                =X'402021204B20204B2020'
+0052F8 C5C3D3C9D7E3C9C3             221                =C'ECLIPTIC  COORDINATE  TABLE'
+005313 C8D6E4D9E2                   222                =C'HOURS'
+005318 0D                           223                =X'0D'
+005319 1C                           224                =P'1'
+00531A                              225 PRINTOUT DS    CL133
+0053A0                              226 DOUBLE   DS    D                       WORK AREA
+0053A8                              227 SAVEAREA DS    9D                      REG. SAVE AREA FOR SINE ROUTINE
+0053F0                              228 SAVEXIT  DS    9D                      PROGRAM CHECK OR I.T. SAVE AREA
+                                    229 PRINTER  DTFPR BLKSIZE=133,DEVADDR=SYSLST,IOAREA1=PRNTOUT1,            -
+                                                       WORKA=YES,PRINTOV=YES,CTLCHR=ASA
+                                    230+* 360 N-CL-453 DTFPR       CHANGE LEVEL 3-9                         3-9
+005438                              231+         DC    0D'0'
+005438 000084000400                 232+PRINTER  DC    X'000084000400' RES. COUNT, COM. BYTES, STATUS BYTES 3-9
+00543E 00                           233+         DC    AL1(0) LOGICAL UNIT CLASS
+00543F 03                           234+         DC    AL1(3) LOGICAL UNIT
+005440 00005460                     235+         DC    A(*+32) CCW  ADDR.
+005444 00000000                     236+         DC    4X'00' CCB-ST BYTE,CSW CCW ADDRESS
+005448 00                           237+         DC    AL1(0) 3-9
+005449 000000                       238+         DC    VL3(IJDFAPZW) ADDR OF LOGIC MODUL3-8
+00544C 08                           239+         DC    X'08' DTF TYPE  (PRINTER)
+00544D 32                           240+         DC    AL1(50) SWITCHES
+00544E 09                           241+         DC    X'09' NORMAL  COMM. CODE
+00544F 09                           242+         DC    X'09' CONTROL COMM. CODE
+005450 00005469                     243+         DC    A(PRNTOUT1+1) ADDRESS OF DATA IN IOAREA1
+005454 00000000                     244+         DC    4X'00' BUCKET                      3-5
+005458 0700                         245+         NOPR  0 PUT LENGTH IN REG12 (ONLY UNDEF.
+00545A 4700 0000            00000   246+         NOP   0 LOAD USER POINTER REG
+00545E 0000                         247+         DC    2X'00' NOT USED                    3-5
+005460 0900546920000084             248+         CCW   9,PRNTOUT1+1,X'20',133-1
+005468                              249+IJJZ0012 EQU   *
+005468                              250 PRNTOUT1 DS    CL133
+                                    251          PRMOD WORKA=YES,CTLCHR=ASA,PRINTOV=YES
+                                    252+* 360N-CL-453 PRMOD         CHANGE LEVEL 3-9                        3-9
+000000                              253+IJDPD013 DSECT
+ECLP   ECLIPTIC COORDINATE TABLE                                                                               PAGE    6
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+000000                              254+IJDP0013 DS    CL2 RESIDUAL COUNT
+000002                              255+IJDP1013 DS    CL1 COMMUNICATION BYTE 1
+000003                              256+IJDP2013 DS    CL1 COMMUNICATION BYTE 2
+000004                              257+IJDPO013 DS    CL2 CSW STATUS BYTES
+000006                              258+IJDP3013 DS    CL2 LOGICAL UNIT ADDRESS
+000008                              259+         DS    CL1 NOT USED
+000009                              260+IJDP4013 DS    CL3 ADDRESS OF CCW
+00000C                              261+         DS    CL1 STATUS BYTE
+00000D                              262+         DS    CL3 CSW CCW ADDR.
+000010                              263+         DS    CL4 ADDRESS OF  LOGICAL MODULE
+000014                              264+IJDP5013 DS    CL1 DTF TYPE
+000015                              265+IJDP6013 DS    CL1 SWITCHES
+000016                              266+IJDP9013 DS    CL1 NORMAL COMMAND CODE
+000017                              267+IJDPA013 DS    CL1 CONTROL COMMAND CODE
+000018                              268+IJDP7013 DS    CL4 ADDRESS OF  IOAREA 1
+00001C                              269+IJDP8013 DS    CL4 BUCKET
+000020                              270+IJDPB013 DS    CL2 L 12,&RECSIZE
+000022                              271+IJDPC013 DS    CL4 LA &IOREG,0(14)
+000026                              272+IJDPE013 DS    CL1 BUCKET FOR PRTOV IF ASA CH 9
+000027                              273+IJDPF013 DS    CL1 BUCKET FOR PRTOV IF ASA CH 12
+000028                              274+IJDPG013 DS    CL1 COMMAND CODE
+000029                              275+IJDPH013 DS    CL3 ADDRESS IOAREA 2
+00002C                              276+IJDPI013 DS    CL1 FLAGS =X'20'
+00002D                              277+         DS    CL1 NOT USED
+00002E                              278+IJDPJ013 DS    CL2 COUNT
+0054F0                              279+IJDFAPZW CSECT
+                                    280+         ENTRY IJDFAZZW
+0054F0                              281+IJDFAZZW EQU   *
+000000                              282+         USING IJDP0013,1
+0054F0                              283+         USING *,15
+0054F0 0A32                         284+         SVC   IJDL6013 CONTROL  ERROR
+0054F2 0000                         285+         DC    1H'0'
+0054F4 47F0 F0A6            05596   286+         B     IJDPM013
+0054F8 0A32                         287+         SVC   IJDL6013 GET ERROR
+0054FA 0000                         288+         DC    1H'0'
+0054FC 47F0 F01A            0550A   289+         B     IJDPR013 BRANCH TO PUT
+005500 C9D1C4C6C1D7E9E6             290+         DC    CL8'IJDFAPZW' MODULE NAME
+005508 F3F9                         291+         DC    CL2'39' 3-9
+00550A                              292+IJDPR013 EQU   *
+00550A 9180 1002      00002         293+         TM    IJDP1013,IJDL8013 WAIT CHANNEL END             3-9
+00550E 4710 F024            05514   294+         BO    *+6
+005512 0A07                         295+         SVC   7
+005514 90CE F0E0            055D0   296+         STM   IJDL2013,IJDL4013,IJDPS013 SAVE REGS 12,13,14   3-3
+005518 58E0 1018            00018   297+         L     IJDL4013,IJDP7013 LOAD REG14 ADDR IOAREA1
+00551C 06E0                         298+         BCTR  IJDL4013,0 SUBTRACT ONE FROM REG 14
+00551E 18D0                         299+         LR    IJDL3013,0 LOAD REG13 WITH WORKA ADDR.
+005520 D200 1017 D000 00017 00000   300+         MVC   IJDPA013(1),0(IJDL3013) MOVE CTLCHR TO CONCMD
+005526 48C0 102E            0002E   301+         LH    IJDL2013,IJDPJ013 LOAD COUNT IN REG12
+00552A 44C0 F0EC            055DC   302+         EX    IJDL2013,IJDPT013 MOVE WORKA TO IOAREA
+00552E 1BCC                         303+         SR    IJDL2013,IJDL2013 CLEAR REG 12
+005530 18DC                         304+         LR    IJDL3013,IJDL2013 CLEAR REG 13
+ECLP   ECLIPTIC COORDINATE TABLE                                                                               PAGE    7
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+005532 43C0 1017            00017   305+         IC    IJDL2013,IJDPA013 PUT CONCMD IN REG12
+005536 41E0 0010            00010   306+         LA    IJDL4013,16 PUT 16 IN REG 14
+00553A 43DE F0F1            055E1   307+IJDPU013 IC    IJDL3013,IJDPV013-1(IJDL4013) INSERT ASA TABLE CHR
+00553E 19DC                         308+         CR    IJDL3013,IJDL2013 COMPARE REGS 12 AND 13
+005540 4780 F05A            0554A   309+         BE    IJDPW013
+005544 46E0 F04A            0553A   310+         BCT   IJDL4013,IJDPU013
+005548 0A32                         311+         SVC   IJDL6013 ABNORMAL EOJ
+00554A 43DE F101            055F1   312+IJDPW013 IC    IJDL3013,IJDPX013-1(IJDL4013) INSERT 360 CHR IN R13
+00554E 43C0 1016            00016   313+         IC    IJDL2013,IJDP9013 INSERT PREVIOUS OP CODE IN R12
+005552 19CD                         314+         CR    IJDL2013,IJDL3013 COMPARE REGS 12,13
+005554 4770 F080            05570   315+         BNE   IJDPY013
+005558 9180 1016      00016         316+         TM    IJDP9013,IJDL8013 TEST IF IT WAS A SKIP COMM.
+00555C 4780 F080            05570   317+         BZ    IJDPY013
+005560 920B 1028      00028         318+         MVI   IJDPG013,IJDLJ013 PUT SPACE ONE LINE CODE IN CCW
+005564 0A00                         319+         SVC   IJDL7013 EXCP
+005566 9180 1002      00002         320+         TM    IJDP1013,IJDL8013 WAIT CHANNEL END
+00556A 4710 F080            05570   321+         BO    *+6
+00556E 0A07                         322+         SVC   7
+005570 42D0 1028            00028   323+IJDPY013 STC   IJDL3013,IJDPG013 PUT CONCMD IN CCW
+005574 42D0 1016            00016   324+         STC   IJDL3013,IJDP9013 SAVE OP CODE IN NORCMD
+005578 0A00                         325+         SVC   IJDL7013 EXCP
+00557A 9180 1002      00002         326+         TM    IJDP1013,IJDL8013 WAIT FOR CHAN. END           3-9
+00557E 4710 F094            05584   327+         BO    *+6 3-9
+005582 0A07                         328+         SVC   7 3-9
+005584 D201 1026 1003 00026 00003   329+         MVC   IJDPE013(2),IJDP2013 SAVE C. BYTE2 AND CSW STATUS 3-9
+00558A 9201 1028      00028         330+         MVI   IJDPG013,IJDLF013 MOVE PRINT NO SPACE CODE TO CCW
+00558E 98CE F0E0            055D0   331+         LM    IJDL2013,IJDL4013,IJDPS013 RESTORE REGS 12,13,143-3
+005592 0A00                         332+         SVC   IJDL7013 EXCP
+005594 07FE                         333+         BR    IJDL4013 BACK TO USER                     3-9
+005596 9180 1002      00002         334+IJDPM013 TM    IJDP1013,IJDL8013 WAIT CHANNEL END
+00559A 4710 F0B0            055A0   335+         BO    *+6
+00559E 0A07                         336+         SVC   7
+0055A0 9101 1015      00015         337+         TM    IJDP6013,IJDLF013 TEST WHICH CH.TO CONSIDER
+0055A4 4780 F0C6            055B6   338+         BZ    IJDPZ013
+0055A8 94FE 1015      00015         339+         NI    IJDP6013,IJDLI013 PUT CH9 BIT OFF
+0055AC 9102 1026      00026         340+         TM    IJDPE013,IJDLG013 TEST IF CH9 REACHED
+0055B0 078E                         341+         BCR   8,IJDL4013 IF NOT, GO BACK TO USER
+0055B2 47F0 F0CC            055BC   342+         B     IJDQ0013
+0055B6                              343+IJDPZ013 EQU   *
+0055B6 9101 1027      00027         344+         TM    IJDPF013,IJDLF013 TEST IF CH12 REACHED
+0055BA 078E                         345+         BCR   8,IJDL4013 IF NOT, BACK TO USER
+0055BC 1200                         346+IJDQ0013 LTR   0,0 TEST IF USER HAS HIS OWN ROUTINE
+0055BE 4780 F0D6            055C6   347+         BZ    IJDQ1013
+0055C2 18F0                         348+         LR    IJDL5013,0 LOAD REG15 WITH USER ROUT ADDR.
+0055C4 07FF                         349+         BR    IJDL5013 GO TO USER ROUT.
+0055C6 928B 1028      00028         350+IJDQ1013 MVI   IJDPG013,IJDLH013 PUT SKIP TO CH1 OP CODE IN CCW
+0055CA 0A00                         351+         SVC   IJDL7013 EXCP
+0055CC 07FE                         352+         BR    IJDL4013 BACK TO USER
+00000B                              353+IJDL1013 EQU   11 REG 11                       3-3
+00000C                              354+IJDL2013 EQU   12 REG 12
+00000D                              355+IJDL3013 EQU   13 REG 13
+ECLP   ECLIPTIC COORDINATE TABLE                                                                               PAGE    8
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+00000E                              356+IJDL4013 EQU   14 REG 14
+00000F                              357+IJDL5013 EQU   15 REG 15
+000032                              358+IJDL6013 EQU   50 ABEOJ
+000000                              359+IJDL7013 EQU   0 EXCP
+000080                              360+IJDL8013 EQU   X'80'
+000040                              361+IJDL9013 EQU   X'40'
+000020                              362+IJDLA013 EQU   X'20'
+000008                              363+IJDLB013 EQU   X'08'
+000010                              364+IJDLC013 EQU   X'10'
+000004                              365+IJDLD013 EQU   X'04'
+000006                              366+IJDLE013 EQU   X'06'
+000001                              367+IJDLF013 EQU   X'01'
+000002                              368+IJDLG013 EQU   X'02'
+00008B                              369+IJDLH013 EQU   X'8B'
+0000FE                              370+IJDLI013 EQU   X'FE'
+00000B                              371+IJDLJ013 EQU   X'0B'
+0000BF                              372+IJDLK013 EQU   X'BF'
+0000F8                              373+IJDLL013 EQU   X'F8' CCB+3  ERROR PASSBACK BITS             3-9
+000040                              374+IJDLM013 EQU   X'40' CCB+2  ERROR PASSBACK BITS             3-9
+000001                              375+IJDLN013 EQU   1 REG 1                                  3-9
+0055CE 0000
+0055D0 0000000000000000             376+IJDPS013 DC    3F'0' 3-3
+0055DC D200 E000 D000 00000 00000   377+IJDPT013 MVC   0(0,IJDL4013),0(IJDL3013) MOVE WORKA TO IOAREA
+0055E2 F2C2C1F9F8F7F6F5             378+IJDPV013 DC    C'2BA9876543C1+-0 '
+0055F2 93DBD3CBC3BBB3AB             379+IJDPX013 DC    X'93DBD3CBC3BBB3ABA39BE38B031B130B'
+005000                              380+ECLIPTIC CSECT
+                                    381          END
+ECLP                                             RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      0C     005034
+   01       01      0C     0050A8
+   01       01      0C     005188
+   01       01      0C     0052C0
+   01       01      0C     0052C4
+   01       01      0C     0052C8
+   01       01      0C     0052CC
+   01       02      1C     0052D8
+   01       01      0C     0052E0
+   01       01      0C     0052E4
+   01       01      0C     005440
+   01       03      18     005449
+   01       01      0C     005450
+   01       01      08     005461
+ECLP                                         CROSS-REFERENCE                                                   PAGE    1
+
+
+SYMBOL    LEN  VALUE  DEFN     REFERENCES                                                                       03/29/70
+
+DCONS    00008 0051E8 00193   0104
+DOUBLE   00008 0053A0 00226   0083  0091  0105  0106  0114  0115  0118  0119  0121  0122
+ECLIPTIC 00001 005000 00008   0184  0184  0210  0210  0380
+FR0      00001 000000 00026   0049  0050  0051  0095  0096  0097  0097  0099  0101  0102  0103  0103  0104  0105
+FR2      00001 000002 00027   0102  0107  0107
+FR4      00001 000004 00028   0137  0138  0139  0143  0144  0145
+FR6      00001 000006 00029   0078  0079  0080  0081  0082  0083
+HEADING2 00109 0051F7 00197   0065
+HOURS    00002 0051F5 00196   0076  0147
+HRS      00008 0051D0 00190   0080  0143  0145
+IBCOM#   00001 00517E 00178   0009
+IJDFAPZW 00001 0054F0 00279
+IJDFAZZW 00001 0054F0 00281   0280
+IJDLA013 00001 000020 00362
+IJDLB013 00001 000008 00363
+IJDLC013 00001 000010 00364
+IJDLD013 00001 000004 00365
+IJDLE013 00001 000006 00366
+IJDLF013 00001 000001 00367   0330  0337  0344
+IJDLG013 00001 000002 00368   0340
+IJDLH013 00001 00008B 00369   0350
+IJDLI013 00001 0000FE 00370   0339
+IJDLJ013 00001 00000B 00371   0318
+IJDLK013 00001 0000BF 00372
+IJDLL013 00001 0000F8 00373
+IJDLM013 00001 000040 00374
+IJDLN013 00001 000001 00375
+IJDL1013 00001 00000B 00353
+IJDL2013 00001 00000C 00354   0296  0301  0302  0303  0303  0304  0305  0308  0313  0314  0331
+IJDL3013 00001 00000D 00355   0299  0300  0304  0307  0308  0312  0314  0323  0324  0377
+IJDL4013 00001 00000E 00356   0296  0297  0298  0306  0307  0310  0312  0331  0333  0341  0345  0352  0377
+IJDL5013 00001 00000F 00357   0348  0349
+IJDL6013 00001 000032 00358   0284  0287  0311
+IJDL7013 00001 000000 00359   0319  0325  0332  0351
+IJDL8013 00001 000080 00360   0293  0316  0320  0326  0334
+IJDL9013 00001 000040 00361
+IJDPA013 00001 000017 00267   0300  0305
+IJDPB013 00002 000020 00270
+IJDPC013 00004 000022 00271
+IJDPD013 00001 000000 00253
+IJDPE013 00001 000026 00272   0329  0340
+IJDPF013 00001 000027 00273   0344
+IJDPG013 00001 000028 00274   0318  0323  0330  0350
+IJDPH013 00003 000029 00275
+IJDPI013 00001 00002C 00276
+IJDPJ013 00002 00002E 00278   0301
+IJDPM013 00004 005596 00334   0286
+IJDPO013 00002 000004 00257
+IJDPR013 00001 00550A 00292   0289
+IJDPS013 00004 0055D0 00376   0296  0331
+IJDPT013 00006 0055DC 00377   0302
+ECLP                                         CROSS-REFERENCE                                                   PAGE    2
+
+
+SYMBOL    LEN  VALUE  DEFN     REFERENCES                                                                       03/29/70
+
+IJDPU013 00004 00553A 00307   0310
+IJDPV013 00016 0055E2 00378   0307
+IJDPW013 00004 00554A 00312   0309
+IJDPX013 00016 0055F2 00379   0312
+IJDPY013 00004 005570 00323   0315  0317
+IJDPZ013 00001 0055B6 00343   0338
+IJDP0013 00002 000000 00254   0282
+IJDP1013 00001 000002 00255   0293  0320  0326  0334
+IJDP2013 00001 000003 00256   0329
+IJDP3013 00002 000006 00258
+IJDP4013 00003 000009 00260
+IJDP5013 00001 000014 00264
+IJDP6013 00001 000015 00265   0337  0339
+IJDP7013 00004 000018 00268   0297
+IJDP8013 00004 00001C 00269
+IJDP9013 00001 000016 00266   0313  0316  0324
+IJDQ0013 00002 0055BC 00346   0342
+IJDQ1013 00004 0055C6 00350   0347
+IJJC0006 00004 005184 00155
+IJJO0004 00004 005030 00057
+IJJZ0012 00001 005468 00249
+ILFIBCOM 00001 00517E 00177   0009  0178
+INTSW    00001 0051F4 00195   0009
+LOOP     00001 00506E 00072   0148
+LOOP1    00001 005082 00077   0140
+MIN      00008 0051D8 00191   0078  0137  0139  0146  0146
+PRINT    00001 005190 00161   0064  0067  0069  0142
+PRINTER  00006 005438 00232   0058  0156  0164  0170  0217
+PRINTOUT 00133 00531A 00225   0060  0061  0061  0062  0063  0065  0066  0068  0073  0075  0076  0141  0171  0174  0175
+                              0175  0218
+PRNTOUT1 00133 005468 00250   0243  0248
+RESULT   00004 0051F0 00194   0115  0119  0120  0120  0125  0126  0129  0132
+R0       00001 000000 00010   0112  0112  0113  0114  0116  0116  0117  0118
+R1       00001 000001 00011   0106  0109  0109  0110  0111  0111  0121  0122  0123  0124  0125  0126  0131  0134  0135
+R10      00001 00000A 00020   0071  0148
+R11      00001 00000B 00021
+R12      00001 00000C 00022   0030  0031  0179  0180
+R13      00001 00000D 00023   0084
+R14      00001 00000E 00024
+R15      00001 00000F 00025
+R2       00001 000002 00012   0064  0067  0069  0142  0176
+R3       00001 000003 00013
+R4       00001 000004 00014   0110  0127  0127
+R5       00001 000005 00015
+R6       00001 000006 00016
+R7       00001 000007 00017
+R8       00001 000008 00018   0073  0130  0131  0132  0136  0136
+R9       00001 000009 00019   0074  0140
+SAVEAREA 00008 0053A8 00227   0084
+SAVEXIT  00008 0053F0 00228   0035  0041  0211
+THATSALL 00002 0051BA 00179   0036  0042  0212
+ECLP                                         CROSS-REFERENCE                                                   PAGE    3
+
+
+SYMBOL    LEN  VALUE  DEFN     REFERENCES                                                                       03/29/70
+
+TWOPI    00008 0051E0 00192   0049  0051  0081
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+ INCLUDE ILFLSCN   FORTRAN IV SINE,COSINE ROUTINE
+// EXEC LNKEDT
+
+JOB  DEMOECLP  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST   INCLUDE ILFLSCN   FORTRAN IV SINE,COSINE ROUTINE
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        PHASE***  101078  101078  10180F  14 07 1  CSECT     ECLIPTIC  101078  0FC078
+                                                      ENTRY  ILFIBCOM  1011F6
+                                                      ENTRY  IBCOM#    1011F6
+                                                      ENTRY  INTSW     10126C
+
+                                                   CSECT     IJDFAPZW  101568  0FC078
+                                                   *  ENTRY  IJDFAZZW  101568
+
+                                                   CSECT     ILFLSCN   101680  101680
+                                                      ENTRY  DSIN      10169E
+                                                   *  ENTRY  DCOS      101680
+                                                   *  ENTRY  IJTLSCN   101680
+// EXEC
+                                                    ECLIPTIC  COORDINATE  TABLE
+
+
+         MINS  00        05        10        15        20        25        30        35        40        45        50       55±
+   HOURS
+
+      00     0.00.00   0.30.41   1.01.21   1.32.00   2.02.36   2.33.08   3.03.36   3.33.58   4.04.15   4.34.25   5.04.26   5.34.19
+
+     100     6.04.03   6.33.36   7.02.58   7.32.08   8.01.05   8.29.48   8.58.17   9.26.30   9.54.27  10.22.07  10.49.29  11.16.33
+
+     200    11.43.17  12.09.42  12.35.45  13.01.27  13.26.47  13.51.44  14.16.16  14.40.25  15.04.08  15.27.25  15.50.16  16.12.40
+
+     300    16.34.36  16.56.04  17.17.03  17.37.32  17.57.30  18.16.58  18.35.55  18.54.20  19.12.12  19.29.32  19.46.18  20.02.30
+
+     400    20.18.08  20.33.11  20.47.39  21.01.32  21.14.48  21.27.28  21.39.31  21.50.57  22.01.45  22.11.56  22.21.29  22.30.23
+
+     500    22.38.39  22.46.16  22.53.14  22.59.33  23.05.13  23.10.13  23.14.33  23.18.13  23.21.14  23.23.34  23.25.15  23.26.15
+
+     600    23.26.35  23.26.15  23.25.15  23.23.34  23.21.14  23.18.13  23.14.33  23.10.13  23.05.13  22.59.33  22.53.14  22.46.16
+
+     700    22.38.39  22.30.23  22.21.29  22.11.56  22.01.45  21.50.57  21.39.31  21.27.28  21.14.48  21.01.32  20.47.39  20.33.11
+
+     800    20.18.08  20.02.30  19.46.18  19.29.32  19.12.12  18.54.20  18.35.55  18.16.58  17.57.30  17.37.32  17.17.03  16.56.04
+
+     900    16.34.36  16.12.40  15.50.16  15.27.25  15.04.08  14.40.25  14.16.16  13.51.44  13.26.47  13.01.27  12.35.45  12.09.42
+
+    1000    11.43.17  11.16.33  10.49.29  10.22.07   9.54.27   9.26.30   8.58.17   8.29.48   8.01.05   7.32.08   7.02.58   6.33.36
+
+    1100     6.04.03   5.34.19   5.04.26   4.34.25   4.04.15   3.33.58   3.03.36   2.33.08   2.02.36   1.32.00   1.01.21   0.30.41
+
+    1200     0.00.00  -0.30.41  -1.01.21  -1.32.00  -2.02.36  -2.33.08  -3.03.36  -3.33.58  -4.04.15  -4.34.25  -5.04.26  -5.34.19
+
+    1300    -6.04.03  -6.33.36  -7.02.58  -7.32.08  -8.01.05  -8.29.48  -8.58.17  -9.26.30  -9.54.27 -10.22.07 -10.49.29 -11.16.33
+
+    1400   -11.43.17 -12.09.42 -12.35.45 -13.01.27 -13.26.47 -13.51.44 -14.16.16 -14.40.25 -15.04.08 -15.27.25 -15.50.16 -16.12.40
+
+    1500   -16.34.36 -16.56.04 -17.17.03 -17.37.32 -17.57.30 -18.16.58 -18.35.55 -18.54.20 -19.12.12 -19.29.32 -19.46.18 -20.02.30
+
+    1600   -20.18.08 -20.33.11 -20.47.39 -21.01.32 -21.14.48 -21.27.28 -21.39.31 -21.50.57 -22.01.45 -22.11.56 -22.21.29 -22.30.23
+
+    1700   -22.38.39 -22.46.16 -22.53.14 -22.59.33 -23.05.13 -23.10.13 -23.14.33 -23.18.13 -23.21.14 -23.23.34 -23.25.15 -23.26.15
+
+    1800   -23.26.35 -23.26.15 -23.25.15 -23.23.34 -23.21.14 -23.18.13 -23.14.33 -23.10.13 -23.05.13 -22.59.33 -22.53.14 -22.46.16
+
+    1900   -22.38.39 -22.30.23 -22.21.29 -22.11.56 -22.01.45 -21.50.57 -21.39.31 -21.27.28 -21.14.48 -21.01.32 -20.47.39 -20.33.11
+
+    2000   -20.18.08 -20.02.30 -19.46.18 -19.29.32 -19.12.12 -18.54.20 -18.35.55 -18.16.58 -17.57.30 -17.37.32 -17.17.03 -16.56.04
+
+    2100   -16.34.36 -16.12.40 -15.50.16 -15.27.25 -15.04.08 -14.40.25 -14.16.16 -13.51.44 -13.26.47 -13.01.27 -12.35.45 -12.09.42
+
+    2200   -11.43.17 -11.16.33 -10.49.29 -10.22.07  -9.54.27  -9.26.30  -8.58.17  -8.29.48  -8.01.05  -7.32.08  -7.02.58  -6.33.36
+
+    2300    -6.04.03  -5.34.19  -5.04.26  -4.34.25  -4.04.15  -3.33.58  -3.03.36  -2.33.08  -2.02.36  -1.32.00  -1.01.21  -0.30.41
+EOJ DEMOECLP                                                            12.11.03,DURATION 00.00.09

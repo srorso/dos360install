@@ -1,0 +1,3 @@
+# Demonstrate FORTRAN program; Linear Programming Simplex Method
+devinit e prt/demo-smpx.txt crlf
+devinit c demos/demosmpx-ffo.jcl

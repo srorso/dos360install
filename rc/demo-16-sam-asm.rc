@@ -1,0 +1,3 @@
+# Demonstrate Assembly language sequential LIOCS processing
+devinit e prt/demo-sam-asm.txt crlf
+devinit c demos/demosam-asm.jcl

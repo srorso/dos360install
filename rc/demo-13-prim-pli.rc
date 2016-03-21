@@ -1,0 +1,3 @@
+# Demonstrate PL/I prime number calculation
+devinit e prt/demo-prime-pli.txt crlf
+devinit c demos/demoprim-pli.jcl

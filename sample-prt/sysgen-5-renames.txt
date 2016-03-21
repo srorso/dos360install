@@ -1,0 +1,35 @@
+
+// JOB SYSGEN05   RENAME PL/ID RUNTIME FOR SYSFIL SUPPORT               12.01.59
+* RENAME PL/I RUNTIME MODULES                                           LINK0510
+// EXEC MAINT                                                           LINK0512
+
+   RENAMR IJKSYSA,IJYSYSA,IJKSYSI,IJYSYSI                               LINK0513
+   RENAMR IJXSYSA,IJKSYSA,IJXSYSI,IJKSYSI                               LINK0514
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 12 13 07              56 04 09 06             133 01 09 02
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        17 05 03                110 01 07                177 01 07
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             737                     1520                      347
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE             1187                    17003                    23523
+LIBRARY   BLOCKS DELETED             116                      139                       00
+LIBRARY   BLOCKS AVAILABLE          3177                     7338                    11307
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN05                                                            12.01.59,DURATION 00.00.00

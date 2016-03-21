@@ -1,0 +1,377 @@
+
+// JOB DEMORPG - SAMPLE RPG PROGRAM                                     12.11.18
+// OPTION LINK
+// PAUSE
+// EXEC RPG
+
+     DOS/360*RPG*CL 3-9                 DEMORPG                       03/29/70             PAGE 0001
+
+                     * TYPICAL BUSINESS APPLICATION
+                     * DEMONSTRATES TABLES AND CONTROL BREAK
+                     * CC 75-80 of the H card is the CSECT name.
+                    H                                                                    PAYREG
+     001            FSALARY  IT  F  80  80           EREAD01 SYSIPT
+     002            FFEDWITH IT  F  80  80           EREAD01 SYSIPT
+     003            FCARDS   IPE F  80  80    2       READ01 SYSIPT
+     004            FREPORT  O   V 120 120     OF    LPRINTERSYSLST
+     005            FNEDECAR O   F  80  80            READ40 SYSPCH
+     006            E    SALARY          TABARG 10  10  2  ATABFUN  5 2
+     007            E    FEDWITH         TABAAA  4   5  5 2ATABFFF 12
+     008            LREPORT  001010070201303019040250503106037070430804609049100531105712
+     009            ICARDS   AA  12  80 CN
+     010            I       OR   01  80 CR
+     011            I                                        1   20DEPTNOL1
+     012            I                                        3   50EMPNO
+     013            I                                        6  25 EMPLOE
+     014            I                                       26  322YTDPAY
+     015            I                                       33  392CURSAL
+     016            I                                       40  412COMRAT
+     017            I                                       42  43 YREMP
+     018            I                                       50  552DEDUCT          06
+     019            I                                       58  580EXEMPT
+     020            I        BB  02
+     021            I                                        1  80 BADCRD
+     022            C   12                SETON                     01
+                    C*          GROSS PAY = COMMISSION + SALARY
+     023            C   01      CURSAL    MULT COMRAT    COMPAY  72H
+     024            C   01      YREMP     LOKUPTABARG    TABFUN         03
+     025            C   01 03   TABFUN    ADD  COMPAY    GRSPAY  72
+                    C*                    F I C A   T A X
+     026            C   01      YTDPAY    ADD  GRSPAY    YTDPA   72
+     027            C   01      YTDPA     COMP 10800.               09
+     028            C   01N09   GRSPAY    MULT .0585     FICA    52H      ALL PAY TAXED
+     029            C   01 09   10800.    SUB  YTDPAY    RESULT  72 10
+     030            C   01 09 10RESULT    MULT .0585     FICA      H      SOME PAY TAXED
+     031            C   01 09N10          Z-ADD0         FICA             NO PAY TAXED
+                    C*          F E D E R A L   I N C O M E   T A X
+     032            C   01      EXEMPT    MULT 62.5      EXEMPA  52
+     033            C   01      GRSPAY    SUB  EXEMPA    TAXPAY  52   07
+     034            C   01 07             Z-ADD0         FIT     52
+     035            C   01 07             GOTO ENDFIT
+     036            C   01      TAXPAY    LOKUPTABAAA    TABFFF 12  04  04
+     037            C   01 04             MOVELTABFFF    FIT
+     038            C   01 04             MOVE TABFFF    WK1     7
+     039            C   01 04             MOVELWK1       PERCNT  22
+     040            C   01 04             MOVE WK1       INCRMT  52
+     041            C   01 04   TAXPAY    SUB  INCRMT    WK2     72
+     042            C   01 04   WK2       MULT PERCNT    EXFIT   52H
+     043            C   01 04   FIT       ADD  EXFIT     FIT     52
+     044            C           ENDFIT    TAG
+                    C*          I L L I N O I S   I N C O M E   T A X
+     045            C   01N12   GRSPAY    MULT 12.       YGRSPA  72
+     046            C   01N12   EXEMPT    MULT 1000.     EXSPAY  72
+     DOS/360*RPG*CL 3-9                 DEMORPG                       03/29/70             PAGE 0002
+
+     047            C   01N12   YGRSPA    SUB  EXSPAY    TASPAY  72   08
+     048            C   01N12 08          Z-ADD0         IIT     52
+     049            C   01N12N08TASPAY    MULT .025      WK3     52H
+     050            C   01N12N08WK3       DIV  12        IIT     52H
+     051            C   01N12             Z-ADDIIT       SIT     52
+     052            C   01N12   CIIT      ADD  IIT       CIIT    52
+                    C*          I N D I A N A   I N C O M E   T A X
+     053            C   01 12   EXEMPT    SUB  1         EXEMP   10   14
+     054            C   01 12N14EXEMP     MULT 75        WK5     52
+     055            C   01 12N14WK5       ADD  116.67    EXNPAY  52
+     056            C   01 12 14          Z-ADD0         EXNPAY
+     057            C   01 12   GRSPAY    SUB  EXNPAY    TANPAY  72   13
+     058            C   01 12N13TANPAY    MULT .02       NIT     52H
+     059            C   01 12 13          Z-ADD0         NIT
+     060            C   01 12             Z-ADDNIT       SIT
+     061            C   01 12   CNIT      ADD  NIT       CNIT    52
+                    C*                    N E T   P A Y
+     062            C   01      GRSPAY    SUB  FICA      WK4     72
+     063            C   01      WK4       SUB  FIT       WK4
+     064            C   01      WK4       SUB  SIT       WK4
+     065            C   01      WK4       SUB  DEDUCT    NETPAY  72   05
+     066            C   01 05             Z-SUBNETPAY    NETPA   62
+     067            C   01 05             Z-ADDNETPA     NDEDUC  62
+     068            C   01 05   DEDUCT    SUB  NETPA     DEDUCT
+     069            C   01 05   WK4       SUB  DEDUCT    NETPAY
+     070            C   01 05             SETON                     11
+     071            C   01 05             MOVE DEPTNO    ADEPNO  2
+     072            C   01 05             MHLZOADEPNO    ADEPNO           CORRECT SIGN
+     073            C   01      GRSPAY    ADD  DGSPAY    DGSPAY  72
+     074            C   01      FICA      ADD  DFICA     DFICA   72
+     075            C   01      FIT       ADD  DFIT      DFIT    72
+     076            C   01      SIT       ADD  DSIT      DSIT    72
+     077            C   01      DEDUCT    ADD  DDDUCT    DDDUCT  72
+     078            C   01      NETPAY    ADD  DNTPAY    DNTPAY  72
+     079            CL1         DGSPAY    ADD  CGSPAY    CGSPAY  72
+     080            CL1         DFICA     ADD  CFICA     CFICA   72
+     081            CL1         DFIT      ADD  CFIT      CFIT    72
+     082            CL1         DSIT      ADD  CSIT      CSIT    72
+     083            CL1         DDDUCT    ADD  CDDUCT    CDDUCT  72
+     084            CL1         DNTPAY    ADD  CNTPAY    CNTPAY  72
+     085            OREPORT  H  2 1   1P
+     086            O                                   37 'NADIR  TELEVISION'
+     087            O                                   46 'COMPANY'
+     088            O        H  3     1P
+     089            O       OR  3 1   OF
+     090            O                         UDATE      8 ' 0/  /  '
+     091            O                                   42 'PAYROLL  REGISTER  FOR'
+     092            O                                   58 'JANUARY  1973'
+     093            O                                  110 'PAGE'
+     094            O                         PAGE  Z  114
+     095            O        H  1     1P
+     096            O       OR        OF
+     097            O                                   21 'DEPARTMENT  EMPLOYEE'
+     098            O                                   58 'GROSS'
+     DOS/360*RPG*CL 3-9                 DEMORPG                       03/29/70             PAGE 0003
+
+     099            O                                  102 'OTHER'
+     100            O        H  2     1P
+     101            O       OR        OF
+     102            O                                   20 'NUMBER      NUMBER'
+     103            O                                   37 'EMPLOYEE'
+     104            O                                   58 'PAY'
+     105            O                                   80 'FICA        FIT'
+     106            O                                  102 'SIT     DEDUCT'
+     107            O                                  114 'NET PAY'
+     108            O        D  1     01
+     109            O                 L1      DEPTNOZ    6
+     110            O                         EMPNO Z   18
+     111            O                         EMPLOE    46
+     112            O                         GRSPAY    59 '  ,  0.  -'
+     113            O                         FICA      70 '  0.  -'
+     114            O                         FIT       81 '  0.  -'
+     115            O                N12      IIT       92 '  0.  -'
+     116            O                 12      NIT       93 '  0.  -N'
+     117            O                N06      DEDUCT   103 ' ,  0.  -'
+     118            O                         NETPAY   115 '  ,  0.  -'
+     119            O                 05               116 '*'
+     120            O        D  1     02
+     121            O                         BADCRD    80
+     122            O                                   95 '*BAD RECORD*'
+     123            O        T  2     L1
+     124            O                                   30 'DEPARTMENT    TOTALS'
+     125            O                         DEPTNOZ   23
+     126            O                         DGSPAY B  59 '$  ,  0.  -'
+     127            O                         DFICA  B  70 '$  ,  0.  -'
+     128            O                         DFIT   B  81 '$  ,  0.  -'
+     129            O                         DSIT   B  92 '$  ,  0.  -'
+     130            O                         DDDUCT B 103 '$  ,  0.  -'
+     131            O                         DNTPAY B 115 '$  ,  0.  -'
+     132            O        T 11     LR
+     133            O                                   24 'COMPANY TOTALS'
+     134            O                         CGSPAY    59 '$  ,  0.  -'
+     135            O                         CFICA     70 '$  ,  0.  -'
+     136            O                         CFIT      81 '$  ,  0.  -'
+     137            O                         CSIT      92 '$  ,  0.  -'
+     138            O                         CDDUCT   103 '$  ,  0.  -'
+     139            O                         CNTPAY   115 '$  ,  0.  -'
+     140            O        T  1     LR
+     141            O                                   83 'ILL'
+     142            O                         CIIT      92 '  0.  -'
+     143            O        T  0     LR
+     144            O                                   83 'IND'
+     145            O                         CNIT      92 '  0.  -
+                                                                                           NOTE 186
+     146            ONEDECAR D2       01 05
+     147            O                                   80 'R'
+     148            O                         NDEDUC    55 '0      '
+     149            O                         EMPLOE    25
+     150            O                         EMPNO      5 '0   '
+     151            O                         ADEPNO     2
+     DOS/360*RPG*CL 3-9                 DEMORPG                       03/29/70             PAGE 0004
+
+     152            O        T2       LR 11
+
+     DOS/360*RPG*CL 3-9                 DEMORPG                       03/29/70             PAGE 0005
+
+                                                  SYMBOL  TABLES
+
+RESULTING  INDICATORS
+
+ADDRESS RI      ADDRESS RI      ADDRESS RI      ADDRESS RI      ADDRESS RI      ADDRESS RI      ADDRESS RI
+
+ 000011 OF       000014 1P       000015 LR       000016 00       000017 01       000018 02       000019 03
+ 00001A 04       00001B 05       00001C 06       00001D 07       00001E 08       00001F 09       000020 10
+ 000021 11       000022 12       000023 13       000024 14       00007A L0       00007B L1       000085 H0
+ 000086 H1       000087 H2       000088 H3       000089 H4       00008A H5       00008B H6       00008C H7
+ 00008D H8       00008E H9
+FIELD  NAMES
+
+ADDRESS FIELD         ADDRESS FIELD         ADDRESS FIELD         ADDRESS FIELD         ADDRESS FIELD
+
+000134  TABARG        000148  TABFUN        00015C  TABAAA        000170  TABFFF        000180  DEPTNO
+000182  EMPNO         000184  EMPLOE        000198  YTDPAY        00019C  CURSAL        0001A0  COMRAT
+0001A2  YREMP         0001A4  DEDUCT        0001A8  EXEMPT        0001A9  BADCRD        00017C  ENDFIT
+0001F9  COMPAY        0001FD  GRSPAY        000201  YTDPA         000205  FICA          000208  RESULT
+00020C  EXEMPA        00020F  TAXPAY        000212  FIT           000215  WK1           00021C  PERCNT
+00021E  INCRMT        000221  WK2           000225  EXFIT         000228  YGRSPA        00022C  EXSPAY
+000230  TASPAY        000234  IIT           000237  WK3           00023A  SIT           00023D  CIIT
+000240  EXEMP         000241  WK5           000244  EXNPAY        000247  TANPAY        00024B  NIT
+00024E  CNIT          000251  WK4           000255  NETPAY        000259  NETPA         00025D  NDEDUC
+000261  ADEPNO        000263  DGSPAY        000267  DFICA         00026B  DFIT          00026F  DSIT
+000273  DDDUCT        000277  DNTPAY        00027B  CGSPAY        00027F  CFICA         000283  CFIT
+000287  CSIT          00028B  CDDUCT        00028F  CNTPAY        000293  UDATE         000297  PAGE
+
+
+LITERALS
+
+ADDRESS LITERAL                    ADDRESS LITERAL                    ADDRESS LITERAL
+
+00029A   10800                     00029D   .0585                     0002A0   0
+0002A1   62.5                      0002A3   12                        0002A5   1000
+0002A8   .025                      0002AA   1                         0002AB   75
+0002AD   116.67                    0002B0   .02                       0002B2  NADIR  TELEVISION
+0002C3  COMPANY                    0002CA   ½½À/½½/½½                 0002D4  PAYROLL  REGISTER  FOR
+0002EA  JANUARY  1973              0002F7  PAGE                       0002FB  DEPARTMENT  EMPLOYEE
+00030F  GROSS                      000314  OTHER                      000319  NUMBER      NUMBER
+00032B  EMPLOYEE                   000333  PAY                        000336  FICA        FIT
+000345  SIT     DEDUCT             000353  NET PAY                    00035A   ½½,½½À.½½-
+000365   ½½À.½½-                   00036D   ½½À.½½-N                  000376  *
+000377  *BAD RECORD*               000383  DEPARTMENT    TOTALS       000397    ½½,½½À.½½-
+0003A3  COMPANY TOTALS             0003B1  ILL                        0003B4  IND
+0003B7  R                          0003B8   À½½½½½½                   0003C0   ½À½½½
+
+
+NOTE  186  EDIT WORD (COLUMNS 45-70) CONTAINS NO DIGIT POSITIONS OR MORE THAN FIFTEEN
+            (SIXTEEN FOR STERLING).  ENTRY OF BLANKS IN COLUMNS 45-70 IS ASSUMED.
+
+
+
+                                            MEMORY MAP
+     DOS/360*RPG*CL 3-9                 DEMORPG                       03/29/70             PAGE 0006
+
+
+INPUT/OUTPUT INTERCEPT                                      00074C
+CHAINING                                                    0003C8
+TABLE (INPUT AND OUTPUT)                                    0003E0
+DETERMINE RECORD TYPE                                       0009DC
+DATA SPECIFICATION                                          000774
+GET INPUT RECORD                                            000E08
+DETAIL CALCULATIONS                                         000FA0
+TOTAL CALCULATIONS                                          0018AA
+DETAIL LINES                                                001B70
+TOTAL LINES                                                 001982
+INPUT/OUTPUT REQUEST BLOCKS POINTER                         002A84
+LOCATION OF DTF TABLE POINTERS                              002130
+INPUT/OUTPUT INTERFACE ROUTINES                             0022A0
+TABLE LOOK UP                                               002B44
+LINE COUNTER                                                0027C8
+LINE COUNTER TABLE                                          002B24
+WORK AREA POINTER                                           002F24
+OVERFLOW BYPASS                                             001B64
+SET INDICATOR ROUTINE                                       002CD8
+SIGN CHECK ROUTINE                                          002D0C
+CONTROL LEVEL                                               000BF4
+TABLE(ASSEMBLE 4)                                           001CBC
+OVERFLOW LINES                                              001A84
+LINKAGE PROGRAM                                             002D34
+
+
+PROGRAM LENGTH  003088
+
+'END OF COMPILATION'
+// PAUSE
+// EXEC LNKEDT
+
+JOB  DEMORPG   03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST           INCLUDE      IJCFYOZ0                                          PAYR0240
+LIST           INCLUDE      IJCFZII3                                          PAYR0241
+LIST           INCLUDE      IJCFZIZ3                                          PAYR0242
+LIST           INCLUDE      IJDFYPZW                                          PAYR0243
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        PHASE***  008D34  006000  009251  1B 06 4  CSECT     PAYREG    006000  006000
+
+                                                   CSECT     IJCFZIZ3  009158  009158
+
+                                                   CSECT     IJCFZII3  0090D0  0090D0
+
+                                                   CSECT     IJDFYPZW  0091C0  0091C0
+                                                   *  ENTRY  IJDFYZZW  0091C0
+
+                                                   CSECT     IJCFYOZ0  009088  009088
+// EXEC
+                    NADIR  TELEVISION  COMPANY
+
+ 3/29/70            PAYROLL  REGISTER  FOR   JANUARY  1973                                                PAGE   1
+
+
+ DEPARTMENT  EMPLOYEE                                GROSS                                       OTHER
+  NUMBER      NUMBER         EMPLOYEE                  PAY       FICA        FIT        SIT     DEDUCT     NET PAY
+
+    10           4        ACHER, WILLIAM C.         332.52      19.45      33.34       6.23                 273.50
+               185        DONNEMAN, THOMAS M.       365.02      21.35      28.54       4.96      10.20      299.97
+               300        FELDMAN, MIKE R.          300.00      17.55       9.31       1.25                 271.89
+               325        HATFIELD, MARK I.         250.00      14.63      11.06       2.08       2.20      220.03
+               730        REEDE, OWEN W.            200.00      11.70        .00        .00      23.10      165.20
+               960        WINGLAND, KEITH E.        275.00      16.09        .00        .00                 258.91
+          DEPARTMENT 10 TOTALS                  $ 1,722.54 $   100.77 $    82.25 $    14.52 $    35.50  $ 1,489.50
+
+    20         111        CARTOLER, VIOLET B.       300.00      17.55        .00        .00 N    11.40      271.05
+               304        FROMM, STEVE V.           850.00      49.73      86.14      12.92      18.23      682.98
+               590        NEIL, CLARENCE N.         200.00      11.70        .00        .00      23.24      165.06
+               801        SCHEIBER, HARRY T.        250.00      14.63      20.14       4.17       5.20      205.86
+               956        WANGLEY, THEO. A.         275.00      16.09        .00        .00       2.75      256.16
+          DEPARTMENT 20 TOTALS                  $ 1,875.00 $   109.70 $   106.28 $    17.09 $    60.82  $ 1,581.11
+
+    30          30        ALLOREN, RUTH W.          250.00        .00       2.31        .00                 247.69
+               181        DELBERT, EDWARD D.        250.00        .00      20.14       4.17                 225.69
+               311        GROLER, GRACE B.          500.00        .00      50.14       8.33     441.53         .00 *
+               318        HANEY, CAROL S.         1,125.00      65.81     123.64      17.71      60.19      857.65
+               487        KING, MILDRED J.          500.00        .00      20.14       2.08      53.22      424.56
+               834        TRAWLEY, HARRIS T.        450.00      26.33      52.14       9.17      13.29      349.07
+          DEPARTMENT 30 TOTALS                  $ 3,075.00 $    92.14 $   268.51 $    41.46 $   568.23  $ 2,104.66
+
+    40          27        ALHOUER, ELAINE E.        350.00      20.48      26.14       4.58       4.00      294.80
+               171        COSTA, NAN S.             325.00      19.01       4.06        .00       9.03      292.90
+               317        HANBEE, ALETTA O.         400.00      23.40      14.56       1.67      11.80      348.57
+               721        RASSMUSEN, JOHN J.        300.00      17.55      18.14       3.33      23.46      237.52
+               739        RIDEL, ROBERT R.          275.00      16.09      14.56       1.67 N    72.24      170.44
+               806        STOCKTON, NORMAN Q.       275.00      16.09       5.81        .63     133.80      118.67
+          DEPARTMENT 40 TOTALS                  $ 1,925.00 $   112.62 $    83.27 $    11.88 $   254.33  $ 1,462.90
+
+    50         122        CENNA, DICK L.            375.00      21.94      20.14       3.13                 329.79
+               207        EBERHARDT, RON G.         250.00      14.63        .00        .00       9.80      225.57
+               308        GLEASON, JAMES E.         300.00      17.55      18.14       3.33                 260.98
+               568        LYNNE, GERALD H.          350.00      20.48      26.14       4.58      14.28      284.52
+               909        UDSON, DORIS M.           400.00      23.40      14.56       1.67                 360.37
+          DEPARTMENT 50 TOTALS                  $ 1,675.00 $    98.00 $    78.98 $    12.71 $    24.08  $ 1,461.23
+
+    60         100        BATES, TONY F.            450.00      26.33      12.81        .83      51.70      358.33
+               179        DAMSON, ERIC C.           375.00      21.94      30.14       5.21       2.23      315.48
+               292        EVERLY, DONNA M.          325.00      19.01       4.06        .00       3.22      298.71
+               409        ICK, MICK W.              275.00      16.09        .00        .00       5.90      253.01
+               607        ODELLE, NICHOLAS P.       200.00      11.70        .00        .00      62.20      126.10
+               825        TILLMAN, DON M.           400.00        .00      14.56       1.67      46.65      337.12
+          DEPARTMENT 60 TOTALS                  $ 2,025.00 $    95.07 $    61.57 $     7.71 $   171.90  $ 1,688.75
+
+    70         214        EDMONSON, RICK T.         350.00      20.48      36.14       6.67                 286.71
+               310        GORMALLY, MARIE N.        275.00      16.09      24.14       4.79       8.66      221.32
+               332        HELD, ANNA J.             325.00      19.01      32.14       6.04       9.26      258.55
+ 3/29/70            PAYROLL  REGISTER  FOR   JANUARY  1973                                                PAGE   2
+
+
+ DEPARTMENT  EMPLOYEE                                GROSS                                       OTHER
+  NUMBER      NUMBER         EMPLOYEE                  PAY       FICA        FIT        SIT     DEDUCT     NET PAY
+
+               689        OWNEY, REED M.            400.00      23.40      44.14       7.92      11.32      313.22
+               802        SHEA, MICHAEL H.          250.00      14.63      20.14       4.17      46.80      164.26
+          DEPARTMENT 70 TOTALS                  $ 1,600.00 $    93.61 $   156.70 $    29.59 $    76.04  $ 1,244.06
+
+    80         102        BELLSLEY, ARTHUR A.       300.00      17.55      28.14       5.42      27.62      221.27
+               282        ESTEBAN, JUAN L.          375.00      21.94      40.14       7.29                 305.63
+               322        HARLETON, JEAN H.         400.00      23.40      44.14       5.67 N               326.79
+               505        LAMBERT, JERRY O.         350.00      20.48      36.14       6.67                 286.71
+               921        ULL, GEORGE A.            300.00      17.55      28.14       5.42     120.80      128.09
+          DEPARTMENT 80 TOTALS                  $ 1,725.00 $   100.92 $   176.70 $    30.47 $   148.42  $ 1,268.49
+
+    90         105        BOYLE, RALPH P.           250.00      14.63      20.14       4.17      77.87      133.19
+               215        EDSON, WILBUR S.          200.00      11.70      12.81       2.92      15.75      156.82
+               315        HALE, ALAN A.             275.00      16.09      24.14       4.79      38.29      191.69
+               574        MELTZ, FRANK K.           325.00      19.01      32.14       6.04                 267.81
+               740        RIDGEFIELD, SUZY S.       375.00      21.94      40.14       7.29      23.10      282.53
+               820        TELLER, STEPHEN U.        450.00      26.33      52.14       9.17     322.22       40.14
+          DEPARTMENT 90 TOTALS                  $ 1,875.00 $   109.70 $   181.51 $    34.38 $   477.23  $ 1,072.18
+
+
+          COMPANY TOTALS                        $17,497.54 $   912.53 $ 1,195.77 $   199.81 $ 1,816.55  $13,372.88
+                                                                                ILL  192.47
+                                                                                IND    0073D
+EOJ DEMORPG                                                             12.11.28,DURATION 00.00.10

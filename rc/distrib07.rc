@@ -1,0 +1,5 @@
+# DISTRIB07 Initialize 2314 SPOOL1 on 191
+stop                                   # Halt CPU, required for IPL
+devinit 280 tape/k360n-ma108a.aws ro   # rewind DOS/360 distrib vol 1 read-only
+ipl 280                                # IPL init disk
+devinit 00c jcl/distrib07.jcl          # initialize SPOOL1

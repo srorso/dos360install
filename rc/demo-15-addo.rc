@@ -1,0 +1,3 @@
+# Demonstrate ADDROUT sort with PIOCS, LIOCS
+devinit e prt/demo-addo.txt crlf
+devinit c demos/demoaddo.jcl

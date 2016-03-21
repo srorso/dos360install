@@ -1,0 +1,5 @@
+# DISTRIB04 Initialize 2311 RES11C on 132
+stopall                               # Halt CPU, required for IPL
+devinit 281 tape/k360n-ma110a.aws ro  # mount DOS/360 distrib vol 2 read-only
+iplc 281                              # IPL initialize disk program
+devinit 00c jcl/distrib04.jcl         # initialize RES11C

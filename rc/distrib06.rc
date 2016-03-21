@@ -1,0 +1,5 @@
+# DISTRIB06 Initialize 2314 DOSRES on 190
+stopall                                # Halt CPU, required for IPL
+devinit 280 tape/k360n-ma108a.aws ro   # mount DOS/360 distrib vol 1 read-only
+iplc 280                               # IPL init disk
+devinit 00c jcl/distrib06.jcl          # initialize DOSRES

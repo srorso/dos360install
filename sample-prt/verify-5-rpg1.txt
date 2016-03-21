@@ -1,0 +1,179 @@
+
+// JOB VERRPG01                                                         12.03.09
+// OPTION LINK
+// EXEC RPG
+
+     DOS/360*RPG*CL 3-9                 VERRPG01                      03/29/70             PAGE 0001
+
+             00 000 H                                                                    $460
+     001     01 010 FINPUT   IPE F  80  80            READ40 SYSIPT                      $460
+     002     01 020 FOUTPUT  O   V 132 132     OF     PRINTERSYSLST                      $460
+     003   S 01 010 IINPUT   AA  01   1 Z-                                               $460
+     004     01 020 I                                        8  29 NAME                  $460
+     005     01 030 I                                       30  310MONTH                 $460
+     006     01 040 I                                       32  330DAY                   $460
+     007     01 050 I                                       34  380INVNO                 $460
+     008     01 060 I                                       39  430CUSTNOL1              $460
+     009     01 070 I                                       44  450STATE                 $460
+     010     01 080 I                                       46  480CITY                  $460
+     011     01 090 I                                       74  802INVAMT                $460
+     012   S 01 010 C   01      INVAMT    ADD  TOTAL     TOTAL   72                      $460
+     013     01 020 C   01      INVAMT    ADD  GRPTOT    GRPTOT  72                      $460
+     014   S 01 010 OOUTPUT  H  201   1P                                                 $460
+     015     01 020 O       OR        OF                                                 $460
+     016     01 030 O                                   53 '      A C C O U N T S  R'    $460
+     017     01 040 O                                   77 ' E C E I V A B L E  R E '    $460
+     018     01 050 O                                   88 'G I S T E R'                 $460
+     019     01 060 O        H  1     1P                                                 $460
+     020     01 070 O       OR        OF                                                 $460
+     021     01 080 O                                   25 'CUSTOMER'                    $460
+     022     01 090 O                                   80 'LOCATION       INVOICE'      $460
+     023     01 100 O                                  109 'INVOICE DATE    INVOICE'     $460
+     024     01 110 O        H  2     1P                                                 $460
+     025     01 120 O       OR        OF                                                 $460
+     026     01 130 O                                   42 'NUMBER         CUSTOMER '    $460
+     027     01 140 O                                   46 'NAME'                        $460
+     028     01 150 O                                   79 ' STATE   CITY     NUMBER'    $460
+     029     01 160 O                                  108 ' MO    DAY     AMOUNT'       $460
+     030     02 010 O        D  2     01                                                 $460
+     031     02 020 O                         CUSTNOZ   23                               $460
+     032     02 030 O                         NAME      53                               $460
+     033     02 040 O                         STATE Z   59                               $460
+     034     02 050 O                         CITY  Z   67                               $460
+     035     02 060 O                         INVNO Z   79                               $460
+     036     02 070 O                         MONTH Z   90                               $460
+     037     02 080 O                         DAY   Z   96                               $460
+     038     02 090 O                         INVAMT   109 '$  ,  0.  '                  $460
+     039     02 100 O        T  2     L1                                                 $460
+     040     02 110 O                         GRPTOT B 109 '$  ,  0.  '                  $460
+     041     02 120 O                                  110 '*'                           $460
+     042     02 130 O        T  2     LR                                                 $460
+     043     02 140 O                         TOTAL    109 '$  ,  0.  '                  $460
+     044     02 150 O                                  111 '**'                          $460
+
+     DOS/360*RPG*CL 3-9                 VERRPG01                      03/29/70             PAGE 0002
+
+                                                  SYMBOL  TABLES
+
+RESULTING  INDICATORS
+
+ADDRESS RI      ADDRESS RI      ADDRESS RI      ADDRESS RI      ADDRESS RI      ADDRESS RI      ADDRESS RI
+
+ 000011 OF       000014 1P       000015 LR       000016 00       000017 01       00007A L0       00007B L1
+ 000085 H0       000086 H1       000087 H2       000088 H3       000089 H4       00008A H5       00008B H6
+ 00008C H7       00008D H8       00008E H9
+FIELD  NAMES
+
+ADDRESS FIELD         ADDRESS FIELD         ADDRESS FIELD         ADDRESS FIELD         ADDRESS FIELD
+
+000123  NAME          000139  MONTH         00013B  DAY           00013D  INVNO         000140  CUSTNO
+000143  STATE         000145  CITY          000147  INVAMT        00014B  TOTAL         00014F  GRPTOT
+
+
+LITERALS
+
+ADDRESS LITERAL                    ADDRESS LITERAL                    ADDRESS LITERAL
+
+000153        A C C O U N T S  R   00016B   E C E I V A B L E  R E    000183  G I S T E R
+00018E  CUSTOMER                   000196  LOCATION       INVOICE     0001AC  INVOICE DATE    INVOICE
+0001C3  NUMBER         CUSTOMER    0001DB  NAME                       0001DF   STATE   CITY     NUMBER
+0001F7   MO    DAY     AMOUNT      00020C    ½½,½½À.½½                000217  *
+000218  **
+
+
+
+                                            MEMORY MAP
+
+INPUT/OUTPUT INTERCEPT                                      000220
+TABLE (INPUT AND OUTPUT)                                    00021C
+DETERMINE RECORD TYPE                                       000494
+DATA SPECIFICATION                                          000248
+GET INPUT RECORD                                            00088C
+DETAIL CALCULATIONS                                         000A24
+TOTAL CALCULATIONS                                          000A78
+DETAIL LINES                                                000BFA
+TOTAL LINES                                                 000A90
+INPUT/OUTPUT REQUEST BLOCKS POINTER                         001514
+LOCATION OF DTF TABLE POINTERS                              000E40
+INPUT/OUTPUT INTERFACE ROUTINES                             000F08
+WORK AREA POINTER                                           00187C
+OVERFLOW BYPASS                                             000BEE
+CONTROL LEVEL                                               0006AC
+TABLE(ASSEMBLE 4)                                           000CD4
+TEST ZONE (BCD)                                             001554
+OVERFLOW LINES                                              000B0E
+LINKAGE PROGRAM                                             00168C
+
+
+PROGRAM LENGTH  0019A1
+
+     DOS/360*RPG*CL 3-9                 VERRPG01                      03/29/70             PAGE 0003
+
+'END OF COMPILATION'
+// EXEC LNKEDT
+
+JOB  VERRPG01  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST           INCLUDE      IJCFCIZ0                                          $4600127
+LIST           INCLUDE      IJDFYPZW                                          $4600128
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        PHASE***  00768C  006000  007AF9  1B 06 4  CSECT     $460      006000  006000
+
+                                                   CSECT     IJCFCIZ0  0079A8  0079A8
+                                                   *  ENTRY  IJCFZIZ0  0079A8
+
+                                                   CSECT     IJDFYPZW  007A68  007A68
+                                                   *  ENTRY  IJDFYZZW  007A68
+// EXEC
+                                   A C C O U N T S  R E C E I V A B L E  R E G I S T E R
+
+                 CUSTOMER                                 LOCATION       INVOICE      INVOICE DATE    INVOICE
+                  NUMBER         CUSTOMER NAME          STATE   CITY     NUMBER         MO    DAY     AMOUNT
+
+                  10712        AMALGAMATED CORP          33      61       11603         11    10   $   389.25
+
+                                                                                                   $   389.25*
+
+                  11315        BROWN WHOLESALE           30     231       12324         12    28   $   802.08
+
+                  11315        BROWN WHOLESALE           30     231       99588         12    14   $   261.17
+
+                                                                                                   $ 1,063.25*
+
+                  11897        FARM IMPLEMENTS           47      77       10901         10    18   $    27.63
+
+                                                                                                   $    27.63*
+
+                  18530        BLACK OIL                 16      67       11509         11     8   $   592.95
+
+                  18530        BLACK OIL                 16      67       12292         12    23   $   950.97
+
+                                                                                                   $ 1,543.92*
+
+                  20716        LEATHER BELT CO           36     471       11511         11     8   $   335.63
+
+                  20716        LEATHER BELT CO           36     471       12263         12    17   $   121.75
+
+                                                                                                   $   457.38*
+
+                  29017        GENERAL MFG CO             6      63       11615         11    14   $   440.12
+
+                  29017        GENERAL MFG CO             6      63       11676         11    23   $   722.22
+
+                                                                                                   $ 1,162.34*
+
+                  29054        A-B-C DIST CO             25      39        9689          9    11   $   645.40
+
+                  29054        A-B-C DIST CO             25      39       11605         11    11   $   271.69
+
+                  29054        A-B-C DIST CO             25      39       12234         12    14   $   559.33
+
+                                                                                                   $ 1,476.42*
+
+                                                                                                   $ 6,120.19**
+
+
+EOJ VERRPG01                                                            12.03.16,DURATION 00.00.07

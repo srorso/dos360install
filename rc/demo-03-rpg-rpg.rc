@@ -1,0 +1,4 @@
+# Demonstrate RPG commercial application program
+devinit e prt/demo-rpg.txt crlf
+devinit d prt/demo-rpg-pun.txt ascii crlf
+devinit c demos/demorpg-rpg.jcl

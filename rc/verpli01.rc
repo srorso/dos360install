@@ -1,0 +1,3 @@
+# Verify PL/I
+devinit e prt/verify-4-pli1.txt crlf
+devinit c jcl/verpli01.jcl

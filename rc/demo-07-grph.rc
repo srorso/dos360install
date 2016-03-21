@@ -1,0 +1,3 @@
+# Demonstrate FORTRAN program; prorgam calls Assembly and uses overlays
+devinit e prt/demo-grph.txt crlf
+devinit c demos/demogrph-ffo.jcl

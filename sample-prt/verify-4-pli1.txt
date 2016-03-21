@@ -1,0 +1,205 @@
+
+// JOB VERPLI01                                                         12.02.55
+// OPTION LINK
+// EXEC PL/I
+
+         DOS PL/I COMPILER  360N-PL-464 CL3-13             VERPLI01            03/29/70            PAGE 001
+
+
+                                                    O P T I O N S  L I S T
+
+* PROCESS STMT
+
+OPTIONS TAKEN ARE 60C,LIST,XREF,ERRS,OPT,STMT.
+         DOS PL/I COMPILER  360N-PL-464 CL3-13             VERPLI01            03/29/70            PAGE 002
+
+
+ /*PL/I SAMPLE PROGRAM FOR DOS/TOS */
+
+                     /*PL/I SAMPLE PROGRAM FOR DOS/TOS */
+     1               PL1: PROCEDURE OPTIONS (MAIN);
+     2                         DECLARE  ( X, INITVALUE, TERMVALUE, STEP, A(5), B(2) )
+                                        FLOAT BINARY (21) ;
+                     /********************************************************************
+
+                        THIS PROGRAM COMPUTES A SMALL TABLE CONTAINING A FEW MATH FUNCTIONS
+
+                        INPUT DATA.. INITVALUE - START POINT OF TABLE
+                                     TERMVALUE   - TERMVALUE POINT TABLE
+                                     STEP  - STEP WIDTH IN TABLE
+
+                        THE ABSOLUTE VALUES OF INITVALUE AND TERMVALUE MAY NOT BE GREATER
+                        THAN  999.999, THE ABSOLUTE VALUE OF STEP MAY NOT BE LESS THAN
+                        0.001.
+
+                        BASED ON THE IBM SUPPLIED SAMPLE PL/I INSTALLATION VERIFICATION
+                        PROGRAM, BUT RE-CODED TO USE MODERN STRUCTURED PROGRAMMING
+                        TECHNIQUES.
+
+                     ******************************************************************* */
+
+     3                         GET EDIT (INITVALUE, TERMVALUE, STEP)(3 F(8,3)) ;
+
+     4                         PUT EDIT ('X     SQRT(X**2+1)      X**2','X**3','SIN(X)
+                      COS(X)      SQRT(X)     SQRT(X**3)') (X(4),A(41),A(14),A(61)) ;
+
+     5                         IF (ABS(INITVALUE) < 1000.) & (ABS(STEP) >= .001)
+                                  THEN DO X=INITVALUE TO TERMVALUE+STEP/1E3 BY STEP ;
+     6                                  A(2)=X*X ;
+     7                                  A(1)=SQRT(A(2)+1);
+     8                                  A(3)=A(2)*X  ;
+     9                                  A(4)=SIN(X) ;
+    10                                  A(5)=COS(X) ;
+    11                                  PUT EDIT (X,A) (F(8,3),F(13,3),2 E(16,5),2 F(13,6));
+    12                                  IF X < 0
+                                           THEN PUT EDIT ('--','--') (X(7), A(15), A(19)) ;
+    13                                     ELSE BEGIN ;
+    14                                        B(1)=SQRT(X)    ;
+    15                                        B(2)=SQRT(A(3)) ;
+    16                                        PUT EDIT (B,' ') (F(12,4), E(16,5),A(13)) ;
+    17                                     END ;
+    18                               END  /* DO LOOP */ ;
+    19                            ELSE BEGIN ;
+    20                               PUT EDIT ('INPUT DATA ERROR') (A(16)) ;
+    21                               STOP /* END ON WRONG INPUT */ ;
+    22                               END ;
+
+    23                         PUT SKIP EDIT (' NORMAL END')(A);
+    24                         RETURN;/* NORMAL END */ ;
+    26                         END  /* TABLE */  ;
+         DOS PL/I COMPILER  360N-PL-464 CL3-13             VERPLI01            03/29/70            PAGE 003
+
+
+ /*PL/I SAMPLE PROGRAM FOR DOS/TOS */
+         DOS PL/I COMPILER  360N-PL-464 CL3-13             VERPLI01            03/29/70            PAGE 004
+
+
+                        C R O S S     R E F E R E N C E     L I S T I N G
+
+ A                               0105 01    6    7    7    8    8    9   10   11   15
+ B                               0106 01   14   15   16
+ INITVALUE                       0102 01    3    5    5
+ PL1                             0100 00    1
+ STEP                            0104 01    3    5    5    5
+ TERMVALUE                       0103 01    3    5
+ X                               0101 01    5    6    6    8    9   10   11   12   14
+         DOS PL/I COMPILER  360N-PL-464 CL3-13             VERPLI01            03/29/70            PAGE 005
+
+
+  5W01I    SUCCESSFUL   COMPILATION
+// EXEC LNKEDT
+
+JOB  VERPLI01  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST   AUTOLINK   IJKQQSM
+LIST   AUTOLINK   IJKQSSD
+LIST   AUTOLINK   IJKSYSA
+LIST   AUTOLINK   IJJCPD1N
+LIST   AUTOLINK   IJKSYSI
+LIST   AUTOLINK   IJKSZBA
+LIST   AUTOLINK   IJKSZLM
+LIST   AUTOLINK   IJKTFDM
+LIST   AUTOLINK   IJKTFMM
+LIST   AUTOLINK   IJKTSTM
+LIST   AUTOLINK   IJKTXCF
+LIST   AUTOLINK   IJKVCEM
+LIST   AUTOLINK   IJKVCTM
+LIST   AUTOLINK   IJKVECM
+LIST   AUTOLINK   IJKVTCM
+LIST   AUTOLINK   IJKXTBM
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        PHASE***  006000  006000  008417  1B 06 4  CSECT     PL1       006000  006000
+
+                                                   CSECT     IJKSZCN   006BD8  006BD8
+                                                      ENTRY  IJKSZCA   006E06
+                                                      ENTRY  IJKSZCM   006E0E
+                                                      ENTRY  IJKSZCT   006E2E
+                                                      ENTRY  IJKSZBA   006E0A
+                                                      ENTRY  IJKZWSA   006EC0
+                                                      ENTRY  IJKSZCS   006C8E
+                                                   *  ENTRY  IJKSZCI   006C6A
+                                                   *  ENTRY  IJKSZCP   006D98
+                                                   *  ENTRY  IJKTCLM   006E50
+                                                      ENTRY  IJKTOPM   006E40
+                                                   *  ENTRY  IJKTRNS   007038
+                                                   *  ENTRY  IJKZWSI   006FE4
+
+                                                   CSECT     IJKSZLM   0072E8  0072E8
+
+                                                   CSECT     IJKTFDM   007328  007328
+
+                                                   CSECT     IJKTFMM   007508  007508
+                                                      ENTRY  IJKTFMR   00751C
+
+                                                   CSECT     IJKTSTM   0075D0  0075D0
+                                                      ENTRY  IJKTSTR   0077D4
+                                                      ENTRY  IJKTSTN   00764A
+
+                                                   CSECT     IJKVTCM   008258  008258
+
+                                                   CSECT     IJKVECM   0080C0  0080C0
+
+                                                   CSECT     IJKVCTM   007F38  007F38
+
+                                                   CSECT     IJKVCEM   007B38  007B38
+
+                                                   CSECT     IJKSYSI   006AF8  006AF8
+
+                                                   CSECT     IJKSYSA   006800  006800
+
+                                                   CSECT     IJKQQSM   006620  006620
+
+                                                   CSECT     IJKQSSA   0066D0  0066D0
+                                                      ENTRY  IJKQSSD   0066F8
+                                                      ENTRY  IJKQSSB   0066D8
+                                                   *  ENTRY  IJKQSSC   0066F0
+
+                                                   CSECT     IJJCPD1N  006938  006938
+                                                      ENTRY  IJJCPD3   006938
+
+                                                   CSECT     IJKTXCF   007878  007878
+                                                   *  ENTRY  IJKTXCE   0079B8
+                                                   *  ENTRY  IJKTXCR   0078A0
+                                                   *  ENTRY  IJKTXCW   0078AA
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+                                                   CSECT     IJKXTBM   008398  008398
+// EXEC
+
+    X     SQRT(X**2+1)      X**2             X**3          SIN(X)       COS(X)      SQRT(X)     SQRT(X**3)
+    .000        1.000      .00000E+00      .00000E+00      .000000     1.000000       .0000      .00000E+00
+    .100        1.005     9.99999E-03     9.99999E-04      .099833      .995004       .3162     3.16228E-02
+    .200        1.020     4.00000E-02     7.99999E-03      .198669      .980067       .4472     8.94426E-02
+    .300        1.044     8.99999E-02     2.70000E-02      .295520      .955337       .5477     1.64317E-01
+    .400        1.077     1.60000E-01     6.39999E-02      .389418      .921061       .6325     2.52982E-01
+    .500        1.118     2.50000E-01     1.25000E-01      .479425      .877583       .7071     3.53553E-01
+    .600        1.166     3.60000E-01     2.16000E-01      .564642      .825336       .7746     4.64758E-01
+    .700        1.221     4.90000E-01     3.43000E-01      .644217      .764842       .8367     5.85662E-01
+    .800        1.281     6.40000E-01     5.11999E-01      .717356      .696707       .8944     7.15541E-01
+    .900        1.345     8.09999E-01     7.28999E-01      .783327      .621610       .9487     8.53814E-01
+   1.000        1.414     9.99999E-01     9.99999E-01      .841471      .540303      1.0000     9.99999E-01
+   1.100        1.487     1.21000E+00     1.33100E+00      .891207      .453597      1.0488     1.15369E+00
+   1.200        1.562     1.44000E+00     1.72799E+00      .932039      .362359      1.0954     1.31453E+00
+   1.300        1.640     1.68999E+00     2.19699E+00      .963558      .267500      1.1402     1.48222E+00
+   1.400        1.720     1.95999E+00     2.74399E+00      .985449      .169969      1.1832     1.65650E+00
+   1.500        1.803     2.24999E+00     3.37498E+00      .997495      .070740      1.2247     1.83711E+00
+   1.600        1.887     2.55999E+00     4.09597E+00      .999574     -.029196      1.2649     2.02385E+00
+   1.700        1.972     2.88999E+00     4.91296E+00      .991665     -.128840      1.3038     2.21652E+00
+   1.800        2.059     3.23998E+00     5.83195E+00      .973849     -.227198      1.3416     2.41494E+00
+   1.900        2.147     3.60998E+00     6.85894E+00      .946302     -.323285      1.3784     2.61896E+00
+   2.000        2.236     3.99998E+00     7.99993E+00      .909300     -.416142      1.4142     2.82841E+00
+   2.100        2.326     4.40997E+00     9.26092E+00      .863213     -.504841      1.4491     3.04317E+00
+   2.200        2.417     4.83997E+00     1.06479E+01      .808500     -.588496      1.4832     3.26311E+00
+   2.300        2.508     5.28997E+00     1.21669E+01      .745710     -.666271      1.5166     3.48810E+00
+   2.400        2.600     5.75996E+00     1.38239E+01      .675469     -.737388      1.5492     3.71804E+00
+   2.500        2.693     6.24996E+00     1.56248E+01      .598479     -.801139      1.5811     3.95283E+00
+   2.600        2.786     6.75995E+00     1.75758E+01      .515509     -.856884      1.6124     4.19235E+00
+   2.700        2.879     7.28995E+00     1.96828E+01      .427389     -.904068      1.6432     4.43653E+00
+   2.800        2.973     7.83994E+00     2.19518E+01      .334998     -.942219      1.6733     4.68527E+00
+   2.900        3.068     8.40994E+00     2.43887E+01      .239260     -.970956      1.7029     4.93849E+00
+   3.000        3.162     8.99993E+00     2.69997E+01      .141131     -.989991      1.7320     5.19612E+00
+ NORMAL END
+EOJ VERPLI01                                                            12.03.09,DURATION 00.00.14

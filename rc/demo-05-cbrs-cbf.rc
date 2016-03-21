@@ -1,0 +1,3 @@
+# Demonstrate ANS COBOL with segmentation/overlay, internal sort, and Report Writer
+devinit e prt/demo-cbrs.txt crlf
+devinit c demos/democbrs-cbf.jcl

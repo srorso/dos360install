@@ -1,0 +1,3 @@
+# Demonstrate FORTRAN random number generation
+devinit e prt/demo-rand.txt crlf
+devinit c demos/demorand-ffo.jcl

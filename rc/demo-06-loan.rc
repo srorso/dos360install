@@ -1,0 +1,3 @@
+# Demonstrate COBOL Loan amortization program
+devinit e prt/demo-loan.txt crlf
+devinit c demos/demoloan-cbf.jcl

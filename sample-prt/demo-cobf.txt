@@ -1,0 +1,1338 @@
+
+// JOB DEMOCOBF SAMPLE ANS COBOL PROGRAM                                12.11.28
+// OPTION LINK,SYM,LISTX
+// EXEC FCOBOL
+
+     1                                  IBM DOS AMERICAN NATIONAL STANDARD COBOL                CBF CL3-6       03/29/70
+
+
+ CBL BUF=1024,SUPMAP,NOTRUNC
+00001          IDENTIFICATION DIVISION.
+00002          PROGRAM-ID. SAMPLE.
+00003          AUTHOR. A PROGRAMMER.
+00004          REMARKS. THIS IS A SAMPLE ANS COBOL PROGRAM FOR A TYPICAL
+00005              BUSINESS REPORT.  IT ALSO DEMONSTRATES A CONTROL BREAK,
+00006              USING 'SEARCH' FOR A TABLE, CALLING A SUBROUTINE,
+00007              AND USES BOTH A LINE COUNTER AND THE COBOL USE OF CH.12
+00008              ON THE PRINTER CARRIAGE TAPE.  IT IS WRITTEN USING
+00009              STRUCTURED PROGRAMMING TECHNIQUES.
+00010
+00011              THIS PROGRAM SHOWS THE PRINTING METHOD OF SETTING UP
+00012              ALL LINES IN WORKING STORAGE AND THEN USING THE 'FROM'
+00013              OPTION ON THE 'WRITE' TO SEND EACH ONE TO THE PRINTER.
+
+00014          ENVIRONMENT DIVISION.
+00015          CONFIGURATION SECTION.
+00016          SOURCE-COMPUTER. IBM-360.
+00017          OBJECT-COMPUTER. IBM-360.
+00018          SPECIAL-NAMES.
+00019              C01 IS TOP-PAGE.
+00020          INPUT-OUTPUT SECTION.
+00021          FILE-CONTROL.
+00022              SELECT PAY-FILE   ASSIGN TO SYS007-UR-2501-S.
+00023              SELECT PRINT-FILE ASSIGN TO SYS009-UR-1403-S
+00024                  RESERVE NO ALTERNATE AREA.
+
+00025          DATA DIVISION.
+00026          FILE SECTION.
+00027          FD  PAY-FILE
+00028              LABEL RECORDS ARE OMITTED
+00029              RECORDING MODE IS F
+00030              RECORD CONTAINS 75 CHARACTERS
+00031              DATA RECORD IS EMPLOYEE-RECORD.
+00032          01  EMPLOYEE-RECORD.
+00033              05  EM-DEPARTMENT           PIC XX.
+00034              05  FILLER                  PIC XXX.
+00035              05  EM-NAME                 PIC X(20).
+00036              05  FILLER                  PIC X(8).
+00037              05  EM-OTH-DED-X.
+00038                  10  EM-OTH-DED          PIC S9(5)V99.
+00039              05  FILLER                  PIC X(16).
+00040              05  EM-SSN13                PIC XXX.
+00041              05  EM-SSN45                PIC XX.
+00042              05  EM-SSN69                PIC XXXX.
+00043              05  EM-SALARY-X.
+00044                  10  EM-SALARY           PIC S9(5)V99.
+00045              05  FILLER                  PIC X(3).
+00046          FD  PRINT-FILE
+00047              LABEL RECORDS ARE OMITTED
+00048              RECORDING MODE IS F
+00049              DATA RECORD IS PRINT-LINE.
+00050          01  PRINT-LINE                  PIC X(133).
+     2
+
+
+00051          WORKING-STORAGE SECTION.
+00052          01  FILLER.
+00053              02 FILLER  COMP-3.
+00054                  05  WS-PAGE             PIC S999        VALUE ZERO.
+00055                  05  LINE-CNTR           PIC S999.
+00056                  05  WS-FIT-WITH         PIC S9(5)V99.
+00057                  05  WS-SIT-WITH         PIC S9(5)V99.
+00058                  05  WS-NET-PAY          PIC S9(5)V99.
+00059                  05  WS-DT-SALARY        PIC S9(5)V99    VALUE ZERO.
+00060                  05  WS-DT-FIT-WITH      PIC S9(5)V99    VALUE ZERO.
+00061                  05  WS-DT-SIT-WITH      PIC S9(5)V99    VALUE ZERO.
+00062                  05  WS-DT-OTH-DED       PIC S9(5)V99    VALUE ZERO.
+00063                  05  WS-DT-NET-PAY       PIC S9(5)V99    VALUE ZERO.
+00064                  05  WS-FT-SALARY        PIC S9(7)V99    VALUE ZERO.
+00065                  05  WS-FT-FIT-WITH      PIC S9(7)V99    VALUE ZERO.
+00066                  05  WS-FT-SIT-WITH      PIC S9(7)V99    VALUE ZERO.
+00067                  05  WS-FT-OTH-DED       PIC S9(7)V99    VALUE ZERO.
+00068                  05  WS-FT-NET-PAY       PIC S9(7)V99    VALUE ZERO.
+00069              02  FILLER.
+00070                  05  WS-SW-EOF           PIC XXX         VALUE 'NO'.
+00071                      88  NO-MORE-RECORDS                 VALUE 'YES'.
+00072                  05  EOP-SW              PIC X.
+00073                  05  WS-DEPARTMENT       PIC XX.
+00074                  05  DEPTS-TABLE.
+00075                      10  FILLER          PIC X(12) VALUE '10     SALES'.
+00076                      10  FILLER          PIC X(12) VALUE '20      MFG.'.
+00077                      10  FILLER          PIC X(12) VALUE '30  BUSINESS'.
+00078                      10  FILLER          PIC X(12) VALUE '40    TRANS.'.
+00079                      10  FILLER          PIC X(12) VALUE '50 ENGINEER.'.
+00080                  05  DEPT-TABLE REDEFINES DEPTS-TABLE OCCURS 5 TIMES
+00081                          INDEXED BY IDX.
+00082                      10  DEPT-CODE       PIC XX.
+00083                      10  DEPT-DESC       PIC X(10).
+00084              02  BLANK-LINE              PIC X           VALUE SPACE.
+00085              02  HEADING1.
+00086                  05  FILLER              PIC X.
+00087                  05  H1-TODAY            PIC X(8).
+00088                  05  FILLER              PIC X(40)       VALUE SPACES.
+00089                  05  FILLER    PIC X(70) VALUE 'ITPRG 248 SAMPLE PROGRAM'.
+00090                  05  FILLER              PIC X(5)        VALUE 'PAGE '.
+00091                  05  H1-PAGE             PIC ZZ9.
+00092              02  HEADING2.
+00093                  05  FILLER              PIC X(14)  VALUE ' DEPT.   NAME'.
+00094                  05  FILLER              PIC X(15)       VALUE SPACES.
+00095                  05  FILLER              PIC X(100)      VALUE
+00096                         'SOC.SEC.NO.        SALARY         F.I.T.
+00097         -               'S.I.T.          OTHER           NET'.
+00098              02  UNDER-LINE.
+00099                  05  FILLER              PIC X(14) VALUE ' _____    ____'.
+00100                  05  FILLER              PIC X(15)       VALUE SPACES.
+00101                  05  FILLER              PIC X(100)      VALUE
+00102                         '___________        ______         ______
+00103         -               '______          _____           ___'.
+     3
+
+
+00104              02  DETAIL-LINE.
+00105                  05  FILLER              PIC X           VALUE SPACE.
+00106                  05  DL-DEPARTMENT       PIC XX.
+00107                  05  FILLER              PIC X(4)        VALUE SPACES.
+00108                  05  DL-NAME             PIC X(20).
+00109                  05  FILLER              PIC XX          VALUE SPACES.
+00110                  05  DL-SSN13            PIC XXX.
+00111                  05  DL-SSN-HYP1         PIC X.
+00112                  05  DL-SSN45            PIC XX.
+00113                  05  DL-SSN-HYP2         PIC X.
+00114                  05  DL-SSN69            PIC XXXX.
+00115                  05  FILLER              PIC X(5)        VALUE SPACES.
+00116                  05  DL-SALARY           PIC ZZ,ZZZ.99-.
+00117                  05  FILLER              PIC X(5)        VALUE SPACES.
+00118                  05  DL-FIT-WITH         PIC ZZ,ZZZ.99-.
+00119                  05  FILLER              PIC X(5)        VALUE SPACES.
+00120                  05  DL-SIT-WITH         PIC ZZ,ZZZ.99-.
+00121                  05  FILLER              PIC X(5)        VALUE SPACES.
+00122                  05  DL-OTH-DED          PIC ZZ,ZZZ.99-.
+00123                  05  FILLER              PIC X(5)        VALUE SPACES.
+00124                  05  DL-NET-PAY          PIC ZZ,ZZZ.99-.
+00125              02  ERROR-LINE.
+00126                  05  FILLER              PIC X           VALUE SPACE.
+00127                  05  EL-DEPARTMENT       PIC XX.
+00128                  05  FILLER              PIC X(4)        VALUE SPACES.
+00129                  05  EL-NAME             PIC X(20).
+00130                  05  FILLER              PIC XX          VALUE SPACES.
+00131                  05  EL-SSN13            PIC XXX.
+00132                  05  EL-SSN-HYP1         PIC X.
+00133                  05  EL-SSN45            PIC XX.
+00134                  05  EL-SSN-HYP2         PIC X.
+00135                  05  EL-SSN69            PIC XXXX.
+00136                  05  FILLER              PIC X(5)        VALUE SPACES.
+00137                  05  FILLER              PIC X(13)  VALUE 'ERROR IN DATA'.
+00138              02  DEPARTMENT-LINE.
+00139                  05  FILLER              PIC X(12)       VALUE SPACES.
+00140                  05  DT-DEPT-DESC        PIC X(10)       VALUE SPACES.
+00141                  05  FILLER              PIC X(12) VALUE ' DEPARTMENT'.
+00142                  05  DT-DEPARTMENT       PIC X(2).
+00143                  05  FILLER              PIC X(9) VALUE ' TOTALS'.
+00144                  05  DT-SALARY           PIC ZZ,ZZZ.99-.
+00145                  05  FILLER              PIC X(5)        VALUE SPACES.
+00146                  05  DT-FIT-WITH         PIC ZZ,ZZZ.99-.
+00147                  05  FILLER              PIC X(5)        VALUE SPACES.
+00148                  05  DT-SIT-WITH         PIC ZZ,ZZZ.99-.
+00149                  05  FILLER              PIC X(5)        VALUE SPACES.
+00150                  05  DT-OTH-DED          PIC ZZ,ZZZ.99-.
+00151                  05  FILLER              PIC X(5)        VALUE SPACES.
+00152                  05  DT-NET-PAY          PIC ZZ,ZZZ.99-.
+00153                  05  FILLER              PIC X           VALUE '*'.
+00154              02  FINAL-TOTAL-LINE.
+00155                  05  FILLER              PIC X(28)       VALUE SPACES.
+00156                  05  FILLER              PIC X(15)   VALUE 'FINAL TOTALS'.
+     4
+
+
+00157                  05  FT-SALARY           PIC ZZZZ,ZZZ.99-.
+00158                  05  FILLER              PIC X(3)        VALUE SPACES.
+00159                  05  FT-FIT-WITH         PIC ZZZZ,ZZZ.99-.
+00160                  05  FILLER              PIC X(3)        VALUE SPACES.
+00161                  05  FT-SIT-WITH         PIC ZZZZ,ZZZ.99-.
+00162                  05  FILLER              PIC X(3)        VALUE SPACES.
+00163                  05  FT-OTH-DED          PIC ZZZZ,ZZZ.99-.
+00164                  05  FILLER              PIC X(3)        VALUE SPACES.
+00165                  05  FT-NET-PAY          PIC ZZZZ,ZZZ.99-.
+00166                  05  FILLER              PIC XX          VALUE '**'.
+
+00167          PROCEDURE DIVISION.
+00168              OPEN INPUT PAY-FILE, OUTPUT PRINT-FILE
+00169              MOVE CURRENT-DATE TO H1-TODAY
+00170              PERFORM HEADING-ROUTINE THRU HEADING-ROUTINE-EXIT
+00171              READ PAY-FILE AT END MOVE 'YES' TO WS-SW-EOF.
+00172              MOVE EM-DEPARTMENT TO WS-DEPARTMENT
+00173              PERFORM DETAIL-ROUTINE THRU DETAIL-ROUTINE-EXIT
+00174                  UNTIL NO-MORE-RECORDS
+00175              PERFORM FINAL-TOTALS THRU FINAL-TOTALS-EXIT
+00176              CLOSE PAY-FILE, PRINT-FILE
+00177              STOP RUN.
+
+00178          HEADING-ROUTINE.
+00179              ADD 1 TO WS-PAGE
+00180              MOVE WS-PAGE TO H1-PAGE
+00181              WRITE PRINT-LINE FROM HEADING1 AFTER ADVANCING TOP-PAGE
+00182              WRITE PRINT-LINE FROM HEADING2 AFTER ADVANCING 2
+00183              WRITE PRINT-LINE FROM UNDER-LINE AFTER ADVANCING 0
+00184              WRITE PRINT-LINE FROM BLANK-LINE AFTER ADVANCING 1
+00185              MOVE 4 TO LINE-CNTR.
+00186              MOVE '0' TO EOP-SW.
+00187          HEADING-ROUTINE-EXIT.
+00188              EXIT.
+
+00189          DETAIL-ROUTINE.
+00190              IF EM-DEPARTMENT NOT = WS-DEPARTMENT
+00191                  PERFORM DEPARTMENT-TOTAL THRU DEPARTMENT-TOTAL-EXIT.
+00192              IF EOP-SW = '1' OR LINE-CNTR > 56
+00193                  PERFORM HEADING-ROUTINE THRU HEADING-ROUTINE-EXIT.
+00194              EXAMINE EM-SALARY-X  REPLACING LEADING SPACES BY ZEROS
+00195              EXAMINE EM-OTH-DED-X REPLACING LEADING SPACES BY ZEROS
+00196              IF EM-SALARY IS NUMERIC AND EM-OTH-DED IS NUMERIC
+00197                       PERFORM DATA-IS-GOOD THRU DATA-IS-GOOD-EXIT
+00198                  ELSE PERFORM DATA-IS-BAD  THRU DATA-IS-BAD-EXIT.
+00199              READ PAY-FILE AT END MOVE 'YES' TO WS-SW-EOF.
+00200          DETAIL-ROUTINE-EXIT.
+00201              EXIT.
+
+00202          DATA-IS-GOOD.
+00203              MULTIPLY EM-SALARY BY .14  GIVING WS-FIT-WITH ROUNDED
+00204              MULTIPLY EM-SALARY BY .025 GIVING WS-SIT-WITH ROUNDED
+00205              COMPUTE WS-NET-PAY = EM-SALARY - WS-FIT-WITH - WS-SIT-WITH -
+     5
+
+
+00206                  EM-OTH-DED
+00207              ADD EM-SALARY      TO WS-DT-SALARY
+00208              ADD WS-FIT-WITH    TO WS-DT-FIT-WITH
+00209              ADD WS-SIT-WITH    TO WS-DT-SIT-WITH
+00210              ADD EM-OTH-DED     TO WS-DT-OTH-DED
+00211              ADD WS-NET-PAY     TO WS-DT-NET-PAY
+00212              MOVE EM-DEPARTMENT TO DL-DEPARTMENT
+00213              MOVE EM-NAME       TO DL-NAME
+00214              MOVE EM-SSN13      TO DL-SSN13
+00215              MOVE EM-SSN45      TO DL-SSN45
+00216              MOVE EM-SSN69      TO DL-SSN69
+00217              MOVE '-'           TO DL-SSN-HYP1, DL-SSN-HYP2
+00218              MOVE EM-SALARY     TO DL-SALARY
+00219              MOVE WS-FIT-WITH   TO DL-FIT-WITH
+00220              MOVE WS-SIT-WITH   TO DL-SIT-WITH
+00221              MOVE EM-OTH-DED    TO DL-OTH-DED
+00222              MOVE WS-NET-PAY    TO DL-NET-PAY
+00223              WRITE PRINT-LINE FROM DETAIL-LINE AFTER ADVANCING 1
+00224                  EOP MOVE '1' TO EOP-SW.
+00225              ADD 1 TO LINE-CNTR.
+00226          DATA-IS-GOOD-EXIT.
+00227              EXIT.
+00228          DATA-IS-BAD.
+00229              MOVE EM-DEPARTMENT TO EL-DEPARTMENT
+00230              MOVE EM-NAME       TO EL-NAME
+00231              MOVE EM-SSN13      TO EL-SSN13
+00232              MOVE EM-SSN45      TO EL-SSN45
+00233              MOVE EM-SSN69      TO EL-SSN69
+00234              MOVE '-'           TO EL-SSN-HYP1, EL-SSN-HYP2
+00235              WRITE PRINT-LINE FROM ERROR-LINE AFTER ADVANCING 1
+00236                  EOP MOVE '1' TO EOP-SW.
+00237              ADD 1 TO LINE-CNTR.
+00238          DATA-IS-BAD-EXIT.
+00239              EXIT.
+
+00240          DEPARTMENT-TOTAL.
+00241              SET IDX TO 1
+00242              SEARCH DEPT-TABLE VARYING IDX
+00243                  AT END MOVE 'UNKNOWN' TO DT-DEPT-DESC
+00244                  WHEN WS-DEPARTMENT = DEPT-CODE (IDX)
+00245                       MOVE DEPT-DESC (IDX) TO DT-DEPT-DESC.
+00246              MOVE WS-DEPARTMENT  TO DT-DEPARTMENT
+00247              MOVE WS-DT-SALARY   TO DT-SALARY
+00248              MOVE WS-DT-FIT-WITH TO DT-FIT-WITH
+00249              MOVE WS-DT-SIT-WITH TO DT-SIT-WITH
+00250              MOVE WS-DT-OTH-DED  TO DT-OTH-DED
+00251              MOVE WS-DT-NET-PAY  TO DT-NET-PAY
+00252              WRITE PRINT-LINE FROM DEPARTMENT-LINE AFTER ADVANCING 1
+00253                  EOP MOVE '1' TO EOP-SW.
+00254              WRITE PRINT-LINE FROM BLANK-LINE AFTER ADVANCING 1
+00255                  EOP MOVE '1' TO EOP-SW.
+00256              ADD 2 TO LINE-CNTR
+00257              ADD WS-DT-SALARY   TO WS-FT-SALARY
+     6
+
+
+00258              ADD WS-DT-FIT-WITH TO WS-FT-FIT-WITH
+00259              ADD WS-DT-SIT-WITH TO WS-FT-SIT-WITH
+00260              ADD WS-DT-OTH-DED  TO WS-FT-OTH-DED
+00261              ADD WS-DT-NET-PAY  TO WS-FT-NET-PAY
+00262              MOVE ZEROS TO WS-DT-SALARY, WS-DT-FIT-WITH, WS-DT-SIT-WITH,
+00263                  WS-DT-OTH-DED, WS-DT-NET-PAY
+00264              MOVE EM-DEPARTMENT TO WS-DEPARTMENT.
+00265          DEPARTMENT-TOTAL-EXIT.
+00266              EXIT.
+
+00267          FINAL-TOTALS.
+00268              PERFORM DEPARTMENT-TOTAL THRU DEPARTMENT-TOTAL-EXIT
+00269              MOVE WS-FT-SALARY   TO FT-SALARY
+00270              MOVE WS-FT-FIT-WITH TO FT-FIT-WITH
+00271              MOVE WS-FT-SIT-WITH TO FT-SIT-WITH
+00272              MOVE WS-FT-OTH-DED  TO FT-OTH-DED
+00273              MOVE WS-FT-NET-PAY  TO FT-NET-PAY
+00274              WRITE PRINT-LINE FROM FINAL-TOTAL-LINE AFTER ADVANCING 1.
+00275          FINAL-TOTALS-EXIT.
+00276              EXIT.
+     7
+
+
+       INTRNL NAME   LVL SOURCE NAME                     BASE   DISPL   INTRNL NAME   DEFINITION   USAGE      R  O  Q  M
+
+
+       DNM=1-306     FD  PAY-FILE                       DTF=01          DNM=1-306                  DTFCD               F
+       DNM=1-338     01  EMPLOYEE-RECORD                 BL=1     000   DNM=1-338     DS 0CL75     GROUP
+       DNM=1-366     02  EM-DEPARTMENT                   BL=1     000   DNM=1-366     DS 2C        DISP
+       DNM=1-389     02  FILLER                          BL=1     002   DNM=1-389     DS 3C        DISP
+       DNM=1-405     02  EM-NAME                         BL=1     005   DNM=1-405     DS 20C       DISP
+       DNM=1-422     02  FILLER                          BL=1     019   DNM=1-422     DS 8C        DISP
+       DNM=1-441     02  EM-OTH-DED-X                    BL=1     021   DNM=1-441     DS 0CL7      GROUP
+       DNM=1-466     03  EM-OTH-DED                      BL=1     021   DNM=1-466     DS 7C        DISP-NM
+       DNM=1-486     02  FILLER                          BL=1     028   DNM=1-486     DS 16C       DISP
+       DNM=2-000     02  EM-SSN13                        BL=1     038   DNM=2-000     DS 3C        DISP
+       DNM=2-018     02  EM-SSN45                        BL=1     03B   DNM=2-018     DS 2C        DISP
+       DNM=2-036     02  EM-SSN69                        BL=1     03D   DNM=2-036     DS 4C        DISP
+       DNM=2-054     02  EM-SALARY-X                     BL=1     041   DNM=2-054     DS 0CL7      GROUP
+       DNM=2-078     03  EM-SALARY                       BL=1     041   DNM=2-078     DS 7C        DISP-NM
+       DNM=2-097     02  FILLER                          BL=1     048   DNM=2-097     DS 3C        DISP
+       DNM=2-116     FD  PRINT-FILE                     DTF=02          DNM=2-116                  DTFPR               F
+       DNM=2-150     01  PRINT-LINE                      BL=2     000   DNM=2-150     DS 133C      DISP
+       DNM=2-170     01  FILLER                          BL=3     000   DNM=2-170     DS 0CL919    GROUP
+       DNM=2-192     02  FILLER                          BL=3     000   DNM=2-192     DS 0CL61     GROUP
+       DNM=2-214     03  WS-PAGE                         BL=3     000   DNM=2-214     DS 2P        COMP-3
+       DNM=2-234     03  LINE-CNTR                       BL=3     002   DNM=2-234     DS 2P        COMP-3
+       DNM=2-253     03  WS-FIT-WITH                     BL=3     004   DNM=2-253     DS 4P        COMP-3
+       DNM=2-274     03  WS-SIT-WITH                     BL=3     008   DNM=2-274     DS 4P        COMP-3
+       DNM=2-295     03  WS-NET-PAY                      BL=3     00C   DNM=2-295     DS 4P        COMP-3
+       DNM=2-315     03  WS-DT-SALARY                    BL=3     010   DNM=2-315     DS 4P        COMP-3
+       DNM=2-337     03  WS-DT-FIT-WITH                  BL=3     014   DNM=2-337     DS 4P        COMP-3
+       DNM=2-364     03  WS-DT-SIT-WITH                  BL=3     018   DNM=2-364     DS 4P        COMP-3
+       DNM=2-388     03  WS-DT-OTH-DED                   BL=3     01C   DNM=2-388     DS 4P        COMP-3
+       DNM=2-411     03  WS-DT-NET-PAY                   BL=3     020   DNM=2-411     DS 4P        COMP-3
+       DNM=2-434     03  WS-FT-SALARY                    BL=3     024   DNM=2-434     DS 5P        COMP-3
+       DNM=2-456     03  WS-FT-FIT-WITH                  BL=3     029   DNM=2-456     DS 5P        COMP-3
+       DNM=2-480     03  WS-FT-SIT-WITH                  BL=3     02E   DNM=2-480     DS 5P        COMP-3
+       DNM=3-000     03  WS-FT-OTH-DED                   BL=3     033   DNM=3-000     DS 5P        COMP-3
+       DNM=3-023     03  WS-FT-NET-PAY                   BL=3     038   DNM=3-023     DS 5P        COMP-3
+       DNM=3-046     02  FILLER                          BL=3     03D   DNM=3-046     DS 0CL66     GROUP
+       DNM=3-068     03  WS-SW-EOF                       BL=3     03D   DNM=3-068     DS 3C        DISP
+       DNM=3-090     88  NO-MORE-RECORDS                                DNM=3-090
+       DNM=3-118     03  EOP-SW                          BL=3     040   DNM=3-118     DS 1C        DISP
+       DNM=3-134     03  WS-DEPARTMENT                   BL=3     041   DNM=3-134     DS 2C        DISP
+       DNM=3-157     03  DEPTS-TABLE                     BL=3     043   DNM=3-157     DS 0CL60     GROUP
+       DNM=3-181     04  FILLER                          BL=3     043   DNM=3-181     DS 12C       DISP
+       DNM=3-200     04  FILLER                          BL=3     04F   DNM=3-200     DS 12C       DISP
+       DNM=3-219     04  FILLER                          BL=3     05B   DNM=3-219     DS 12C       DISP
+       DNM=3-238     04  FILLER                          BL=3     067   DNM=3-238     DS 12C       DISP
+       DNM=3-257     04  FILLER                          BL=3     073   DNM=3-257     DS 12C       DISP
+       DNM=3-276         IDX                                            DNM=3-276                  INDEX-NM
+       DNM=3-286     03  DEPT-TABLE                      BL=3     043   DNM=3-286     DS 0CL12     GROUP      R  O
+       DNM=3-309     04  DEPT-CODE                       BL=3     043   DNM=3-309     DS 2C        DISP
+       DNM=3-331     04  DEPT-DESC                       BL=3     045   DNM=3-331     DS 10C       DISP
+       DNM=3-353     02  BLANK-LINE                      BL=3     07F   DNM=3-353     DS 1C        DISP
+     8
+
+
+       INTRNL NAME   LVL SOURCE NAME                     BASE   DISPL   INTRNL NAME   DEFINITION   USAGE      R  O  Q  M
+
+
+       DNM=3-373     02  HEADING1                        BL=3     080   DNM=3-373     DS 0CL127    GROUP
+       DNM=3-394     03  FILLER                          BL=3     080   DNM=3-394     DS 1C        DISP
+       DNM=3-413     03  H1-TODAY                        BL=3     081   DNM=3-413     DS 8C        DISP
+       DNM=3-431     03  FILLER                          BL=3     089   DNM=3-431     DS 40C       DISP
+       DNM=3-450     03  FILLER                          BL=3     0B1   DNM=3-450     DS 70C       DISP
+       DNM=3-469     03  FILLER                          BL=3     0F7   DNM=3-469     DS 5C        DISP
+       DNM=4-000     03  H1-PAGE                         BL=3     0FC   DNM=4-000     DS 3C        NM-EDIT
+       DNM=4-024     02  HEADING2                        BL=3     0FF   DNM=4-024     DS 0CL129    GROUP
+       DNM=4-045     03  FILLER                          BL=3     0FF   DNM=4-045     DS 14C       DISP
+       DNM=4-064     03  FILLER                          BL=3     10D   DNM=4-064     DS 15C       DISP
+       DNM=4-083     03  FILLER                          BL=3     11C   DNM=4-083     DS 100C      DISP
+       DNM=4-102     02  UNDER-LINE                      BL=3     180   DNM=4-102     DS 0CL129    GROUP
+       DNM=4-125     03  FILLER                          BL=3     180   DNM=4-125     DS 14C       DISP
+       DNM=4-144     03  FILLER                          BL=3     18E   DNM=4-144     DS 15C       DISP
+       DNM=4-163     03  FILLER                          BL=3     19D   DNM=4-163     DS 100C      DISP
+       DNM=4-182     02  DETAIL-LINE                     BL=3     201   DNM=4-182     DS 0CL115    GROUP
+       DNM=4-206     03  FILLER                          BL=3     201   DNM=4-206     DS 1C        DISP
+       DNM=4-225     03  DL-DEPARTMENT                   BL=3     202   DNM=4-225     DS 2C        DISP
+       DNM=4-248     03  FILLER                          BL=3     204   DNM=4-248     DS 4C        DISP
+       DNM=4-267     03  DL-NAME                         BL=3     208   DNM=4-267     DS 20C       DISP
+       DNM=4-284     03  FILLER                          BL=3     21C   DNM=4-284     DS 2C        DISP
+       DNM=4-303     03  DL-SSN13                        BL=3     21E   DNM=4-303     DS 3C        DISP
+       DNM=4-321     03  DL-SSN-HYP1                     BL=3     221   DNM=4-321     DS 1C        DISP
+       DNM=4-342     03  DL-SSN45                        BL=3     222   DNM=4-342     DS 2C        DISP
+       DNM=4-360     03  DL-SSN-HYP2                     BL=3     224   DNM=4-360     DS 1C        DISP
+       DNM=4-381     03  DL-SSN69                        BL=3     225   DNM=4-381     DS 4C        DISP
+       DNM=4-402     03  FILLER                          BL=3     229   DNM=4-402     DS 5C        DISP
+       DNM=4-421     03  DL-SALARY                       BL=3     22E   DNM=4-421     DS 10C       NM-EDIT
+       DNM=4-455     03  FILLER                          BL=3     238   DNM=4-455     DS 5C        DISP
+       DNM=4-474     03  DL-FIT-WITH                     BL=3     23D   DNM=4-474     DS 10C       NM-EDIT
+       DNM=5-000     03  FILLER                          BL=3     247   DNM=5-000     DS 5C        DISP
+       DNM=5-019     03  DL-SIT-WITH                     BL=3     24C   DNM=5-019     DS 10C       NM-EDIT
+       DNM=5-055     03  FILLER                          BL=3     256   DNM=5-055     DS 5C        DISP
+       DNM=5-074     03  DL-OTH-DED                      BL=3     25B   DNM=5-074     DS 10C       NM-EDIT
+       DNM=5-109     03  FILLER                          BL=3     265   DNM=5-109     DS 5C        DISP
+       DNM=5-128     03  DL-NET-PAY                      BL=3     26A   DNM=5-128     DS 10C       NM-EDIT
+       DNM=5-163     02  ERROR-LINE                      BL=3     274   DNM=5-163     DS 0CL58     GROUP
+       DNM=5-186     03  FILLER                          BL=3     274   DNM=5-186     DS 1C        DISP
+       DNM=5-205     03  EL-DEPARTMENT                   BL=3     275   DNM=5-205     DS 2C        DISP
+       DNM=5-231     03  FILLER                          BL=3     277   DNM=5-231     DS 4C        DISP
+       DNM=5-250     03  EL-NAME                         BL=3     27B   DNM=5-250     DS 20C       DISP
+       DNM=5-267     03  FILLER                          BL=3     28F   DNM=5-267     DS 2C        DISP
+       DNM=5-286     03  EL-SSN13                        BL=3     291   DNM=5-286     DS 3C        DISP
+       DNM=5-307     03  EL-SSN-HYP1                     BL=3     294   DNM=5-307     DS 1C        DISP
+       DNM=5-328     03  EL-SSN45                        BL=3     295   DNM=5-328     DS 2C        DISP
+       DNM=5-346     03  EL-SSN-HYP2                     BL=3     297   DNM=5-346     DS 1C        DISP
+       DNM=5-367     03  EL-SSN69                        BL=3     298   DNM=5-367     DS 4C        DISP
+       DNM=5-385     03  FILLER                          BL=3     29C   DNM=5-385     DS 5C        DISP
+       DNM=5-404     03  FILLER                          BL=3     2A1   DNM=5-404     DS 13C       DISP
+       DNM=5-423     02  DEPARTMENT-LINE                 BL=3     2AE   DNM=5-423     DS 0CL116    GROUP
+     9
+
+
+       INTRNL NAME   LVL SOURCE NAME                     BASE   DISPL   INTRNL NAME   DEFINITION   USAGE      R  O  Q  M
+
+
+       DNM=5-451     03  FILLER                          BL=3     2AE   DNM=5-451     DS 12C       DISP
+       DNM=5-470     03  DT-DEPT-DESC                    BL=3     2BA   DNM=5-470     DS 10C       DISP
+       DNM=5-492     03  FILLER                          BL=3     2C4   DNM=5-492     DS 12C       DISP
+       DNM=6-000     03  DT-DEPARTMENT                   BL=3     2D0   DNM=6-000     DS 2C        DISP
+       DNM=6-023     03  FILLER                          BL=3     2D2   DNM=6-023     DS 9C        DISP
+       DNM=6-042     03  DT-SALARY                       BL=3     2DB   DNM=6-042     DS 10C       NM-EDIT
+       DNM=6-079     03  FILLER                          BL=3     2E5   DNM=6-079     DS 5C        DISP
+       DNM=6-098     03  DT-FIT-WITH                     BL=3     2EA   DNM=6-098     DS 10C       NM-EDIT
+       DNM=6-134     03  FILLER                          BL=3     2F4   DNM=6-134     DS 5C        DISP
+       DNM=6-153     03  DT-SIT-WITH                     BL=3     2F9   DNM=6-153     DS 10C       NM-EDIT
+       DNM=6-189     03  FILLER                          BL=3     303   DNM=6-189     DS 5C        DISP
+       DNM=6-208     03  DT-OTH-DED                      BL=3     308   DNM=6-208     DS 10C       NM-EDIT
+       DNM=6-243     03  FILLER                          BL=3     312   DNM=6-243     DS 5C        DISP
+       DNM=6-262     03  DT-NET-PAY                      BL=3     317   DNM=6-262     DS 10C       NM-EDIT
+       DNM=6-297     03  FILLER                          BL=3     321   DNM=6-297     DS 1C        DISP
+       DNM=6-316     02  FINAL-TOTAL-LINE                BL=3     322   DNM=6-316     DS 0CL117    GROUP
+       DNM=6-345     03  FILLER                          BL=3     322   DNM=6-345     DS 28C       DISP
+       DNM=6-364     03  FILLER                          BL=3     33E   DNM=6-364     DS 15C       DISP
+       DNM=6-383     03  FT-SALARY                       BL=3     34D   DNM=6-383     DS 12C       NM-EDIT
+       DNM=6-417     03  FILLER                          BL=3     359   DNM=6-417     DS 3C        DISP
+       DNM=6-436     03  FT-FIT-WITH                     BL=3     35C   DNM=6-436     DS 12C       NM-EDIT
+       DNM=6-472     03  FILLER                          BL=3     368   DNM=6-472     DS 3C        DISP
+       DNM=7-000     03  FT-SIT-WITH                     BL=3     36B   DNM=7-000     DS 12C       NM-EDIT
+       DNM=7-036     03  FILLER                          BL=3     377   DNM=7-036     DS 3C        DISP
+       DNM=7-055     03  FT-OTH-DED                      BL=3     37A   DNM=7-055     DS 12C       NM-EDIT
+       DNM=7-090     03  FILLER                          BL=3     386   DNM=7-090     DS 3C        DISP
+       DNM=7-109     03  FT-NET-PAY                      BL=3     389   DNM=7-109     DS 12C       NM-EDIT
+       DNM=7-144     03  FILLER                          BL=3     395   DNM=7-144     DS 2C        DISP
+    10
+
+
+
+
+                         MEMORY MAP
+
+                    TGT                     00630
+
+               SAVE AREA                    00630
+               SWITCH                       00678
+               TALLY                        0067C
+               SORT SAVE                    00680
+               ENTRY-SAVE                   00684
+               SORT CORE SIZE               00688
+               NSTD-REELS                   0068C
+               SORT RET                     0068E
+               WORKING CELLS                00690
+               SORT FILE SIZE               007C0
+               SORT MODE SIZE               007C4
+               PGT-VN TBL                   007C8
+               TGT-VN TBL                   007CC
+               SORTAB ADDRESS               007D0
+               LENGTH OF VN TBL             007D4
+               LNGTH OF SORTAB              007D6
+               PGM ID                       007D8
+               A(INIT1)                     007E0
+               UPSI SWITCHES                007E4
+               OVERFLOW CELLS               007EC
+               BL CELLS                     007EC
+               DTFADR CELLS                 007F8
+               TEMP STORAGE                 00800
+               TEMP STORAGE-2               00810
+               TEMP STORAGE-3               00820
+               TEMP STORAGE-4               00820
+               BLL CELLS                    00820
+               VLC CELLS                    00824
+               SBL CELLS                    00824
+               INDEX CELLS                  00824
+               SUBADR CELLS                 00828
+               ONCTL CELLS                  00830
+               PFMCTL CELLS                 00830
+               PFMSAV CELLS                 00830
+               VN CELLS                     00850
+               SAVE AREA =2                 00868
+               XSASW CELLS                  00868
+               XSA CELLS                    00868
+               PARAM CELLS                  00868
+               RPTSAV AREA                  00868
+               CHECKPT CTR                  00868
+               IOPTR CELLS                  00868
+
+ LITERAL POOL (HEX)
+
+ 00950 (LIT+0)     1C402021  20004C05  6C014C0C  050C025C  500C4020  206B2020
+ 00968 (LIT+24)    214B2020  60000005  000C2C00  00000C40  20202020  6B202021
+    11
+
+
+ 00980 (LIT+48)    4B202060  5B5BC2D6  D7C5D540  E8C5E25B  5BC2C3D3  D6E2C5F0
+ 00998 (LIT+72)    F1000000  00000001  E4D5D2D5  D6E6D5
+
+
+                    PGT                     00870
+
+               OVERFLOW CELLS               00870
+               VIRTUAL CELLS                00870
+               PROCEDURE NAME CELLS         00878
+               GENERATED NAME CELLS         0089C
+               SUBDTF ADDRESS CELLS         00934
+               VNI CELLS                    00934
+               LITERALS                     00950
+               DISPLAY LITERALS             009A7
+
+
+  REGISTER ASSIGNMENT
+
+   REG 6   BL =3
+   REG 7   BL =1
+   REG 8   BL =2
+
+ 168                0009A8                     START    EQU   *
+                    0009A8  41 10 C 114                 LA    1,114(0,12)           LIT+52
+                    0009AC  58 00 D 1C8                 L     0,1C8(0,13)           DTF=1
+                    0009B0  18 40                       LR    4,0
+                    0009B2  05 F0                       BALR  15,0
+                    0009B4  50 00 F 008                 ST    0,008(0,15)
+                    0009B8  45 00 F 00C                 BAL   0,00C(0,15)
+                    0009BC  00000000                    DC    X'00000000'
+                    0009C0  0A 02                       SVC   2
+                    0009C2  41 10 C 114                 LA    1,114(0,12)           LIT+52
+                    0009C6  58 00 D 1CC                 L     0,1CC(0,13)           DTF=2
+                    0009CA  18 40                       LR    4,0
+                    0009CC  07 00                       BCR   0,0
+                    0009CE  05 F0                       BALR  15,0
+                    0009D0  50 00 F 008                 ST    0,008(0,15)
+                    0009D4  45 00 F 00C                 BAL   0,00C(0,15)
+                    0009D8  00000000                    DC    X'00000000'
+                    0009DC  0A 02                       SVC   2
+ 169                0009DE  58 10 0 014                 L     1,014(0,0)
+                    0009E2  0A 21                       SVC   33
+                    0009E4  D2 07 6 081 1 000           MVC   081(8,6),000(1)       DNM=3-413
+ 170                0009EA  58 00 D 220                 L     0,220(0,13)           VN=01
+                    0009EE  50 00 D 200                 ST    0,200(0,13)           PSV=1
+                    0009F2  58 00 C 02C                 L     0,02C(0,12)           GN=01
+                    0009F6  50 00 D 220                 ST    0,220(0,13)           VN=01
+                    0009FA  58 10 C 008                 L     1,008(0,12)           PN=01
+                    0009FE  07 F1                       BCR   15,1
+                    000A00                     GN=01    EQU   *
+                    000A00  58 00 D 200                 L     0,200(0,13)           PSV=1
+                    000A04  50 00 D 220                 ST    0,220(0,13)           VN=01
+ 171                000A08  58 10 D 1C8                 L     1,1C8(0,13)           DTF=1
+    12
+
+
+                    000A0C  58 F0 C 030                 L     15,030(0,12)          GN=02
+                    000A10  91 20 1 010                 TM    010(1),X'20'
+                    000A14  07 1F                       BCR   1,15
+                    000A16  41 F0 C 030                 LA    15,030(0,12)          GN=02
+                    000A1A  D2 02 1 01D F 001           MVC   01D(3,1),001(15)
+                    000A20  58 F0 1 010                 L     15,010(0,1)
+                    000A24  45 E0 F 008                 BAL   14,008(0,15)
+                    000A28  50 20 D 1BC                 ST    2,1BC(0,13)           BL =1
+                    000A2C  58 70 D 1BC                 L     7,1BC(0,13)           BL =1
+                    000A30  58 F0 C 034                 L     15,034(0,12)          GN=03
+                    000A34  07 FF                       BCR   15,15
+ 171                000A36                     GN=02    EQU   *
+                    000A36  D2 02 6 03D C 11C           MVC   03D(3,6),11C(12)      DNM=3-68        LIT+60
+ 172                000A3C                     GN=03    EQU   *
+                    000A3C  D2 01 6 041 7 000           MVC   041(2,6),000(7)       DNM=3-134       DNM=1-366
+ 173                000A42  58 00 D 224                 L     0,224(0,13)           VN=02
+                    000A46  50 00 D 204                 ST    0,204(0,13)           PSV=2
+                    000A4A  58 00 C 038                 L     0,038(0,12)           GN=04
+                    000A4E  50 00 D 224                 ST    0,224(0,13)           VN=02
+                    000A52                     GN=04    EQU   *
+                    000A52  58 20 C 03C                 L     2,03C(0,12)           GN=05
+                    000A56  D5 02 6 03D C 11C           CLC   03D(3,6),11C(12)      DNM=3-68        LIT+60
+                    000A5C  07 82                       BCR   8,2
+                    000A5E  58 10 C 00C                 L     1,00C(0,12)           PN=02
+                    000A62  07 F1                       BCR   15,1
+                    000A64                     GN=05    EQU   *
+                    000A64  58 00 D 204                 L     0,204(0,13)           PSV=2
+                    000A68  50 00 D 224                 ST    0,224(0,13)           VN=02
+ 175                000A6C  58 00 D 228                 L     0,228(0,13)           VN=03
+                    000A70  50 00 D 208                 ST    0,208(0,13)           PSV=3
+                    000A74  58 00 C 040                 L     0,040(0,12)           GN=06
+                    000A78  50 00 D 228                 ST    0,228(0,13)           VN=03
+                    000A7C  58 10 C 020                 L     1,020(0,12)           PN=07
+                    000A80  07 F1                       BCR   15,1
+                    000A82                     GN=06    EQU   *
+                    000A82  58 00 D 208                 L     0,208(0,13)           PSV=3
+                    000A86  50 00 D 228                 ST    0,228(0,13)           VN=03
+ 176                000A8A  58 00 D 1C8                 L     0,1C8(0,13)           DTF=1
+                    000A8E  18 40                       LR    4,0
+                    000A90  41 10 C 11F                 LA    1,11F(0,12)           LIT+63
+                    000A94  07 00                       BCR   0,0
+                    000A96  05 F0                       BALR  15,0
+                    000A98  50 00 F 008                 ST    0,008(0,15)
+                    000A9C  45 00 F 00C                 BAL   0,00C(0,15)
+                    000AA0  00000000                    DC    X'00000000'
+                    000AA4  0A 02                       SVC   2
+                    000AA6  58 00 D 1CC                 L     0,1CC(0,13)           DTF=2
+                    000AAA  18 40                       LR    4,0
+                    000AAC  41 10 C 11F                 LA    1,11F(0,12)           LIT+63
+                    000AB0  07 00                       BCR   0,0
+                    000AB2  05 F0                       BALR  15,0
+                    000AB4  50 00 F 008                 ST    0,008(0,15)
+                    000AB8  45 00 F 00C                 BAL   0,00C(0,15)
+    13
+
+
+                    000ABC  00000000                    DC    X'00000000'
+                    000AC0  0A 02                       SVC   2
+ 177                000AC2  0A 0E                       SVC   14
+ 178                000AC4                     PN=01    EQU   *
+ 179                000AC4  FA 10 6 000 C 0E0           AP    000(2,6),0E0(1,12)    DNM=2-214       LIT+0
+ 180                000ACA  D2 03 D 1E0 C 0E1           MVC   1E0(4,13),0E1(12)     TS2=1           LIT+1
+                    000AD0  DE 03 D 1E0 6 000           ED    1E0(4,13),000(6)      TS2=1           DNM=2-214
+                    000AD6  D2 02 6 0FC D 1E1           MVC   0FC(3,6),1E1(13)      DNM=4-0         TS2=2
+ 181                000ADC  D2 7E 8 000 6 080           MVC   000(127,8),080(6)     DNM=2-150       DNM=3-373
+                    000AE2  92 40 8 07F                 MVI   07F(8),X'40'          DNM=2-150+127
+                    000AE6  D2 04 8 080 8 07F           MVC   080(5,8),07F(8)       DNM=2-150+128   DNM=2-150+127
+                    000AEC  58 10 D 1CC                 L     1,1CC(0,13)           DTF=2
+                    000AF0  92 F1 8 000                 MVI   000(8),X'F1'          DNM=2-150
+                    000AF4  58 F0 1 010                 L     15,010(0,1)
+                    000AF8  45 E0 F 00C                 BAL   14,00C(0,15)
+ 182                000AFC                     GN=07    EQU   *
+                    000AFC  D2 80 8 000 6 0FF           MVC   000(129,8),0FF(6)     DNM=2-150       DNM=4-24
+                    000B02  92 40 8 081                 MVI   081(8),X'40'          DNM=2-150+129
+                    000B06  D2 02 8 082 8 081           MVC   082(3,8),081(8)       DNM=2-150+130   DNM=2-150+129
+                    000B0C  58 10 D 1CC                 L     1,1CC(0,13)           DTF=2
+                    000B10  92 F0 8 000                 MVI   000(8),X'F0'          DNM=2-150
+                    000B14  58 F0 1 010                 L     15,010(0,1)
+                    000B18  45 E0 F 00C                 BAL   14,00C(0,15)
+ 183                000B1C                     GN=08    EQU   *
+                    000B1C  D2 80 8 000 6 180           MVC   000(129,8),180(6)     DNM=2-150       DNM=4-102
+                    000B22  92 40 8 081                 MVI   081(8),X'40'          DNM=2-150+129
+                    000B26  D2 02 8 082 8 081           MVC   082(3,8),081(8)       DNM=2-150+130   DNM=2-150+129
+                    000B2C  58 10 D 1CC                 L     1,1CC(0,13)           DTF=2
+                    000B30  92 4E 8 000                 MVI   000(8),X'4E'          DNM=2-150
+                    000B34  58 F0 1 010                 L     15,010(0,1)
+                    000B38  45 E0 F 00C                 BAL   14,00C(0,15)
+ 184                000B3C                     GN=09    EQU   *
+                    000B3C  D2 00 8 000 6 07F           MVC   000(1,8),07F(6)       DNM=2-150       DNM=3-353
+                    000B42  92 40 8 001                 MVI   001(8),X'40'          DNM=2-150+1
+                    000B46  D2 82 8 002 8 001           MVC   002(131,8),001(8)     DNM=2-150+2     DNM=2-150+1
+                    000B4C  58 10 D 1CC                 L     1,1CC(0,13)           DTF=2
+                    000B50  92 40 8 000                 MVI   000(8),X'40'          DNM=2-150
+                    000B54  58 F0 1 010                 L     15,010(0,1)
+                    000B58  45 E0 F 00C                 BAL   14,00C(0,15)
+ 185                000B5C                     GN=010   EQU   *
+                    000B5C  D2 01 6 002 C 0E5           MVC   002(2,6),0E5(12)      DNM=2-234       LIT+5
+ 186                000B62  D2 00 6 040 C 127           MVC   040(1,6),127(12)      DNM=3-118       LIT+71
+ 189                000B68  58 10 D 220                 L     1,220(0,13)           VN=01
+                    000B6C  07 F1                       BCR   15,1
+                    000B6E                     PN=02    EQU   *
+ 190                000B6E  58 20 C 054                 L     2,054(0,12)           GN=011
+                    000B72  D5 01 7 000 6 041           CLC   000(2,7),041(6)       DNM=1-366       DNM=3-134
+                    000B78  07 82                       BCR   8,2
+ 191                000B7A  58 00 D 22C                 L     0,22C(0,13)           VN=04
+                    000B7E  50 00 D 20C                 ST    0,20C(0,13)           PSV=4
+                    000B82  58 00 C 058                 L     0,058(0,12)           GN=012
+                    000B86  50 00 D 22C                 ST    0,22C(0,13)           VN=04
+                    000B8A  58 10 C 01C                 L     1,01C(0,12)           PN=06
+    14
+
+
+                    000B8E  07 F1                       BCR   15,1
+                    000B90                     GN=012   EQU   *
+                    000B90  58 00 D 20C                 L     0,20C(0,13)           PSV=4
+                    000B94  50 00 D 22C                 ST    0,22C(0,13)           VN=04
+ 192                000B98                     GN=011   EQU   *
+                    000B98  58 20 C 05C                 L     2,05C(0,12)           GN=013
+                    000B9C  D5 00 6 040 C 128           CLC   040(1,6),128(12)      DNM=3-118       LIT+72
+                    000BA2  07 82                       BCR   8,2
+                    000BA4  F9 11 6 002 C 0E7           CP    002(2,6),0E7(2,12)    DNM=2-234       LIT+7
+                    000BAA  58 F0 C 060                 L     15,060(0,12)          GN=014
+                    000BAE  07 DF                       BCR   13,15
+ 193                000BB0                     GN=013   EQU   *
+                    000BB0  58 00 D 220                 L     0,220(0,13)           VN=01
+                    000BB4  50 00 D 210                 ST    0,210(0,13)           PSV=5
+                    000BB8  58 00 C 064                 L     0,064(0,12)           GN=015
+                    000BBC  50 00 D 220                 ST    0,220(0,13)           VN=01
+                    000BC0  58 10 C 008                 L     1,008(0,12)           PN=01
+                    000BC4  07 F1                       BCR   15,1
+                    000BC6                     GN=015   EQU   *
+                    000BC6  58 00 D 210                 L     0,210(0,13)           PSV=5
+                    000BCA  50 00 D 220                 ST    0,220(0,13)           VN=01
+ 194                000BCE                     GN=014   EQU   *
+                    000BCE  41 10 7 041                 LA    1,041(0,7)            DNM=2-54
+                    000BD2  58 40 C 12C                 L     4,12C(0,12)           LIT+76
+                    000BD6  41 20 0 007                 LA    2,007(0,0)
+                    000BDA  05 30                       BALR  3,0
+                    000BDC  1B 24                       SR    2,4
+                    000BDE  47 40 3 018                 BC    4,018(0,3)
+                    000BE2  95 40 1 000                 CLI   000(1),X'40'
+                    000BE6  47 70 3 018                 BC    7,018(0,3)
+                    000BEA  92 F0 1 000                 MVI   000(1),X'F0'
+                    000BEE  41 10 1 001                 LA    1,001(0,1)
+                    000BF2  07 F3                       BCR   15,3
+ 195                000BF4  41 10 7 021                 LA    1,021(0,7)            DNM=1-441
+                    000BF8  58 40 C 12C                 L     4,12C(0,12)           LIT+76
+                    000BFC  41 20 0 007                 LA    2,007(0,0)
+                    000C00  05 30                       BALR  3,0
+                    000C02  1B 24                       SR    2,4
+                    000C04  47 40 3 018                 BC    4,018(0,3)
+                    000C08  95 40 1 000                 CLI   000(1),X'40'
+                    000C0C  47 70 3 018                 BC    7,018(0,3)
+                    000C10  92 F0 1 000                 MVI   000(1),X'F0'
+                    000C14  41 10 1 001                 LA    1,001(0,1)
+                    000C18  07 F3                       BCR   15,3
+ 196                000C1A  58 20 C 004                 L     2,004(0,12)           V(ILBDETB0)
+                    000C1E  DD 06 7 041 2 000           TRT   041(7,7),000(2)       DNM=2-78
+                    000C24  58 10 C 068                 L     1,068(0,12)           GN=016
+                    000C28  58 40 C 12C                 L     4,12C(0,12)           LIT+76
+                    000C2C  05 30                       BALR  3,0
+                    000C2E  07 41                       BCR   4,1
+                    000C30  47 80 3 00A                 BC    8,00A(0,3)
+                    000C34  14 24                       NR    2,4
+                    000C36  07 71                       BCR   7,1
+    15
+
+
+                    000C38  58 20 C 004                 L     2,004(0,12)           V(ILBDETB0)
+                    000C3C  DD 06 7 021 2 000           TRT   021(7,7),000(2)       DNM=1-466
+                    000C42  58 10 C 068                 L     1,068(0,12)           GN=016
+                    000C46  58 40 C 12C                 L     4,12C(0,12)           LIT+76
+                    000C4A  05 30                       BALR  3,0
+                    000C4C  07 41                       BCR   4,1
+                    000C4E  47 80 3 00A                 BC    8,00A(0,3)
+                    000C52  14 24                       NR    2,4
+                    000C54  07 71                       BCR   7,1
+ 197                000C56  58 00 D 230                 L     0,230(0,13)           VN=05
+                    000C5A  50 00 D 214                 ST    0,214(0,13)           PSV=6
+                    000C5E  58 00 C 06C                 L     0,06C(0,12)           GN=017
+                    000C62  50 00 D 230                 ST    0,230(0,13)           VN=05
+                    000C66  58 10 C 014                 L     1,014(0,12)           PN=04
+                    000C6A  07 F1                       BCR   15,1
+                    000C6C                     GN=017   EQU   *
+                    000C6C  58 00 D 214                 L     0,214(0,13)           PSV=6
+                    000C70  50 00 D 230                 ST    0,230(0,13)           VN=05
+ 198                000C74  58 10 C 070                 L     1,070(0,12)           GN=018
+                    000C78  07 F1                       BCR   15,1
+ 198                000C7A                     GN=016   EQU   *
+                    000C7A  58 00 D 234                 L     0,234(0,13)           VN=06
+                    000C7E  50 00 D 218                 ST    0,218(0,13)           PSV=7
+                    000C82  58 00 C 074                 L     0,074(0,12)           GN=019
+                    000C86  50 00 D 234                 ST    0,234(0,13)           VN=06
+                    000C8A  58 10 C 018                 L     1,018(0,12)           PN=05
+                    000C8E  07 F1                       BCR   15,1
+                    000C90                     GN=019   EQU   *
+                    000C90  58 00 D 218                 L     0,218(0,13)           PSV=7
+                    000C94  50 00 D 234                 ST    0,234(0,13)           VN=06
+ 199                000C98                     GN=018   EQU   *
+                    000C98  58 10 D 1C8                 L     1,1C8(0,13)           DTF=1
+                    000C9C  58 F0 C 078                 L     15,078(0,12)          GN=020
+                    000CA0  91 20 1 010                 TM    010(1),X'20'
+                    000CA4  07 1F                       BCR   1,15
+                    000CA6  41 F0 C 078                 LA    15,078(0,12)          GN=020
+                    000CAA  D2 02 1 01D F 001           MVC   01D(3,1),001(15)
+                    000CB0  58 F0 1 010                 L     15,010(0,1)
+                    000CB4  45 E0 F 008                 BAL   14,008(0,15)
+                    000CB8  50 20 D 1BC                 ST    2,1BC(0,13)           BL =1
+                    000CBC  58 70 D 1BC                 L     7,1BC(0,13)           BL =1
+                    000CC0  58 F0 C 010                 L     15,010(0,12)          PN=03
+                    000CC4  07 FF                       BCR   15,15
+ 199                000CC6                     GN=020   EQU   *
+                    000CC6  D2 02 6 03D C 11C           MVC   03D(3,6),11C(12)      DNM=3-68        LIT+60
+ 200                000CCC                     PN=03    EQU   *
+ 202                000CCC  58 10 D 224                 L     1,224(0,13)           VN=02
+                    000CD0  07 F1                       BCR   15,1
+                    000CD2                     PN=04    EQU   *
+ 203                000CD2  F2 76 D 1D0 7 041           PACK  1D0(8,13),041(7,7)    TS=01           DNM=2-78
+                    000CD8  FC 51 D 1D2 C 0E9           MP    1D2(6,13),0E9(2,12)   TS=03           LIT+9
+                    000CDE  F9 70 D 1D0 C 0EB           CP    1D0(8,13),0EB(1,12)   TS=01           LIT+11
+                    000CE4  58 F0 C 0B4                 L     15,0B4(0,12)          GN=035
+    16
+
+
+                    000CE8  07 4F                       BCR   4,15
+                    000CEA  FA 41 D 1D3 C 0EC           AP    1D3(5,13),0EC(2,12)   TS=04           LIT+12
+                    000CF0  58 F0 C 0B8                 L     15,0B8(0,12)          GN=036
+                    000CF4  07 FF                       BCR   15,15
+                    000CF6                     GN=035   EQU   *
+                    000CF6  FB 41 D 1D3 C 0EC           SP    1D3(5,13),0EC(2,12)   TS=04           LIT+12
+                    000CFC                     GN=036   EQU   *
+                    000CFC  F1 76 D 1D0 D 1D0           MVO   1D0(8,13),1D0(7,13)   TS=01           TS=01
+                    000D02  F1 76 D 1D0 D 1D0           MVO   1D0(8,13),1D0(7,13)   TS=01           TS=01
+                    000D08  F8 33 6 004 D 1D4           ZAP   004(4,6),1D4(4,13)    DNM=2-253       TS=05
+ 204                000D0E  F2 76 D 1D0 7 041           PACK  1D0(8,13),041(7,7)    TS=01           DNM=2-78
+                    000D14  FC 51 D 1D2 C 0EE           MP    1D2(6,13),0EE(2,12)   TS=03           LIT+14
+                    000D1A  F9 70 D 1D0 C 0EB           CP    1D0(8,13),0EB(1,12)   TS=01           LIT+11
+                    000D20  58 F0 C 0BC                 L     15,0BC(0,12)          GN=037
+                    000D24  07 4F                       BCR   4,15
+                    000D26  FA 41 D 1D3 C 0F0           AP    1D3(5,13),0F0(2,12)   TS=04           LIT+16
+                    000D2C  58 F0 C 0C0                 L     15,0C0(0,12)          GN=038
+                    000D30  07 FF                       BCR   15,15
+                    000D32                     GN=037   EQU   *
+                    000D32  FB 41 D 1D3 C 0F0           SP    1D3(5,13),0F0(2,12)   TS=04           LIT+16
+                    000D38                     GN=038   EQU   *
+                    000D38  F1 75 D 1D0 D 1D0           MVO   1D0(8,13),1D0(6,13)   TS=01           TS=01
+                    000D3E  F8 33 6 008 D 1D4           ZAP   008(4,6),1D4(4,13)    DNM=2-274       TS=05
+ 205                000D44  F2 76 D 1D0 7 041           PACK  1D0(8,13),041(7,7)    TS=01           DNM=2-78
+                    000D4A  FB 43 D 1D3 6 004           SP    1D3(5,13),004(4,6)    TS=04           DNM=2-253
+                    000D50  FB 43 D 1D3 6 008           SP    1D3(5,13),008(4,6)    TS=04           DNM=2-274
+                    000D56  F2 76 D 1D8 7 021           PACK  1D8(8,13),021(7,7)    TS=09           DNM=1-466
+                    000D5C  FB 43 D 1D3 D 1DC           SP    1D3(5,13),1DC(4,13)   TS=04           TS=013
+                    000D62  F8 33 6 00C D 1D4           ZAP   00C(4,6),1D4(4,13)    DNM=2-295       TS=04+1
+ 207                000D68  F2 76 D 1D8 7 041           PACK  1D8(8,13),041(7,7)    TS=09           DNM=2-78
+                    000D6E  FA 33 6 010 D 1DC           AP    010(4,6),1DC(4,13)    DNM=2-315       TS=013
+ 208                000D74  FA 33 6 014 6 004           AP    014(4,6),004(4,6)     DNM=2-337       DNM=2-253
+ 209                000D7A  FA 33 6 018 6 008           AP    018(4,6),008(4,6)     DNM=2-364       DNM=2-274
+ 210                000D80  F2 76 D 1D8 7 021           PACK  1D8(8,13),021(7,7)    TS=09           DNM=1-466
+                    000D86  FA 33 6 01C D 1DC           AP    01C(4,6),1DC(4,13)    DNM=2-388       TS=013
+ 211                000D8C  FA 33 6 020 6 00C           AP    020(4,6),00C(4,6)     DNM=2-411       DNM=2-295
+ 212                000D92  D2 01 6 202 7 000           MVC   202(2,6),000(7)       DNM=4-225       DNM=1-366
+ 213                000D98  D2 13 6 208 7 005           MVC   208(20,6),005(7)      DNM=4-267       DNM=1-405
+ 214                000D9E  D2 02 6 21E 7 038           MVC   21E(3,6),038(7)       DNM=4-303       DNM=2-0
+ 215                000DA4  D2 01 6 222 7 03B           MVC   222(2,6),03B(7)       DNM=4-342       DNM=2-18
+ 216                000DAA  D2 03 6 225 7 03D           MVC   225(4,6),03D(7)       DNM=4-381       DNM=2-36
+ 217                000DB0  D2 00 6 221 C 0FC           MVC   221(1,6),0FC(12)      DNM=4-321       LIT+28
+                    000DB6  D2 00 6 224 C 0FC           MVC   224(1,6),0FC(12)      DNM=4-360       LIT+28
+ 218                000DBC  F2 76 D 1D8 7 041           PACK  1D8(8,13),041(7,7)    TS=09           DNM=2-78
+                    000DC2  D2 0A D 1E0 C 0F2           MVC   1E0(11,13),0F2(12)    TS2=1           LIT+18
+                    000DC8  DE 0A D 1E0 D 1DC           ED    1E0(11,13),1DC(13)    TS2=1           TS=013
+                    000DCE  05 30                       BALR  3,0
+                    000DD0  47 40 3 008                 BC    4,008(0,3)
+                    000DD4  92 40 D 1EA                 MVI   1EA(13),X'40'         TS2=11
+                    000DD8  D2 09 6 22E D 1E1           MVC   22E(10,6),1E1(13)     DNM=4-421       TS2=2
+ 219                000DDE  D2 0A D 1E0 C 0F2           MVC   1E0(11,13),0F2(12)    TS2=1           LIT+18
+                    000DE4  DE 0A D 1E0 6 004           ED    1E0(11,13),004(6)     TS2=1           DNM=2-253
+                    000DEA  05 30                       BALR  3,0
+    17
+
+
+                    000DEC  47 40 3 008                 BC    4,008(0,3)
+                    000DF0  92 40 D 1EA                 MVI   1EA(13),X'40'         TS2=11
+                    000DF4  D2 09 6 23D D 1E1           MVC   23D(10,6),1E1(13)     DNM=4-474       TS2=2
+ 220                000DFA  D2 0A D 1E0 C 0F2           MVC   1E0(11,13),0F2(12)    TS2=1           LIT+18
+                    000E00  DE 0A D 1E0 6 008           ED    1E0(11,13),008(6)     TS2=1           DNM=2-274
+                    000E06  05 30                       BALR  3,0
+                    000E08  47 40 3 008                 BC    4,008(0,3)
+                    000E0C  92 40 D 1EA                 MVI   1EA(13),X'40'         TS2=11
+                    000E10  D2 09 6 24C D 1E1           MVC   24C(10,6),1E1(13)     DNM=5-19        TS2=2
+ 221                000E16  F2 76 D 1D8 7 021           PACK  1D8(8,13),021(7,7)    TS=09           DNM=1-466
+                    000E1C  D2 0A D 1E0 C 0F2           MVC   1E0(11,13),0F2(12)    TS2=1           LIT+18
+                    000E22  DE 0A D 1E0 D 1DC           ED    1E0(11,13),1DC(13)    TS2=1           TS=013
+                    000E28  05 30                       BALR  3,0
+                    000E2A  47 40 3 008                 BC    4,008(0,3)
+                    000E2E  92 40 D 1EA                 MVI   1EA(13),X'40'         TS2=11
+                    000E32  D2 09 6 25B D 1E1           MVC   25B(10,6),1E1(13)     DNM=5-74        TS2=2
+ 222                000E38  D2 0A D 1E0 C 0F2           MVC   1E0(11,13),0F2(12)    TS2=1           LIT+18
+                    000E3E  DE 0A D 1E0 6 00C           ED    1E0(11,13),00C(6)     TS2=1           DNM=2-295
+                    000E44  05 30                       BALR  3,0
+                    000E46  47 40 3 008                 BC    4,008(0,3)
+                    000E4A  92 40 D 1EA                 MVI   1EA(13),X'40'         TS2=11
+                    000E4E  D2 09 6 26A D 1E1           MVC   26A(10,6),1E1(13)     DNM=5-128       TS2=2
+ 223                000E54  D2 72 8 000 6 201           MVC   000(115,8),201(6)     DNM=2-150       DNM=4-182
+                    000E5A  92 40 8 073                 MVI   073(8),X'40'          DNM=2-150+115
+                    000E5E  D2 10 8 074 8 073           MVC   074(17,8),073(8)      DNM=2-150+116   DNM=2-150+115
+                    000E64  58 10 D 1CC                 L     1,1CC(0,13)           DTF=2
+                    000E68  96 04 1 002                 OI    002(1),X'04'
+                    000E6C  92 40 8 000                 MVI   000(8),X'40'          DNM=5376-23
+                    000E70  58 F0 1 010                 L     15,010(0,1)
+                    000E74  45 E0 F 00C                 BAL   14,00C(0,15)
+                    000E78  58 F0 C 07C                 L     15,07C(0,12)          GN=021
+                    000E7C  94 FB 1 002                 NI    002(1),X'FB'
+                    000E80  91 01 1 027                 TM    027(1),X'01'
+                    000E84  07 8F                       BCR   8,15
+ 224                000E86                     GN=022   EQU   *
+                    000E86  D2 00 6 040 C 128           MVC   040(1,6),128(12)      DNM=3-118       LIT+72
+ 225                000E8C                     GN=021   EQU   *
+                    000E8C  FA 10 6 002 C 0E0           AP    002(2,6),0E0(1,12)    DNM=2-234       LIT+0
+ 228                000E92  58 10 D 230                 L     1,230(0,13)           VN=05
+                    000E96  07 F1                       BCR   15,1
+                    000E98                     PN=05    EQU   *
+ 229                000E98  D2 01 6 275 7 000           MVC   275(2,6),000(7)       DNM=5-205       DNM=1-366
+ 230                000E9E  D2 13 6 27B 7 005           MVC   27B(20,6),005(7)      DNM=5-250       DNM=1-405
+ 231                000EA4  D2 02 6 291 7 038           MVC   291(3,6),038(7)       DNM=5-286       DNM=2-0
+ 232                000EAA  D2 01 6 295 7 03B           MVC   295(2,6),03B(7)       DNM=5-328       DNM=2-18
+ 233                000EB0  D2 03 6 298 7 03D           MVC   298(4,6),03D(7)       DNM=5-367       DNM=2-36
+ 234                000EB6  D2 00 6 294 C 0FC           MVC   294(1,6),0FC(12)      DNM=5-307       LIT+28
+                    000EBC  D2 00 6 297 C 0FC           MVC   297(1,6),0FC(12)      DNM=5-346       LIT+28
+ 235                000EC2  D2 39 8 000 6 274           MVC   000(58,8),274(6)      DNM=2-150       DNM=5-163
+                    000EC8  92 40 8 03A                 MVI   03A(8),X'40'          DNM=2-150+58
+                    000ECC  D2 49 8 03B 8 03A           MVC   03B(74,8),03A(8)      DNM=2-150+59    DNM=2-150+58
+                    000ED2  58 10 D 1CC                 L     1,1CC(0,13)           DTF=2
+                    000ED6  96 04 1 002                 OI    002(1),X'04'
+    18
+
+
+                    000EDA  92 40 8 000                 MVI   000(8),X'40'          DNM=5376-25
+                    000EDE  58 F0 1 010                 L     15,010(0,1)
+                    000EE2  45 E0 F 00C                 BAL   14,00C(0,15)
+                    000EE6  58 F0 C 084                 L     15,084(0,12)          GN=023
+                    000EEA  94 FB 1 002                 NI    002(1),X'FB'
+                    000EEE  91 01 1 027                 TM    027(1),X'01'
+                    000EF2  07 8F                       BCR   8,15
+ 236                000EF4                     GN=024   EQU   *
+                    000EF4  D2 00 6 040 C 128           MVC   040(1,6),128(12)      DNM=3-118       LIT+72
+ 237                000EFA                     GN=023   EQU   *
+                    000EFA  FA 10 6 002 C 0E0           AP    002(2,6),0E0(1,12)    DNM=2-234       LIT+0
+ 240                000F00  58 10 D 234                 L     1,234(0,13)           VN=06
+                    000F04  07 F1                       BCR   15,1
+                    000F06                     PN=06    EQU   *
+ 241                000F06  48 10 C 12E                 LH    1,12E(0,12)           LIT+78
+                    000F0A  06 10                       BCTR  1,0
+                    000F0C  4C 10 C 100                 MH    1,100(0,12)           LIT+32
+                    000F10  50 10 D 1F4                 ST    1,1F4(0,13)           INX=1
+ 242                000F14  58 10 C 08C                 L     1,08C(0,12)           GN=025
+                    000F18  07 F1                       BCR   15,1
+ 243                000F1A                     GN=026   EQU   *
+                    000F1A  D2 06 6 2BA C 130           MVC   2BA(7,6),130(12)      DNM=5-470       LIT+80
+                    000F20  92 40 6 2C1                 MVI   2C1(6),X'40'          DNM=5-470+7
+                    000F24  D2 01 6 2C2 6 2C1           MVC   2C2(2,6),2C1(6)       DNM=5-470+8     DNM=5-470+7
+                    000F2A  58 10 C 098                 L     1,098(0,12)           GN=028
+                    000F2E  07 F1                       BCR   15,1
+                    000F30                     GN=027   EQU   *
+                    000F30  41 40 6 043                 LA    4,043(0,6)            DNM=3-309
+                    000F34  5A 40 D 1F4                 A     4,1F4(0,13)           INX=1
+                    000F38  50 40 D 1F8                 ST    4,1F8(0,13)           SBS=1
+                    000F3C  58 20 C 09C                 L     2,09C(0,12)           GN=029
+                    000F40  58 E0 D 1F8                 L     14,1F8(0,13)          SBS=1
+                    000F44  D5 01 6 041 E 000           CLC   041(2,6),000(14)      DNM=3-134       DNM=3-309
+                    000F4A  07 72                       BCR   7,2
+ 245                000F4C  41 40 6 045                 LA    4,045(0,6)            DNM=3-331
+                    000F50  5A 40 D 1F4                 A     4,1F4(0,13)           INX=1
+                    000F54  50 40 D 1FC                 ST    4,1FC(0,13)           SBS=2
+                    000F58  58 E0 D 1FC                 L     14,1FC(0,13)          SBS=2
+                    000F5C  D2 09 6 2BA E 000           MVC   2BA(10,6),000(14)     DNM=5-470       DNM=3-331
+                    000F62  58 10 C 098                 L     1,098(0,12)           GN=028
+                    000F66  07 F1                       BCR   15,1
+                    000F68                     GN=029   EQU   *
+                    000F68  48 10 C 12E                 LH    1,12E(0,12)           LIT+78
+                    000F6C  4C 10 C 100                 MH    1,100(0,12)           LIT+32
+                    000F70  5A 10 D 1F4                 A     1,1F4(0,13)           INX=1
+                    000F74  50 10 D 1F4                 ST    1,1F4(0,13)           INX=1
+                    000F78                     GN=025   EQU   *
+                    000F78  48 10 C 0FE                 LH    1,0FE(0,12)           LIT+30
+                    000F7C  06 10                       BCTR  1,0
+                    000F7E  4C 10 C 100                 MH    1,100(0,12)           LIT+32
+                    000F82  59 10 D 1F4                 C     1,1F4(0,13)           INX=1
+                    000F86  58 F0 C 090                 L     15,090(0,12)          GN=026
+                    000F8A  07 4F                       BCR   4,15
+    19
+
+
+                    000F8C  58 10 C 094                 L     1,094(0,12)           GN=027
+                    000F90  07 F1                       BCR   15,1
+ 246                000F92                     GN=028   EQU   *
+                    000F92  D2 01 6 2D0 6 041           MVC   2D0(2,6),041(6)       DNM=6-0         DNM=3-134
+ 247                000F98  D2 0A D 1E0 C 0F2           MVC   1E0(11,13),0F2(12)    TS2=1           LIT+18
+                    000F9E  DE 0A D 1E0 6 010           ED    1E0(11,13),010(6)     TS2=1           DNM=2-315
+                    000FA4  05 30                       BALR  3,0
+                    000FA6  47 40 3 008                 BC    4,008(0,3)
+                    000FAA  92 40 D 1EA                 MVI   1EA(13),X'40'         TS2=11
+                    000FAE  D2 09 6 2DB D 1E1           MVC   2DB(10,6),1E1(13)     DNM=6-42        TS2=2
+ 248                000FB4  D2 0A D 1E0 C 0F2           MVC   1E0(11,13),0F2(12)    TS2=1           LIT+18
+                    000FBA  DE 0A D 1E0 6 014           ED    1E0(11,13),014(6)     TS2=1           DNM=2-337
+                    000FC0  05 30                       BALR  3,0
+                    000FC2  47 40 3 008                 BC    4,008(0,3)
+                    000FC6  92 40 D 1EA                 MVI   1EA(13),X'40'         TS2=11
+                    000FCA  D2 09 6 2EA D 1E1           MVC   2EA(10,6),1E1(13)     DNM=6-98        TS2=2
+ 249                000FD0  D2 0A D 1E0 C 0F2           MVC   1E0(11,13),0F2(12)    TS2=1           LIT+18
+                    000FD6  DE 0A D 1E0 6 018           ED    1E0(11,13),018(6)     TS2=1           DNM=2-364
+                    000FDC  05 30                       BALR  3,0
+                    000FDE  47 40 3 008                 BC    4,008(0,3)
+                    000FE2  92 40 D 1EA                 MVI   1EA(13),X'40'         TS2=11
+                    000FE6  D2 09 6 2F9 D 1E1           MVC   2F9(10,6),1E1(13)     DNM=6-153       TS2=2
+ 250                000FEC  D2 0A D 1E0 C 0F2           MVC   1E0(11,13),0F2(12)    TS2=1           LIT+18
+                    000FF2  DE 0A D 1E0 6 01C           ED    1E0(11,13),01C(6)     TS2=1           DNM=2-388
+                    000FF8  05 30                       BALR  3,0
+                    000FFA  47 40 3 008                 BC    4,008(0,3)
+                    000FFE  92 40 D 1EA                 MVI   1EA(13),X'40'         TS2=11
+                    001002  D2 09 6 308 D 1E1           MVC   308(10,6),1E1(13)     DNM=6-208       TS2=2
+ 251                001008  D2 0A D 1E0 C 0F2           MVC   1E0(11,13),0F2(12)    TS2=1           LIT+18
+                    00100E  DE 0A D 1E0 6 020           ED    1E0(11,13),020(6)     TS2=1           DNM=2-411
+                    001014  05 30                       BALR  3,0
+                    001016  47 40 3 008                 BC    4,008(0,3)
+                    00101A  92 40 D 1EA                 MVI   1EA(13),X'40'         TS2=11
+                    00101E  D2 09 6 317 D 1E1           MVC   317(10,6),1E1(13)     DNM=6-262       TS2=2
+ 252                001024  D2 73 8 000 6 2AE           MVC   000(116,8),2AE(6)     DNM=2-150       DNM=5-423
+                    00102A  92 40 8 074                 MVI   074(8),X'40'          DNM=2-150+116
+                    00102E  D2 0F 8 075 8 074           MVC   075(16,8),074(8)      DNM=2-150+117   DNM=2-150+116
+                    001034  58 10 D 1CC                 L     1,1CC(0,13)           DTF=2
+                    001038  96 04 1 002                 OI    002(1),X'04'
+                    00103C  92 40 8 000                 MVI   000(8),X'40'          DNM=5376-32
+                    001040  58 F0 1 010                 L     15,010(0,1)
+                    001044  45 E0 F 00C                 BAL   14,00C(0,15)
+                    001048  58 F0 C 0A0                 L     15,0A0(0,12)          GN=030
+                    00104C  94 FB 1 002                 NI    002(1),X'FB'
+                    001050  91 01 1 027                 TM    027(1),X'01'
+                    001054  07 8F                       BCR   8,15
+ 253                001056                     GN=031   EQU   *
+                    001056  D2 00 6 040 C 128           MVC   040(1,6),128(12)      DNM=3-118       LIT+72
+ 254                00105C                     GN=030   EQU   *
+                    00105C  D2 00 8 000 6 07F           MVC   000(1,8),07F(6)       DNM=2-150       DNM=3-353
+                    001062  92 40 8 001                 MVI   001(8),X'40'          DNM=2-150+1
+                    001066  D2 82 8 002 8 001           MVC   002(131,8),001(8)     DNM=2-150+2     DNM=2-150+1
+                    00106C  58 10 D 1CC                 L     1,1CC(0,13)           DTF=2
+    20
+
+
+                    001070  96 04 1 002                 OI    002(1),X'04'
+                    001074  92 40 8 000                 MVI   000(8),X'40'          DNM=5376-34
+                    001078  58 F0 1 010                 L     15,010(0,1)
+                    00107C  45 E0 F 00C                 BAL   14,00C(0,15)
+                    001080  58 F0 C 0A8                 L     15,0A8(0,12)          GN=032
+                    001084  94 FB 1 002                 NI    002(1),X'FB'
+                    001088  91 01 1 027                 TM    027(1),X'01'
+                    00108C  07 8F                       BCR   8,15
+ 255                00108E                     GN=033   EQU   *
+                    00108E  D2 00 6 040 C 128           MVC   040(1,6),128(12)      DNM=3-118       LIT+72
+ 256                001094                     GN=032   EQU   *
+                    001094  FA 10 6 002 C 102           AP    002(2,6),102(1,12)    DNM=2-234       LIT+34
+ 257                00109A  FA 43 6 024 6 010           AP    024(5,6),010(4,6)     DNM=2-434       DNM=2-315
+ 258                0010A0  FA 43 6 029 6 014           AP    029(5,6),014(4,6)     DNM=2-456       DNM=2-337
+ 259                0010A6  FA 43 6 02E 6 018           AP    02E(5,6),018(4,6)     DNM=2-480       DNM=2-364
+ 260                0010AC  FA 43 6 033 6 01C           AP    033(5,6),01C(4,6)     DNM=3-0         DNM=2-388
+ 261                0010B2  FA 43 6 038 6 020           AP    038(5,6),020(4,6)     DNM=3-23        DNM=2-411
+ 262                0010B8  D2 03 6 010 C 103           MVC   010(4,6),103(12)      DNM=2-315       LIT+35
+                    0010BE  D2 03 6 014 C 103           MVC   014(4,6),103(12)      DNM=2-337       LIT+35
+                    0010C4  D2 03 6 018 C 103           MVC   018(4,6),103(12)      DNM=2-364       LIT+35
+                    0010CA  D2 03 6 01C C 103           MVC   01C(4,6),103(12)      DNM=2-388       LIT+35
+                    0010D0  D2 03 6 020 C 103           MVC   020(4,6),103(12)      DNM=2-411       LIT+35
+ 264                0010D6  D2 01 6 041 7 000           MVC   041(2,6),000(7)       DNM=3-134       DNM=1-366
+ 267                0010DC  58 10 D 22C                 L     1,22C(0,13)           VN=04
+                    0010E0  07 F1                       BCR   15,1
+                    0010E2                     PN=07    EQU   *
+ 268                0010E2  58 00 D 22C                 L     0,22C(0,13)           VN=04
+                    0010E6  50 00 D 21C                 ST    0,21C(0,13)           PSV=8
+                    0010EA  58 00 C 0B0                 L     0,0B0(0,12)           GN=034
+                    0010EE  50 00 D 22C                 ST    0,22C(0,13)           VN=04
+                    0010F2  58 10 C 01C                 L     1,01C(0,12)           PN=06
+                    0010F6  07 F1                       BCR   15,1
+                    0010F8                     GN=034   EQU   *
+                    0010F8  58 00 D 21C                 L     0,21C(0,13)           PSV=8
+                    0010FC  50 00 D 22C                 ST    0,22C(0,13)           VN=04
+ 269                001100  D2 0C D 1E0 C 107           MVC   1E0(13,13),107(12)    TS2=1           LIT+39
+                    001106  DE 0C D 1E0 6 024           ED    1E0(13,13),024(6)     TS2=1           DNM=2-434
+                    00110C  05 30                       BALR  3,0
+                    00110E  47 40 3 008                 BC    4,008(0,3)
+                    001112  92 40 D 1EC                 MVI   1EC(13),X'40'         TS2=13
+                    001116  D2 0B 6 34D D 1E1           MVC   34D(12,6),1E1(13)     DNM=6-383       TS2=2
+ 270                00111C  D2 0C D 1E0 C 107           MVC   1E0(13,13),107(12)    TS2=1           LIT+39
+                    001122  DE 0C D 1E0 6 029           ED    1E0(13,13),029(6)     TS2=1           DNM=2-456
+                    001128  05 30                       BALR  3,0
+                    00112A  47 40 3 008                 BC    4,008(0,3)
+                    00112E  92 40 D 1EC                 MVI   1EC(13),X'40'         TS2=13
+                    001132  D2 0B 6 35C D 1E1           MVC   35C(12,6),1E1(13)     DNM=6-436       TS2=2
+ 271                001138  D2 0C D 1E0 C 107           MVC   1E0(13,13),107(12)    TS2=1           LIT+39
+                    00113E  DE 0C D 1E0 6 02E           ED    1E0(13,13),02E(6)     TS2=1           DNM=2-480
+                    001144  05 30                       BALR  3,0
+                    001146  47 40 3 008                 BC    4,008(0,3)
+                    00114A  92 40 D 1EC                 MVI   1EC(13),X'40'         TS2=13
+                    00114E  D2 0B 6 36B D 1E1           MVC   36B(12,6),1E1(13)     DNM=7-0         TS2=2
+    21
+
+
+ 272                001154  D2 0C D 1E0 C 107           MVC   1E0(13,13),107(12)    TS2=1           LIT+39
+                    00115A  DE 0C D 1E0 6 033           ED    1E0(13,13),033(6)     TS2=1           DNM=3-0
+                    001160  05 30                       BALR  3,0
+                    001162  47 40 3 008                 BC    4,008(0,3)
+                    001166  92 40 D 1EC                 MVI   1EC(13),X'40'         TS2=13
+                    00116A  D2 0B 6 37A D 1E1           MVC   37A(12,6),1E1(13)     DNM=7-55        TS2=2
+ 273                001170  D2 0C D 1E0 C 107           MVC   1E0(13,13),107(12)    TS2=1           LIT+39
+                    001176  DE 0C D 1E0 6 038           ED    1E0(13,13),038(6)     TS2=1           DNM=3-23
+                    00117C  05 30                       BALR  3,0
+                    00117E  47 40 3 008                 BC    4,008(0,3)
+                    001182  92 40 D 1EC                 MVI   1EC(13),X'40'         TS2=13
+                    001186  D2 0B 6 389 D 1E1           MVC   389(12,6),1E1(13)     DNM=7-109       TS2=2
+ 274                00118C  D2 74 8 000 6 322           MVC   000(117,8),322(6)     DNM=2-150       DNM=6-316
+                    001192  92 40 8 075                 MVI   075(8),X'40'          DNM=2-150+117
+                    001196  D2 0E 8 076 8 075           MVC   076(15,8),075(8)      DNM=2-150+118   DNM=2-150+117
+                    00119C  58 10 D 1CC                 L     1,1CC(0,13)           DTF=2
+                    0011A0  92 40 8 000                 MVI   000(8),X'40'          DNM=2-150
+                    0011A4  58 F0 1 010                 L     15,010(0,1)
+                    0011A8  45 E0 F 00C                 BAL   14,00C(0,15)
+ 275                0011AC                     PN=08    EQU   *
+ 276                0011AC  58 10 D 228                 L     1,228(0,13)           VN=03
+                    0011B0  07 F1                       BCR   15,1
+                    0011B2                     PN=09    EQU   *
+                    0011B2  0A 0E                       SVC   14
+                    0011B4  50 D0 5 008        INIT2    ST    13,008(0,5)
+                    0011B8  50 50 D 004                 ST    5,004(0,13)
+                    0011BC  58 20 C 000                 L     2,000(0,12)           VIR=1
+                    0011C0  95 00 2 000                 CLI   000(2),X'00'
+                    0011C4  07 79                       BCR   7,9
+                    0011C6  92 FF 2 000                 MVI   000(2),X'FF'
+                    0011CA  96 10 D 048                 OI    048(13),X'10'         SWT+0
+                    0011CE  50 E0 D 054        INIT3    ST    14,054(0,13)
+                    0011D2  05 F0                       BALR  15,0
+                    0011D4  91 20 D 048                 TM    048(13),X'20'         SWT+0
+                    0011D8  47 E0 F 016                 BC    14,016(0,15)
+                    0011DC  58 00 B 048                 L     0,048(0,11)
+                    0011E0  98 2D B 050                 LM    2,13,050(11)
+                    0011E4  58 E0 D 054                 L     14,054(0,13)
+                    0011E8  07 FE                       BCR   15,14
+                    0011EA  96 20 D 048                 OI    048(13),X'20'         SWT+0
+                    0011EE  41 60 0 004                 LA    6,004(0,0)
+                    0011F2  41 10 C 008                 LA    1,008(0,12)           PN=01
+                    0011F6  41 70 C 0E0                 LA    7,0E0(0,12)           LIT+0
+                    0011FA  06 70                       BCTR  7,0
+                    0011FC  05 50                       BALR  5,0
+                    0011FE  58 40 1 000                 L     4,000(0,1)
+                    001202  1E 4B                       ALR   4,11
+                    001204  50 40 1 000                 ST    4,000(0,1)
+                    001208  87 16 5 000                 BXLE  1,6,000(5)
+                    00120C  41 80 D 1BC                 LA    8,1BC(0,13)           OVF=1
+                    001210  41 70 D 1CF                 LA    7,1CF(0,13)           TS=01-1
+                    001214  05 10                       BALR  1,0
+                    001216  58 00 8 000                 L     0,000(0,8)
+    22
+
+
+                    00121A  1E 0B                       ALR   0,11
+                    00121C  50 00 8 000                 ST    0,000(0,8)
+                    001220  87 86 1 000                 BXLE  8,6,000(1)
+                    001224  D2 17 D 220 C 0C4           MVC   220(24,13),0C4(12)    VN=01           VNI=1
+                    00122A  58 60 D 1C4                 L     6,1C4(0,13)           BL =3
+                    00122E  58 70 D 1BC                 L     7,1BC(0,13)           BL =1
+                    001232  58 80 D 1C0                 L     8,1C0(0,13)           BL =2
+                    001236  58 E0 D 054                 L     14,054(0,13)
+                    00123A  07 FE                       BCR   15,14
+                    000000  05 F0              INIT1    BALR  15,0
+                    000002  07 00                       BCR   0,0
+                    000004  90 0E F 00A                 STM   0,14,00A(15)
+                    000008  47 F0 F 082                 BC    15,082(0,15)
+                    00000C                              DS    30F
+                    000084  58 C0 F 0C6                 L     12,0C6(0,15)
+                    000088  58 E0 C 000                 L     14,000(0,12)          VIR=1
+                    00008C  58 D0 F 0CA                 L     13,0CA(0,15)
+                    000090  95 00 E 000                 CLI   000(14),X'00'
+                    000094  47 70 F 0A2                 BC    7,0A2(0,15)
+                    000098  96 10 D 048                 OI    048(13),X'10'         SWT+0
+                    00009C  92 FF E 000                 MVI   000(14),X'FF'
+                    0000A0  47 F0 F 0AC                 BC    15,0AC(0,15)
+                    0000A4  98 CE F 03A                 LM    12,14,03A(15)
+                    0000A8  90 EC D 00C                 STM   14,12,00C(13)
+                    0000AC  18 5D                       LR    5,13
+                    0000AE  98 9F F 0BA                 LM    9,15,0BA(15)
+                    0000B2  91 10 D 048                 TM    048(13),X'10'         SWT+0
+                    0000B6  07 19                       BCR   1,9
+                    0000B8  07 FF                       BCR   15,15
+                    0000BA  07 00                       BCR   0,0
+                    0000BC  000011CE                    ADCON L4(INIT3)
+                    0000C0  00000000                    ADCON L4(INIT1)
+                    0000C4  00000000                    ADCON L4(INIT1)
+                    0000C8  00000870                    ADCON L4(PGT)
+                    0000CC  00000630                    ADCON L4(TGT)
+                    0000D0  000009A8                    ADCON L4(START)
+                    0000D4  000011B4                    ADCON L4(INIT2)
+                    0000D8  C3D6C2C6F0F0F0F1            DC    X'C3D6C2C6F0F0F0F1'
+                    0000E0  E2C1D4D7D3C54040            DC    X'E2C1D4D7D3C54040'
+    23
+
+
+                                              CROSS-REFERENCE DICTIONARY
+
+
+ DATA NAMES                       DEFN       REFERENCE
+
+ PAY-FILE                         00022      00168  00168  00171  00171  00176  00199  00199
+ EM-DEPARTMENT                    00033      00172  00190  00212  00229  00264
+ EM-NAME                          00035      00213  00230
+ EM-OTH-DED-X                     00037      00195
+ EM-OTH-DED                       00038      00196  00205  00210  00221
+ EM-SSN13                         00040      00214  00231
+ EM-SSN45                         00041      00215  00232
+ EM-SSN69                         00042      00216  00233
+ EM-SALARY-X                      00043      00194
+ EM-SALARY                        00044      00196  00203  00204  00205  00207  00218
+ PRINT-FILE                       00023      00168  00168  00176  00181  00182  00183  00184  00223  00235  00252  00254
+                                             00274
+ PRINT-LINE                       00050      00181  00181  00181  00181  00181  00181  00182  00182  00182  00182  00182
+                                             00182  00183  00183  00183  00183  00183  00183  00184  00184  00184  00184
+                                             00184  00184  00223  00223  00223  00223  00235  00235  00235  00235  00252
+                                             00252  00252  00252  00254  00254  00254  00254  00274  00274  00274  00274
+                                             00274  00274
+ WS-PAGE                          00054      00179  00180
+ LINE-CNTR                        00055      00185  00192  00225  00237  00256
+ WS-FIT-WITH                      00056      00203  00205  00208  00219
+ WS-SIT-WITH                      00057      00204  00205  00209  00220
+ WS-NET-PAY                       00058      00205  00211  00222
+ WS-DT-SALARY                     00059      00207  00247  00257  00262
+ WS-DT-FIT-WITH                   00060      00208  00248  00258  00262
+ WS-DT-SIT-WITH                   00061      00209  00249  00259  00262
+ WS-DT-OTH-DED                    00062      00210  00250  00260  00262
+ WS-DT-NET-PAY                    00063      00211  00251  00261  00262
+ WS-FT-SALARY                     00064      00257  00269
+ WS-FT-FIT-WITH                   00065      00258  00270
+ WS-FT-SIT-WITH                   00066      00259  00271
+ WS-FT-OTH-DED                    00067      00260  00272
+ WS-FT-NET-PAY                    00068      00261  00273
+ WS-SW-EOF                        00070      00171  00173  00199
+ EOP-SW                           00072      00186  00192  00224  00236  00253  00255
+ WS-DEPARTMENT                    00073      00172  00190  00243  00246  00264
+ DEPT-CODE                        00082      00243  00243
+ DEPT-DESC                        00083      00245  00245
+ BLANK-LINE                       00084      00184  00184  00254  00254
+ HEADING1                         00085      00181  00181
+ H1-TODAY                         00087      00169
+ H1-PAGE                          00091      00180
+ HEADING2                         00092      00182  00182
+ UNDER-LINE                       00098      00183  00183
+ DETAIL-LINE                      00104      00223  00223
+ DL-DEPARTMENT                    00106      00212
+ DL-NAME                          00108      00213
+ DL-SSN13                         00110      00214
+ DL-SSN-HYP1                      00111      00217
+    24
+
+
+ DL-SSN45                         00112      00215
+ DL-SSN-HYP2                      00113      00217
+ DL-SSN69                         00114      00216
+ DL-SALARY                        00116      00218
+ DL-FIT-WITH                      00118      00219
+ DL-SIT-WITH                      00120      00220
+ DL-OTH-DED                       00122      00221
+ DL-NET-PAY                       00124      00222
+ ERROR-LINE                       00125      00235  00235
+ EL-DEPARTMENT                    00127      00229
+ EL-NAME                          00129      00230
+ EL-SSN13                         00131      00231
+ EL-SSN-HYP1                      00132      00234
+ EL-SSN45                         00133      00232
+ EL-SSN-HYP2                      00134      00234
+ EL-SSN69                         00135      00233
+ DEPARTMENT-LINE                  00138      00252  00252
+ DT-DEPT-DESC                     00140      00243  00243  00243  00243  00245
+ DT-DEPARTMENT                    00142      00246
+ DT-SALARY                        00144      00247
+ DT-FIT-WITH                      00146      00248
+ DT-SIT-WITH                      00148      00249
+ DT-OTH-DED                       00150      00250
+ DT-NET-PAY                       00152      00251
+ FINAL-TOTAL-LINE                 00154      00274  00274
+ FT-SALARY                        00157      00269
+ FT-FIT-WITH                      00159      00270
+ FT-SIT-WITH                      00161      00271
+ FT-OTH-DED                       00163      00272
+ FT-NET-PAY                       00165      00273
+
+
+ PROCEDURE NAMES                  DEFN       REFERENCE
+
+ HEADING-ROUTINE                  00178      00170  00193
+ HEADING-ROUTINE-EXIT             00187      00170  00193
+ DETAIL-ROUTINE                   00189      00173
+ DETAIL-ROUTINE-EXIT              00200      00173
+ DATA-IS-GOOD                     00202      00197
+ DATA-IS-GOOD-EXIT                00226      00197
+ DATA-IS-BAD                      00228      00198
+ DATA-IS-BAD-EXIT                 00238      00198
+ DEPARTMENT-TOTAL                 00240      00191  00268
+ DEPARTMENT-TOTAL-EXIT            00265      00191  00268
+ FINAL-TOTALS                     00267      00175
+ FINAL-TOTALS-EXIT                00275      00175
+// EXEC LNKEDT
+
+JOB  DEMOCOBF  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST   AUTOLINK   IJCFZII3
+LIST   AUTOLINK   IJDFAPZZ
+LIST   AUTOLINK   ILBDETB0
+LIST   AUTOLINK   ILBDMNS0
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        PHASE***  006000  006000  0074D8  1B 06 4  CSECT     SAMPLE    006000  006000
+
+                                                   CSECT     IJCFZII3  007240  007240
+
+                                                   CSECT     IJDFAPZZ  0072C8  0072C8
+                                                   *  ENTRY  IJDFAZZZ  0072C8
+
+                                                   CSECT     ILBDMNS0  0074D8  0074D8
+
+                                                   CSECT     ILBDETB0  0073D8  0073D8
+                                                   *  ENTRY  IHDFETBL  0073D8
+// ASSGN SYS007,X'00C'
+// ASSGN SYS009,X'00E'
+// EXEC
+03/29/70                                        ITPRG 248 SAMPLE PROGRAM                                              PAGE   1
+
+DEPT.   NAME                SOC.SEC.NO.        SALARY         F.I.T.         S.I.T.          OTHER           NET_____    ____               ___________        ______         ______         ______          _____           ___
+
+10    ACHER, WILLIAM C.     679-87-4321     12,000.00       1,680.00         300.00       6,752.41       3,267.59
+10    DONNEMAN, THOMAS M.   043-78-1234     13,000.00       1,820.00         325.00       9,001.91       1,853.09
+10    FELDMAN, MIKE R.      156-27-8643     11,500.00       1,610.00         287.50       3,000.00       6,602.50
+10    HATFIELD, MARK I.     225-72-3628      9,000.00       1,260.00         225.00       2,053.90       5,461.10
+10    REEDE, OWEN W.        115-89-7234     10,500.00       1,470.00         262.50      10,514.40       1,746.90-
+10    WINGLAND, KEITH E.    215-67-9672      8,500.00       1,190.00         212.50       3,500.00       3,597.50
+                SALES DEPARTMENT 10 TOTALS  64,500.00       9,030.00       1,612.50      34,822.62      19,034.88 *
+
+20    CARTOLER, VIOLET B.   455-66-7381     14,000.00       1,960.00         350.00       7,500.60       4,189.40
+20    FROMM, STEVE V.       300-26-7832     12,250.00       1,715.00         306.25      12,000.05       1,771.30-
+20    NEIL, CLARENCE N.     016-78-7112     13,500.00       1,890.00         337.50       9,502.30       1,770.20
+20    SCHEIBER, HARRY T.    198-84-2236     11,250.00       1,575.00         281.25       3,250.80       6,142.95
+20    WANGLEY, THEO. A.     723-45-6124     12,000.00       1,680.00         300.00       1,500.00       8,520.00
+                 MFG. DEPARTMENT 20 TOTALS  63,000.00       8,820.00       1,575.00      33,753.75      18,851.25 *
+
+30    ALLOREN, RUTH W.      647-98-2367     13,000.00       1,820.00         325.00            .00      10,855.00
+30    DELBERT, EDWARD D.    419-18-2773     11,000.00       1,540.00         275.00      13,055.41       3,870.41-
+30    HANEY, CAROL S.       533-26-6791     10,000.00       1,400.00         250.00      14,500.05       6,150.05-
+30    KING, MILDRED J.      711-32-2487      9,050.00       1,267.00         226.25      18,042.90      10,486.15-
+30    TRAWLEY, HARRIS T.    623-56-1471     10,025.00       1,403.50         250.63       5,500.00       2,870.87
+             BUSINESS DEPARTMENT 30 TOTALS  53,075.00       7,430.50       1,326.88      51,098.36       6,780.74-*
+
+40    COSTA, NAN S.         241-96-3182     12,200.00       1,708.00         305.00       5,600.00       4,587.00
+40    ALHOUER, ELAINE E.    381-46-9783      7,950.00       1,113.00         198.75       2,206.60       4,431.65
+40    HANBEE, ALETTA O.     136-71-9674     13,900.00       1,946.00         347.50       3,950.00       7,656.50
+40    RASSMUSEN, JOHN J.    064-39-7865     12,960.00       1,814.40         324.00      10,000.00         821.60
+               TRANS. DEPARTMENT 40 TOTALS  47,010.00       6,581.40       1,175.25      21,756.60      17,496.75 *
+
+50    ATKINSON, CHARLES     679-87-4321     12,000.00       1,680.00         300.00       6,752.41       3,267.59
+50    BASEL, DEBORAH L      043-78-1234     13,000.00       1,820.00         325.00       9,001.91       1,853.09
+50    BETTINARDI, RONALD J  125-66-6601     11,000.00       1,540.00         275.00      15,005.00       5,820.00-
+            ENGINEER. DEPARTMENT 50 TOTALS  36,000.00       5,040.00         900.00      30,759.32         699.32-*
+
+                           FINAL TOTALS    263,585.00      36,901.90       6,589.63     172,190.65      47,902.82 **
+EOJ DEMOCOBF                                                            12.13.08,DURATION 00.01.39

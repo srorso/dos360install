@@ -1,0 +1,656 @@
+
+// JOB POWER8A  LINK DISK S/M WITH OPTION 1                360N-SM-450  14.15.29
+*   ENTIRE SORT/MERGE PROGRAM                                           LINK0161
+// OPTION CATAL                                                         LINK0163
+   INCLUDE IJOSM                                                        LINK0164
+// EXEC LNKEDT                                                          LINK0165
+
+JOB  POWER8A   03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE IJOSM                                                        LINK0164
+LIST   INCLUDE IJOSMPH0                                                           0001
+LIST           PHASE DSORT,S,NOAUTO                                           X4500001
+LIST           INCLUDE IJOSM001                                               X4500002
+LIST           PHASE DSORT002,S,NOAUTO                                        X4500003
+LIST           INCLUDE IJOSM002                                               X4500004
+LIST           PHASE DSORT003,S,NOAUTO                                        X4500005
+LIST           INCLUDE IJOSM003                                               X4500006
+LIST           PHASE DSORT004,S,NOAUTO                                        X4500007
+LIST           INCLUDE IJOSM004                                               X4500008
+LIST           PHASE DSORT005,S,NOAUTO                                        X4500009
+LIST           INCLUDE IJOSM005                                               X4500010
+LIST           PHASE DSORT006,S,NOAUTO                                        X4500011
+LIST           INCLUDE IJOSM006                                               X4500012
+LIST           PHASE DSORT007,S,NOAUTO                                        X4500013
+LIST           INCLUDE IJOSM007                                               X4500014
+LIST           PHASE DSORT008,S,NOAUTO                                        X4500015
+LIST           INCLUDE IJOSM008                                               X4500016
+LIST           PHASE DSORT009,S,NOAUTO                                        X4500017
+LIST           INCLUDE IJOSM009                                               X4500018
+LIST           PHASE DSORT010,S,NOAUTO                                        X4500019
+LIST           INCLUDE IJOSM010                                               X4500020
+LIST           PHASE DSORT501,S,NOAUTO                                        X4500021
+LIST           INCLUDE IJOSM501                                               X4500022
+LIST   INCLUDE IJOSMPH1                                                           0002
+LIST           PHASE DSORT101,S,NOAUTO                                        Y4500001
+LIST           INCLUDE IJOSM101                                               Y4500002
+LIST           PHASE DSORT102,S,NOAUTO                                        Y4500003
+LIST           INCLUDE IJOSM102                                               Y4500004
+LIST           PHASE DSORT103,S,NOAUTO                                        Y4500005
+LIST           INCLUDE IJOSM103                                               Y4500006
+LIST           PHASE DSORT104,S,NOAUTO                                        Y4500007
+LIST           INCLUDE IJOSM104                                               Y4500008
+LIST           PHASE DSORT105,S+2048,NOAUTO                                   Y4500009
+LIST           INCLUDE IJOSM105                                               Y4500010
+LIST   INCLUDE IJOSMF23                                                           0003
+LIST           PHASE DSORT201,S,NOAUTO                                        Z4500001
+LIST           INCLUDE IJOSM201                                               Z4500002
+LIST           PHASE DSORT202,S,NOAUTO                                        Z4500003
+LIST           INCLUDE IJOSM202                                               Z4500004
+LIST           PHASE DSORT301,S,NOAUTO                                        Z4500005
+LIST           INCLUDE IJOSM301                                               Z4500006
+LIST           PHASE DSORT302,S,NOAUTO                                        Z4500007
+LIST           INCLUDE IJOSM302                                               Z4500008
+LIST   INCLUDE IJOSMV23                                                           0004
+LIST           PHASE DSORT203,S,NOAUTO                                        /4500001
+LIST           INCLUDE IJOSM203                                               /4500002
+LIST           PHASE DSORT204,S,NOAUTO                                        /4500003
+LIST           INCLUDE IJOSM204                                               /4500004
+LIST           PHASE DSORT303,S,NOAUTO                                        /4500005
+LIST           INCLUDE IJOSM303                                               /4500006
+LIST           PHASE DSORT304,S,NOAUTO                                        /4500007
+
+
+LIST           INCLUDE IJOSM304                                               /4500008
+LIST   INCLUDE IJOSMPH4                                                           0005
+LIST           PHASE DSORT401,S,NOAUTO                                        *4500001
+LIST           INCLUDE IJOSM401                                               *4500002
+LIST           PHASE DSORT402,S,NOAUTO                                        *4500003
+LIST           INCLUDE IJOSM402                                               *4500004
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        DSORT     101088  101078  10363A  06 12 3  CSECT     IJO00136  101078  101078
+
+                                                   CSECT     IJJCPD1N  1034B0  101078
+                                                      ENTRY  IJJCPD3   1034B0
+
+        DSORT002  101088  101078  101441  07 00 1  CSECT     IJO00234  101078  101078
+
+        DSORT003  101088  101078  101A47  07 00 2  CSECT     IJO00334  101078  101078
+
+        DSORT004  101088  101078  101DDF  07 00 4  CSECT     IJO00436  101078  101078
+
+        DSORT005  101088  101078  1020D7  07 01 3  CSECT     IJO00537  101078  101078
+
+        DSORT006  101088  101078  101807  07 02 2  CSECT     IJO00634  101078  101078
+
+        DSORT007  101088  101078  1020B0  07 02 4  CSECT     IJO00734  101078  101078
+
+        DSORT008  101088  101078  101F27  07 03 3  CSECT     IJO00839  101078  101078
+
+        DSORT009  101088  101078  1020F7  07 04 2  CSECT     IJO00934  101078  101078
+
+        DSORT010  101088  101078  102553  07 05 1  CSECT     IJO01034  101078  101078
+
+        DSORT501  101088  101078  1011CF  07 06 1  CSECT     IJO50134  101078  101078
+
+        DSORT101  101574  101078  101583  07 06 2  CSECT     IJO10134  101078  101078
+
+        DSORT102  101088  101078  1019DB  07 06 3  CSECT     IJO10236  101078  101078
+
+        DSORT103  101D34  101078  1025E3  07 07 1  CSECT     IJO10339  101078  101078
+
+        DSORT104  101BC4  101078  1022C7  07 08 1  CSECT     IJO10436  101078  101078
+
+        DSORT105  101888  101878  101EA7  07 08 4  CSECT     IJO10534  101878  101878
+
+        DSORT201  101790  101078  101FCF  07 09 1  CSECT     IJO20134  101078  101078
+
+        DSORT202  101B30  101078  102477  07 09 4  CSECT     IJO20234  101078  101078
+
+        DSORT301  1018A4  101078  10240F  07 0A 4  CSECT     IJO30134  101078  101078
+
+        DSORT302  101BE4  101078  1028AF  07 0B 3  CSECT     IJO30234  101078  101078
+
+        DSORT203  101888  101078  101EBF  07 0C 3  CSECT     IJO20335  101078  101078
+
+        DSORT204  101C08  101078  102329  07 0D 2  CSECT     IJO20436  101078  101078
+
+        DSORT303  1018EC  101078  102387  07 0E 1  CSECT     IJO30337  101078  101078
+
+        DSORT304  101C34  101078  102797  07 0E 4  CSECT     IJO30437  101078  101078
+
+        DSORT401  101A10  101078  101EB5  07 0F 4  CSECT     IJO40134  101078  101078
+
+        DSORT402  101ECC  101078  102675  07 10 3  CSECT     IJO40234  101078  101078
+
+PRIVATE DIRECTORY               PRV-CORE IMAGE
+
+03/29/70                        -----DECIMAL------------
+
+                                    C  H  R  E
+DIRECTORY STARTING ADDRESS         01 10 01
+DIRECTORY NEXT ENTRY               01 10 14 00
+DIRECTORY LAST ENTRY               01 13 15 17
+
+LIBRARY   STARTING ADDRESS         01 14 01
+LIBRARY   NEXT AVAILABLE ENTRY     07 17 03
+LIBRARY   LAST AVAILABLE ENTRY     40 19 04
+
+                               STATUS INFORMATION-------
+
+DIRECTORY ENTRIES ACTIVE          234
+
+LIBRARY   BLOCKS ALLOCATED       3144
+LIBRARY   BLOCKS ACTIVE           494
+LIBRARY   BLOCKS DELETED           00
+LIBRARY   BLOCKS AVAILABLE       2650
+
+AUTOMATIC CONDENSE LIMIT           00
+
+LIBRARY   ALLOCATED CYLINDERS      40
+DIRECTORY ALLOCATED TRACKS         04
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 13 11 03              56 04 09 05             133 01 09 03
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        27 06 04                109 12 12                177 06 10
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE            1000                     1520                      348
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE             2114                    17003                    23661
+LIBRARY   BLOCKS DELETED              00                       00                       00
+LIBRARY   BLOCKS AVAILABLE          2366                     7477                    11169
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ POWER8A                                                             14.26.36,DURATION 00.11.06
+// JOB POWER8B  LINK TAPE AND DISK S/M WITH OPTION 1       360N-SM-483  14.26.36
+*   ENTIRE SORT/MERGE PROGRAM                                           LINK0574
+// OPTION CATAL                                                         LINK0576
+   INCLUDE ILHSALL                                                      LINK0577
+// EXEC LNKEDT                                                          LINK0578
+
+JOB  POWER8B   03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE ILHSALL                                                      LINK0577
+LIST           INCLUDE  ILHSPH0          ENTIRE SORT/MERGE LIBRARY-PH0        54830001
+LIST           PHASE    SORT,+0                                               54830001
+LIST           INCLUDE  ILHSPPI                                               54830002
+LIST           INCLUDE  ILHSRTMG                                              54830003
+LIST           PHASE    SORTRCL,*                                             54830004
+LIST           INCLUDE  ILHSRCL                                               54830005
+LIST           INCLUDE  ILHSRCA                                               54830006
+LIST           INCLUDE  ILHSRCM                                               54830007
+LIST           PHASE    SORTRCB,*                                             54830008
+LIST           INCLUDE  ILHSRCB                                               54830009
+LIST           PHASE    SORTRCJ,*                                             54830010
+LIST           INCLUDE  ILHSRCJ                                               54830011
+LIST           INCLUDE  ILHSRCI                                               54830012
+LIST           PHASE    SORTRCK,*                                             54830013
+LIST           INCLUDE  ILHSRCK                                               54830014
+LIST           PHASE    SORTRCC,*                                             54830015
+LIST           INCLUDE  ILHSRCC                                               54830016
+LIST           PHASE    SORTRCD,*                                             54830017
+LIST           INCLUDE  ILHSRCD                                               54830018
+LIST           PHASE    SORTRCE,*                                             54830019
+LIST           INCLUDE  ILHSRCE                                               54830020
+LIST           PHASE    SORTRCF,*                                             54830021
+LIST           INCLUDE  ILHSRCF                                               54830022
+LIST           PHASE    SORTRCH,*                                             54830023
+LIST           INCLUDE  ILHSRCH                                               54830024
+LIST           INCLUDE  ILHSPH1          ENTIRE SORT/MERGE LIBRARY-PH1        54830002
+LIST           PHASE    SORTRCN,*                                             54830001
+LIST           INCLUDE  ILHSRCN                                               54830002
+LIST           PHASE    SORTRSD,*                                             54830003
+LIST           INCLUDE  ILHSRSD                                               54830004
+LIST           PHASE    SORTRSE,*                                             54830005
+LIST           INCLUDE  ILHSRSI                                               54830006
+LIST           INCLUDE  ILHSRSE                                               54830007
+LIST           INCLUDE  ILHSRMC                                               54830008
+LIST           PHASE    SORTASA,*                                             54830009
+LIST           INCLUDE  ILHSASA                                               54830010
+LIST           PHASE    SORTROA,*                                             54830011
+LIST           INCLUDE  ILHSROA                                               54830012
+LIST           PHASE    SORTRDA,*                                             54830013
+LIST           INCLUDE  ILHSRDA                                               54830014
+LIST           PHASE    SORTRDB,*                                             54830015
+LIST           INCLUDE  ILHSRDB                                               54830016
+LIST           PHASE    SORTRDC,*                                             54830017
+LIST           INCLUDE  ILHSRDC                                               54830018
+LIST           PHASE    SORTRAA,*                                             54830019
+LIST           INCLUDE  ILHSRAA                                               54830020
+LIST           PHASE    SORTRAB,*                                             54830021
+LIST           INCLUDE  ILHSRAB                                               54830022
+LIST           PHASE    SORTRBA,*                                             54830023
+LIST           INCLUDE  ILHSRBA                                               54830024
+LIST           PHASE    SORTRBB,*                                             54830025
+
+
+LIST           INCLUDE  ILHSRBB                                               54830026
+LIST           PHASE    SORTRBC,*                                             54830027
+LIST           INCLUDE  ILHSRBC                                               54830028
+LIST           PHASE    SORTRBD,*                                             54830029
+LIST           INCLUDE  ILHSRBD                                               54830030
+LIST           PHASE    SORTRGA,*                                             54830031
+LIST           INCLUDE  ILHSRGA                                               54830032
+LIST           PHASE    SORTRGB,*                                             54830033
+LIST           INCLUDE  ILHSRGB                                               54830034
+LIST           PHASE    SORTRPA,*                                             54830035
+LIST           INCLUDE  ILHSRPA                                               54830036
+LIST           PHASE    SORTRPB,*                                             54830037
+LIST           INCLUDE  ILHSRPB                                               54830038
+LIST           INCLUDE  ILHSPH2          ENTIRE SORT/MERGE LIBRARY-PH2        54830003
+LIST           PHASE    SORTRSG,*                                             54830001
+LIST           INCLUDE  ILHSRSG                                               54830002
+LIST           PHASE    SORTRSH,*                                             54830003
+LIST           INCLUDE  ILHSRSH                                               54830004
+LIST           PHASE    SORTRSJ,*                                             54830005
+LIST           INCLUDE  ILHSRSM                                               54830006
+LIST           INCLUDE  ILHSRSJ                                               54830007
+LIST           INCLUDE  ILHSRMC                                               54830008
+LIST           PHASE    SORTRAC,*                                             54830009
+LIST           INCLUDE  ILHSRAC                                               54830010
+LIST           INCLUDE  ILHSRGD                                               54830011
+LIST           INCLUDE  ILHSRPC                                               54830012
+LIST           INCLUDE  ILHSAAC                                               54830013
+LIST           INCLUDE  ILHSASG                                               54830014
+LIST           INCLUDE  ILHSAPC                                               54830015
+LIST           INCLUDE  ILHSAGD                                               54830016
+LIST           PHASE    SORTRAD,*                                             54830017
+LIST           INCLUDE  ILHSRAD                                               54830018
+LIST           INCLUDE  ILHSRGE                                               54830019
+LIST           INCLUDE  ILHSRPD                                               54830020
+LIST           INCLUDE  ILHSAAD                                               54830021
+LIST           INCLUDE  ILHSASG                                               54830022
+LIST           INCLUDE  ILHSAPD                                               54830023
+LIST           INCLUDE  ILHSAGE                                               54830024
+LIST           PHASE    SORTROB,*                                             54830025
+LIST           INCLUDE  ILHSROB                                               54830026
+LIST           INCLUDE  ILHSRBF                                               54830027
+LIST           INCLUDE  ILHSASF                                               54830028
+LIST           INCLUDE  ILHSAOB                                               54830029
+LIST           INCLUDE  ILHSABF                                               54830030
+LIST           INCLUDE  ILHSPH3          ENTIRE SORT/MERGE LIBRARY-PH3        54830004
+LIST           PHASE    SORTRSM,*                                             54830001
+LIST           INCLUDE  ILHSRSM                                               54830002
+LIST           INCLUDE  ILHSRSE                                               54830003
+LIST           INCLUDE  ILHSRMC                                               54830004
+LIST           PHASE    SORTRSN,*                                             54830005
+LIST           INCLUDE  ILHSRSN                                               54830006
+LIST           INCLUDE  ILHSRMC                                               54830007
+LIST           PHASE    SORTROC,*                                             54830008
+
+
+LIST           INCLUDE  ILHSROC                                               54830009
+LIST           INCLUDE  ILHSRBG                                               54830010
+LIST           INCLUDE  ILHSRPE                                               54830011
+LIST           INCLUDE  ILHSAOC                                               54830012
+LIST           INCLUDE  ILHSABG                                               54830013
+LIST           INCLUDE  ILHSASK                                               54830014
+LIST           INCLUDE  ILHSASL                                               54830015
+LIST           PHASE    SORTRGH,*                                             54830016
+LIST           INCLUDE  ILHSRGH                                               54830017
+LIST           INCLUDE  ILHSAGH                                               54830018
+LIST           INCLUDE  ILHSAPH                                               54830019
+LIST           PHASE    SORTRGF,*                                             54830020
+LIST           INCLUDE  ILHSRGF                                               54830021
+LIST           INCLUDE  ILHSAGF                                               54830022
+LIST           INCLUDE  ILHSAPF                                               54830023
+LIST           PHASE    SORTRGG,*                                             54830024
+LIST           INCLUDE  ILHSRGG                                               54830025
+LIST           INCLUDE  ILHSAGG                                               54830026
+LIST           INCLUDE  ILHSAPG                                               54830027
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        SORT      000010  000000  000D15  07 11 3  CSECT               000000  000000
+
+                                                   CSECT     ILHSPPI   000010  000000
+
+                                                   CSECT     ILHSRTMG  000248  000248
+
+                                                   CSECT     IJJCPDV1  000B40  000248
+                                                      ENTRY  IJJCPDV2  000B40
+
+        SORTRCL   000D28  000D18  002477  07 12 1  CSECT               000D18  000D18
+
+                                                   CSECT     ILHSRCL   000D28  000D18
+
+                                                   CSECT     ILHSRCA   0017D8  0017D8
+
+                                                   CSECT     ILHSRCM   001F18  001F18
+
+        SORTRCB   002488  002478  002DE7  07 13 1  CSECT               002478  002478
+
+                                                   CSECT     ILHSRCB   002488  002478
+
+        SORTRCJ   002DF8  002DE8  003BBD  07 13 3  CSECT               002DE8  002DE8
+
+                                                   CSECT     ILHSRCJ   002DF8  002DE8
+
+                                                   CSECT     ILHSRCI   0033D8  0033D8
+
+        SORTRCK   003BD0  003BC0  0043ED  08 00 2  CSECT               003BC0  003BC0
+
+                                                   CSECT     ILHSRCK   003BD0  003BC0
+
+        SORTRCC   004400  0043F0  0052F7  08 00 4  CSECT               0043F0  0043F0
+
+                                                   CSECT     ILHSRCC   004400  0043F0
+
+        SORTRCD   005308  0052F8  006313  08 01 3  CSECT               0052F8  0052F8
+
+                                                   CSECT     ILHSRCD   005308  0052F8
+
+        SORTRCE   006328  006318  006CA3  08 02 2  CSECT               006318  006318
+
+                                                   CSECT     ILHSRCE   006328  006318
+
+        SORTRCF   006CB8  006CA8  0085C3  08 02 4  CSECT               006CA8  006CA8
+
+                                                   CSECT     ILHSRCF   006CB8  006CA8
+
+        SORTRCH   0085D8  0085C8  0087F7  08 03 4  CSECT               0085C8  0085C8
+
+                                                   CSECT     ILHSRCH   0085D8  0085C8
+
+        SORTRCN   00880C  0087F8  008903  08 04 1  CSECT               0087F8  0087F8
+
+                                                   CSECT     ILHSRCN   008808  0087F8
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        SORTRSD   00891C  008908  008C09  08 04 2  CSECT               008908  008908
+
+                                                   CSECT     ILHSRSD   008918  008908
+
+        SORTRSE   008C24  008C10  0094F7  08 04 3  CSECT               008C10  008C10
+
+                                                   CSECT     ILHSRSI   008C20  008C10
+
+                                                   CSECT     ILHSRSE   008DD8  008DD8
+
+                                                   CSECT     ILHSRMC   008FB8  008FB8
+
+                                                   CSECT     ILHSRMD   009318  008FB8
+
+        SORTASA   009508  0094F8  009787  08 05 1  CSECT               0094F8  0094F8
+
+                                                   CSECT     ILHSASA   009508  0094F8
+
+        SORTROA   009AD8  009788  009C5B  08 05 2  CSECT               009788  009788
+
+                                                   CSECT     ILHSROA   009798  009788
+
+                                                   CSECT     ILHSAOA   009AD8  009788
+
+        SORTRDA   009DC0  009C60  009E2F  08 05 3  CSECT               009C60  009C60
+
+                                                   CSECT     ILHSRDA   009C70  009C60
+
+                                                   CSECT     ILHSADA   009DC0  009C60
+
+        SORTRDB   00A008  009E30  00A07B  08 05 4  CSECT               009E30  009E30
+
+                                                   CSECT     ILHSRDB   009E40  009E30
+
+                                                   CSECT     ILHSADB   00A008  009E30
+
+        SORTRDC   00A2A0  00A080  00A371  08 06 1  CSECT               00A080  00A080
+
+                                                   CSECT     ILHSRDC   00A090  00A080
+
+                                                   CSECT     ILHSADC   00A2A0  00A080
+
+        SORTRAA   00A598  00A378  00A64F  08 06 2  CSECT               00A378  00A378
+
+                                                   CSECT     ILHSRAA   00A388  00A378
+
+                                                   CSECT     ILHSAAA   00A598  00A378
+
+        SORTRAB   00A950  00A650  00ABEB  08 06 3  CSECT               00A650  00A650
+
+                                                   CSECT     ILHSRAB   00A660  00A650
+
+                                                   CSECT     ILHSAAB   00A950  00A650
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        SORTRBA   00ACE0  00ABF0  00ADAD  08 06 4  CSECT               00ABF0  00ABF0
+
+                                                   CSECT     ILHSRBA   00AC00  00ABF0
+
+                                                   CSECT     ILHSABA   00ACE0  00ABF0
+
+        SORTRBB   00AED0  00ADB0  00AF03  08 07 1  CSECT               00ADB0  00ADB0
+
+                                                   CSECT     ILHSRBB   00ADC0  00ADB0
+
+                                                   CSECT     ILHSABB   00AED0  00ADB0
+
+        SORTRBC   00B0D0  00AF08  00B10B  08 07 2  CSECT               00AF08  00AF08
+
+                                                   CSECT     ILHSRBC   00AF18  00AF08
+
+                                                   CSECT     ILHSABC   00B0D0  00AF08
+
+        SORTRBD   00B258  00B110  00B2DF  08 07 3  CSECT               00B110  00B110
+
+                                                   CSECT     ILHSRBD   00B120  00B110
+
+                                                   CSECT     ILHSABD   00B258  00B110
+
+        SORTRGA   00B6A8  00B2E0  00B95F  08 07 4  CSECT               00B2E0  00B2E0
+
+                                                   CSECT     ILHSRGA   00B2F0  00B2E0
+
+                                                   CSECT     ILHSAGA   00B6A8  00B2E0
+
+        SORTRGB   00BE10  00B960  00BF9F  08 08 1  CSECT               00B960  00B960
+
+                                                   CSECT     ILHSRGB   00B970  00B960
+
+                                                   CSECT     ILHSAGB   00BE10  00B960
+
+        SORTRPA   00C1E8  00BFA0  00C33B  08 08 2  CSECT               00BFA0  00BFA0
+
+                                                   CSECT     ILHSRPA   00BFB0  00BFA0
+
+                                                   CSECT     ILHSAPA   00C1E8  00BFA0
+
+        SORTRPB   00C578  00C340  00C813  08 08 3  CSECT               00C340  00C340
+
+                                                   CSECT     ILHSRPB   00C350  00C340
+
+                                                   CSECT     ILHSAPB   00C578  00C340
+
+        SORTRSG   00C828  00C818  00CA07  08 08 4  CSECT               00C818  00C818
+
+                                                   CSECT     ILHSRSG   00C828  00C818
+
+        SORTRSH   00CA18  00CA08  00CBEF  08 09 1  CSECT               00CA08  00CA08
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+                                                   CSECT     ILHSRSH   00CA18  00CA08
+
+        SORTRSJ   00CC04  00CBF0  00D3AF  08 09 2  CSECT               00CBF0  00CBF0
+
+                                                   CSECT     ILHSRSM   00CC00  00CBF0
+
+                                                   CSECT     ILHSRSJ   00CDE8  00CDE8
+
+                                                   CSECT     ILHSRMC   00CE70  00CE70
+
+                                                   CSECT     ILHSRMD   00D1D0  00CE70
+
+        SORTRAC   00DD8C  00D3B0  00E12B  08 09 4  CSECT               00D3B0  00D3B0
+
+                                                   CSECT     ILHSRAC   00D3C0  00D3B0
+
+                                                   CSECT     ILHSRGD   00D7A8  00D7A8
+
+                                                   CSECT     ILHSRPC   00DA10  00DA10
+
+                                                   CSECT     ILHSAAC   00DC50  00DC50
+
+                                                   CSECT     ILHSASG   00DD88  00DD88
+
+                                                   CSECT     ILHSAPC   00DEE0  00DEE0
+
+                                                   CSECT     ILHSAGD   00E000  00E000
+
+        SORTRAD   00EAB8  00E130  00F32B  08 0A 3  CSECT               00E130  00E130
+
+                                                   CSECT     ILHSRAD   00E140  00E130
+
+                                                   CSECT     ILHSRGE   00E700  00E700
+
+                                                   CSECT     ILHSRPD   00EAB8  00EAB8
+
+                                                   CSECT     ILHSAAD   00ECF0  00ECF0
+
+                                                   CSECT     ILHSASG   00EF00  00EF00
+
+                                                   CSECT     ILHSAPD   00F058  00F058
+
+                                                   CSECT     ILHSAGE   00F1C8  00F1C8
+
+        SORTROB   00FBC4  00F330  00FCFF  08 0B 2  CSECT               00F330  00F330
+
+                                                   CSECT     ILHSROB   00F340  00F330
+
+                                                   CSECT     ILHSRBF   00F730  00F730
+
+                                                   CSECT     ILHSASF   00F978  00F978
+
+                                                   CSECT     ILHSAOB   00FAD0  00FAD0
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+                                                   CSECT     ILHSABF   00FBC0  00FBC0
+
+        SORTRSM   00FD14  00FD00  010617  08 0B 4  CSECT               00FD00  00FD00
+
+                                                   CSECT     ILHSRSM   00FD10  00FD00
+
+                                                   CSECT     ILHSRSE   00FEF8  00FEF8
+
+                                                   CSECT     ILHSRMC   0100D8  0100D8
+
+                                                   CSECT     ILHSRMD   010438  0100D8
+
+        SORTRSN   010628  010618  010C87  08 0C 2  CSECT               010618  010618
+
+                                                   CSECT     ILHSRSN   010628  010618
+
+                                                   CSECT     ILHSRMC   010748  010748
+
+                                                   CSECT     ILHSRMD   010AA8  010748
+
+        SORTROC   011010  010C88  01242F  08 0C 3  CSECT               010C88  010C88
+
+                                                   CSECT     ILHSROC   010C98  010C88
+
+                                                   CSECT     ILHSRBG   011010  011010
+
+                                                   CSECT     ILHSRPE   011328  011328
+
+                                                   CSECT     ILHSAOC   011688  011688
+
+                                                   CSECT     ILHSABG   011878  011878
+
+                                                   CSECT     ILHSASK   0119E8  0119E8
+
+                                                   CSECT     ILHSASL   011B40  011B40
+
+        SORTRGH   012AE4  012430  012FBB  08 0D 3  CSECT               012430  012430
+
+                                                   CSECT     ILHSRGH   012440  012430
+
+                                                   CSECT     ILHSAGH   012930  012930
+
+                                                   CSECT     ILHSAPH   012AE0  012AE0
+
+        SORTRGF   01337C  012FC0  013ACB  08 0E 1  CSECT               012FC0  012FC0
+
+                                                   CSECT     ILHSRGF   012FD0  012FC0
+
+                                                   CSECT     ILHSAGF   013208  013208
+
+                                                   CSECT     ILHSAPF   013378  013378
+
+        SORTRGG   013E6C  013AD0  014417  08 0E 3  CSECT               013AD0  013AD0
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+                                                   CSECT     ILHSRGG   013AE0  013AD0
+
+                                                   CSECT     ILHSAGG   013DA8  013DA8
+
+                                                   CSECT     ILHSAPG   013E68  013E68
+
+PRIVATE DIRECTORY               PRV-CORE IMAGE
+
+03/29/70                        -----DECIMAL------------
+
+                                    C  H  R  E
+DIRECTORY STARTING ADDRESS         01 10 01
+DIRECTORY NEXT ENTRY               01 11 01 04
+DIRECTORY LAST ENTRY               01 13 15 17
+
+LIBRARY   STARTING ADDRESS         01 14 01
+LIBRARY   NEXT AVAILABLE ENTRY     08 15 01
+LIBRARY   LAST AVAILABLE ENTRY     40 19 04
+
+                               STATUS INFORMATION-------
+
+DIRECTORY ENTRIES ACTIVE          274
+
+LIBRARY   BLOCKS ALLOCATED       3144
+LIBRARY   BLOCKS ACTIVE           564
+LIBRARY   BLOCKS DELETED           00
+LIBRARY   BLOCKS AVAILABLE       2580
+
+AUTOMATIC CONDENSE LIMIT           00
+
+LIBRARY   ALLOCATED CYLINDERS      40
+DIRECTORY ALLOCATED TRACKS         04
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 13 11 03              56 04 09 05             133 01 09 03
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        27 06 04                109 12 12                177 06 10
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE            1000                     1520                      348
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE             2114                    17003                    23661
+LIBRARY   BLOCKS DELETED              00                       00                       00
+LIBRARY   BLOCKS AVAILABLE          2366                     7477                    11169
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ POWER8B                                                             14.26.37,DURATION 00.00.01

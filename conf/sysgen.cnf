@@ -1,0 +1,57 @@
+#
+# Configuration file for Hercules ESA/390 emulator
+#
+# DOS/360
+#
+#==================================== Emulator settings
+
+TZOFFSET -0000         # Windows clock set to gmt
+TODDRAG  1
+ARCHMODE S/370
+CNSLPORT 3270          # telnet to localhost:3270
+SYSEPOCH 1900          
+
+#==================================== Emulated cpu settings
+CPUSERIAL 000611
+CPUMODEL  2040         # s/360-40
+OSTAILOR  VSE
+MAINSIZE  2            # 2MB main storage, unheard of for DOS. 
+#                        and minimum for hercules
+XPNDSIZE 0
+NUMCPU 1
+LOADPARM ........
+
+#==================================== Defined Devices
+
+#------------------------------------ Unit record equipment
+000C 2501 * trunc ascii eof
+000D 3525 pch00d.txt ascii crlf
+000E 1403 prt/sysgen.txt crlf
+
+# Console Printer/Keyboard
+001F 1052 noprompt 
+##001F 1052-c \ noprompt #optional; uses Hercules console instead of telnet.
+
+#------------------------------------ Distribution Disk Packs
+#
+#0130 2311 dasd/res11a.2311  # sysres, core image, relo
+#0131 2311 dasd/res11b.2311  # sysres, core image, system source
+#0132 2311 dasd/res11c.2311  # sysres, system relo, cobol libs
+
+#------------------------------------ Target System Disk Packs
+
+190 2314 dasd/dosres.2314   # target system residence file
+191 2314 dasd/spool1.2314   # POWER II spooling disk
+192 2314 dasd/wrk14a.2314   # work files, temp sysres
+193 2314 dasd/wrk14b.2314   # work files for F2 partition
+###------------------------------------ Following DASD sysgen'd 
+###194 2314 dasd/wrk14w.2314  
+###195 2314 dasd/wrk14x.2314 
+###196 2314 dasd/wrk14y.2314
+###197 2314 dasd/wrk14z.2314
+
+
+#------------------------------------ Tape drives
+
+0280 3420 tape/scratch1.het         #  work tape for supervisor assembly
+0281 3420 tape/scratch2.het         #  TBD

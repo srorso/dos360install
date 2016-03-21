@@ -1,0 +1,3 @@
+# Demonstrate PL/I Sales report (commercial example)
+devinit e prt/demo-pli-2.txt crlf
+devinit c demos/demopli2-pli.jcl

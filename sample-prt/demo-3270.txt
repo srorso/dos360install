@@ -1,0 +1,976 @@
+
+// JOB DEMO3270 SUN LOCATION - SAMPLE DOS 3270 PROGRAM                  12.16.37
+// OPTION LINK,DUMP
+// PAUSE
+ ACTION CLEAR
+ PHASE DEMO3270,S
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+ECLIPTIC  SD  01 000000 000DD8
+       LOCAL 3270 SAMPLE PROGRAM - THE SUN'S LOCATION                                                          PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      2 * THIS PROGRAM WILL CALCULATE AN APPROXIMATE LOCATION FOR THE SUN
+                                      3 *   BASED ON AN INPUTTED DATE AND TIME.
+                                      4 *
+                                      5 * SAMPLE DOS LOCAL 3270 APPLICATION USING PIOCS, UNFORMATTED SCREENS,
+                                      6 *   FLOATING-POINT OPERATIONS, TABLE SEARCH, AND THE FORTRAN
+                                      7 *   SINE/COSINE FUNCTIONS.  IT WILL SUPPORT A MAXIMUM OF TEN
+                                      8 *   TERMINALS (0-9) AS INDICATED BY THE NUMBER OF PROGRAMMER
+                                      9 *   LOGICAL UNITS.
+                                     10 *   TERM. 0 IS CONSIDERED A MASTER TERMINAL WITH ADDITIONAL AUTHORITY.
+                                     11 *      DISABLE1 - PREVENT ANYBODY FROM USING TERMINAL 1
+                                     12 *      ENABLE1 - ALLOW THE USE OF TERMINAL 1 AND NOTIFY USER
+                                     13 *      SPYTERM1 - WATCH WHAT TERMINAL 1 IS DOING
+                                     14 *   PF3 - TO END THE APPLICATION FROM THE MASTER TERMINAL
+                                     15 *   EXTERNAL INTERRUPT - TO END THE APPLICATION FROM THE CONSOLE
+                                     16 *   MAKES USE OF SUPERVISOR CHANNEL APPENDAGE ROUTINE
+                                     17 *
+000000                               18 ECLIPTIC CSECT
+000000                               19 R0       EQU   0
+000001                               20 R1       EQU   1
+000002                               21 R2       EQU   2
+000003                               22 R3       EQU   3
+000004                               23 R4       EQU   4
+000005                               24 R5       EQU   5
+000006                               25 R6       EQU   6
+000007                               26 R7       EQU   7
+000008                               27 R8       EQU   8
+000009                               28 R9       EQU   9       RELATIVE LINE NUMBER (RLN)
+00000A                               29 R10      EQU   10
+00000B                               30 R11      EQU   11      TEMPORARY BASE FOR OC
+00000C                               31 R12      EQU   12      BASE
+00000D                               32 R13      EQU   13
+00000E                               33 R14      EQU   14
+00000F                               34 R15      EQU   15
+000000                               35 FR0      EQU   0
+000002                               36 FR2      EQU   2
+000004                               37 FR4      EQU   4
+000006                               38 FR6      EQU   6
+000000 05C0                          39          BALR  R12,0
+000002                               40          USING *,R12
+000000                               41          USING TERMDS,R1
+000002 50C0 C626            00628    42          ST    R12,SAVEBASE
+000006 4110 C6D6            006D8    43          LA    R1,=CL8'$$BAPNDG' ALLOW APPENDAGE ROUTINES
+00000A 0A02                          44          SVC   2
+00000C 4120 0002            00002    45          LA    R2,NUMTERMS
+000010 0620                          46          BCTR  R2,0            REDUCE BY ONE
+000012 4020 C672            00674    47          STH   R2,MAXRLN         TO GET THE MAX RLN ALLOWED
+000016 4520 C3C6            003C8    48          BAL   R2,BLANK        CLEAR OUTPUT BUFFER
+00001A 4860 C672            00674    49          LH    R6,MAXRLN
+00001E 4166 0001            00001    50          LA    R6,1(R6)        GET NUMBER OF TERMINALS
+000022 1799                          51          XR    R9,R9           START WITH RLN 0
+000024 4540 C4A4            004A6    52 INITLOOP BAL   R4,WRITINIT     WRITE INITAL MESSAGE ON TERMINAL
+       LOCAL 3270 SAMPLE PROGRAM - THE SUN'S LOCATION                                                          PAGE    2
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+000028 4520 C3C6            003C8    53          BAL   R2,BLANK
+00002C 4199 0001            00001    54          LA    R9,1(R9)        POINT TO NEXT RLN
+000030 4660 C022            00024    55          BCT   R6,INITLOOP
+                                     56          STXIT OC,OCEXIT,OCSAVE    ACCEPT EXTERNAL INTERRUPTS
+                                     57+* 360N-CL-453  STXIT  CHANGE LEVEL 3-3                              3-3
+000034                               58+         DC    0H'0'
+000034 5810 C6FE            00700    59+         L     1,=A(OCSAVE)
+000038 5800 C702            00704    60+         L     0,=A(OCEXIT)
+00003C 0A14                          61+         SVC   20
+                                     62 *
+00003E 9240 C962      00964          63 READATA  MVI   INPDATA,C' '    CLEAR INPUT BUFFER
+000042 D226 C963 C962 00965 00964    64          MVC   INPDATA+1(39),INPDATA
+000048 4540 C554            00556    65          BAL   R4,READ         WAIT FOR ENTER AND READ TERMINAL
+00004C 4520 C3C6            003C8    66          BAL   R2,BLANK        CLEAR OUTPUT BUFFER
+000050 D606 C962 C78F 00964 00791    67          OC    INPDATA(7),BLANKS  TRAN. LC TO UC
+000056 1299                          68          LTR   R9,R9           IS IT MASTER TERMINAL
+000058 4770 C080            00082    69          BNZ   IGNMAST
+00005C 95F3 C95F      00961          70          CLI   AIDCA,C'3'      PF3 TO END APPLICATION
+000060 4780 C228            0022A    71          BE    ENDOFJOB
+000064 D506 C962 C766 00964 00768    72          CLC   INPDATA(7),=C'SPYTERM'
+00006A 4780 C3E4            003E6    73          BE    SPYTERM
+00006E D506 C962 C76D 00964 0076F    74          CLC   INPDATA(7),=C'DISABLE'
+000074 4780 C414            00416    75          BE    DEACTIVE
+000078 D505 C962 C742 00964 00744    76          CLC   INPDATA(6),=C'ENABLE'
+00007E 4780 C456            00458    77          BE    REACTIVE
+000082 4150 C676            00678    78 IGNMAST  LA    R5,MONTHS           VALIDATE MONTH
+000086 4160 000C            0000C    79          LA    R6,12
+000000                               80          USING MONTHTAB,R5
+00008A D502 C962 5000 00964 00000    81 LOOP     CLC   INPDATA(3),MONTH    IS THIS THE MONTH
+000090 4780 C0BE            000C0    82          BE    FOUND
+000094 4155 0008            00008    83          LA    R5,L'MONTHS(R5)     TRY NEXT MONTH
+000098 4660 C088            0008A    84          BCT   R6,LOOP             LOOP FOR 12 MONTHS
+00009C                               85 BADATA   EQU   *
+00009C D205 C9DD C962 009DF 00964    86          MVC   LINE2(6),INPDATA
+0000A2 9240 C9E0      009E2          87          MVI   LINE2+3,C' '
+0000A6 D203 C9E7 C96C 009E9 0096E    88          MVC   LINE2+10(4),INPDATA+10
+0000AC D220 CA2D C90D 00A2F 0090F    89          MVC   LINE3(L'INVALID),INVALID
+0000B2 D60D C9DD C78F 009DF 00791    90          OC    LINE2(14),BLANKS
+0000B8 4540 C4A4            004A6    91          BAL   R4,WRITINIT         WRITE ERROR MESSAGE
+0000BC 47F0 C03C            0003E    92          B     READATA
+0000C0 D501 C966 5003 00968 00003    93 FOUND    CLC   INPDATA+4(2),DAYS   VALIDATE MAX DAYS IN MONTH
+0000C6 4720 C09A            0009C    94          BH    BADATA
+0000CA D501 C966 C748 00968 0074A    95          CLC   INPDATA+4(2),=C'01'
+0000D0 4740 C09A            0009C    96          BL    BADATA
+0000D4 95F0 C967      00969          97          CLI   INPDATA+5,C'0'
+0000D8 4740 C09A            0009C    98          BL    BADATA
+0000DC D503 C96C C706 0096E 00708    99          CLC   INPDATA+10(4),=C'2359' VALIDATE TIME
+0000E2 4720 C09A            0009C   100          BH    BADATA
+0000E6 95F0 C96C      0096E         101          CLI   INPDATA+10,C'0'
+0000EA 4740 C09A            0009C   102          BL    BADATA
+0000EE 95F0 C96D      0096F         103          CLI   INPDATA+11,C'0'
+       LOCAL 3270 SAMPLE PROGRAM - THE SUN'S LOCATION                                                          PAGE    3
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+0000F2 4740 C09A            0009C   104          BL    BADATA
+0000F6 95F0 C96E      00970         105          CLI   INPDATA+12,C'0'
+0000FA 4740 C09A            0009C   106          BL    BADATA
+0000FE 95F5 C96E      00970         107          CLI   INPDATA+12,C'5'
+000102 4720 C09A            0009C   108          BH    BADATA
+000106 95F0 C96F      00971         109          CLI   INPDATA+13,C'0'
+00010A 4740 C09A            0009C   110          BL    BADATA
+00010E F272 C61E 5005 00620 00005   111          PACK  DOUBLE,YTD          CALC DAYS SINCE SPRING EQUINOX
+                                    112          DROP  R5
+000114 F211 C674 C966 00676 00968   113          PACK  PACKWORK,INPDATA+4(2)
+00011A FA71 C61E C674 00620 00676   114          AP    DOUBLE,PACKWORK
+000120 F971 C61E C74A 00620 0074C   115          CP    DOUBLE,=P'366'      IF NECESSARY,
+000126 4740 C12E            00130   116          BL    *+10
+00012A FB71 C61E C74A 00620 0074C   117          SP    DOUBLE,=P'366'        ADJUST FOR WRAPAROUND
+000130 D205 CACD C962 00ACF 00964   118          MVC   LINE5(6),INPDATA
+000136 9240 CAD0      00AD2         119          MVI   LINE5+3,C' '
+00013A D203 CB1D C96C 00B1F 0096E   120          MVC   LINE6(4),INPDATA+10
+000140 4520 C32E            00330   121          BAL   R2,PKFLT            CONVERT DAYS TO FLT.PT.
+000144 2B00                         122          SDR   FR0,FR0             CLEAR LAST HALF OF FR0
+000146 7800 C61E            00620   123          LE    FR0,DOUBLE          LOAD DAYS IN FIRST HALF OF FR0
+00014A 7C00 C70A            0070C   124          ME    FR0,=E'360'         ADJUST TO PCT. OF CIRCLE (DEGREES)
+00014E 7D00 C70E            00710   125          DE    FR0,=E'366'           FROM PCT. OF YEAR (DAYS)
+000152 2860                         126          LDR   FR6,FR0             SAVE DEGREES SINCE SPRING EQUINOX
+000154 7D00 C712            00714   127          DE    FR0,=E'15'          CONVERT DEGREES TO HOURS (/360*24)
+000158 7C00 C716            00718   128          ME    FR0,=E'60'          CONVERT HOURS TO MINUTES
+00015C 6000 C61E            00620   129          STD   FR0,DOUBLE
+000160 4160 CAD7            00AD9   130          LA    R6,LINE5+10         MOVE R.A. (HH:MM) TO OUTPUT BUFFER
+000164 4520 C36C            0036E   131          BAL   R2,EDIT
+000168 7D60 C71A            0071C   132          DE    FR6,=E'180'         CONVERT DEGREES TO RADIANS
+00016C 7C60 C71E            00720   133          ME    FR6,=E'3.14159'
+000170 7060 C61E            00620   134          STE   FR6,DOUBLE
+000174 4520 C262            00264   135          BAL   R2,SIN              GET SINE
+000178 7C00 C722            00724   136          ME    FR0,=E'23.445'      ADJUST FOR EARTH'S TILT (AMPLITUDE)
+00017C 2860                         137          LDR   FR6,FR0             SAVE DECLINATION
+00017E 7C00 C716            00718   138          ME    FR0,=E'60'          CONVERT TO DEG.MIN.
+000182 6000 C61E            00620   139          STD   FR0,DOUBLE
+000186 4160 CAE2            00AE4   140          LA    R6,LINE5+21         MOVE DECL. (DDD:MM) TO OUTPUT BUFFER
+00018A 4520 C36C            0036E   141          BAL   R2,EDIT
+00018E F271 C61E C96C 00620 0096E   142          PACK  DOUBLE,INPDATA+10(2)    GET INPUT HOURS
+000194 FC71 C61E C74C 00620 0074E   143          MP    DOUBLE,=P'60'           CONVERT TO MINUTES
+00019A F211 C674 C96E 00676 00970   144          PACK  PACKWORK,INPDATA+12(2)
+0001A0 FA71 C61E C674 00620 00676   145          AP    DOUBLE,PACKWORK         ADD INPUT MINUTES
+0001A6 4520 C32E            00330   146          BAL   R2,PKFLT                CONVERT TO FLOATING-POINT
+0001AA 7800 C61E            00620   147          LE    FR0,DOUBLE
+0001AE 7D00 C716            00718   148          DE    FR0,=E'60'          CONVERT MINUTES TO HOURS
+0001B2 7C00 C712            00714   149          ME    FR0,=E'15'          CONVERT HOURS TO DEGREES (/24*360)
+0001B6 7A00 C726            00728   150          AE    FR0,=E'2'       ADJUST FOR DISTANCE FROM HOUR MERIDIAN
+0001BA 3840                         151          LER   FR4,FR0             SAVE AZIMUTH DEGREES
+0001BC 7C00 C716            00718   152          ME    FR0,=E'60'          CONVERT TO DEGREE MINUTES
+0001C0 6000 C61E            00620   153          STD   FR0,DOUBLE
+0001C4 4160 CAEE            00AF0   154          LA    R6,LINE5+33     MOVE AZIMUTH (DDD:MM) TO OUTPUT BUFFER
+       LOCAL 3270 SAMPLE PROGRAM - THE SUN'S LOCATION                                                          PAGE    4
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+0001C8 4520 C36C            0036E   155          BAL   R2,EDIT
+0001CC 3804                         156          LER   FR0,FR4             RESTORE AZIMUTH DEGREES
+0001CE 7D00 C71A            0071C   157          DE    FR0,=E'180'         CONVERT DEGREES TO RADIANS
+0001D2 7C00 C71E            00720   158          ME    FR0,=E'3.14159'
+0001D6 7000 C61E            00620   159          STE   FR0,DOUBLE
+0001DA 4520 C25A            0025C   160          BAL   R2,COS              GET COSINE
+0001DE 3300                         161          LCER  FR0,FR0             TAKE COMPLEMENT
+0001E0 7C00 C72A            0072C   162          ME    FR0,=E'48'          90-LATITUDE (AMPLITUDE)
+0001E4 3A06                         163          AER   FR0,FR6             ADD TO DECLINATION
+0001E6 7C00 C716            00718   164          ME    FR0,=E'60'          CONVERT TO DEGREE MINUTES
+0001EA 6000 C61E            00620   165          STD   FR0,DOUBLE
+0001EE 4160 CAF9            00AFB   166          LA    R6,LINE5+44     MOVE ALTITUDE (DD:MM) TO OUTPUT BUFFER
+0001F2 4520 C36C            0036E   167          BAL   R2,EDIT
+0001F6 D225 C9E9 C896 009EB 00898   168          MVC   LINE2+12(L'MESS22),MESS22   MOVE INSTRUCTIONS
+0001FC D229 CA37 C8BC 00A39 008BE   169          MVC   LINE3+10(L'MESS23),MESS23
+000202 D226 CA89 C8E6 00A8B 008E8   170          MVC   LINE4+12(L'MESS24),MESS24
+000208 4540 C4A4            004A6   171          BAL   R4,WRITINIT     WRITE RESULTS TO SCREEN
+00020C 47F0 C03C            0003E   172          B     READATA
+                                    173 *
+000210 05B0                         174 OCEXIT   BALR  R11,0
+000212                              175          USING *,R11
+000212 58C0 B416            00628   176          L     R12,SAVEBASE
+                                    177          DROP  R11
+000216 4520 C3C6            003C8   178          BAL   R2,BLANK        CLEAR OUTPUT BUFFER
+00021A D211 C98D C92E 0098F 00930   179          MVC   LINE1(L'MESSCLS),MESSCLS    CLOSED BY OPERATOR
+000220 D20F C9A0 C94F 009A2 00951   180          MVC   LINE1+L'MESSCLS+1(L'MESSCLSC),MESSCLSC
+000226 47F0 C238            0023A   181          B     CLOSTERM
+00022A 4520 C3C6            003C8   182 ENDOFJOB BAL   R2,BLANK        CLEAR OUTPUT BUFFER
+00022E D211 C98D C92E 0098F 00930   183          MVC   LINE1(L'MESSCLS),MESSCLS    CLOSED BY MASTER TERM.
+000234 D20E C9A0 C940 009A2 00942   184          MVC   LINE1+L'MESSCLS+1(L'MESSCLSM),MESSCLSM
+00023A 4860 C672            00674   185 CLOSTERM LH    R6,MAXRLN
+00023E 4166 0001            00001   186          LA    R6,1(R6)        GET NUMBER OF TERMINALS
+000242 1799                         187          XR    R9,R9           START AT RLN 0
+000244 4540 C4C8            004CA   188 CLOSLOOP BAL   R4,ERSEWRIT     WRITE CLOSED MESSAGE
+000248 4199 0001            00001   189          LA    R9,1(R9)        GET NEXT RLN
+00024C 4660 C242            00244   190          BCT   R6,CLOSLOOP
+                                    191          EOJ
+                                    192+* 360N-CL-453 EOJ      CHANGE LEVEL 3-0
+000250 0A0E                         193+         SVC   14
+000252 900F CD8E            00D90   194 CANCEL   STM   R0,R15,SAVEREGS SAVE REGS. FOR DUMP ANALYSIS
+                                    195          DUMP
+                                    196+* 360N-CL-453 DUMP     CHANGE LEVEL 3-0
+000256 4110 C6DE            006E0   197+         LA    1,=CL8'$$BDUMP'
+00025A 0A02                         198+         SVC   2
+                                    199 ***************
+                                    200 * BASIC FORTRAN IV FUNCTION SIN,COS FROM IJTSSCN
+                                    201 * IF AVAILABLE COULD ALSO ' INCLUDE IJTSSCN' AND
+                                    202 *   LA   R13,REGSAVE  (18F)
+                                    203 *   CALL SIN,(DOUBLE)
+                                    204 *   CALL COS,(DOUBLE)
+                                    205 *  INPUT IS SINGLE PRECISION VALUE AT DOUBLE
+       LOCAL 3270 SAMPLE PROGRAM - THE SUN'S LOCATION                                                          PAGE    5
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                    206 *  OUTPUT IS FR0 AS USED IN A FORTRAN FUNCTION
+                                    207 * COS(X)=SIN(PI/2+X)
+                                    208 * SIN(-X)=SIN(PI+X)
+00025C 9202 C301      00303         209 COS      MVI   SINCOSC+3,2     FOR COS, OCTANT CRANK IS 2
+000260 47F0 C272            00274   210          B     SINCOS1         GO TO COMMON ROUTINE
+000264 9200 C301      00303         211 SIN      MVI   SINCOSC+3,0     FOR SINE, OCTANT CRANK IS 0 IF +ARG
+000268 9180 C61E      00620         212          TM    DOUBLE,X'80'    IS IT NEGATIVE NUMBER
+00026C 4780 C272            00274   213          BZ    SINCOS1
+000270 9204 C301      00303         214          MVI   SINCOSC+3,4     FOR SINE OCTANT CRANK IS 4 IF -ARG
+000274 2B00                         215 SINCOS1  SDR   FR0,FR0         CLEAR FR0
+000276 2B22                         216          SDR   FR2,FR2         CLEAR FR2
+000278 7800 C61E            00620   217          LE    FR0,DOUBLE      GET ARGUMENT
+00027C 3000                         218          LPER  FR0,FR0         CONSIDER ARGUMENT TO BE POSITIVE
+00027E 7900 C302            00304   219          CE    FR0,SINCOSD     IF GE PI*2**18
+000282 47A0 C250            00252   220          BC    10,CANCEL         NOT ALLOWED
+000286 6C00 C2EE            002F0   221          MD    FR0,SINCOSA     TIMES 4/PI
+00028A 7900 C31E            00320   222          CE    FR0,SINCOSH     IF PRODUCT LT ONE
+00028E 4740 C298            0029A   223          BL    SINCOS2           BRANCH
+000292 6E00 C2F6            002F8   224          AW    FR0,SINCOSB     GIVE PROD CHAR. OF 46, UNNORMALIZED
+000296 3820                         225          LER   FR2,FR0     INTEGER PART OF PROD TO FR2, UNNORMALIZED
+000298 2B02                         226          SDR   FR0,FR2     FRACTION PART OF PROD TO FR0, NORMALIZED
+00029A 7E20 C2FE            00300   227 SINCOS2  AU    FR2,SINCOSC     ADD OCTANT CRANK TO FR2, UNNORMALIZED
+00029E 7020 C326            00328   228          STE   FR2,SINCOSI     SAVE IT, LAST 3 BITS ARE MODIF.OCTANT
+0002A2 9101 C329      0032B         229          TM    SINCOSI+3,1     IF ODD OCTANT, TAKE COMPLEMEMENT
+0002A6 4780 C2AE            002B0   230          BZ    SINCOS3           OF FRACTION TO OBTAIN THE MODIFIED
+0002AA 7B00 C31E            00320   231          SE    FR0,SINCOSH       FRACTION R
+0002AE 3000                         232          LPER  FR0,FR0
+0002B0 1B11                         233 SINCOS3  SR    R1,R1           GR1=0 FOR COSINE POLYNOMIAL
+0002B2 9103 C329      0032B         234          TM    SINCOSI+3,3       FOR OCTANT 2,3,6,7
+0002B6 4740 C2BC            002BE   235          BM    *+8             IF OCTANT 1,4,5,8
+0002BA 4110 0004            00004   236          LA    R1,4              GR1=4 FOR SINE POLYNOMIAL
+0002BE 3840                         237          LER   FR4,FR0         SAVE R
+0002C0 3C00                         238          MER   FR0,FR0         COMPUTE SIN OR COS OF MODIFIED
+0002C2 3820                         239          LER   FR2,FR0           FRACTION USING PROPER CHEBYSHEV
+0002C4 7C01 C306            00308   240          ME    FR0,SINCOSE(R1)   INTERPOLATION POLYNOMIAL
+0002C8 7A01 C30E            00310   241          AE    FR0,SINCOSF(R1)
+0002CC 3C02                         242          MER   FR0,FR2
+0002CE 7A01 C316            00318   243          AE    FR0,SINCOSG(R1)
+0002D2 3C02                         244          MER   FR0,FR2
+0002D4 7A01 C31E            00320   245          AE    FR0,SINCOSH(R1) SIN(R)/R OR COS(R) READY
+0002D8 1211                         246          LTR   R1,R1           IF SINE POLYNOMIAL,
+0002DA 4780 C2DE            002E0   247          BZ    *+6
+0002DE 3C04                         248          MER   FR0,FR4           MULTIPLY BY R
+0002E0 9104 C329      0032B         249          TM    SINCOSI+3,4     IF MODIFIED OCTANT IS IN LOWER PLANE
+0002E4 0782                         250          BCR   8,R2  BE
+0002E6 3100                         251          LNER  FR0,FR0           SIGN IS NEGATIVE
+0002E8 07F2                         252          BR    R2
+0002EA 000000000000
+0002F0                              253          DC    0D'0'
+0002F0 41145F306DC9C830             254 SINCOSA  DC    X'41145F306DC9C830'     4/PI
+0002F8 4600000000000000             255 SINCOSB  DC    X'4600000000000000'
+       LOCAL 3270 SAMPLE PROGRAM - THE SUN'S LOCATION                                                          PAGE    6
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+000300 46000000                     256 SINCOSC  DC    X'46000000'
+000304 45C90FDB                     257 SINCOSD  DC    X'45C90FDB'     MAX ALLOWED-PI*2**18
+000308 BE14E5E0                     258 SINCOSE  DC    X'BE14E5E0'     -0.00031888 C3
+00030C BD25B368                     259          DC    X'BD25B368'     -0.00003595 S3
+000310 3F40EBD6                     260 SINCOSF  DC    X'3F40EBD6'      0.01594991 C2
+000314 3EA32F62                     261          DC    X'3EA32F62'      0.00249001 S2
+000318 C04EF4E5                     262 SINCOSG  DC    X'C04EF4E5'     -0.30842425 C1 + FUDGE 1
+00031C C014ABBC                     263          DC    X'C014ABBC'     -0.08074543 S1
+000320 41100000                     264 SINCOSH  DC    E'1'             1.0        C0
+000324 40C90FDB                     265          DC    X'40C90FDB'      0.78539816 S0
+000328 00000000                     266 SINCOSI  DC    F'0'             OCTANT
+                                    267 ***************
+                                    268 * CONVERT PACKED TO FLOATING-POINT
+                                    269 *        PKFLT DOUBLE,0,DOUBLE
+00032C 07000700                     270          CNOP  0,8
+000330 4F10 C61E            00620   271 PKFLT    CVB   R1,DOUBLE
+000334 1011                         272          LPR   R1,R1           ASSUME POSITIVE
+000336 5010 C362            00364   273          ST    R1,*+46
+00033A 6800 C35E            00360   274          LD    FR0,*+38
+00033E D703 C362 C362 00364 00364   275          XC    *+38(4),*+38    CLEAR FOR NEXT TIME
+000344 6A00 C35E            00360   276          AD    FR0,*+28        NORMALIZE
+000348 F877 C61E C61E 00620 00620   277          ZAP   DOUBLE,DOUBLE   IF PACKED NEGATIVE,
+00034E 47B0 C352            00354   278          BNM   *+6
+000352 2100                         279          LNDR  FR0,FR0           MAKE FP NEGATIVE
+000354 6D00 C6E6            006E8   280          DD    FR0,=D'1E0'     NO DECIMAL PLACES
+000358 6000 C61E            00620   281          STD   FR0,DOUBLE      STORE RESULT
+00035C 47F0 C366            00368   282          B     *+12
+000360 4E00000000000000             283          DC    X'4E00000000000000'
+                                    284 *
+000368 07F2                         285          BR    R2
+                                    286 ***************
+                                    287 * CONVERT FLOATING-POINT TO PACKED AND EDIT
+                                    288 *        FLTPK DOUBLE,0,DOUBLE
+00036A 07000700                     289          CNOP  6,8
+00036E 6800 C61E            00620   290 EDIT     LD    FR0,DOUBLE
+000372 2820                         291          LDR   FR2,FR0         SAVE VALUE FOR SIGN
+000374 6C00 C6E6            006E8   292          MD    FR0,=D'1E0'     NO DECIMAL PLACES
+000378 2000                         293          LPDR  FR0,FR0         ENSURE POSITIVE
+00037A 6A00 C6EE            006F0   294          AD    FR0,=D'.5'      ROUND OFF
+00037E 6E00 C39E            003A0   295          AW    FR0,*+34        UNNORMALIZE
+000382 6000 C39E            003A0   296          STD   FR0,*+30
+000386 5810 C3A2            003A4   297          L     R1,*+30         GET INTEGER PORTION
+00038A 2222                         298          LTDR  FR2,FR2         IF FP NEGATIVE,
+00038C 47B0 C390            00392   299          BNM   *+6
+000390 1111                         300          LNR   R1,R1             MAKE BINARY NEGATIVE
+000392 4E10 C61E            00620   301          CVD   R1,DOUBLE
+000396 D207 C39E C6F6 003A0 006F8   302          MVC   *+10(8),=X'4E00000000000000' RESET FOR NEXT TIME
+00039C 47F0 C3A6            003A8   303          B     *+12
+0003A0 4E00000000000000             304          DC    X'4E00000000000000'
+                                    305 *
+0003A8 FD71 C61E C74C 00620 0074E   306          DP    DOUBLE,=P'60'
+       LOCAL 3270 SAMPLE PROGRAM - THE SUN'S LOCATION                                                          PAGE    7
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+0003AE F165 C61E C61E 00620 00620   307          MVO   DOUBLE(7),DOUBLE(6)
+0003B4 F165 C61E C61E 00620 00620   308          MVO   DOUBLE(7),DOUBLE(6)
+0003BA D207 6000 C787 00000 00789   309          MVC   0(L'EDITWORD,R6),EDITWORD
+0003C0 DE07 6000 C623 00000 00625   310          ED    0(L'EDITWORD,R6),DOUBLE+5
+0003C6 07F2                         311          BR    R2
+                                    312 ***************
+0003C8 9240 C98D      0098F         313 BLANK    MVI   BUFFER,C' '
+0003CC D2FF C98E C98D 00990 0098F   314          MVC   BUFFER+1(256),BUFFER
+0003D2 D2FF CA8E CA8D 00A90 00A8F   315          MVC   BUFFER+257(256),BUFFER+256
+0003D8 D2FF CB8E CB8D 00B90 00B8F   316          MVC   BUFFER+513(256),BUFFER+512
+0003DE D2BD CC8E CC8D 00C90 00C8F   317          MVC   BUFFER+769(190),BUFFER+768
+0003E4 07F2                         318          BR    R2
+                                    319 ***************
+                                    320 * MASTER TERMINAL ROUTINES
+0003E6                              321 SPYTERM  EQU   *
+0003E6 95F1 C969      0096B         322          CLI   INPDATA+7,C'1'  VALIDATE TERMINAL NUMBER
+0003EA 4740 C496            00498   323          BL    BADRLN
+0003EE 95F9 C969      0096B         324          CLI   INPDATA+7,C'9'
+0003F2 4720 C496            00498   325          BH    BADRLN
+0003F6 F270 C61E C969 00620 0096B   326          PACK  DOUBLE,INPDATA+7(1)
+0003FC 4F90 C61E            00620   327          CVB   R9,DOUBLE
+000400 4990 C672            00674   328          CH    R9,MAXRLN
+000404 4720 C496            00498   329          BH    BADRLN
+000408 4540 C510            00512   330          BAL   R4,READBUFF     READ TERMINAL SCREEN
+00040C 1799                         331          XR    R9,R9           WRITE ON MASTER TERMINAL
+00040E 4540 C4C8            004CA   332          BAL   R4,ERSEWRIT
+000412 47F0 C03C            0003E   333          B     READATA
+000416                              334 DEACTIVE EQU   *
+000416 95F1 C969      0096B         335          CLI   INPDATA+7,C'1'  VALIDATE TERMINAL NUMBER
+00041A 4740 C496            00498   336          BL    BADRLN
+00041E 95F9 C969      0096B         337          CLI   INPDATA+7,C'9'
+000422 4720 C496            00498   338          BH    BADRLN
+000426 F270 C61E C969 00620 0096B   339          PACK  DOUBLE,INPDATA+7(1)
+00042C 4F90 C61E            00620   340          CVB   R9,DOUBLE
+000430 4990 C672            00674   341          CH    R9,MAXRLN
+000434 4720 C496            00498   342          BH    BADRLN
+000438 D211 C98D C92E 0098F 00930   343          MVC   LINE1(L'MESSCLS),MESSCLS    CLOSED BY MASTER TERM.
+00043E D20E C9A0 C940 009A2 00942   344          MVC   LINE1+L'MESSCLS+1(L'MESSCLSM),MESSCLSM
+000444 4540 C4C8            004CA   345          BAL   R4,ERSEWRIT
+000448 9640 1018      00018         346          OI    TERMSW,X'40'    MARK AS DISABLED
+00044C 1799                         347          XR    R9,R9           POINT TO MASTER TERMINAL
+00044E D213 CA2D C72E 00A2F 00730   348          MVC   LINE3(20),=C'TERMINAL DEACTIVATED'
+000454 47F0 C49C            0049E   349          B     MASTWR
+000458                              350 REACTIVE EQU   *
+000458 95F1 C968      0096A         351          CLI   INPDATA+6,C'1'  VALIDATE TERMINAL NUMBER
+00045C 4740 C496            00498   352          BL    BADRLN
+000460 95F9 C968      0096A         353          CLI   INPDATA+6,C'9'
+000464 4720 C496            00498   354          BH    BADRLN
+000468 F270 C61E C968 00620 0096A   355          PACK  DOUBLE,INPDATA+6(1)
+00046E 4F90 C61E            00620   356          CVB   R9,DOUBLE
+000472 4990 C672            00674   357          CH    R9,MAXRLN
+       LOCAL 3270 SAMPLE PROGRAM - THE SUN'S LOCATION                                                          PAGE    8
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+000476 4720 C496            00498   358          BH    BADRLN
+00047A 1819                         359          LR    R1,R9
+00047C 4C10 C74E            00750   360          MH    R1,=Y(TERMLEN)
+000480 4111 CD4E            00D50   361          LA    R1,TERMS(R1)
+000484 94BF 1018      00018         362          NI    TERMSW,255-X'40'    MARK AS ENABLED
+000488 4540 C4A4            004A6   363          BAL   R4,WRITINIT     WRITE INITAL MESSAGE
+00048C 1799                         364          XR    R9,R9           POINT TO MASTER TERMINAL
+00048E D211 CA2D C750 00A2F 00752   365          MVC   LINE3(18),=C'TERMINAL ACTIVATED'
+000494 47F0 C49C            0049E   366          B     MASTWR
+000498 D212 CA2D C774 00A2F 00776   367 BADRLN   MVC   LINE3(19),=C'BAD TERMINAL NUMBER'
+00049E 4540 C4A4            004A6   368 MASTWR   BAL   R4,WRITINIT     WRITE RESULTS TO SCREEN
+0004A2 47F0 C03C            0003E   369          B     READATA
+                                    370 ***************
+                                    371 * TERMINAL I/O SUBROUTINES
+0004A6                              372 WRITINIT EQU   *
+0004A6 D233 C98D C79D 0098F 0079F   373          MVC   LINE1(L'MESS11),MESS11  MOVE INTRO. MESSAGES
+0004AC D24A CBBD C7D1 00BBF 007D3   374          MVC   LINE8(L'MESS18),MESS18
+0004B2 D246 CC0D C81C 00C0F 0081E   375          MVC   LINE9(L'MESS19),MESS19
+0004B8 D216 CC5D C863 00C5F 00865   376          MVC   LINE10(L'MESS1A),MESS1A
+0004BE 1299                         377          LTR   R9,R9           IS IT MASTER TERMINAL
+0004C0 4770 C4C8            004CA   378          BNZ   *+10
+0004C4 D21B CCFD C87A 00CFF 0087C   379          MVC   LINE12(L'MESS1C),MESS1C
+0004CA                              380 ERSEWRIT EQU   *
+0004CA 92C3 C98C      0098E         381          MVI   WCC,X'C3'       SET WRITE CONTROL CHARACTER
+0004CE 1819                         382          LR    R1,R9           POINT TO CORRECT CCB
+0004D0 4C10 C74E            00750   383          MH    R1,=Y(TERMLEN)
+0004D4 4111 CD4E            00D50   384          LA    R1,TERMS(R1)
+0004D8 4120 C98C            0098E   385          LA    R2,OUTPUT       SETUP ERASE/WRITE CCW
+0004DC 5020 1010            00010   386          ST    R2,TERMCCW
+0004E0 9205 1010      00010         387          MVI   TERMCCW,X'05'
+0004E4 4120 03C1            003C1   388          LA    R2,L'OUTPUT
+0004E8 4020 1016            00016   389          STH   R2,TERMCCW+6
+0004EC 9180 1018      00018         390          TM    TERMSW,X'80'    IF QUEUED,
+0004F0 4780 C4F8            004FA   391          BZ    WRITEIT
+0004F4 947F 1018      00018         392          NI    TERMSW,255-X'80'  RESET QUEUED AND
+0004F8 0A19                         393          SVC   25                DEQUE CHANNEL QUEUE (HIO)
+                                    394 WRITEIT  EXCP  (1)             ERASE/WRITE ON TERMINAL
+                                    395+* 360N-CL-453 EXCP     CHANGE LEVEL 3-0
+0004FA 0A00                         396+WRITEIT  SVC   0
+                                    397          WAIT  (1)
+                                    398+* 360N-CL-453 WAIT     CHANGE LEVEL 3-0
+0004FC 9180 1002      00002         399+         TM    2(1),X'80'
+000500 4710 C504            00506   400+         BO    *+6
+000504 0A07                         401+         SVC   7
+000506 D501 1004 C762 00004 00764   402          CLC   TERM+4(2),=X'0C00' CE,DE
+00050C 4770 C250            00252   403          BNE   CANCEL
+000510 07F4                         404          BR    R4
+000512                              405 READBUFF EQU   *
+000512 1819                         406          LR    R1,R9           POINT TO CORRECT CCB
+000514 4C10 C74E            00750   407          MH    R1,=Y(TERMLEN)
+000518 4111 CD4E            00D50   408          LA    R1,TERMS(R1)
+       LOCAL 3270 SAMPLE PROGRAM - THE SUN'S LOCATION                                                          PAGE    9
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+00051C 4120 C98A            0098C   409          LA    R2,RDBFBUFF     SETUP READ BUFFER CCW
+000520 5020 1010            00010   410          ST    R2,TERMCCW
+000524 9202 1010      00010         411          MVI   TERMCCW,X'02'
+000528 4120 03C3            003C3   412          LA    R2,L'RDBFBUFF
+00052C 4020 1016            00016   413          STH   R2,TERMCCW+6
+000530 9180 1018      00018         414          TM    TERMSW,X'80'    IF QUEUED,
+000534 4780 C53C            0053E   415          BZ    READIT
+000538 947F 1018      00018         416          NI    TERMSW,255-X'80'  RESET QUEUED AND
+00053C 0A19                         417          SVC   25                DEQUE CHANNEL QUEUE (HIO)
+                                    418 READIT   EXCP  (1)             READ BUFFER
+                                    419+* 360N-CL-453 EXCP     CHANGE LEVEL 3-0
+00053E 0A00                         420+READIT   SVC   0
+                                    421          WAIT  (1)
+                                    422+* 360N-CL-453 WAIT     CHANGE LEVEL 3-0
+000540 9180 1002      00002         423+         TM    2(1),X'80'
+000544 4710 C548            0054A   424+         BO    *+6
+000548 0A07                         425+         SVC   7
+00054A D501 1004 C762 00004 00764   426          CLC   TERM+4(2),=X'0C00'  CE,DE
+000550 4770 C250            00252   427          BNE   CANCEL
+000554 07F4                         428          BR    R4
+                                    429 *
+000556                              430 READ     EQU   *
+                                    431 * MAKE SURE ALL ENABLED TERMINALS ARE IN CHANNEL QUEUE
+000556 4130 0002            00002   432          LA    R3,NUMTERMS
+00055A 4110 CD4E            00D50   433          LA    R1,TERMS
+00055E 9180 1018      00018         434 QUELOOP  TM    TERMSW,X'80'        IS IT ALREADY QUEUED
+000562 4710 C582            00584   435          BO    QUENEXT
+000566 9140 1018      00018         436          TM    TERMSW,X'40'        IS IT DISABLED
+00056A 4710 C57E            00580   437          BO    QUENEXTR
+00056E 9203 1010      00010         438          MVI   TERMCCW,X'03'       SETUP NOP CCW
+000572 4120 0001            00001   439          LA    R2,1
+000576 4020 1016            00016   440          STH   R2,TERMCCW+6
+                                    441          EXCP  (1)                 PUT IN CHANNEL QUEUE
+                                    442+* 360N-CL-453 EXCP     CHANGE LEVEL 3-0
+00057A 0A00                         443+         SVC   0
+00057C 9680 1018      00018         444          OI    TERMSW,X'80'        MARK AS QUEUED
+000580 947F 1002      00002         445 QUENEXTR NI    TERM+2,255-X'80'    MAKE SURE WAIT BIT IS OFF
+000584 4111 0020            00020   446 QUENEXT  LA    R1,TERMLEN(R1)      POINT TO NEXT TERMINAL
+000588 4630 C55C            0055E   447          BCT   R3,QUELOOP
+                                    448 * WAIT FOR ONE OF THEM TO RESPOND WITH 'ATTN', ADDR. OF CCB IN R1
+                                    449 * IF ONLY ONE TERMINAL YOU COULD USE A SIMPLE 'WAIT' MACRO.
+                                    450          WAITM TERM1,TERM2
+                                    451+* 360N-CL-453  WAITM  CHANGE LEVEL 3-5                              3-5
+00058C                              452+         CNOP  0,4
+00058C 4510 C596            00598   453+         BAL   1,*+4+4*(3-1)
+000590 00000D50                     454+         DC    A(TERM1)
+000594 00000D70                     455+         DC    A(TERM2)
+000598 0A1D                         456+         SVC   29
+00059A 947F 1018      00018         457          NI    TERMSW,255-X'80'    MARK AS NOT QUEUED
+00059E 1891                         458          LR    R9,R1               CALCULATE RLN FROM CCB ADDR.
+0005A0 4120 CD4E            00D50   459          LA    R2,TERMS
+       LOCAL 3270 SAMPLE PROGRAM - THE SUN'S LOCATION                                                          PAGE   10
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+0005A4 1B92                         460          SR    R9,R2
+0005A6 4120 0020            00020   461          LA    R2,TERMLEN
+0005AA 1B88                         462          SR    R8,R8
+0005AC 1D82                         463          DR    R8,R2
+                                    464 * READ FROM THAT TERMINAL
+0005AE 4120 C95F            00961   465          LA    R2,INPUT            SETUP CCW FOR READ
+0005B2 5020 1010            00010   466          ST    R2,TERMCCW
+0005B6 9206 1010      00010         467          MVI   TERMCCW,X'06'
+0005BA 9220 1014      00014         468          MVI   TERMCCW+4,X'20'     SUPPRESS WLR
+0005BE 4120 002B            0002B   469          LA    R2,L'INPUT
+0005C2 4020 1016            00016   470          STH   R2,TERMCCW+6
+                                    471          EXCP  (1)                 READ FROM TERMINAL
+                                    472+* 360N-CL-453 EXCP     CHANGE LEVEL 3-0
+0005C6 0A00                         473+         SVC   0
+                                    474          WAIT  (1)
+                                    475+* 360N-CL-453 WAIT     CHANGE LEVEL 3-0
+0005C8 9180 1002      00002         476+         TM    2(1),X'80'
+0005CC 4710 C5D0            005D2   477+         BO    *+6
+0005D0 0A07                         478+         SVC   7
+0005D2 D501 1004 C762 00004 00764   479          CLC   TERM+4(2),=X'0C00'  CE,DE
+0005D8 4770 C250            00252   480          BNE   CANCEL
+0005DC 07F4                         481          BR    R4
+                                    482 ***************
+                                    483 * CHANNEL APPENDAGE ROUTINE
+                                    484 * - RUNS IN SUPERVISOR STATE, KEY OF ZERO, ALL INTERRUPTS MASKED
+0005DE                              485 APPNDAGE EQU   *
+                                    486 * R1   CCB ADDR
+                                    487 * R2   CHANNEL AND DEVICE NO.
+                                    488 * R3   PUB ADDR
+                                    489 * R4   CHANNEL QUE ENTRY ADDR
+                                    490 * R5   LUBID ENTRY ADDR
+                                    491 * R6   WORK REG
+                                    492 * R7   RETURN TO SUPERVISOR
+                                    493 * R8   BASE FOR APPENDAGE ROUTINE
+0005DE                              494          USING APPNDAGE,R8
+0005DE 5060 803E            0061C   495          ST    R6,SAVESUPR         SAVE SUPVR. REGISTER
+                                    496 * IF 'CE,DE' AND 'NOP' LEAVE IN CHANNEL QUEUE WITH 'PCI'
+0005E2 D501 0044 8186 00044 00764   497          CLC   X'44'(2),=X'0C00'   IS IT CE,DE
+0005E8 4780 801A            005F8   498          BE    APCEDE
+                                    499 * IF 'ATTN' CHANGE TO 'CE,DE' AND DEQUE
+0005EC 9180 0044      00044         500          TM    X'44',X'80'         IS IT ATTN
+0005F0 4710 8030            0060E   501          BO    APATTN
+0005F4 47F0 8036            00614   502          B     APEXIT4
+0005F8 5861 0008            00008   503 APCEDE   L     R6,8(R1)            GET CCW ADDR.
+0005FC 9503 6000      00000         504          CLI   0(R6),X'03'         IS IT NOOP
+000600 4770 8036            00614   505          BNE   APEXIT4
+000604 D201 0044 8188 00044 00766   506          MVC   X'44'(2),=X'0080'   CHANGE TO PCI, STAY QUEUED
+00060A 47F0 8036            00614   507          B     APEXIT4
+00060E D201 0044 8186 00044 00764   508 APATTN   MVC   X'44'(2),=X'0C00'   CHANGE TO CE,DE, DEQUE
+000614 5860 803E            0061C   509 APEXIT4  L     R6,SAVESUPR         RESTORE SUPVR. REGISTER
+000618 47F7 0004            00004   510          B     4(R7)               RETURN TO SUPERVISOR
+       LOCAL 3270 SAMPLE PROGRAM - THE SUN'S LOCATION                                                          PAGE   11
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+00061C                              511 SAVESUPR DS    F
+                                    512 ***************
+000620                              513 DOUBLE   DS    D
+000628                              514 SAVEBASE DS    F
+00062C                              515 OCSAVE   DS    18F
+000674                              516 MAXRLN   DS    H
+000676                              517 PACKWORK DS    PL2
+000000                              518 MONTHTAB DSECT
+000000                              519 MONTH    DS    CL3     MONTH
+000003                              520 DAYS     DS    CL2     MAX DAYS IN MONTH
+000005                              521 YTD      DS    CL3     DAYS SINCE 3/21
+000000                              522 ECLIPTIC CSECT
+000678 D1C1D5F3F1F2F8F5             523 MONTHS   DC    C'JAN31285'
+000680 C6C5C2F2F9F3F1F6             524          DC    C'FEB29316'
+000688 D4C1D9F3F1F3F4F5             525          DC    C'MAR31345'
+000690 C1D7D9F3F0F0F1F0             526          DC    C'APR30010'
+000698 D4C1E8F3F1F0F4F0             527          DC    C'MAY31040'
+0006A0 D1E4D5F3F0F0F7F1             528          DC    C'JUN30071'
+0006A8 D1E4D3F3F1F1F0F1             529          DC    C'JUL31101'
+0006B0 C1E4C7F3F1F1F3F2             530          DC    C'AUG31132'
+0006B8 E2C5D7F3F0F1F6F3             531          DC    C'SEP30163'
+0006C0 D6C3E3F3F1F1F9F3             532          DC    C'OCT31193'
+0006C8 D5D6E5F3F0F2F2F4             533          DC    C'NOV30224'
+0006D0 C4C5C3F3F1F2F5F4             534          DC    C'DEC31254'
+0006D8                              535          LTORG
+0006D8 5B5BC2C1D7D5C4C7             536                =CL8'$$BAPNDG'
+0006E0 5B5BC2C4E4D4D740             537                =CL8'$$BDUMP'
+0006E8 4110000000000000             538                =D'1E0'
+0006F0 4080000000000000             539                =D'.5'
+0006F8 4E00000000000000             540                =X'4E00000000000000'
+000700 0000062C                     541                =A(OCSAVE)
+000704 00000210                     542                =A(OCEXIT)
+000708 F2F3F5F9                     543                =C'2359'
+00070C 43168000                     544                =E'360'
+000710 4316E000                     545                =E'366'
+000714 41F00000                     546                =E'15'
+000718 423C0000                     547                =E'60'
+00071C 42B40000                     548                =E'180'
+000720 413243F4                     549                =E'3.14159'
+000724 421771EC                     550                =E'23.445'
+000728 41200000                     551                =E'2'
+00072C 42300000                     552                =E'48'
+000730 E3C5D9D4C9D5C1D3             553                =C'TERMINAL DEACTIVATED'
+000744 C5D5C1C2D3C5                 554                =C'ENABLE'
+00074A F0F1                         555                =C'01'
+00074C 366C                         556                =P'366'
+00074E 060C                         557                =P'60'
+000750 0020                         558                =Y(TERMLEN)
+000752 E3C5D9D4C9D5C1D3             559                =C'TERMINAL ACTIVATED'
+000764 0C00                         560                =X'0C00'
+000766 0080                         561                =X'0080'
+       LOCAL 3270 SAMPLE PROGRAM - THE SUN'S LOCATION                                                          PAGE   12
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+000768 E2D7E8E3C5D9D4               562                =C'SPYTERM'
+00076F C4C9E2C1C2D3C5               563                =C'DISABLE'
+000776 C2C1C440E3C5D9D4             564                =C'BAD TERMINAL NUMBER'
+000789 402021207A202060             565 EDITWORD DC    X'402021207A202060'
+000791 4040404040404040             566 BLANKS   DC    CL14' '
+00079F E7E7E740F0F040C1             567 MESS11   DC    C'XXX 00 AT 0000 HOURS  (24 HOUR CLOCK, STANDARD TIME)'
+                                    568 MESS18   DC    C'TO GET APPROXIMATE LOCATION INFORMATION ABOUT THE SUN -
+0007D3 E3D640C7C5E340C1                                FOR A PARTICULAR TIME'
+                                    569 MESS19   DC    C'ENTER THE FIRST THREE LETTERS OF THE MONTH, THE DAY, A-
+00081E C5D5E3C5D940E3C8                                ND THE TIME ABOVE'
+000865 C54B40C74B406060             570 MESS1A   DC    C'E. G. -- JUL 04 AT 1359'
+00087C C5D5E3C5D940D7C6             571 MESS1C   DC    C'ENTER PF3 TO END APPLICATION'
+000898 D9C9C7C8E3404040             572 MESS22   DC    C'RIGHT                   AT CHICAGO, IL'
+0008BE C1E2C3C5D5E2C9D6             573 MESS23   DC    C'ASCENSION DECLINATION   AZIMUTH   ALTITUDE'
+0008E8 C8C87AD4D4404040             574 MESS24   DC    C'HH:MM      DD:MM      DDD:MM      DD:MM'
+00090F D7D9C5E5C9D6E4E2             575 INVALID  DC    C'PREVIOUS DATE AND/OR TIME INVALID'
+000930 E3C5D9D4C9D5C1D3             576 MESSCLS  DC    C'TERMINAL CLOSED BY'
+000942 D4C1E2E3C5D940E3             577 MESSCLSM DC    C'MASTER TERMINAL'
+000951 C3D6D5E2D6D3C540             578 MESSCLSC DC    C'CONSOLE OPERATOR'
+                                    579 *
+000961                              580 INPUT    DS    0CL43 INPUT BUFFER
+000961                              581 AIDCA    DS    CL3   ATTN.ID, CURSOR ADDRESS
+000964                              582 INPDATA  DS    CL40  INPUT DATA
+00098C                              583 RDBFBUFF DS    0CL963
+00098C                              584          DS    CL2
+00098E                              585 OUTPUT   DS    0CL961  OUTPUT BUFFER
+00098E                              586 WCC      DS    X       WRITE CONTROL CHAR.
+00098F                              587 BUFFER   DS    0CL960  OUTPUT DATA (12 LINES)
+00098F                              588 LINE1    DS    CL80
+0009DF                              589 LINE2    DS    CL80
+000A2F                              590 LINE3    DS    CL80
+000A7F                              591 LINE4    DS    CL80
+000ACF                              592 LINE5    DS    CL80
+000B1F                              593 LINE6    DS    CL80
+000B6F                              594 LINE7    DS    CL80
+000BBF                              595 LINE8    DS    CL80
+000C0F                              596 LINE9    DS    CL80
+000C5F                              597 LINE10   DS    CL80
+000CAF                              598 LINE11   DS    CL80
+000CFF                              599 LINE12   DS    CL80
+                                    600 *
+000000                              601 TERMDS   DSECT
+                                    602 TERM     CCB   SYS000,0
+                                    603+* 360N-CL-453  CCB  CHANGE LEVEL 3-9                                3-9
+000000 0000                         604+TERM     DC    XL2'0' RESIDUAL COUNT
+000002 0000                         605+         DC    XL2'0' COMMUNICATIONS BYTES
+000004 0000                         606+         DC    XL2'0' CSW STATUS BYTES
+000006 01                           607+         DC    AL1(1) LOGICAL UNIT CLASS
+000007 00                           608+         DC    AL1(0) LOGICAL UNIT
+000008 00                           609+         DC    XL1'0'
+000009 000000                       610+         DC    AL3(0) CCW ADDRESS
+       LOCAL 3270 SAMPLE PROGRAM - THE SUN'S LOCATION                                                          PAGE   13
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+00000C 00                           611+         DC    B'00000000' STATUS BYTE
+00000D 000000                       612+         DC    AL3(0) CSW CCW ADDRESS
+000010 0000000000000000             613 TERMCCW  CCW   0,0,0,0
+000018                              614 TERMSW   DS    X
+                                    615 * BIT 0 - DEVICE IS QUEUED
+                                    616 * BIT 1 = DEVICE IS DISABLED
+000020                              617          DS    0D
+000020                              618 TERMLEN  EQU   *-TERMDS
+000000                              619 ECLIPTIC CSECT
+000D4F 00
+000D50                              620          DC    0D'0'
+000D50                              621 TERMS    EQU   *
+                                    622 TERM1    CCB   SYS020,TERM1CCW
+                                    623+* 360N-CL-453  CCB  CHANGE LEVEL 3-9                                3-9
+000D50 0000                         624+TERM1    DC    XL2'0' RESIDUAL COUNT
+000D52 0000                         625+         DC    XL2'0' COMMUNICATIONS BYTES
+000D54 0000                         626+         DC    XL2'0' CSW STATUS BYTES
+000D56 01                           627+         DC    AL1(1) LOGICAL UNIT CLASS
+000D57 14                           628+         DC    AL1(20) LOGICAL UNIT
+000D58 00                           629+         DC    XL1'0'
+000D59 000D60                       630+         DC    AL3(TERM1CCW) CCW ADDRESS
+000D5C 00                           631+         DC    B'00000000' STATUS BYTE
+000D5D 000000                       632+         DC    AL3(0) CSW CCW ADDRESS
+000D5C                              633          ORG   TERM1+12
+000D5C 400005DE                     634          DC    X'40',AL3(APPNDAGE)
+000D60                              635          ORG   ,
+000D60 0000000000000000             636 TERM1CCW CCW   0,0,0,0
+000D68 00                           637 TERM1SW  DC    X'00'
+000D69 00000000000000
+000D70                              638          DC    0D'0'
+                                    639 TERM2    CCB   SYS021,TERM2CCW
+                                    640+* 360N-CL-453  CCB  CHANGE LEVEL 3-9                                3-9
+000D70 0000                         641+TERM2    DC    XL2'0' RESIDUAL COUNT
+000D72 0000                         642+         DC    XL2'0' COMMUNICATIONS BYTES
+000D74 0000                         643+         DC    XL2'0' CSW STATUS BYTES
+000D76 01                           644+         DC    AL1(1) LOGICAL UNIT CLASS
+000D77 15                           645+         DC    AL1(21) LOGICAL UNIT
+000D78 00                           646+         DC    XL1'0'
+000D79 000D80                       647+         DC    AL3(TERM2CCW) CCW ADDRESS
+000D7C 00                           648+         DC    B'00000000' STATUS BYTE
+000D7D 000000                       649+         DC    AL3(0) CSW CCW ADDRESS
+000D7C                              650          ORG   TERM2+12
+000D7C 400005DE                     651          DC    X'40',AL3(APPNDAGE)
+000D80                              652          ORG   ,
+000D80 0000000000000000             653 TERM2CCW CCW   0,0,0,0
+000D88 00                           654 TERM2SW  DC    X'00'
+000D89 00000000000000
+000D90                              655          DC    0D'0'
+000002                              656 NUMTERMS EQU   (*-TERMS)/TERMLEN
+000D90                              657 SAVEREGS DS    18F
+                                    658          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      0C     000590
+   01       01      0C     000594
+   01       01      0C     000700
+   01       01      0C     000704
+   01       01      08     000D59
+   01       01      08     000D5D
+   01       01      08     000D79
+   01       01      08     000D7D
+                                             CROSS-REFERENCE                                                   PAGE    1
+
+
+SYMBOL    LEN  VALUE  DEFN     REFERENCES                                                                       03/29/70
+
+AIDCA    00003 000961 00581   0070
+APATTN   00006 00060E 00508   0501
+APCEDE   00004 0005F8 00503   0498
+APEXIT4  00004 000614 00509   0502  0505  0507
+APPNDAGE 00001 0005DE 00485   0494  0634  0651
+BADATA   00001 00009C 00085   0094  0096  0098  0100  0102  0104  0106  0108  0110
+BADRLN   00006 000498 00367   0323  0325  0329  0336  0338  0342  0352  0354  0358
+BLANK    00004 0003C8 00313   0048  0053  0066  0178  0182
+BLANKS   00014 000791 00566   0067  0090
+BUFFER   00960 00098F 00587   0313  0314  0314  0315  0315  0316  0316  0317  0317
+CANCEL   00004 000252 00194   0220  0403  0427  0480
+CLOSLOOP 00004 000244 00188   0190
+CLOSTERM 00004 00023A 00185   0181
+COS      00004 00025C 00209   0160
+DAYS     00002 000003 00520   0093
+DEACTIVE 00001 000416 00334   0075
+DOUBLE   00008 000620 00513   0111  0114  0115  0117  0123  0129  0134  0139  0142  0143  0145  0147  0153  0159  0165
+                              0212  0217  0271  0277  0277  0281  0290  0301  0306  0307  0307  0308  0308  0310  0326
+                              0327  0339  0340  0355  0356
+ECLIPTIC 00001 000000 00018   0522  0619
+EDIT     00004 00036E 00290   0131  0141  0155  0167
+EDITWORD 00008 000789 00565   0309  0309  0310
+ENDOFJOB 00004 00022A 00182   0071
+ERSEWRIT 00001 0004CA 00380   0188  0332  0345
+FOUND    00006 0000C0 00093   0082
+FR0      00001 000000 00035   0122  0122  0123  0124  0125  0126  0127  0128  0129  0136  0137  0138  0139  0147  0148
+                              0149  0150  0151  0152  0153  0156  0157  0158  0159  0161  0161  0162  0163  0164  0165
+                              0215  0215  0217  0218  0218  0219  0221  0222  0224  0225  0226  0231  0232  0232  0237
+                              0238  0238  0239  0240  0241  0242  0243  0244  0245  0248  0251  0251  0274  0276  0279
+                              0279  0280  0281  0290  0291  0292  0293  0293  0294  0295  0296
+FR2      00001 000002 00036   0216  0216  0225  0226  0227  0228  0239  0242  0244  0291  0298  0298
+FR4      00001 000004 00037   0151  0156  0237  0248
+FR6      00001 000006 00038   0126  0132  0133  0134  0137  0163
+IGNMAST  00004 000082 00078   0069
+INITLOOP 00004 000024 00052   0055
+INPDATA  00040 000964 00582   0063  0064  0064  0067  0072  0074  0076  0081  0086  0088  0093  0095  0097  0099  0101
+                              0103  0105  0107  0109  0113  0118  0120  0142  0144  0322  0324  0326  0335  0337  0339
+                              0351  0353  0355
+INPUT    00043 000961 00580   0465  0469
+INVALID  00033 00090F 00575   0089  0089
+LINE1    00080 00098F 00588   0179  0180  0183  0184  0343  0344  0373
+LINE10   00080 000C5F 00597   0376
+LINE11   00080 000CAF 00598
+LINE12   00080 000CFF 00599   0379
+LINE2    00080 0009DF 00589   0086  0087  0088  0090  0168
+LINE3    00080 000A2F 00590   0089  0169  0348  0365  0367
+LINE4    00080 000A7F 00591   0170
+LINE5    00080 000ACF 00592   0118  0119  0130  0140  0154  0166
+LINE6    00080 000B1F 00593   0120
+LINE7    00080 000B6F 00594
+LINE8    00080 000BBF 00595   0374
+                                             CROSS-REFERENCE                                                   PAGE    2
+
+
+SYMBOL    LEN  VALUE  DEFN     REFERENCES                                                                       03/29/70
+
+LINE9    00080 000C0F 00596   0375
+LOOP     00006 00008A 00081   0084
+MASTWR   00004 00049E 00368   0349  0366
+MAXRLN   00002 000674 00516   0047  0049  0185  0328  0341  0357
+MESSCLS  00018 000930 00576   0179  0179  0180  0183  0183  0184  0343  0343  0344
+MESSCLSC 00016 000951 00578   0180  0180
+MESSCLSM 00015 000942 00577   0184  0184  0344  0344
+MESS1A   00023 000865 00570   0376  0376
+MESS1C   00028 00087C 00571   0379  0379
+MESS11   00052 00079F 00567   0373  0373
+MESS18   00075 0007D3 00568   0374  0374
+MESS19   00071 00081E 00569   0375  0375
+MESS22   00038 000898 00572   0168  0168
+MESS23   00042 0008BE 00573   0169  0169
+MESS24   00039 0008E8 00574   0170  0170
+MONTH    00003 000000 00519   0081
+MONTHS   00008 000678 00523   0078  0083
+MONTHTAB 00001 000000 00518   0080
+NUMTERMS 00001 000002 00656   0045  0432
+OCEXIT   00002 000210 00174   0060  0542
+OCSAVE   00004 00062C 00515   0059  0541
+OUTPUT   00961 00098E 00585   0385  0388
+PACKWORK 00002 000676 00517   0113  0114  0144  0145
+PKFLT    00004 000330 00271   0121  0146
+QUELOOP  00004 00055E 00434   0447
+QUENEXT  00004 000584 00446   0435
+QUENEXTR 00004 000580 00445   0437
+RDBFBUFF 00963 00098C 00583   0409  0412
+REACTIVE 00001 000458 00350   0077
+READ     00001 000556 00430   0065
+READATA  00004 00003E 00063   0092  0172  0333  0369
+READBUFF 00001 000512 00405   0330
+READIT   00002 00053E 00420   0415
+R0       00001 000000 00019   0194
+R1       00001 000001 00020   0041  0043  0233  0233  0236  0240  0241  0243  0245  0246  0246  0271  0272  0272  0273
+                              0297  0300  0300  0301  0359  0360  0361  0361  0382  0383  0384  0384  0406  0407  0408
+                              0408  0433  0446  0446  0458  0503
+R10      00001 00000A 00029
+R11      00001 00000B 00030   0174  0175  0177
+R12      00001 00000C 00031   0039  0040  0042  0176
+R13      00001 00000D 00032
+R14      00001 00000E 00033
+R15      00001 00000F 00034   0194
+R2       00001 000002 00021   0045  0046  0047  0048  0053  0066  0121  0131  0135  0141  0146  0155  0160  0167  0178
+                              0182  0250  0252  0285  0311  0318  0385  0386  0388  0389  0409  0410  0412  0413  0439
+                              0440  0459  0460  0461  0463  0465  0466  0469  0470
+R3       00001 000003 00022   0432  0447
+R4       00001 000004 00023   0052  0065  0091  0171  0188  0330  0332  0345  0363  0368  0404  0428  0481
+R5       00001 000005 00024   0078  0080  0083  0083  0112
+R6       00001 000006 00025   0049  0050  0050  0055  0079  0084  0130  0140  0154  0166  0185  0186  0186  0190  0309
+                              0310  0495  0503  0504  0509
+                                             CROSS-REFERENCE                                                   PAGE    3
+
+
+SYMBOL    LEN  VALUE  DEFN     REFERENCES                                                                       03/29/70
+
+R7       00001 000007 00026   0510
+R8       00001 000008 00027   0462  0462  0463  0494
+R9       00001 000009 00028   0051  0051  0054  0054  0068  0068  0187  0187  0189  0189  0327  0328  0331  0331  0340
+                              0341  0347  0347  0356  0357  0359  0364  0364  0377  0377  0382  0406  0458  0460
+SAVEBASE 00004 000628 00514   0042  0176
+SAVEREGS 00004 000D90 00657   0194
+SAVESUPR 00004 00061C 00511   0495  0509
+SIN      00004 000264 00211   0135
+SINCOSA  00008 0002F0 00254   0221
+SINCOSB  00008 0002F8 00255   0224
+SINCOSC  00004 000300 00256   0209  0211  0214  0227
+SINCOSD  00004 000304 00257   0219
+SINCOSE  00004 000308 00258   0240
+SINCOSF  00004 000310 00260   0241
+SINCOSG  00004 000318 00262   0243
+SINCOSH  00004 000320 00264   0222  0231  0245
+SINCOSI  00004 000328 00266   0228  0229  0234  0249
+SINCOS1  00002 000274 00215   0210  0213
+SINCOS2  00004 00029A 00227   0223
+SINCOS3  00002 0002B0 00233   0230
+SPYTERM  00001 0003E6 00321   0073
+TERM     00002 000000 00604   0402  0426  0445  0479
+TERMCCW  00008 000010 00613   0386  0387  0389  0410  0411  0413  0438  0440  0466  0467  0468  0470
+TERMDS   00001 000000 00601   0041  0618
+TERMLEN  00001 000020 00618   0360  0383  0407  0446  0461  0558  0656
+TERMS    00001 000D50 00621   0361  0384  0408  0433  0459  0656
+TERMSW   00001 000018 00614   0346  0362  0390  0392  0414  0416  0434  0436  0444  0457
+TERM1    00002 000D50 00624   0454  0633
+TERM1CCW 00008 000D60 00636   0630
+TERM1SW  00001 000D68 00637
+TERM2    00002 000D70 00641   0455  0650
+TERM2CCW 00008 000D80 00653   0647
+TERM2SW  00001 000D88 00654
+WCC      00001 00098E 00586   0381
+WRITEIT  00002 0004FA 00396   0391
+WRITINIT 00001 0004A6 00372   0052  0091  0171  0363  0368
+YTD      00003 000005 00521   0111
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+ PHASE $$BAPNDG,+0
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+$$BDEMO   SD  01 000000 00001C
+                                                                                                               PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+000000                                1 $$BDEMO  CSECT
+000001                                2 R1       EQU   1
+000003                                3 R3       EQU   3
+00000F                                4 R15      EQU   15   BASE
+000000                                5          USING *,R15
+000000 5B5BC2C1D7D5C4C7               6          DC    CL8'$$BAPNDG'
+                                      7 * THIS ASSUMES WE ARE RUNNING AS A MAIN TASK, NOT A SUBTASK
+                                      8          COMRG
+                                      9+* 360N-CL-453 COMRG    CHANGE LEVEL 3-0
+000008 5810 0014            00014    10+         L     1,20
+00000C 0A21                          11+         SVC   33
+00000E 4831 005A            0005A    12          LH    R3,90(R1)    GET PIB ADDR.
+000012 4A31 002E            0002E    13          AH    R3,46(R1)    ADD PIK
+000016 9640 300C      0000C          14          OI    12(R3),X'40' SET APPENDAGE ALLOWED FLAG
+00001A 0A0B                          15          SVC   11
+                                     16          END
+                                             CROSS-REFERENCE                                                   PAGE    1
+
+
+SYMBOL    LEN  VALUE  DEFN     REFERENCES                                                                       03/29/70
+
+$$BDEMO  00001 000000 00001
+R1       00001 000001 00002   0012  0013
+R15      00001 00000F 00004   0005
+R3       00001 000003 00003   0012  0013  0014
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// PAUSE
+// EXEC LNKEDT
+
+JOB  DEMO3270  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP CLEAR
+LIST   PHASE DEMO3270,S
+LIST   PHASE $$BAPNDG,+0
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        DEMO3270  006000  006000  006DD7  1B 06 4  CSECT     ECLIPTIC  006000  006000
+
+        $$BAPNDG  000000  000000  00001B  1B 07 3  CSECT     $$BDEMO   000000  000000
+// PAUSE CREATE TWO 3270 TERMINALS
+// ASSGN SYS020,X'0A0'
+// ASSGN SYS021,X'0A1'
+// EXEC
+
+EOJ DEMO3270                                                            12.17.38,DURATION 00.01.01

@@ -1,0 +1,3 @@
+# Verify Basic FORTRAN
+devinit e prt/verify-3-for1.txt crlf
+devinit c jcl/verfor01.jcl

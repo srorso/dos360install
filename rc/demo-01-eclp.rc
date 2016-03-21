@@ -1,0 +1,3 @@
+# Demonstrate Assembly language calling FORTRAN run-time library
+devinit e prt/demo-eclp.txt crlf
+devinit c demos/demoeclp-asm.jcl

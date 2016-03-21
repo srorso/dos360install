@@ -1,0 +1,3 @@
+# Demonstrate subroutine linkages RPG-->ASM-->FORTRAN
+devinit e prt/demo-rasf.txt crlf
+devinit c demos/demorasf.jcl

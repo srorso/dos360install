@@ -1,0 +1,233 @@
+
+// JOB POWER03   LINK POWER                                             14.08.22
+// DLBL IJSYSRL,'POWER.PRIVATE.RELO',99/365,SD
+// EXTENT SYSRLB,SPOOL1
+// DLBL IJSYSSL,'POWER.PRIVATE.SOURCE',99/365,SD
+// EXTENT SYSSLB,SPOOL1
+// ASSGN SYSRLB,X'191'
+// ASSGN SYSSLB,X'191'
+// OPTION CATAL
+   INCLUDE POWEROBJ
+// EXEC LNKEDT
+
+JOB  POWER03   03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST     INCLUDE POWEROBJ
+LIST   INCLUDE FGPTYPN0                                                           0001
+LIST   PHASE FGPTYPN0,+0                                                          0001
+LIST   INCLUDE FGPTYPN1                                                           0002
+LIST   PHASE FGPTYPN1,+0                                                          0001
+LIST   INCLUDE FGPTYPS0                                                           0003
+LIST   PHASE FGPTYPS0,+0                                                          0001
+LIST   INCLUDE FGPTYPP0                                                           0004
+LIST   PHASE FGPTYPP0,+0                                                          0001
+LIST   INCLUDE FGPTYPR0                                                           0005
+LIST   PHASE FGPTYPR0,+0                                                          0001
+LIST   INCLUDE FGPTYPD0                                                           0006
+LIST   PHASE FGPTYPD0,+0                                                          0001
+LIST   INCLUDE FGPTYPD1                                                           0007
+LIST   PHASE FGPTYPD1,+0                                                          0001
+LIST   INCLUDE FGPTYPD2                                                           0008
+LIST   PHASE FGPTYPD2,+0                                                          0001
+LIST   INCLUDE FGPTYPJ0                                                           0009
+LIST   PHASE FGPTYPJ0,+0                                                          0001
+LIST   INCLUDE FGPTYPL0                                                           0010
+LIST   PHASE FGPTYPL0,+0                                                          0001
+LIST   INCLUDE FGPTYPL1                                                           0011
+LIST   PHASE FGPTYPL1,+0                                                          0001
+LIST   INCLUDE FGPTYPA0                                                           0012
+LIST   PHASE FGPTYPA0,+0                                                          0001
+LIST   INCLUDE FGPTYPA1                                                           0013
+LIST   PHASE FGPTYPA1,+0                                                          0001
+LIST   INCLUDE FGPTYPA2                                                           0014
+LIST   PHASE FGPTYPA2,+0                                                          0001
+LIST   INCLUDE FGPTYPZ0                                                           0015
+LIST   PHASE FGPTYPZ0,+0                                                          0001
+LIST   INCLUDE FGPTYPZ1                                                           0016
+LIST   PHASE FGPTYPZ1,+0                                                          0001
+LIST   INCLUDE FGPTYPZ3                                                           0017
+LIST   PHASE FGPTYPZ3,+0                                                          0001
+LIST   INCLUDE FGPTYPZ5                                                           0018
+LIST   PHASE FGPTYPZ5,+0                                                          0001
+LIST   INCLUDE FGPSPOLT                                                           0019
+LIST   PHASE FGPSPOLT,+0                                                          0001
+LIST   INCLUDE FGPSPOL0                                                           0020
+LIST   PHASE FGPSPOL0,+0                                                          0001
+LIST   INCLUDE FGPSPOLH                                                           0021
+LIST   PHASE FGPSPOLH,+0                                                          0001
+LIST   INCLUDE FGPSPOL1                                                           0022
+LIST   PHASE FGPSPOL1,+0                                                          0001
+LIST   INCLUDE FGPSPOL2                                                           0023
+LIST   PHASE FGPSPOL2,+0                                                          0001
+LIST   INCLUDE FGPSPOL3                                                           0024
+LIST   PHASE FGPSPOL3,+0                                                          0001
+LIST   INCLUDE FGPSPOL9                                                           0025
+LIST   PHASE FGPSPOL9,+0                                                          0001
+LIST   INCLUDE FGPSPOLE                                                           0026
+
+
+LIST   PHASE FGPSPOLE,+0                                                          0001
+LIST   INCLUDE FGPSPOLF                                                           0027
+LIST   PHASE FGPSPOLF,+0                                                          0001
+LIST   INCLUDE FGPSPOLI                                                           0028
+LIST   PHASE FGPSPOLI,+0                                                          0001
+LIST   INCLUDE FGPSPOLP                                                           0029
+LIST   PHASE FGPSPOLP,+0                                                          0001
+LIST   INCLUDE FGPSPOL5                                                           0030
+LIST   PHASE FGPSPOL5,+0                                                          0001
+LIST   INCLUDE FGPSPOL6                                                           0031
+LIST   PHASE FGPSPOL6,+0                                                          0001
+LIST   INCLUDE FGPSPOL7                                                           0032
+LIST   PHASE FGPSPOL7,+0                                                          0001
+LIST   INCLUDE FGPSPOL8                                                           0033
+LIST   PHASE FGPSPOL8,+0                                                          0001
+LIST   INCLUDE FGPSPOLJ                                                           0034
+LIST   PHASE FGPSPOLJ,+0                                                          0001
+LIST   INCLUDE FGPSPOLM                                                           0035
+LIST   PHASE FGPSPOLM,+0                                                          0001
+LIST   INCLUDE FGPSPOLN                                                           0036
+LIST   PHASE FGPSPOLN,+0                                                          0001
+LIST   INCLUDE FGPSPOLR                                                           0037
+LIST   PHASE FGPSPOLR,+0                                                          0001
+LIST   INCLUDE FGPSPOLA                                                           0038
+LIST   PHASE FGPSPOLA,+0                                                          0001
+LIST   INCLUDE FGPSPOLK                                                           0039
+LIST   PHASE FGPSPOLK,+0                                                          0001
+LIST   INCLUDE FGPSPOLB                                                           0040
+LIST   PHASE FGPSPOLB,+0                                                          0001
+LIST   INCLUDE FGPSPOL4                                                           0041
+LIST   PHASE FGPSPOL4,+0                                                          0001
+LIST   INCLUDE FGPSPOLC                                                           0042
+LIST   PHASE FGPSPOLC,+0                                                          0001
+LIST   INCLUDE FGPSPOLD                                                           0043
+LIST   PHASE FGPSPOLD,+0                                                          0001
+LIST   INCLUDE FGPSPOLG                                                           0044
+LIST   PHASE FGPSPOLG,+0                                                          0001
+LIST   INCLUDE $$BPOWR1                                                           0045
+LIST   PHASE $$BPOWR1,+0                                                          0001
+LIST   INCLUDE $$BPOWR2                                                           0046
+LIST   PHASE $$BPOWR2,+0                                                          0001
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        FGPTYPN0  000000  000000  0003FF  1A 0F 2  CSECT     FGPTYPN0  000000  000000
+
+        FGPTYPN1  000000  000000  0003FF  1A 0F 3  CSECT     FGPTYPN1  000000  000000
+
+        FGPTYPS0  000000  000000  0003FF  1A 0F 4  CSECT     FGPTYPS0  000000  000000
+
+        FGPTYPP0  000000  000000  0003FF  1A 10 1  CSECT     FGPTYPP0  000000  000000
+
+        FGPTYPR0  000000  000000  0003FF  1A 10 2  CSECT     FGPTYPR0  000000  000000
+
+        FGPTYPD0  000000  000000  0003FF  1A 10 3  CSECT     FGPTYPD0  000000  000000
+
+        FGPTYPD1  000000  000000  0003FF  1A 10 4  CSECT     FGPTYPD1  000000  000000
+
+        FGPTYPD2  000000  000000  0003FF  1A 11 1  CSECT     FGPTYPD2  000000  000000
+
+        FGPTYPJ0  000000  000000  0003FF  1A 11 2  CSECT     FGPTYPJ0  000000  000000
+
+        FGPTYPL0  000000  000000  0003FF  1A 11 3  CSECT     FGPTYPL0  000000  000000
+
+        FGPTYPL1  000000  000000  0003FF  1A 11 4  CSECT     FGPTYPL1  000000  000000
+
+        FGPTYPA0  000000  000000  0003FF  1A 12 1  CSECT     FGPTYPA0  000000  000000
+
+        FGPTYPA1  000000  000000  0003FF  1A 12 2  CSECT     FGPTYPA1  000000  000000
+
+        FGPTYPA2  000000  000000  0003FF  1A 12 3  CSECT     FGPTYPA2  000000  000000
+
+        FGPTYPZ0  000000  000000  0003FF  1A 12 4  CSECT     FGPTYPZ0  000000  000000
+
+        FGPTYPZ1  000000  000000  0003FF  1A 13 1  CSECT     FGPTYPZ1  000000  000000
+
+        FGPTYPZ3  000000  000000  00013B  1A 13 2  CSECT     FGPTYPZ3  000000  000000
+
+        FGPTYPZ5  000000  000000  0003FF  1A 13 3  CSECT     FGPTYPZ5  000000  000000
+
+        FGPSPOLT  000000  000000  0003FF  1A 13 4  CSECT     FGPSPOLT  000000  000000
+
+        FGPSPOL0  000000  000000  00036F  1B 00 1  CSECT     FGPSPOL0  000000  000000
+
+        FGPSPOLH  000000  000000  00036F  1B 00 2  CSECT     FGPSPOLH  000000  000000
+
+        FGPSPOL1  000000  000000  00036F  1B 00 3  CSECT     FGPSPOL1  000000  000000
+
+        FGPSPOL2  000000  000000  00036F  1B 00 4  CSECT     FGPSPOL2  000000  000000
+
+        FGPSPOL3  000000  000000  00036F  1B 01 1  CSECT     FGPSPOL3  000000  000000
+
+        FGPSPOL9  000000  000000  00036F  1B 01 2  CSECT     FGPSPOL9  000000  000000
+
+        FGPSPOLE  000000  000000  00036F  1B 01 3  CSECT     FGPSPOLE  000000  000000
+
+        FGPSPOLF  000000  000000  00036F  1B 01 4  CSECT     FGPSPOLF  000000  000000
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        FGPSPOLI  000000  000000  00036F  1B 02 1  CSECT     FGPSPOLI  000000  000000
+
+        FGPSPOLP  000000  000000  0003FF  1B 02 2  CSECT     FGPSPOLP  000000  000000
+
+        FGPSPOL5  000000  000000  00036F  1B 02 3  CSECT     FGPSPOL5  000000  000000
+
+        FGPSPOL6  000000  000000  00036F  1B 02 4  CSECT     FGPSPOL6  000000  000000
+
+        FGPSPOL7  000000  000000  00036F  1B 03 1  CSECT     FGPSPOL7  000000  000000
+
+        FGPSPOL8  000000  000000  00036F  1B 03 2  CSECT     FGPSPOL8  000000  000000
+
+        FGPSPOLJ  000000  000000  00036F  1B 03 3  CSECT     FGPSPOLJ  000000  000000
+
+        FGPSPOLM  000000  000000  00036F  1B 03 4  CSECT     FGPSPOLM  000000  000000
+
+        FGPSPOLN  000000  000000  00036F  1B 04 1  CSECT     FGPSPOLN  000000  000000
+
+        FGPSPOLR  000000  000000  0003FF  1B 04 2  CSECT     FGPSPOLR  000000  000000
+
+        FGPSPOLA  000000  000000  0002FF  1B 04 3  CSECT     FGPSPOLA  000000  000000
+
+        FGPSPOLK  000000  000000  0002FF  1B 04 4  CSECT     FGPSPOLK  000000  000000
+
+        FGPSPOLB  000000  000000  0002FF  1B 05 1  CSECT     FGPSPOLB  000000  000000
+
+        FGPSPOL4  000000  000000  0002FF  1B 05 2  CSECT     FGPSPOL4  000000  000000
+
+        FGPSPOLC  000000  000000  0002FF  1B 05 3  CSECT     FGPSPOLC  000000  000000
+
+        FGPSPOLD  000000  000000  0002FF  1B 05 4  CSECT     FGPSPOLD  000000  000000
+
+        FGPSPOLG  000000  000000  0002FF  1B 06 1  CSECT     FGPSPOLG  000000  000000
+
+        $$BPOWR1  000000  000000  00024C  1B 06 2  CSECT     $$BPOWR1  000000  000000
+
+        $$BPOWR2  000000  000000  00040F  1B 06 3  CSECT     $$BPOWR2  000000  000000
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 13 11 03              56 04 09 05             133 01 09 03
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        27 06 04                109 12 12                177 06 10
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE            1000                     1520                      348
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE             2114                    17003                    23661
+LIBRARY   BLOCKS DELETED              00                       00                       00
+LIBRARY   BLOCKS AVAILABLE          2366                     7477                    11169
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ POWER03                                                             14.08.23,DURATION 00.00.00

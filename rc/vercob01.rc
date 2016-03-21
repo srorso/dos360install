@@ -1,0 +1,3 @@
+# Verify COBOL D
+devinit e prt/verify-2-cob1.txt crlf
+devinit c jcl/vercob01.jcl

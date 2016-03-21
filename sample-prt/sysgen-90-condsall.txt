@@ -1,0 +1,72 @@
+
+// JOB MAINT CONDENSE SYSRES AND PRIVATE LIBS                           13.40.04
+// EXEC MAINT
+
+ CONDS CL,RL,SL
+3M80I REORGANIZATION OF RELOCATABLE LIBRARY IN PROGRESS
+3M80I REORGANIZATION OF SOURCE STATEMENT LIBRARY IN PROGRESS
+3M80I REORGANIZATION OF CORE IMAGE LIBRARY IN PROGRESS
+// DLBL IJSYSRL,'DOS.SYSRLB.FILE.VOLUME.3',99/365,SD
+// EXTENT SYSRLB,SPOOL1,1,1,3180,240
+// DLBL IJSYSSL,'DOS.SYSSLB.FILE.VOLUME.3',99/365,SD
+// EXTENT SYSSLB,SPOOL1,1,1,3420,560
+// ASSGN SYSRLB,X'191'
+// ASSGN SYSSLB,X'191'
+// EXEC MAINT
+
+ CONDS RL,SL
+3M80I REORGANIZATION OF RELOCATABLE LIBRARY IN PROGRESS
+3M80I REORGANIZATION OF SOURCE STATEMENT LIBRARY IN PROGRESS
+PRIVATE DIRECTORY               PRV-RELOCATABLE     PRV-SOURCE STATEMENT
+
+03/29/70                        ---------------DECIMAL----------------------
+
+                                    C  H  R  E          C  H  R  E
+DIRECTORY STARTING ADDRESS        166 00 01           171 00 01
+DIRECTORY NEXT ENTRY              166 00 04 19        171 00 09 08
+DIRECTORY LAST ENTRY              166 04 17 19        171 04 27 09
+
+LIBRARY   STARTING ADDRESS        166 05 01           171 05 01
+LIBRARY   NEXT AVAILABLE ENTRY    168 16 12           197 16 03
+LIBRARY   LAST AVAILABLE ENTRY    170 19 16           198 19 27
+
+                                ---------STATUS INFORMATION-----------------
+
+DIRECTORY ENTRIES ACTIVE           74                  83
+
+LIBRARY   BLOCKS ALLOCATED       1520               14985
+LIBRARY   BLOCKS ACTIVE           827               14339
+LIBRARY   BLOCKS DELETED           00                  00
+LIBRARY   BLOCKS AVAILABLE        693                 646
+
+AUTOMATIC CONDENSE LIMIT           00                  00
+
+LIBRARY   ALLOCATED CYLINDERS      05                  28
+DIRECTORY ALLOCATED TRACKS         05                  05
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 13 08 10              56 04 09 05             133 01 09 03
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        26 11 04                109 12 12                177 06 10
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             953                     1520                      348
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE             2054                    17003                    23661
+LIBRARY   BLOCKS DELETED              00                       00                       00
+LIBRARY   BLOCKS AVAILABLE          2426                     7477                    11169
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ MAINT                                                               13.40.09,DURATION 00.00.05

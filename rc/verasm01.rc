@@ -1,0 +1,9 @@
+# Verify assembler, sort/merge, tape LIOCS
+sh del tape\scratch1-bg.aws
+sh del tape\scratch2-bg.aws
+sh hetinit -d tape\scratch1-bg.aws 001001 HERCULES
+sh hetinit -d tape\scratch2-bg.aws 001002 HERCULES
+devinit 280 tape/scratch1-bg.aws
+devinit 281 tape/scratch2-bg.aws
+devinit e prt/verify-1-asm1-std.txt crlf
+devinit c "jcl/verasm01.jcl"

@@ -1,0 +1,995 @@
+
+// JOB DEMOFADV DEMO FORTRAN ADVANCED CONCEPTS                          12.14.05
+* DIRECT ACCESS, DEBUG, NAMELIST, OBJ.TIME FORMATS
+* WORK FILES, UNFORMATTED I/O, OVERLAY, ALT.UNIT TABLE
+*
+* BUILD A SEQUENTIAL FILE TO BE ACCESSED BY FORTRAN IV DIRECT ACCESS
+// ASSGN SYS004,X'00C' INPUT
+// ASSGN SYS005,X'192' OUTPUT
+// DLBL UOUT,'PEOPLE',0
+// EXTENT SYS005,WRK14A,,,2600,2
+// EXEC CDDK
+
+// UCD TC,FF,A=(80,80),B=(80,80),E=(2314)
+// END
+CARD TO DISK UTILITY
+INPUT RECORD LENGTH 0080
+OUTPUT RECORD LENGTH  0080
+INPUT BLOCK LENGTH 00080
+OUTPUT BLOCK LENGTH 00080
+INPUT OPTION CARD BCD
+OUTPUT OPTION    DISK WRITE CHECK
+2  INPUT / OUTPUT AREAS ASSIGNED
+RECORD FORMAT FIXED
+TYPE COPY
+STARTING RECORD NUMBER  00000001
+OUTPUT DEVICE TYPE  2314
+FILEMARK WRITTEN IN
+XT. NO.  B1   C1   C2   H1   H2   R
+   000  000  000  130  000  000  024
+NUMBER OF INPUT BLOCKS PROCESSED  000023
+NUMBER OF OUTPUT BLOCKS PROCESSED 000023
+END OF JOB
+// RESET PROG
+// OPTION LINK,LISTX,NOXREF
+ PHASE DEMOFDIR,S
+// EXEC FFORTRAN
+
+  DOS FORTRAN IV 360N-FO-479 3-8
+
+    OPTIONS IN EFFECT
+    -----------------
+
+    LOAD   =4
+
+    DECK   NO
+
+    LIST   YES
+
+    LISTX  YES
+
+    EBCDIC
+  DOS FORTRAN IV 360N-FO-479 3-8         MAINPGM           DATE   03/29/70     TIME    12.14.18      PAGE 0001
+
+   0001              INTEGER RN
+   0002              INTEGER ISLSNM(5), IFMT(18)
+   0003              DOUBLE PRECISION DATE, GOOD, BAD, STATUS
+   0004              NAMELIST /PROUT/ IDEPNO, ISLSNO, ISLSNM, STATUS
+               C READ OBJECT TIME FORMAT AND CONSTANTS
+   0005              READ 1, IFMT
+   0006              READ 2, GOOD, BAD
+               C WRITE ATTENDEE LIST TO WORK FILE (SYS001)
+   0007           50 READ (5,3,END=60) IATT
+   0008              WRITE (1) IATT
+   0009              GO TO 50
+   0010           60 END FILE 1
+   0011              REWIND 1
+               C SET FILE FOR DIRECT ACCESS (SYS006)
+   0012              DEFINE FILE 9(23, 80, E, RN)
+               C GET TODAY'S DATE
+   0013           90 CALL OPSYS('LOAD','DEMOFDI1')
+   0014              CALL FORDTE(DATE)
+               C CREATE RANDOM NUMBER SEED
+   0015              CALL OPSYS('LOAD','DEMOFDI2')
+   0016              CALL FORTIM(IX)
+   0017              IX = IABS(IX / 2 + 1)
+   0018              LC = 99
+   0019              DO 900 L = 1, 10
+               C GET A RANDOM NUMBER 1-23
+   0020          100   REALY = RAND2(IX)
+   0021                RN = REALY * 23 + 1
+   0022                IF (RN .GT. 23) GO TO 100
+               C OPTIONAL FIND STMT.
+   0023                FIND(9'RN)
+               C READ RECORD RN USING OBJ.TIME FORMAT
+   0024                READ(9'RN,IFMT) IDEPNO, ISLSNO, ISLSNM
+               C CHECK FOR END OF PAGE
+   0025                IF (LC .LT. 50) GO TO 110
+   0026                PRINT 4, DATE
+   0027                LC = 0
+               C SEARCH ATTENDEE LIST FOR MATCH
+   0028          110   STATUS = BAD
+   0029          120   READ (1,END=190) IATT
+   0030                IF (IATT .EQ. ISLSNO) GO TO 180
+   0031                GO TO 120
+   0032          180   STATUS = GOOD
+   0033          190   REWIND 1
+               C WRITE FIELDS USING A NAMELIST
+   0034                WRITE(6,PROUT)
+   0035                LC = LC + 1
+               C WRITE FIELDS CORRECTLY
+   0036                PRINT 5, IDEPNO, ISLSNO, ISLSNM, STATUS
+   0037          900 CONTINUE
+   0038              WRITE(15,6)
+   0039              STOP
+   0040            1 FORMAT(18A4)
+   0041            2 FORMAT(2A8)
+   0042            3 FORMAT(I3)
+  DOS FORTRAN IV 360N-FO-479 3-8         MAINPGM           DATE   03/29/70     TIME    12.14.18      PAGE 0002
+
+   0043            4 FORMAT(1H1, A8)
+   0044            5 FORMAT(1H , I2, 2X, I3, 2X, 5A4, 2X, A8)
+   0045            6 FORMAT('JOB FINISHED')
+               C DEBUG PACKETS
+   0046              DEBUG UNIT(6), SUBCHK, TRACE, INIT(RN)
+   0047              AT 90
+   0048               TRACE ON
+   0049              AT 100
+   0050               DISPLAY IX, RN
+   0051              END
+  DOS FORTRAN IV 360N-FO-479 3-8         MAINPGM           DATE   03/29/70     TIME    12.14.18      PAGE 0003
+
+
+                               SCALAR MAP
+ SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION
+ GOOD          E8        BAD           F0        DATE          F8        STATUS       100        IATT         108
+ RN           10C        IX           110        LC           114        L            118        REALY        11C
+ IDEPNO       120        ISLSNO       124
+
+
+                               ARRAY MAP
+ SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION
+ ISLSNM       128        IFMT         13C
+
+
+                               SUBPROGRAMS CALLED
+ SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION
+ IBCOM#       184        DIOCS#       188        OPSYS        18C        FORDTE       190        FORTIM       194
+ RAND2        198        FWRNL#       19C        DEBUG#       1A0
+
+
+                               NAMELIST MAP
+ SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION
+ PROUT        1C4        DBG00#       214
+
+
+                               FORMAT STATEMENT MAP
+ SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION
+      1       260             2       266             3       26C             4       270             5       277
+      6       28C
+
+
+  DOS FORTRAN IV 360N-FO-479 3-8         MAINPGM           DATE   03/29/70     TIME    12.14.18      PAGE 0004
+
+  LOCATION   STA NUM     LABEL   OP         OPERAND                  BCD OPERAND
+   000000                        BALR       15,0
+   000002                        LM         2,3,34(15)
+   000006                        L          13,30(0,15)
+   00000A                        LA         15,2(0,15)
+   00000E                        ST         15,4(0,13)
+   000012                        BCR        15,2
+   000014                A4      DC         00000000                 A4
+   000018                        DC         07D4C1C9
+   00001C                        DC         D5D7C7D4
+   000020                        DC         00000000                 A20
+   000024                        DC         00000000                 A36
+   000028                        DC         00000000                 A52
+   0002F8                A52     L          13,4(0,13)
+   0002FC                        L          14,12(0,13)
+   000300                        LM         2,12,28(13)
+   000304                        MVI        12(13),255
+   000308                        BCR        15,14
+   00030A                A36     L          15,344(0,13)             IBCOM#
+   00030E                        LR         12,13
+   000310                        LR         13,4
+   000312                        BAL        14,64(0,15)
+   000316                        LR         13,12
+   000318                        L          15,372(0,13)             DEBUG#
+   00031C                        BAL        14,12(0,15)
+   000320                        DC         00000006
+   000324        5               L          15,372(0,13)             DEBUG#
+   000328                        BAL        14,44(0,15)
+   00032C                        L          15,344(0,13)             IBCOM#
+   000330                        BAL        14,0(0,15)
+   000334                        DC         04000001
+   000338                        DC         00000260
+   00033C                        L          15,344(0,13)             IBCOM#
+   000340                        BAL        14,12(0,15)
+   000344                        DC         0000013C
+   000348                        DC         04500012
+   00034C                        BAL        14,16(0,15)
+   000350                        L          15,372(0,13)             DEBUG#
+   000354                        BAL        14,48(0,15)
+   000358        6               L          15,372(0,13)             DEBUG#
+   00035C                        BAL        14,44(0,15)
+   000360                        L          15,344(0,13)             IBCOM#
+   000364                        BAL        14,0(0,15)
+   000368                        DC         04000001
+   00036C                        DC         00000266
+   000370                        L          15,344(0,13)             IBCOM#
+   000374                        BAL        14,8(0,15)
+   000378                        DC         0860D0BC
+   00037C                        BAL        14,8(0,15)
+   000380                        DC         0860D0C4
+   000384                        BAL        14,16(0,15)
+   000388                        L          15,372(0,13)             DEBUG#
+   00038C                        BAL        14,48(0,15)
+   000390                50      L          15,372(0,13)             DEBUG#
+  DOS FORTRAN IV 360N-FO-479 3-8         MAINPGM           DATE   03/29/70     TIME    12.14.18      PAGE 0005
+
+   000394                        BAL        14,0(0,15)
+   000398                        DC         00000032
+   00039C        7               L          15,372(0,13)             DEBUG#
+   0003A0                        BAL        14,44(0,15)
+   0003A4                        L          15,344(0,13)             IBCOM#
+   0003A8                        BAL        14,0(0,15)
+   0003AC                        DC         10000005
+   0003B0                        DC         0000026C
+   0003B4                        DC         00000000                 A68
+   0003B8                        BALR       14,0
+   0003BA                        BC         15,34(0,14)
+   0003BE                        BCR        0,0
+   0003C0                A68     DC         00000000                 A84
+   0003C4                A84     L          15,372(0,13)             DEBUG#
+   0003C8                        BAL        14,48(0,15)
+   0003CC                        BALR       14,0
+   0003CE                        L          14,10(0,14)
+   0003D2                        L          14,0(0,14)
+   0003D6                        BCR        15,14
+   0003D8                        DC         00000090
+   0003DC                        L          15,344(0,13)             IBCOM#
+   0003E0                        BAL        14,8(0,15)
+   0003E4                        DC         0450D0DC
+   0003E8                        BAL        14,16(0,15)
+   0003EC                        L          15,372(0,13)             DEBUG#
+   0003F0                        BAL        14,48(0,15)
+   0003F4        8               L          15,372(0,13)             DEBUG#
+   0003F8                        BAL        14,44(0,15)
+   0003FC                        L          15,344(0,13)             IBCOM#
+   000400                        BAL        14,24(0,15)
+   000404                        DC         00000001
+   000408                        L          15,344(0,13)             IBCOM#
+   00040C                        BAL        14,28(0,15)
+   000410                        DC         0450D0DC
+   000414                        BAL        14,36(0,15)
+   000418                        L          15,372(0,13)             DEBUG#
+   00041C                        BAL        14,48(0,15)
+   000420        9               L          14,96(0,13)              50
+   000424                        BCR        15,14
+   000426                60      L          15,372(0,13)             DEBUG#
+   00042A                        BCR        0,0
+   00042C                        BAL        14,0(0,15)
+   000430                        DC         0000003C
+   000434       10               L          15,344(0,13)             IBCOM#
+   000438                        BAL        14,48(0,15)
+   00043C                        DC         00000001
+   000440       11               L          15,344(0,13)             IBCOM#
+   000444                        BAL        14,44(0,15)
+   000448                        DC         00000001
+   00044C       12               L          15,348(0,13)             DIOCS#
+   000450                        BALR       3,0
+   000452                        LA         1,10(0,3)
+   000456                        BALR       14,15
+   000458                        BC         15,16(0,14)
+  DOS FORTRAN IV 360N-FO-479 3-8         MAINPGM           DATE   03/29/70     TIME    12.14.18      PAGE 0006
+
+   00045C                        DC         090002D8
+   000460                        DC         C50002DC
+   000464                        DC         8000010C
+   000468                90      L          14,124(0,13)             L60
+   00046C                        BCR        15,14
+   00046E                L68     L          15,372(0,13)             DEBUG#
+   000472                        BCR        0,0
+   000474                        BAL        14,0(0,15)
+   000478                        DC         0000005A
+   00047C       13               LA         1,376(0,13)
+   000480                        L          15,352(0,13)             OPSYS
+   000484                        BALR       14,15
+   000486                        BC         0,13(0,0)
+   00048A       14               LA         1,384(0,13)
+   00048E                        L          15,356(0,13)             FORDTE
+   000492                        BALR       14,15
+   000494                        BC         0,14(0,0)
+   000498       15               LA         1,388(0,13)
+   00049C                        L          15,352(0,13)             OPSYS
+   0004A0                        BALR       14,15
+   0004A2                        BC         0,15(0,0)
+   0004A6       16               LA         1,396(0,13)
+   0004AA                        L          15,360(0,13)             FORTIM
+   0004AE                        BALR       14,15
+   0004B0                        BC         0,16(0,0)
+   0004B4       17               L          0,228(0,13)              IX
+   0004B8                        SRDA       0,32(0)
+   0004BC                        D          0,692(0,13)
+   0004C0                        A          1,696(0,13)
+   0004C4                        LPR        1,1
+   0004C6                        ST         1,228(0,13)              IX
+   0004CA       18               L          0,700(0,13)
+   0004CE                        ST         0,232(0,13)              LC
+   0004D2       19               L          0,696(0,13)
+   0004D6                L76     ST         0,236(0,13)              L
+   0004DA                100     L          14,136(0,13)             L84
+   0004DE                        BCR        15,14
+   0004E0                L92     L          15,372(0,13)             DEBUG#
+   0004E4                        BAL        14,0(0,15)
+   0004E8                        DC         00000064
+   0004EC       20               LA         1,400(0,13)
+   0004F0                        L          15,364(0,13)             RAND2
+   0004F4                        BALR       14,15
+   0004F6                        BC         0,20(0,0)
+   0004FA                        STE        0,240(0,13)              REALY
+   0004FE       21               LE         0,240(0,13)              REALY
+   000502                        ME         0,704(0,13)
+   000506                        AE         0,708(0,13)
+   00050A                        SDR        2,2
+   00050C                        LER        2,0
+   00050E                        AW         2,660(0,13)
+   000512                        STD        2,652(0,13)
+   000516                        L          0,656(0,13)
+   00051A                        LTDR       2,2
+  DOS FORTRAN IV 360N-FO-479 3-8         MAINPGM           DATE   03/29/70     TIME    12.14.18      PAGE 0007
+
+   00051C                        BALR       14,0
+   00051E                        BC         11,6(0,14)
+   000522                        LCR        0,0
+   000524                        ST         0,224(0,13)              RN
+   000528                        L          15,372(0,13)             DEBUG#
+   00052C                        BAL        14,16(0,15)
+   000530                        DC         D9D54040
+   000534                        DC         40404040
+   000538                        DC         0450D0E0
+   00053C       22               L          0,224(0,13)              RN
+   000540                        C          0,684(0,13)
+   000544                        L          14,104(0,13)             100
+   000548                        BCR        2,14
+   00054A       23               L          15,372(0,13)             DEBUG#
+   00054E                        BCR        0,0
+   000550                        BAL        14,44(0,15)
+   000554                        L          15,344(0,13)             IBCOM#
+   000558                        BAL        14,20(0,15)
+   00055C                        DC         C0000009
+   000560                        DC         0100010C
+   000564                        L          15,344(0,13)             IBCOM#
+   000568                        BAL        14,36(0,15)
+   00056C                        L          15,372(0,13)             DEBUG#
+   000570                        BAL        14,48(0,15)
+   000574       24               L          15,372(0,13)             DEBUG#
+   000578                        BAL        14,44(0,15)
+   00057C                        L          15,344(0,13)             IBCOM#
+   000580                        BAL        14,0(0,15)
+   000584                        DC         80000009
+   000588                        DC         0100013C
+   00058C                        DC         0100010C
+   000590                        L          15,344(0,13)             IBCOM#
+   000594                        BAL        14,8(0,15)
+   000598                        DC         0450D0F4
+   00059C                        BAL        14,8(0,15)
+   0005A0                        DC         0450D0F8
+   0005A4                        BAL        14,12(0,15)
+   0005A8                        DC         00000128
+   0005AC                        DC         04500005
+   0005B0                        BAL        14,16(0,15)
+   0005B4                        L          15,372(0,13)             DEBUG#
+   0005B8                        BAL        14,48(0,15)
+   0005BC       25               L          0,232(0,13)              LC
+   0005C0                        C          0,712(0,13)
+   0005C4                        L          14,108(0,13)             110
+   0005C8                        BCR        4,14
+   0005CA       26               L          15,372(0,13)             DEBUG#
+   0005CE                        BCR        0,0
+   0005D0                        BAL        14,44(0,15)
+   0005D4                        L          15,344(0,13)             IBCOM#
+   0005D8                        BAL        14,4(0,15)
+   0005DC                        DC         04000002
+   0005E0                        DC         00000270
+   0005E4                        L          15,344(0,13)             IBCOM#
+  DOS FORTRAN IV 360N-FO-479 3-8         MAINPGM           DATE   03/29/70     TIME    12.14.18      PAGE 0008
+
+   0005E8                        BAL        14,8(0,15)
+   0005EC                        DC         0860D0CC
+   0005F0                        BAL        14,16(0,15)
+   0005F4                        L          15,372(0,13)             DEBUG#
+   0005F8                        BAL        14,48(0,15)
+   0005FC       27               L          0,628(0,13)
+   000600                        ST         0,232(0,13)              LC
+   000604                110     L          15,372(0,13)             DEBUG#
+   000608                        BAL        14,0(0,15)
+   00060C                        DC         0000006E
+   000610       28               LD         0,196(0,13)              BAD
+   000614                        STD        0,212(0,13)              STATUS
+   000618                120     L          15,372(0,13)             DEBUG#
+   00061C                        BAL        14,0(0,15)
+   000620                        DC         00000078
+   000624       29               L          15,372(0,13)             DEBUG#
+   000628                        BAL        14,44(0,15)
+   00062C                        L          15,344(0,13)             IBCOM#
+   000630                        BAL        14,20(0,15)
+   000634                        DC         10000001
+   000638                        DC         00000000                 A100
+   00063C                        BALR       14,0
+   00063E                        BC         15,34(0,14)
+   000642                        BCR        0,0
+   000644                A100    DC         00000000                 A116
+   000648                A116    L          15,372(0,13)             DEBUG#
+   00064C                        BAL        14,48(0,15)
+   000650                        BALR       14,0
+   000652                        L          14,10(0,14)
+   000656                        L          14,0(0,14)
+   00065A                        BCR        15,14
+   00065C                        DC         000000A0
+   000660                        L          15,344(0,13)             IBCOM#
+   000664                        BAL        14,28(0,15)
+   000668                        DC         0450D0DC
+   00066C                        BAL        14,36(0,15)
+   000670                        L          15,372(0,13)             DEBUG#
+   000674                        BAL        14,48(0,15)
+   000678       30               L          0,220(0,13)              IATT
+   00067C                        C          0,248(0,13)              ISLSNO
+   000680                        L          14,120(0,13)             180
+   000684                        BCR        8,14
+   000686       31               L          14,112(0,13)             120
+   00068A                        BCR        15,14
+   00068C                180     L          15,372(0,13)             DEBUG#
+   000690                        BAL        14,0(0,15)
+   000694                        DC         000000B4
+   000698       32               LD         0,188(0,13)              GOOD
+   00069C                        STD        0,212(0,13)              STATUS
+   0006A0                190     L          15,372(0,13)             DEBUG#
+   0006A4                        BAL        14,0(0,15)
+   0006A8                        DC         000000BE
+   0006AC       33               L          15,344(0,13)             IBCOM#
+   0006B0                        BAL        14,44(0,15)
+  DOS FORTRAN IV 360N-FO-479 3-8         MAINPGM           DATE   03/29/70     TIME    12.14.18      PAGE 0009
+
+   0006B4                        DC         00000001
+   0006B8       34               L          15,372(0,13)             DEBUG#
+   0006BC                        BAL        14,44(0,15)
+   0006C0                        L          15,368(0,13)             FWRNL#
+   0006C4                        BAL        14,0(0,15)
+   0006C8                        DC         00000006
+   0006CC                        DC         000001C4
+   0006D0                        L          15,372(0,13)             DEBUG#
+   0006D4                        BAL        14,48(0,15)
+   0006D8       35               L          0,232(0,13)              LC
+   0006DC                        A          0,696(0,13)
+   0006E0                        ST         0,232(0,13)              LC
+   0006E4       36               L          15,372(0,13)             DEBUG#
+   0006E8                        BAL        14,44(0,15)
+   0006EC                        L          15,344(0,13)             IBCOM#
+   0006F0                        BAL        14,4(0,15)
+   0006F4                        DC         04000002
+   0006F8                        DC         00000277
+   0006FC                        L          15,344(0,13)             IBCOM#
+   000700                        BAL        14,8(0,15)
+   000704                        DC         0450D0F4
+   000708                        BAL        14,8(0,15)
+   00070C                        DC         0450D0F8
+   000710                        BAL        14,12(0,15)
+   000714                        DC         00000128
+   000718                        DC         04500005
+   00071C                        BAL        14,8(0,15)
+   000720                        DC         0860D0D4
+   000724                        BAL        14,16(0,15)
+   000728                        L          15,372(0,13)             DEBUG#
+   00072C                        BAL        14,48(0,15)
+   000730                900     L          15,372(0,13)             DEBUG#
+   000734                        BAL        14,0(0,15)
+   000738                        DC         00000384
+   00073C       37               L          0,236(0,13)              L
+   000740                        L          1,132(0,13)              L76
+   000744                        LA         2,1(0,0)
+   000748                        LA         3,10(0,0)
+   00074C                        BXLE       0,2,0(1)
+   000750       38               L          15,372(0,13)             DEBUG#
+   000754                        BAL        14,44(0,15)
+   000758                        L          15,344(0,13)             IBCOM#
+   00075C                        BAL        14,4(0,15)
+   000760                        DC         0000000F
+   000764                        DC         0000028C
+   000768                        L          15,344(0,13)             IBCOM#
+   00076C                        BAL        14,16(0,15)
+   000770                        L          15,372(0,13)             DEBUG#
+   000774                        BAL        14,48(0,15)
+   000778       39               L          15,344(0,13)             IBCOM#
+   00077C                        BAL        14,52(0,15)
+   000780                        DC         05404040
+   000784                        DC         4040
+   000786       46               L          15,344(0,13)             IBCOM#
+  DOS FORTRAN IV 360N-FO-479 3-8         MAINPGM           DATE   03/29/70     TIME    12.14.18      PAGE 0010
+
+   00078A                        BAL        14,52(0,15)
+   00078E                        DC         05404040
+   000792                        DC         40F0
+   000794       48       L60     L          15,372(0,13)             DEBUG#
+   000798                        BAL        14,32(0,15)
+   00079C       49               L          14,128(0,13)             L68
+   0007A0                        BCR        15,14
+   0007A2       50       L84     L          15,372(0,13)             DEBUG#
+   0007A6                        BCR        0,0
+   0007A8                        BAL        14,40(0,15)
+   0007AC                        DC         00000214
+   0007B0                        DC         0000019C
+   0007B4       51               L          14,140(0,13)             L92
+   0007B8                        BCR        15,14
+                                 END
+    TOTAL MEMORY REQUIREMENTS 0007BA BYTES
+
+    HIGHEST SEVERITY LEVEL OF ERRORS FOR THIS MODULE WAS 0
+  DOS FORTRAN IV 360N-FO-479 3-8         RAND2             DATE   03/29/70     TIME    12.14.18      PAGE 0001
+
+   0001              FUNCTION RAND2(IX)
+               C FUNCTION TO RETURN A (PSUEDO)RANDOM NUMBER
+   0002              IX = IX * 65539
+   0003              IF (IX .LT. 0) IX = IX + 2147483647 + 1
+   0004              RAND2 = FLOAT(IX) / 2147483647.
+   0005              RETURN
+               C DEBUG PACKET
+   0006              DEBUG UNIT(6), SUBTRACE
+   0007              END
+  DOS FORTRAN IV 360N-FO-479 3-8         RAND2             DATE   03/29/70     TIME    12.14.18      PAGE 0002
+
+
+                               EQUIVALENCE DATA MAP
+ SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION
+ RAND2         98
+
+
+                               SCALAR MAP
+ SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION
+ IX            9C
+
+
+                               SUBPROGRAMS CALLED
+ SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION      SYMBOL    LOCATION
+ DEBUG#        A0
+
+
+  DOS FORTRAN IV 360N-FO-479 3-8         RAND2             DATE   03/29/70     TIME    12.14.18      PAGE 0003
+
+  LOCATION   STA NUM     LABEL   OP         OPERAND                  BCD OPERAND
+   000000                        BC         15,12(0,15)
+   000004                        DC         07D9C1D5
+   000008                        DC         C4F24040
+   00000C                        STM        14,12,12(13)
+   000010                        LM         2,3,40(15)
+   000014                        LR         4,13
+   000016                        L          13,36(0,15)
+   00001A                        ST         13,8(0,4)
+   00001E                        STM        3,4,0(13)
+   000022                        BCR        15,2
+   000024                        DC         00000000                 A4
+   000028                        DC         00000000                 A20
+   00002C                        DC         00000000                 A36
+   0000F0                A20     L          15,112(0,13)             DEBUG#
+   0000F4                        BAL        14,12(0,15)
+   0000F8                        DC         00000006
+   0000FC                        L          15,112(0,13)             DEBUG#
+   000100                        BAL        14,4(0,15)
+   000104                        L          2,0(0,1)
+   000108                        MVC        108(3,13),0(2)
+   00010E                        BCR        0,0
+   000110                        BALR       2,0
+   000112                        L          3,6(0,2)
+   000116                        BCR        15,3
+   000118                        DC         00000000                 A52
+   00011C                A36     L          1,4(0,13)
+   000120                        L          1,24(0,1)
+   000124                        L          2,0(0,1)
+   000128                        MVC        0(3,2),108(13)
+   00012E                        LE         0,104(0,13)              RAND2
+   000132                        LR         4,15
+   000134                        L          15,112(0,13)             DEBUG#
+   000138                        BAL        14,8(15,0)
+   00013C                        LR         15,4
+   00013E                        L          13,4(0,13)
+   000142                        L          14,12(0,13)
+   000146                        LM         2,12,28(13)
+   00014A                        MVI        12(13),255
+   00014E                        BCR        15,14
+   000150        2       A52     L          1,108(0,13)              IX
+   000154                        M          0,176(0,13)
+   000158                        ST         1,108(0,13)              IX
+   00015C        3               L          0,108(0,13)              IX
+   000160                        C          0,120(0,13)
+   000164                        L          14,96(0,13)              L4
+   000168                        BCR        11,14
+   00016A                        L          0,108(0,13)              IX
+   00016E                        A          0,180(0,13)
+   000172                        A          0,184(0,13)
+   000176                        ST         0,108(0,13)              IX
+   00017A        4       L4      L          0,108(0,13)              IX
+   00017E                        LPR        1,0
+   000180                        ST         1,140(0,13)
+  DOS FORTRAN IV 360N-FO-479 3-8         RAND2             DATE   03/29/70     TIME    12.14.18      PAGE 0004
+
+   000184                        LD         0,136(0,13)
+   000188                        AD         0,120(0,13)
+   00018C                        LTR        0,0
+   00018E                        BALR       14,0
+   000190                        BC         11,6(0,14)
+   000194                        LCDR       0,0
+   000196                        DE         0,188(0,13)
+   00019A                        STE        0,104(0,13)              RAND2
+   00019E        5               SR         15,15
+   0001A0                        L          1,0(0,13)
+   0001A4                        BCR        15,1
+   0001A6        6               SR         15,15
+   0001A8                        L          1,0(0,13)
+   0001AC                        BCR        15,1
+                                 END
+    TOTAL MEMORY REQUIREMENTS 0001AE BYTES
+
+    HIGHEST SEVERITY LEVEL OF ERRORS FOR THIS MODULE WAS 0
+    12.14.18,TOTAL COMPILATION TIME,00.00.00
+ INCLUDE ILFGHTAB  USE ALTERNATE UNIT TABLE, TO MATCH OS G AND H I/O
+ PHASE DEMOFDI1,*
+ INCLUDE ,(FORDTE)
+ PHASE DEMOFDI2,DEMOFDI1
+ INCLUDE ,(FORTIM)
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+FORDTE    SD  01 000000 00001A
+FORTIM    SD  02 000020 00001E
+       GET DATE AND TIME FOR FFORTRAN                                                                          PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      2 *        PRINT NOGEN
+000000                                3 FORDTE   CSECT
+000001                                4 R1       EQU   1
+000002                                5 R2       EQU   2
+00000C                                6 R12      EQU   12
+00000D                                7 R13      EQU   13
+00000E                                8 R14      EQU   14
+00000F                                9 R15      EQU   15
+000000                               10          USING *,R15
+000000 90EC D00C            0000C    11          STM   R14,R12,12(R13)
+000004 5821 0000            00000    12          L     R2,0(R1)
+                                     13          COMRG
+                                     14+* 360N-CL-453 COMRG    CHANGE LEVEL 3-0
+000008 5810 0014            00014    15+         L     1,20
+00000C 0A21                          16+         SVC   33
+00000E D207 2000 1000 00000 00000    17          MVC   0(8,R2),0(R1)
+000014 98EC D00C            0000C    18          LM    R14,R12,12(R13)
+000018 07FE                          19          BR    R14
+000020                               20 FORTIM   CSECT
+000020                               21          USING *,R15
+000020 90EC D00C            0000C    22          STM   R14,R12,12(R13)
+000024 5821 0000            00000    23          L     R2,0(R1)
+                                     24          GETIME TU
+                                     25+* 360N-CL-453 GETIME   CHANGE LEVEL 3-0
+000028 0A22                          26+         SVC   34 GET TIMER VALUE IN
+00002A 9801 0050            00050    27+         LM    0,1,80 SEC/76800
+00002E 8800 0008            00008    28+         SRL   0,8 TIMER IN SEC/300
+000032 1F10                          29+         SLR   1,0 TIME OF DAY IN SEC/300
+000034 5012 0000            00000    30          ST    R1,0(R2)
+000038 98EC D00C            0000C    31          LM    R14,R12,12(R13)
+00003C 07FE                          32          BR    R14
+                                     33          END
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC LNKEDT
+
+JOB  DEMOFADV  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST   PHASE DEMOFDIR,S
+LIST   INCLUDE ILFGHTAB  USE ALTERNATE UNIT TABLE, TO MATCH OS G AND H I/O
+LIST   AUTOLINK   ILFDEBUG
+LIST   AUTOLINK   ILFADCON
+LIST   AUTOLINK   ILFDIOCS
+LIST   AUTOLINK   ILFFIOCS
+LIST   AUTOLINK   IJJCPD1
+LIST   AUTOLINK   ILFIBCOM
+LIST   AUTOLINK   ILFFINT
+LIST   AUTOLINK   ILFNAMEL
+LIST   PHASE DEMOFDI1,*
+LIST   INCLUDE ,(FORDTE)
+LIST   PHASE DEMOFDI2,DEMOFDI1
+LIST   INCLUDE ,(FORTIM)
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        DEMOFDIR  006000  006000  00B445  1B 06 4  CSECT     MAINPGM   006000  006000
+
+                                                   CSECT     ILFIBCOM  0095D8  0095D8
+                                                      ENTRY  IBCOM#    0095D8
+                                                      ENTRY  OPSYS     00A30C
+                                                      ENTRY  IOSWF     0096C9
+                                                      ENTRY  READSW    00A468
+                                                      ENTRY  INTSW     00A46A
+                                                      ENTRY  PDPAR     00A280
+                                                      ENTRY  DUMPSW#   00A20A
+                                                   *  ENTRY  IJTINTSW  00A46A
+
+                                                   CSECT     ILFDIOCS  0082B8  0082B8
+                                                      ENTRY  DIOCS#    0082B8
+                                                   *  ENTRY  ILFDIOCR  00835E
+
+                                                   CSECT     RAND2     0067C0  0067C0
+
+                                                   CSECT     ILFNAMEL  00AB88  00AB88
+                                                      ENTRY  FWRNL#    00B13C
+                                                   *  ENTRY  FRDNL#    00AB88
+
+                                                   CSECT     ILFDEBUG  006A70  006A70
+                                                      ENTRY  DEBUG#    006A70
+
+                                                   CSECT     ILFUNTAB  006970  006970
+
+                                                   CSECT     ILFADCON  0071D8  0071D8
+                                                      ENTRY  ILFFCVEO  007CC2
+                                                      ENTRY  ILFFCVLO  00745A
+                                                      ENTRY  ILFFCVIO  007798
+                                                      ENTRY  ILFFCVCO  007EDC
+                                                      ENTRY  ILFFCVAO  0073CA
+                                                      ENTRY  ILFFCVZO  007324
+                                                      ENTRY  INT6SW    0082A0
+
+                                                   CSECT     ILFFIOCS  008560  008560
+                                                      ENTRY  IJSYSLO   0092F8
+                                                      ENTRY  ILFBFORG  0091E8
+                                                      ENTRY  ILFFBORG  0091EC
+                                                      ENTRY  ADIOCR#   00913C
+                                                   *  ENTRY  UBRSAVE   0091E4
+
+                                                   CSECT     IJJCPD1   0093E0  0093E0
+                                                   *  ENTRY  IJJCPD1N  0093E0
+                                                   *  ENTRY  IJJCPD3   0093E0
+
+                                                   CSECT     IJ2L0005  009370  008560
+
+                                                   CSECT     ILFFINT   00A5B8  00A5B8
+                                                      ENTRY  SAVERR    00AA98
+
+        DEMOFDI1  00B448  00B448  00B461  1B 0A 1  CSECT     FORDTE    00B448  00B448
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        DEMOFDI2  00B448  00B448  00B465  1B 0A 2  CSECT     FORTIM    00B448  00B428
+// ASSGN SYS006,X'192'
+// DLBL IJSYS06,'PEOPLE'
+// EXTENT SYS006,WRK14A
+// EXEC
+
+TRACE 90
+&DBG00#
+IX=    6608961,RN=          0
+&END
+TRACE 100
+SUBTRACE RAND2
+SUBTRACE *RETURN*
+RN = 17
+03/29/70
+TRACE 110
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 190
+&PROUT
+IDEPNO=         40,ISLSNO=        171,ISLSNM=-1009327389,-1049935659,-1042988830, 1262501952, 1077952576,STATUS=
+ 0.4296613435945619D 34
+&END
+40  171  COSTA, NAN S.         *LOSER**
+TRACE 900
+&DBG00#
+IX= 1500481731,RN=         18
+&END
+TRACE 100
+SUBTRACE RAND2
+SUBTRACE *RETURN*
+RN = 4
+TRACE 110
+TRACE 120
+TRACE 120
+TRACE 180
+TRACE 190
+&PROUT
+IDEPNO=         10,ISLSNO=        325,ISLSNM= -926817338, -909782076, 1799410881, -640532279, 1262501952,STATUS=
+ 0.4680945248247859D 34
+&END
+10  325  HATFIELD, MARK I.     *WINNER*
+TRACE 900
+&DBG00#
+IX=  353475145,RN=          5
+&END
+TRACE 100
+SUBTRACE RAND2
+SUBTRACE *RETURN*
+RN = 17
+TRACE 110
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 190
+&PROUT
+IDEPNO=         40,ISLSNO=        171,ISLSNM=-1009327389,-1049935659,-1042988830, 1262501952, 1077952576,STATUS=
+ 0.4296613435945619D 34
+&END
+40  171  COSTA, NAN S.         *LOSER**
+TRACE 900
+&DBG00#
+IX= 1501417179,RN=         18
+&END
+TRACE 100
+SUBTRACE RAND2
+SUBTRACE *RETURN*
+RN = 17
+TRACE 110
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 190
+&PROUT
+IDEPNO=         40,ISLSNO=        171,ISLSNM=-1009327389,-1049935659,-1042988830, 1262501952, 1077952576,STATUS=
+ 0.4296613435945619D 34
+&END
+40  171  COSTA, NAN S.         *LOSER**
+TRACE 900
+&DBG00#
+IX= 1532259473,RN=         18
+&END
+TRACE 100
+SUBTRACE RAND2
+SUBTRACE *RETURN*
+RN = 23
+TRACE 110
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 190
+&PROUT
+IDEPNO=         50,ISLSNO=        105,ISLSNM=-1027218461, -908738087, -993432768, -640231999, -742113216,STATUS=
+ 0.4296613435945619D 34
+&END
+50  105  BETTINARDI, RONALD    *LOSER**
+TRACE 900
+&DBG00#
+IX= 2123253171,RN=         24
+&END
+TRACE 100
+SUBTRACE RAND2
+SUBTRACE *RETURN*
+RN = 12
+TRACE 110
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 180
+TRACE 190
+&PROUT
+IDEPNO=         30,ISLSNO=         30,ISLSNM=-1043082282, -641346197, 1088021731, -935270837, 1077952576,STATUS=
+ 0.4680945248247859D 34
+&END
+30   30  ALLOREN, RUTH W.      *WINNER*
+TRACE 900
+&DBG00#
+IX= 1096667417,RN=         13
+&END
+TRACE 100
+SUBTRACE RAND2
+SUBTRACE *RETURN*
+RN = 4
+TRACE 110
+TRACE 120
+TRACE 120
+TRACE 180
+TRACE 190
+&PROUT
+IDEPNO=         10,ISLSNO=        325,ISLSNM= -926817338, -909782076, 1799410881, -640532279, 1262501952,STATUS=
+ 0.4680945248247859D 34
+&END
+10  325  HATFIELD, MARK I.     *WINNER*
+TRACE 900
+&DBG00#
+IX=  355627851,RN=          5
+&END
+TRACE 100
+SUBTRACE RAND2
+SUBTRACE *RETURN*
+RN = 10
+TRACE 110
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 180
+TRACE 190
+&PROUT
+IDEPNO=         20,ISLSNO=        801,ISLSNM= -490485563, -909982247, 1799407809, -640030656, -481607616,STATUS=
+ 0.4680945248247859D 34
+&END
+20  801  SCHEIBER, HARRY T.    *WINNER*
+TRACE 900
+&DBG00#
+IX=  853694945,RN=         11
+&END
+TRACE 100
+SUBTRACE RAND2
+SUBTRACE *RETURN*
+RN = 21
+TRACE 110
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 190
+&PROUT
+IDEPNO=         50,ISLSNO=         40,ISLSNM=-1042033975, -706554155, 1799406536,-1042689083, -499105728,STATUS=
+ 0.4296613435945619D 34
+&END
+50   40  ATKINSON, CHARLES     *LOSER**
+TRACE 900
+&DBG00#
+IX= 1921519011,RN=         22
+&END
+TRACE 100
+SUBTRACE RAND2
+SUBTRACE *RETURN*
+RN = 19
+TRACE 110
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 120
+TRACE 190
+&PROUT
+IDEPNO=         40,ISLSNO=        317,ISLSNM= -926820926, -976917696,-1043085853, -473874218, 1262501952,STATUS=
+ 0.4296613435945619D 34
+&END
+40  317  HANBEE, ALETTA O.     *LOSER**
+TRACE 900
+EOJ DEMOFADV                                                            12.14.19,DURATION 00.00.14

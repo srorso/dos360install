@@ -1,0 +1,6 @@
+# DISTRIB01 Initialize 2311 RES11A on 130
+sysclear                               # ensure system reset and cleared
+devinit 280 tape/k360n-ma108a.aws ro   # mount DOS/360 distrib vol 1 read-only
+stopall                                # stop all processors
+iplc 280                               # boot distrib volume
+devinit 00c jcl/distrib01.jcl          # initialize RES11A

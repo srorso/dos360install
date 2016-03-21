@@ -1,0 +1,6 @@
+# DISTRIB02 Initialize 2311 RES11B on 131
+stopall                                # halt CPU, required for IPL
+devinit 280 tape/k360n-ma108a.aws ro   # rewind DOS/360 distrib vol 1 read-only
+stopall                                # stop all processors
+iplc 280                               # boot distrib volume again
+devinit 00c jcl/distrib02.jcl          # initialize RES11B

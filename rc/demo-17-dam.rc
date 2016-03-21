@@ -1,0 +1,3 @@
+# Demonstrate Direct Access (DA) file processing
+devinit e prt/demo-dam.txt crlf
+devinit c demos/demodam.jcl

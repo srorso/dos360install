@@ -1,0 +1,3 @@
+# Verify assembler, sort/merge, sequential disk LIOCS, F2 execution
+devinit e prt/verify-1-asm4.txt crlf
+devinit c jcl/verasm04.jcl

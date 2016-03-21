@@ -1,0 +1,513 @@
+
+// JOB POWER01 CATALOG POWER RELO AND SOURCE                            13.40.46
+* DEBLOCK POWER TO SCRATCH TAPE, 1 FILE
+// ASSGN SYS004,X'280'                  INPUT TAPE
+// ASSGN SYS005,X'281'                  OUTPUT TAPE
+// UPSI 10100000                        USE UNLABELED TAPES
+* RESPOND 'Y' TO MSG '8001D IS IT EOF'
+// EXEC TPTP
+
+// UTT TRF,FF,A=(81,3240),B=(80,80),IR,OR
+// FS 2,80,1
+// END
+TAPE TO TAPE UTILITY
+INPUT RECORD LENGTH 0081
+OUTPUT RECORD LENGTH  0080
+INPUT BLOCK LENGTH 03240
+OUTPUT BLOCK LENGTH 00080
+INPUT OPTION REWIND
+OUTPUT OPTION    REWIND         ,WRITE TAPE MARK
+2 INPUT,2 OUTPUT AREAS ASSIGNED
+RECORD FORMAT FIXED
+TYPE REBLOCK, FIELD SELECT
+STARTING RECORD NUMBER  00000001
+BLOCK NO. 000168, INPUT AREA UNDERFLOW
+8001D IS IT EOF
+REPLY Y
+NUMBER OF INPUT BLOCKS PROCESSED  000168
+NUMBER OF OUTPUT BLOCKS PROCESSED 006684
+END OF JOB
+// DLBL IJSYSRL,'POWER.PRIVATE.RELO',99/365,SD
+// EXTENT SYSRLB,SPOOL1,1,1,2940,100
+// DLBL IJSYSSL,'POWER.PRIVATE.SOURCE',99/365,SD
+// EXTENT SYSSLB,SPOOL1,1,1,3040,140
+// ASSGN SYSRLB,X'191'
+// ASSGN SYSSLB,X'191'
+// EXEC CORGZ
+
+ NEWVOL RL=5(3),SL=7(3)
+PRIVATE DIRECTORY               PRV-RELOCATABLE     PRV-SOURCE STATEMENT
+
+03/29/70                        ---------------DECIMAL----------------------
+
+                                    C  H  R  E          C  H  R  E
+DIRECTORY STARTING ADDRESS        147 00 01           152 00 01
+DIRECTORY NEXT ENTRY              147 00 01 05        152 00 01 05
+DIRECTORY LAST ENTRY              147 02 17 19        152 02 27 09
+
+LIBRARY   STARTING ADDRESS        147 03 01           152 03 01
+LIBRARY   NEXT AVAILABLE ENTRY    147 03 01           152 03 01
+LIBRARY   LAST AVAILABLE ENTRY    151 19 16           158 19 27
+
+                                ---------STATUS INFORMATION-----------------
+
+DIRECTORY ENTRIES ACTIVE           00                  00
+
+LIBRARY   BLOCKS ALLOCATED       1552                3699
+LIBRARY   BLOCKS ACTIVE            00                  00
+LIBRARY   BLOCKS DELETED           00                  00
+LIBRARY   BLOCKS AVAILABLE       1552                3699
+
+AUTOMATIC CONDENSE LIMIT           00                  00
+
+LIBRARY   ALLOCATED CYLINDERS      05                  07
+DIRECTORY ALLOCATED TRACKS         03                  03
+// ASSGN SYSIPT,X'281'
+// MTC REW,SYSIPT
+// MTC FSF,SYSIPT,1  SKIP LEADING TAPE MARK
+// EXEC MAINT      SL - BASE FUNCTION
+
+        CATALS   A.POWER,4.1
+        CATALS   A.POWERRES,4.1
+        CATALS   A.POWERSUP,4.1
+        CATALS   A.POWERBUF,4.1
+        CATALS   A.POWERDS,4.1
+        CATALS   A.POWERDS2,4.1
+        CATALS   A.DSKIO,4.1
+PRIVATE DIRECTORY               PRV-RELOCATABLE     PRV-SOURCE STATEMENT
+
+03/29/70                        ---------------DECIMAL----------------------
+
+                                    C  H  R  E          C  H  R  E
+DIRECTORY STARTING ADDRESS        147 00 01           152 00 01
+DIRECTORY NEXT ENTRY              147 00 01 05        152 00 02 02
+DIRECTORY LAST ENTRY              147 02 17 19        152 02 27 09
+
+LIBRARY   STARTING ADDRESS        147 03 01           152 03 01
+LIBRARY   NEXT AVAILABLE ENTRY    147 03 01           155 07 17
+LIBRARY   LAST AVAILABLE ENTRY    151 19 16           158 19 27
+
+                                ---------STATUS INFORMATION-----------------
+
+DIRECTORY ENTRIES ACTIVE           00                  07
+
+LIBRARY   BLOCKS ALLOCATED       1552                3699
+LIBRARY   BLOCKS ACTIVE            00                1744
+LIBRARY   BLOCKS DELETED           00                  00
+LIBRARY   BLOCKS AVAILABLE       1552                1955
+
+AUTOMATIC CONDENSE LIMIT           00                  00
+
+LIBRARY   ALLOCATED CYLINDERS      05                  07
+DIRECTORY ALLOCATED TRACKS         03                  03
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 13 08 10              56 04 09 05             133 01 09 03
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        26 11 04                109 12 12                177 06 10
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             953                     1520                      348
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE             2054                    17003                    23661
+LIBRARY   BLOCKS DELETED              00                       00                       00
+LIBRARY   BLOCKS AVAILABLE          2426                     7477                    11169
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+// EXEC MAINT      RL - BASE FUNCTION
+
+   CATALR POWEROBJ,0.0               00047                                  0000
+   CATALR FGPSPOLR,0.0               00005                                  0000
+   CATALR FGPSPOLA,4.1               00006                                  0000
+   CATALR FGPSPOLK,4.1               00004                                  0000
+   CATALR FGPSPOLB,4.1               00005                                  0000
+   CATALR FGPSPOL4,4.1               00005                                  0000
+   CATALR FGPSPOLC,4.1               00006                                  0000
+   CATALR FGPSPOLD,4.1               00006                                  0000
+   CATALR FGPSPOLG,0.0               00003                                  0000
+   CATALR FGPSPOLT,0.0               00005                                  0000
+   CATALR FGPSPOL0,4.1               00006                                  0000
+   CATALR FGPSPOL1,4.1               00006                                  0000
+   CATALR FGPSPOL2,0.0               00005                                  0000
+   CATALR FGPSPOL3,4.1               00006                                  0000
+   CATALR FGPSPOLE,4.1               00005                                  0000
+   CATALR FGPSPOLF,4.1               00006                                  0000
+   CATALR FGPSPOLI,4.1               00004                                  0000
+   CATALR FGPSPOL9,4.1               00005                                  0000
+   CATALR FGPSPOLH,4.2               00007                                  0000
+   CATALR FGPSPOLP,0.0               00005                                  0000
+   CATALR FGPSPOL5,0.0               00007                                  0000
+   CATALR FGPSPOL6,0.0               00004                                  0000
+   CATALR FGPSPOL7,0.0               00005                                  0000
+   CATALR FGPSPOL8,4.1               00006                                  0000
+   CATALR FGPSPOLJ,4.1               00005                                  0000
+   CATALR FGPSPOLM,4.1               00005                                  0000
+   CATALR FGPSPOLN,4.1               00006                                  0000
+   CATALR FGPTYPN0,0.0               00006                                  0000
+   CATALR FGPTYPN1,0.0               00006                                  0000
+   CATALR FGPTYPS0,4.1               00006                                  0000
+   CATALR FGPTYPD0,4.1               00006                                  0000
+   CATALR FGPTYPD1,0.0               00006                                  0000
+   CATALR FGPTYPD2,4.1               00005                                  0000
+   CATALR FGPTYPR0,4.1               00006                                  0000
+   CATALR FGPTYPL0,4.1               00006                                  0000
+   CATALR FGPTYPL1,4.1               00006                                  0000
+   CATALR FGPTYPP0,4.1               00007                                  0000
+   CATALR FGPTYPA0,0.0               00005                                  0000
+   CATALR FGPTYPA1,0.0               00005                                  0000
+   CATALR FGPTYPA2,0.0               00004                                  0000
+   CATALR FGPTYPJ0,4.1               00005                                  0000
+   CATALR FGPTYPZ0,0.0               00007                                  0000
+   CATALR FGPTYPZ1,0.0               00006                                  0000
+   CATALR FGPTYPZ3,0.0               00004                                  0000
+   CATALR FGPTYPZ5,4.1               00007                                  0000
+   CATALR $$BPOWR1,4.1               00006                                  0000
+   CATALR $$BPOWR2,0.0               00007                                  0000
+PRIVATE DIRECTORY               PRV-RELOCATABLE     PRV-SOURCE STATEMENT
+
+03/29/70                        ---------------DECIMAL----------------------
+
+                                    C  H  R  E          C  H  R  E
+DIRECTORY STARTING ADDRESS        147 00 01           152 00 01
+DIRECTORY NEXT ENTRY              147 00 03 12        152 00 02 02
+DIRECTORY LAST ENTRY              147 02 17 19        152 02 27 09
+
+LIBRARY   STARTING ADDRESS        147 03 01           152 03 01
+LIBRARY   NEXT AVAILABLE ENTRY    148 01 14           155 07 17
+LIBRARY   LAST AVAILABLE ENTRY    151 19 16           158 19 27
+
+                                ---------STATUS INFORMATION-----------------
+
+DIRECTORY ENTRIES ACTIVE           47                  07
+
+LIBRARY   BLOCKS ALLOCATED       1552                3699
+LIBRARY   BLOCKS ACTIVE           301                1744
+LIBRARY   BLOCKS DELETED           00                  00
+LIBRARY   BLOCKS AVAILABLE       1251                1955
+
+AUTOMATIC CONDENSE LIMIT           00                  00
+
+LIBRARY   ALLOCATED CYLINDERS      05                  07
+DIRECTORY ALLOCATED TRACKS         03                  03
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 13 08 10              56 04 09 05             133 01 09 03
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        26 11 04                109 12 12                177 06 10
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             953                     1520                      348
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE             2054                    17003                    23661
+LIBRARY   BLOCKS DELETED              00                       00                       00
+LIBRARY   BLOCKS AVAILABLE          2426                     7477                    11169
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+// EXEC MAINT      SL - RJE OPTION
+
+        CATALS   A.RJEBLK,4.1
+        CATALS   A.RJBLKLST,4.1
+        CATALS   A.RJUSERS,4.1
+        CATALS   A.RJBTMOD,4.1
+        CATALS   A.POWERDS3,4.1
+        CATALS   A.POWERDS4,4.1
+        CATALS   A.TPIO,4.1
+PRIVATE DIRECTORY               PRV-RELOCATABLE     PRV-SOURCE STATEMENT
+
+03/29/70                        ---------------DECIMAL----------------------
+
+                                    C  H  R  E          C  H  R  E
+DIRECTORY STARTING ADDRESS        147 00 01           152 00 01
+DIRECTORY NEXT ENTRY              147 00 03 12        152 00 02 09
+DIRECTORY LAST ENTRY              147 02 17 19        152 02 27 09
+
+LIBRARY   STARTING ADDRESS        147 03 01           152 03 01
+LIBRARY   NEXT AVAILABLE ENTRY    148 01 14           155 19 06
+LIBRARY   LAST AVAILABLE ENTRY    151 19 16           158 19 27
+
+                                ---------STATUS INFORMATION-----------------
+
+DIRECTORY ENTRIES ACTIVE           47                  14
+
+LIBRARY   BLOCKS ALLOCATED       1552                3699
+LIBRARY   BLOCKS ACTIVE           301                2057
+LIBRARY   BLOCKS DELETED           00                  00
+LIBRARY   BLOCKS AVAILABLE       1251                1642
+
+AUTOMATIC CONDENSE LIMIT           00                  00
+
+LIBRARY   ALLOCATED CYLINDERS      05                  07
+DIRECTORY ALLOCATED TRACKS         03                  03
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 13 08 10              56 04 09 05             133 01 09 03
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        26 11 04                109 12 12                177 06 10
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             953                     1520                      348
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE             2054                    17003                    23661
+LIBRARY   BLOCKS DELETED              00                       00                       00
+LIBRARY   BLOCKS AVAILABLE          2426                     7477                    11169
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+// EXEC MAINT      RL - RJE OPTION
+
+   CATALR RJEOBJ,0.0                 00034                                  0000
+   CATALR FGPTYPB0,0.0               00007                                  0000
+   CATALR FGPTYPB1,4.1               00007                                  0000
+   CATALR FGPTYPB2,0.0               00006                                  0000
+   CATALR FGPTYPB3,0.0               00007                                  0000
+   CATALR FGPTYPB4,0.0               00006                                  0000
+   CATALR FGPTYPI0,0.0               00006                                  0000
+   CATALR FGPTYPO0,0.0               00007                                  0000
+   CATALR FGPTYPP1,0.0               00004                                  0000
+   CATALR FGPTYPS1,0.0               00007                                  0000
+   CATALR FGPTYPS2,0.0               00006                                  0000
+   CATALR FGPPRJEB,4.1               00006                                  0000
+   CATALR FGPPRJEC,0.0               00005                                  0000
+   CATALR FGPPRJED,0.0               00006                                  0000
+   CATALR FGPPRJEE,4.1               00007                                  0000
+   CATALR FGPPRJEI,0.0               00005                                  0000
+   CATALR FGPPRJEJ,4.1               00007                                  0000
+   CATALR FGPPRJEM,4.1               00007                                  0000
+   CATALR FGPPRJEO,0.0               00007                                  0000
+   CATALR FGPPRJEK,0.0               00006                                  0000
+   CATALR FGPPRJEL,4.1               00007                                  0000
+   CATALR FGPPRJEN,4.1               00006                                  0000
+   CATALR FGPPRJEX,4.1               00007                                  0000
+   CATALR FGPPRJEY,4.1               00005                                  0000
+   CATALR FGPPRJE4,4.1               00005                                  0000
+   CATALR FGPPRJEG,4.1               00007                                  0000
+   CATALR FGPPRJEH,4.1               00005                                  0000
+   CATALR FGPPRJEQ,4.1               00006                                  0000
+   CATALR FGPPRJEU,4.1               00006                                  0000
+   CATALR FGPPRJEV,4.1               00005                                  0000
+   CATALR FGPPRJEW,4.2               00007                                  0000
+   CATALR FGPPRJEZ,4.1               00007                                  0000
+   CATALR IO2540,4.1                 00006                                  0000
+   CATALR IO27X0,4.2                 00018                                  0000
+PRIVATE DIRECTORY               PRV-RELOCATABLE     PRV-SOURCE STATEMENT
+
+03/29/70                        ---------------DECIMAL----------------------
+
+                                    C  H  R  E          C  H  R  E
+DIRECTORY STARTING ADDRESS        147 00 01           152 00 01
+DIRECTORY NEXT ENTRY              147 00 05 06        152 00 02 09
+DIRECTORY LAST ENTRY              147 02 17 19        152 02 27 09
+
+LIBRARY   STARTING ADDRESS        147 03 01           152 03 01
+LIBRARY   NEXT AVAILABLE ENTRY    148 17 08           155 19 06
+LIBRARY   LAST AVAILABLE ENTRY    151 19 16           158 19 27
+
+                                ---------STATUS INFORMATION-----------------
+
+DIRECTORY ENTRIES ACTIVE           81                  14
+
+LIBRARY   BLOCKS ALLOCATED       1552                3699
+LIBRARY   BLOCKS ACTIVE           551                2057
+LIBRARY   BLOCKS DELETED           00                  00
+LIBRARY   BLOCKS AVAILABLE       1001                1642
+
+AUTOMATIC CONDENSE LIMIT           00                  00
+
+LIBRARY   ALLOCATED CYLINDERS      05                  07
+DIRECTORY ALLOCATED TRACKS         03                  03
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 13 08 10              56 04 09 05             133 01 09 03
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        26 11 04                109 12 12                177 06 10
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             953                     1520                      348
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE             2054                    17003                    23661
+LIBRARY   BLOCKS DELETED              00                       00                       00
+LIBRARY   BLOCKS AVAILABLE          2426                     7477                    11169
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+// MTC REW,SYSIPT
+// ASSGN SYSIPT,X'00C'
+// EXEC DSERV
+
+SYSTEM DIRECTORY                    CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 13 08 10              56 04 09 05             133 01 09 03
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        26 11 04                109 12 12                177 06 10
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             953                     1520                      348
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE             2054                    17003                    23661
+LIBRARY   BLOCKS DELETED              00                       00                       00
+LIBRARY   BLOCKS AVAILABLE          2426                     7477                    11169
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+PRIVATE DIRECTORY                   RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------DECIMAL---------------------
+
+                                      C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS           147 00 01                152 00 01
+DIRECTORY NEXT ENTRY                 147 00 05 06             152 00 02 09
+DIRECTORY LAST ENTRY                 147 02 17 19             152 02 27 09
+
+LIBRARY   STARTING ADDRESS           147 03 01                152 03 01
+LIBRARY   NEXT AVAILABLE ENTRY       148 17 08                155 19 06
+LIBRARY   LAST AVAILABLE ENTRY       151 19 16                158 19 27
+
+                                    -------------STATUS  INFORMATION-------------
+
+DIRECTORY ENTRIES ACTIVE              81                       14
+
+LIBRARY   BLOCKS ALLOCATED          1552                     3699
+LIBRARY   BLOCKS ACTIVE              551                     2057
+LIBRARY   BLOCKS DELETED              00                       00
+LIBRARY   BLOCKS AVAILABLE          1001                     1642
+
+AUTOMATIC CONDENSE LIMIT              00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         05                       07
+DIRECTORY ALLOCATED TRACKS            03                       03
+                                           PRIVATE RELOCATABLE DIRECTORY         03/29/70       PASS   1       PAGE    1
+
+             MODULE     DISK      NO.   VER  MOD                               MODULE     DISK      NO.   VER  MOD
+              NAME      ADDR     RCDS   LEV  LEV                                NAME      ADDR     RCDS   LEV  LEV
+
+                      ------------DEC-----------                                        ------------DEC-----------
+
+                       C  H  R                                                           C  H  R
+            $$BPOWR1  148 01 01  00006  004  001                              FGPSPOL9  147 11 03  00005  004  001
+            $$BPOWR2  148 01 07  00007  000  000                              FGPTYPA0  147 18 06  00005  000  000
+            FGPPRJEB  148 07 15  00006  004  001                              FGPTYPA1  147 18 11  00005  000  000
+            FGPPRJEC  148 08 05  00005  000  000                              FGPTYPA2  147 18 16  00004  000  000
+            FGPPRJED  148 08 10  00006  000  000                              FGPTYPB0  148 03 16  00007  000  000
+            FGPPRJEE  148 08 16  00007  004  001                              FGPTYPB1  148 04 07  00007  004  001
+            FGPPRJEG  148 13 05  00007  004  001                              FGPTYPB2  148 04 14  00006  000  000
+            FGPPRJEH  148 13 12  00005  004  001                              FGPTYPB3  148 05 04  00007  000  000
+            FGPPRJEI  148 09 07  00005  000  000                              FGPTYPB4  148 05 11  00006  000  000
+            FGPPRJEJ  148 09 12  00007  004  001                              FGPTYPD0  147 15 12  00006  004  001
+            FGPPRJEK  148 11 01  00006  000  000                              FGPTYPD1  147 16 02  00006  000  000
+            FGPPRJEL  148 11 07  00007  004  001                              FGPTYPD2  147 16 08  00005  004  001
+            FGPPRJEM  148 10 03  00007  004  001                              FGPTYPI0  148 06 01  00006  000  000
+            FGPPRJEN  148 11 14  00006  004  001                              FGPTYPJ0  147 19 04  00005  004  001
+            FGPPRJEO  148 10 10  00007  000  000                              FGPTYPL0  147 17 03  00006  004  001
+            FGPPRJEQ  148 14 01  00006  004  001                              FGPTYPL1  147 17 09  00006  004  001
+            FGPPRJEU  148 14 07  00006  004  001                              FGPTYPN0  147 14 10  00006  000  000
+            FGPPRJEV  148 14 13  00005  004  001                              FGPTYPN1  147 14 16  00006  000  000
+            FGPPRJEW  148 15 02  00007  004  002                              FGPTYPO0  148 06 07  00007  000  000
+            FGPPRJEX  148 12 04  00007  004  001                              FGPTYPP0  147 17 15  00007  004  001
+            FGPPRJEY  148 12 11  00005  004  001                              FGPTYPP1  148 06 14  00004  000  000
+            FGPPRJEZ  148 15 09  00007  004  001                              FGPTYPR0  147 16 13  00006  004  001
+            FGPPRJE4  148 12 16  00005  004  001                              FGPTYPS0  147 15 06  00006  004  001
+            FGPSPOLA  147 06 05  00006  004  001                              FGPTYPS1  148 07 02  00007  000  000
+            FGPSPOLB  147 06 15  00005  004  001                              FGPTYPS2  148 07 09  00006  000  000
+            FGPSPOLC  147 07 09  00006  004  001                              FGPTYPZ0  147 19 09  00007  000  000
+            FGPSPOLD  147 07 15  00006  004  001                              FGPTYPZ1  147 19 16  00006  000  000
+            FGPSPOLE  147 10 04  00005  004  001                              FGPTYPZ3  148 00 06  00004  000  000
+            FGPSPOLF  147 10 09  00006  004  001                              FGPTYPZ5  148 00 10  00007  004  001
+            FGPSPOLG  147 08 05  00003  000  000                              IO2540    148 15 16  00006  004  001
+            FGPSPOLH  147 11 08  00007  004  002                              IO27X0    148 16 06  00018  004  002
+            FGPSPOLI  147 10 15  00004  004  001                              POWEROBJ  147 03 01  00047  000  000
+            FGPSPOLJ  147 13 10  00005  004  001                              RJEOBJ    148 01 14  00034  000  000
+            FGPSPOLK  147 06 11  00004  004  001
+            FGPSPOLM  147 13 15  00005  004  001
+            FGPSPOLN  147 14 04  00006  004  001
+            FGPSPOLP  147 11 15  00005  000  000
+            FGPSPOLR  147 05 16  00005  000  000
+            FGPSPOLT  147 08 08  00005  000  000
+            FGPSPOL0  147 08 13  00006  004  001
+            FGPSPOL1  147 09 03  00006  004  001
+            FGPSPOL2  147 09 09  00005  000  000
+            FGPSPOL3  147 09 14  00006  004  001
+            FGPSPOL4  147 07 04  00005  004  001
+            FGPSPOL5  147 12 04  00007  000  000
+            FGPSPOL6  147 12 11  00004  000  000
+            FGPSPOL7  147 12 15  00005  000  000
+            FGPSPOL8  147 13 04  00006  004  001
+PRIVATE SOURCE STATEMENT DIRECTORY                                               03/29/70       PASS   1       PAGE    1
+
+   SUBLIB     BOOK      DISK      NO.   VER  MOD   LEV
+   PREFIX     NAME      ADDR     RCDS   LEV  LEV   CHK
+
+                      ------------DEC-----------
+
+                       C  H  R
+     A      DSKIO     155 06 27  00017  004  001
+     A      POWER     152 03 01  00115  004  001
+     A      POWERBUF  154 14 20  00238  004  001
+     A      POWERDS   155 03 15  00036  004  001
+     A      POWERDS2  155 04 24  00057  004  001
+     A      POWERDS3  155 16 26  00034  004  001
+     A      POWERDS4  155 18 06  00005  004  001
+     A      POWERRES  152 07 08  00989  004  001
+     A      POWERSUP  154 03 25  00292  004  001
+     A      RJBLKLST  155 10 04  00094  004  001
+     A      RJBTMOD   155 16 11  00015  004  001
+     A      RJEBLK    155 07 17  00068  004  001
+     A      RJUSERS   155 13 17  00075  004  001
+     A      TPIO      155 18 11  00022  004  001
+EOJ POWER01                                                             13.40.54,DURATION 00.00.07

@@ -1,0 +1,3 @@
+# Verify FORTRAN IV
+devinit e prt/verify-2-for2.txt crlf
+devinit c jcl/verfor02.jcl

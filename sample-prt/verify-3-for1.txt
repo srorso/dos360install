@@ -1,0 +1,272 @@
+
+// JOB VERFOR01  IVP BASIC FORTRAN                                      12.02.42
+// OPTION LINK
+// EXEC FORTRAN
+
+                               DISK OPERATING SYSTEM/360 FORTRAN   360N-FO-451  CL 3-9
+
+          C     PRIME NUMBER PROBLEM                                              $4510001
+            100 WRITE (3,8)                                                       $4510002
+              8 FORMAT (52H FOLLOWING IS A LIST OF PRIME NUMBERS FROM 1 TO 1000/  $4510003
+               /19X,1H1/19X,1H2/19X,1H3)                                          $4510004
+            101 I=5                                                               $4510005
+              3 A=I                                                               $4510006
+            102 A=SQRT(A)                                                         $4510007
+            103 J=A                                                               $4510008
+            104 DO 1 K=3,J,2                                                      $4510009
+            105 L=I/K                                                             $4510010
+            106 IF(L*K-I)1,2,4                                                    $4510011
+              1 CONTINUE                                                          $4510012
+            107 WRITE (3,5)I                                                      $4510013
+              5 FORMAT (I20)                                                      $4510014
+              2 I=I+2                                                             $4510015
+            108 IF(1000-I)7,4,3                                                   $4510016
+              4 WRITE (3,9)                                                       $4510017
+              9 FORMAT (14H PROGRAM ERROR)                                        $4510018
+              7 WRITE (3,6)                                                       $4510019
+              6 FORMAT (31H THIS IS THE END OF THE PROGRAM)                       $4510020
+            109 STOP                                                              $4510021
+                END                                                               $4510022
+
+          03/29/70            FORTMAIN                                                    0002
+
+
+                                                  SCALARS
+
+ SYMBOL   LOCATION       SYMBOL   LOCATION       SYMBOL   LOCATION       SYMBOL   LOCATION       SYMBOL   LOCATION
+ I           006C        A           0070        J           0074        K           0078        L           007C
+
+                                                  CALLED SUBROUTINES
+
+ IJTAPST     IJTACOM     IJTSSQT     SQRT
+
+
+ LABEL    LOCATION       LABEL    LOCATION       LABEL    LOCATION       LABEL    LOCATION       LABEL    LOCATION
+ 00100       0078        00008       0088        00101       00D8        00003       00E0        00102       0100
+ 00103       010E        00104       012C        00105       0134        00106       0144        00001       015E
+ 00107       0172        00005       0190        00002       019A        00108       01A6        00004       01BC
+ 00009       01D0        00007       01E8        00006       01FC        00109       0226
+          COMPILATION COMPLETE    AMOUNT OF COMMON 000000      AMOUNT OF CORE 000696     ADDRESS BASE TABLE     0200
+// EXEC LNKEDT
+
+JOB  VERFOR01  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST   AUTOLINK   IJTACOM
+LIST   AUTOLINK   IJTACON
+LIST   AUTOLINK   IJTAPST
+LIST   AUTOLINK   IJTFIOS
+LIST   AUTOLINK   IJTSSQT
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        PHASE***  006000  006000  00861B  1B 06 4  CSECT     FORTMAIN  006000  006000
+
+                                                   CSECT     IJTAPST   007618  007618
+
+                                                   CSECT     IJTACOM   0062B8  0062B8
+                                                      ENTRY  IJTSAVE   006838
+                                                      ENTRY  IJTINTSW  006BCA
+
+                                                   CSECT     IJTSSQT   008560  008560
+                                                      ENTRY  SQRT      008566
+
+                                                   CSECT     IJTACON   006C78  006C78
+                                                   *  ENTRY  FCVFI     006C78
+                                                   *  ENTRY  FCVFO     006C7C
+                                                   *  ENTRY  FCVEI     006C80
+                                                   *  ENTRY  FCVEO     006C84
+                                                   *  ENTRY  FCVII     006C88
+                                                   *  ENTRY  FCVIO     006C8C
+                                                   *  ENTRY  FCVDI     006E36
+                                                   *  ENTRY  FCVDO     00703E
+
+                                                   CSECT     IJTFIOS   0076A8  0076A8
+                                                      ENTRY  UNITABE   008316
+                                                      ENTRY  ASNBUFE   008354
+                                                   *  ENTRY  DOIOXXE   0080FA
+                                                   *  ENTRY  GETUNTE   007C10
+                                                   *  ENTRY  OPENUNE   007C5E
+                                                   *  ENTRY  SETLGUE   007F26
+                                                   *  ENTRY  CCWNO1E   0082A0
+                                                   *  ENTRY  DSKWTME   0081A8
+                                                   *  ENTRY  FILTABE   008230
+                                                   *  ENTRY  BUFINNT   008484
+                                                   *  ENTRY  NRFSWE    0080F8
+                                                   *  ENTRY  CLOSUNE   007E3C
+                                                   *  ENTRY  IJTFIND   007FA4
+                                                   *  ENTRY  FILEQLE   008482
+// EXEC
+
+FOLLOWING IS A LIST OF PRIME NUMBERS FROM 1 TO 1000
+                  1
+                  2
+                  3
+                  5
+                  7
+                 11
+                 13
+                 17
+                 19
+                 23
+                 29
+                 31
+                 37
+                 41
+                 43
+                 47
+                 53
+                 59
+                 61
+                 67
+                 71
+                 73
+                 79
+                 83
+                 89
+                 97
+                101
+                103
+                107
+                109
+                113
+                127
+                131
+                137
+                139
+                149
+                151
+                157
+                163
+                167
+                173
+                179
+                181
+                191
+                193
+                197
+                199
+                211
+                223
+                227
+                229
+                233
+                239
+                241
+                251
+                257
+                263
+                269
+                271
+                277
+                281
+                283
+                293
+                307
+                311
+                313
+                317
+                331
+                337
+                347
+                349
+                353
+                359
+                367
+                373
+                379
+                383
+                389
+                397
+                401
+                409
+                419
+                421
+                431
+                433
+                439
+                443
+                449
+                457
+                461
+                463
+                467
+                479
+                487
+                491
+                499
+                503
+                509
+                521
+                523
+                541
+                547
+                557
+                563
+                569
+                571
+                577
+                587
+                593
+                599
+                601
+                607
+                613
+                617
+                619
+                631
+                641
+                643
+                647
+                653
+                659
+                661
+                673
+                677
+                683
+                691
+                701
+                709
+                719
+                727
+                733
+                739
+                743
+                751
+                757
+                761
+                769
+                773
+                787
+                797
+                809
+                811
+                821
+                823
+                827
+                829
+                839
+                853
+                857
+                859
+                863
+                877
+                881
+                883
+                887
+                907
+                911
+                919
+                929
+                937
+                941
+                947
+                953
+                967
+                971
+                977
+                983
+                991
+                997
+THIS IS THE END OF THE PROGRAM
+EOJ VERFOR01                                                            12.02.51,DURATION 00.00.08

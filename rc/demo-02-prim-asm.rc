@@ -1,0 +1,4 @@
+# Demonstrate Assembly language prime number calculation
+devinit 280 tape/scratch.het   # scratch tape for checkpoints
+devinit e prt/demo-prime-asm.txt crlf
+devinit c demos/demoprim-asm.jcl

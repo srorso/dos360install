@@ -1,0 +1,3 @@
+# Demonstrate PL/I Ecliptic table  (Scientific example)
+devinit e prt/demo-pli-1.txt crlf
+devinit c demos/demopli1-pli.jcl

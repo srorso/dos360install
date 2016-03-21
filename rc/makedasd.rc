@@ -1,0 +1,22 @@
+sh dasdinit -r -a -z dasd/res11a.2311 2311
+sh dasdinit -r -a -z dasd/res11b.2311 2311
+sh dasdinit -r -a -z dasd/res11c.2311 2311
+
+sh dasdinit -r -a -z dasd/dosres.2314 2314
+sh dasdinit -r -a -z dasd/spool1.2314 2314
+sh dasdinit -r -a -z dasd/wrk14a.2314 2314
+sh dasdinit -r -a -z dasd/wrk14b.2314 2314
+
+#  -- Attach Distribution System Disk Packs
+
+attach 0130 2311 dasd/res11a.2311  # sysres, core image, relo
+attach 0131 2311 dasd/res11b.2311  # sysres, core image, system source
+attach 0132 2311 dasd/res11c.2311  # sysres, system relo, cobol, autotest, 14xx emu libs
+
+#  -- Attach Target System Disk Packs
+
+attach 190 2314 dasd/dosres.2314   # DOSRES, target system residence file
+attach 191 2314 dasd/spool1.2314   # SPOOL1, POWER II spooling disk
+attach 192 2314 dasd/wrk14a.2314   # WRK14A, work files
+attach 193 2314 dasd/wrk14b.2314   # WRK14B, F2 core image lib, F2 work files
+

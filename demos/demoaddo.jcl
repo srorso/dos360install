@@ -1,0 +1,586 @@
+// JOB DEMOADDO DEMO ADDROUT CONCEPT
+/* The idea of an "Address Out" file is to be able to access
+/* a sequential disk file (blocked or unblocked) in a non-sequential
+/* manner.  Rather than sorting an existing file and
+/* creating a whole new file in a different order SORT can create
+/* a file of disk addresses representing the new order.  Each record
+/* is only 10 bytes so the file will take much less space than a copy
+/* of the original file.  We can then read this file sequentially to
+/* then directly access the records in the original sequential file.
+/* In this example a employee file is created in key or employee
+/* number order (col. 3-5) but then needs to be processed in department
+/* order (col. 1-2).
+* BUILD A SEQUENTIAL DISK FILE IN EMPLOYEE NUMBER ORDER
+// ASSGN SYS004,X'00C' INPUT
+// ASSGN SYS005,X'192' OUTPUT
+// DLBL UOUT,'PEOPLE',0
+// EXTENT SYS005,WRK14A,,,2600,2   OVERLAPS IJSYS04
+// EXEC CDDK
+// UCD TR,FF,A=(80,80),B=(80,160),E=(2314)
+// END
+10004ACHER, WILLIAM C.
+40027ALHOUER, ELAINE E.
+30030ALLOREN, RUTH W.
+60100BATES, TONY F.
+80102BELLSLEY, ARTHUR A.
+90105BOYLE, RALPH P.
+20111CARTOLER, VIOLET B.
+50122CENNA, DICK L.
+40171COSTA, NAN S.
+60179DAMSON, ERIC C.
+30181DELBERT, EDWARD D.
+10185DONNEMAN, THOMAS M.
+50207EBERHARDT, RON G.
+70214EDMONSON, RICK T.
+90215EDSON, WILBUR S.
+80282ESTEBAN, JUAN L.
+60292EVERLY, DONNA M.
+10300FELDMAN, MIKE R.
+20304FROMM, STEVE V.
+50308GLEASON, JAMES E.
+70310GORMALLY, MARIE N.
+30311GROLER, GRACE B.
+90315HALE, ALAN A.
+40317HANBEE, ALETTA O.
+30318HANEY, CAROL S.
+80322HARLETON, JEAN H.
+10325HATFIELD, MARK I.
+70332HELD, ANNA J.
+60409ICK, MICK W.
+30487KING, MILDRED J.
+80505LAMBERT, JERRY O.
+50568LYNNE, GERALD H.
+90574MELTZ, FRANK K.
+20590NEIL, CLARENCE N.
+60607ODELLE, NICHOLAS P.
+70689OWNEY, REED M.
+40721RASSMUSEN, JOHN J.
+10730REEDE, OWEN W.
+40739RIDEL, ROBERT R.
+90740RIDGEFIELD, SUZY S.
+20801SCHEIBER, HARRY T.
+70802SHEA, MICHAEL H.
+40806STOCKTON, NORMAN Q.
+90820TELLER, STEPHEN U.
+60825TILLMAN, DON M.
+30834TRAWLEY, HARRIS T.
+50909UDSON, DORIS M.
+20956WANGLEY, THEO. A.
+10960WINGLAND, KEITH E.
+/*
+// RESET PROG
+* USE SORT TO READ THE FILE AND BUILD THE ADDRESS OUT FILE
+/* The 'address out' file (output from SORT) could also be
+/* on a tape file.
+// ASSGN SYS001,X'192' OUTPUT
+// ASSGN SYS002,X'192' INPUT
+// ASSGN SYS003,X'192' WORK1
+// DLBL SORTOUT,'PEOPLE.ADDROUT',0
+// EXTENT SYS001,WRK14A,,,2602,1
+// DLBL SORTIN1,'PEOPLE'
+// EXTENT SYS002,WRK14A
+// DLBL SORTWK1,,0
+// EXTENT SYS003,WRK14A,,,2700,20
+// EXEC SORT
+ SORT WORK=1,FILES=1,FORMAT=BI,FIELDS=(1,5,A)
+ RECORD TYPE=F,LENGTH=(80,15,10)  (RL,10+CF,10)
+ INPFIL BLKSIZE=160
+ OUTFIL BLKSIZE=100
+ OPTION PRINT=ALL,LABEL=(S,S),ADDROUT=A
+ END
+/*
+// RESET PROG
+* PRINT THE ADDRESS OUT FILE SO YOU CAN SEE IT
+// ASSGN SYS006,X'192'
+// UPSI 1
+// EXEC DITTO
+$$DITTO  DDR   INPUT=SYS006,BEGIN=13002,END=13002,RECSIZE=00010
+$$DITTO  EOJ
+/*
+* READ FILES USING ASSEMBLER PIOCS
+/* Even though the sequential file was created using SAM we are going
+/* to treat it as a direct access file (DLBL has DA).
+/* So we'll read the addrout file sequentially and directly retrieve
+/* the employee records.
+// OPTION LINK,NOXREF,DUMP
+// EXEC ASSEMBLY
+         TITLE 'DEMOSTRATE ADDRESS OUT FILES USING PIOCS'
+*        PRINT NOGEN
+DEMOADDO START X'5068'
+R0       EQU   0
+R1       EQU   1
+R2       EQU   2
+R3       EQU   3
+R4       EQU   4
+R5       EQU   5
+R6       EQU   6
+R7       EQU   7
+R8       EQU   8
+R9       EQU   9
+R10      EQU   10
+R11      EQU   11
+R12      EQU   12
+R13      EQU   13
+R14      EQU   14
+R15      EQU   15
+         BALR  R12,0
+         USING *,R12
+         USING ADDDSECT,R8
+         USING EMDSECT,R7
+         OPEN  ADDFILE,EMFILE,PRINTER
+         OI    ADDFILE+3,X'04'     DISALLOW NO RECORD FOUND
+         OI    EMFILE+3,X'04'      DISALLOW NO RECORD FOUND
+         MVC   EMFILE+6(2),EMFILE+30   SET LOG.UNIT FROM EXTENT
+         COMRG
+         MVC   TODAY,0(R1)     GET TODAY'S DATE
+         BAL   R4,HEADING
+MAINLOOP EQU   *
+         EXCP  ADDFILE         READ ADDROUT FILE BLOCK
+         WAIT  (1)
+         TM    ADDFILE+4,X'01' CHECK FOR END OF FILE
+         BO    ENDOFJOB
+         TM    ADDFILE+5,X'40' IF NO WRONG LENGTH RECORD,
+         BZ    ADDOKAY           GO PROCESS FULL BLOCK
+         LH    R2,ADDFILE      ELSE GET RESIDUAL COUNT
+         LTR   R2,R2           IF ZERO,
+         BZ    CANCEL            PHYSICAL RECORD TOO BIG
+         LH    R3,ADDCCWR+6    GET BLOCK SIZE
+         SR    R3,R2           CALC. BYTES ACTUALLY READ
+         SR    R2,R2
+         D     R2,=A(L'ADDREC) DIVIDE BY RECORD SIZE
+         LTR   R2,R2           IS BLOCK SIZE A MULTIPLE OF REC.SIZE
+         BNZ   CANCEL          IF NOT, BAD BLOCK
+         LR    R9,R3           SAVE NUMBER OF RECORDS IN SHORT BLOCK
+         B     *+8
+ADDOKAY  LA    R9,10           FULL BLOCK HAS 10 LOGICAL RECORDS
+         LA    R8,ADDBLK
+BLKLOOP  BAL   R5,GETREC       PROCESS RECORD
+         LA    R8,L'ADDREC(R8) POINT TO NEXT RECORD
+         BCT   R9,BLKLOOP
+         CLI   ADDFILE4+4,RECTRK   IF END OF TRACK
+         BNL   NEWTRK                GO TO NEXT TRACK
+         IC    R2,ADDFILE4+4       INCREASE RECORD NO.
+         LA    R2,1(R2)
+         STC   R2,ADDFILE4+4
+         B     MAINLOOP
+NEWTRK   CLC   ADDFILE4+2(2),ADDFILE2+2    IF END OF CYLINDER
+         BNL   NEWCYL                        GO TO NEXT CYLINDER
+         LH    R2,ADDFILE4+2       INCREASE HEAD NO.
+         LA    R2,1(R2)
+         STH   R2,ADDFILE4+2
+         MVI   ADDFILE4+4,1        RESET RECORD NO.
+         B     MAINLOOP
+NEWCYL   CLC   ADDFILE4(2),ADDFILE2        IF END OF EXTENT
+         BNL   NEWEXT                        GO GET NEXT EXTENT
+         LH    R2,ADDFILE4         INCREASE CYL. NO.
+         LA    R2,1(R2)
+         STH   R2,ADDFILE4
+         MVC   ADDFILE4+2(2),ADDFILE1 RESET HEAD NO.
+         MVI   ADDFILE4+4,1        RESET RECORD NO.
+         B     MAINLOOP
+NEWEXT   OPEN  ADDFILE             GET NEXT EXTENT
+         B     MAINLOOP
+*
+GETREC   CLI   EOPSW,C'1'          IF END OF PAGE,
+         BNE   *+8
+         BAL   R4,HEADING            PRINT HEADING
+         CLC   EMID,ADDID+1        IF BLOCK ALREADY IN CORE,
+         BE    EMBLKOK               GO PROCESS RECORD
+         MVC   EMID,ADDID+1        READ IN BLOCK
+         EXCP  EMFILE
+         WAIT  (1)
+         TM    EMFILE+5,X'40'      IF NO WRONG LENGTH RECORD,
+         BZ    EMBLKOK               GO PROCESS BLOCK
+         LH    R3,EMFILE           GET RESIDUAL COUNT
+         LTR   R3,R3               IF RESIDUAL COUNT IS ZERO,
+         BZ    CANCEL                BLOCK IS TOO BIG
+         SR    R2,R2
+         D     R2,=A(L'EMREC)      DIVIDE BY RECORD SIZE
+         LTR   R2,R2               IF BLOCK NOT MULTIPLE OF REC.SIZE,
+         BNZ   CANCEL                BAD BLOCK
+EMBLKOK  LA    R7,EMBLK            POINT TO RECORD
+         AH    R7,ADDDISP
+         MVC   PRTLINE+5(L'EMDEPT),EMDEPT
+         MVC   PRTLINE+10(L'EMNUM),EMNUM
+         MVC   PRTLINE+15(L'EMNAME),EMNAME
+         BAL   R2,PRINT
+         AP    COUNT,=P'1'
+         BR    R5
+ENDOFJOB MVC   PRTLINE+4(6),=X'402020202120'
+         ED    PRTLINE+4(6),COUNT
+         MVC   PRTLINE+11(16),=C'EMPLOYEES LISTED'
+         BAL   R2,PRINT
+         CLOSE ADDFILE,EMFILE,PRINTER
+         EOJ
+CANCEL   PDUMP DEMOADDO,DEMOADDO+4096
+         CANCEL
+*
+HEADING  MVC   PRTLINE+1(L'TODAY),TODAY
+         MVC   PRTLINE+15(L'MHEAD1),MHEAD1
+         MVI   PRCCWS,X'8B'        SKIP TO NEW PAGE
+         MVI   PRCCWP,X'11'        SPACE 2 AFTER
+         BAL   R3,PRINTS           PRINT HEADING
+         MVI   PRCCWP,X'09'
+         MVI   EOPSW,C'0'          RESET BOTTOM-OF-PAGE SWITCH
+         BR    R4
+PRINTS   LA    R2,PRCCWS           USE SPACE/SKIP CCW
+         ST    R2,PRINTER+8
+         BAL   R2,PRINT
+         LA    R2,PRCCWP           DO NOT USE SPACE/SKIP CCW
+         ST    R2,PRINTER+8
+         BR    R3
+PRINT    EXCP  PRINTER
+         WAIT  (1)
+         TM    PRINTER+4,X'01'     CHECK FOR CH. 12
+         BZ    NOTEOP
+         MVI   EOPSW,C'1'          INDICATE BOTTOM OF PAGE
+NOTEOP   MVI   PRTLINE,C' '        CLEAR PRINT LINE
+         MVC   PRTLINE+1(131),PRTLINE
+         BR    R2
+         LTORG
+COUNT    DC    PL3'0'
+MHEAD1   DC    C'ADDROUT DEMONSTRATION USING PIOCS'
+TODAY    DS    CL8
+EOPSW    DS    C
+*
+         DS    0H
+ADDBLK   DS    CL100
+ADDDSECT DSECT
+ADDREC   DS    0CL10
+ADDID    DS    XL8     MBBCCHHR
+ADDDISP  DS    H       DISPLACEMENT
+DEMOADDO CSECT
+*
+EMBLK    DS    CL160
+EMDSECT  DSECT
+EMREC    DS    0CL80
+EMDEPT   DS    CL2     EMPLOYEE DEPARTMENT
+EMNUM    DS    CL3     EMPLOYEE NUMBER
+EMNAME   DS    CL25    EMPLOYEE NAME
+         DS    CL50
+DEMOADDO CSECT
+*
+PRTLINE  DC    CL132' '
+*
+ADDCCW   CCW   X'07',ADDFILE3,X'40',6  SEEK
+         CCW   X'31',ADDFILE4,X'40',5  SIDE
+         CCW   X'08',*-8,0,0           TIC
+ADDCCWR  CCW   X'06',ADDBLK,0,L'ADDBLK READ
+* 2311 CODING
+*ADDFILE  DTFPH TYPEFLE=INPUT,DEVICE=2311,MOUNTED=SINGLE,CCWADDR=ADDCCW
+** CALCULATE 2314 RECORDS PER TRACK
+*RECTRKS  EQU   L'ADDBLK*537/512+61
+*RECTRKN  EQU   3625/RECTRKS
+*RECTRKX  EQU   (3625-(RECTRKS*RECTRKN))/L'ADDBLK  (0 OR 1)
+*RECTRK   EQU   RECTRKN+RECTRKX
+*
+* 2314 CODING
+ADDFILE  DTFPH TYPEFLE=INPUT,DEVICE=2314,MOUNTED=SINGLE,CCWADDR=ADDCCW
+* CALCULATE 2314 RECORDS PER TRACK
+RECTRKS  EQU   L'ADDBLK*2137/2048+101
+RECTRKN  EQU   7294/RECTRKS
+RECTRKX  EQU   (7294-(RECTRKS*RECTRKN))/L'ADDBLK  (0 OR 1)
+RECTRK   EQU   RECTRKN+RECTRKX
+*
+EMCCW    CCW   X'07',EMBIN,X'40',6     SEEK
+         CCW   X'31',EMCC,X'40',5      SIDE
+         CCW   X'08',*-8,0,0           TIC
+         CCW   X'06',EMBLK,0,L'EMBLK   READ
+*EMFILE   DTFPH TYPEFLE=INPUT,DEVICE=2311,MOUNTED=ALL,CCWADDR=EMCCW
+EMFILE   DTFPH TYPEFLE=INPUT,DEVICE=2314,MOUNTED=ALL,CCWADDR=EMCCW
+EMID     DS    0XL7
+EMBIN    DC    H'0'    BIN
+EMCC     DC    H'0'    CYLINDER
+EMHH     DC    H'0'    HEAD
+EMR      DC    X'0'    RECORD
+*
+PRCCWS   CCW   X'03',0,X'40',1     SPACE OR SKIP BEFORE
+PRCCWP   CCW   X'09',PRTLINE,0,132 PRINT AND SPACE AFTER
+PRINTER  CCB   SYSLST,PRCCWP
+         END
+/*
+// LBLTYP NSD(1)
+// EXEC LNKEDT
+// ASSGN SYS006,X'192'
+// DLBL ADDFILE,'PEOPLE.ADDROUT'
+// EXTENT SYS006,WRK14A
+// DLBL EMFILE,'PEOPLE',,DA
+// EXTENT SYS006,WRK14A,1,0,2600,2
+// EXEC
+* READ FILES USING ASSEMBLER LIOCS-SAM
+/* We can read records directly using SAM by using filenamS (the
+/* dtfname with an 'S').  This field in the DTF is used to hold
+/* the disk id of the block being read.  Since we are reading
+/* directly use only one IOAREA so there is no attempt at I/O overlap.
+// OPTION LINK
+// EXEC ASSEMBLY
+         TITLE 'DEMOSTRATE ADDRESS OUT FILES USING LIOCS-SAM'
+*        PRINT NOGEN
+DEMOADDO START X'5000'
+R0       EQU   0
+R1       EQU   1
+R2       EQU   2
+R3       EQU   3
+R4       EQU   4
+R5       EQU   5
+R6       EQU   6
+R7       EQU   7
+R8       EQU   8
+R9       EQU   9
+R10      EQU   10
+R11      EQU   11
+R12      EQU   12
+R13      EQU   13
+R14      EQU   14
+R15      EQU   15
+         BALR  R12,0
+         USING *,R12
+         USING EMDSECT,R7
+         OPEN  ADDFILE,EMFILE,PRINTER
+         COMRG
+         MVC   TODAY,0(R1)         GET TODAY'S DATE
+         BAL   R3,HEADING
+MAINLOOP EQU   *
+         GET   ADDFILE,ADDREC
+         CLC   SAVEID,ADDID+1      IF BLOCK ALREADY READ IN
+         BE    READIN                GO PROCESS RECORD
+         MVC   EMFILES(7),ADDID+1  SET DISK ID OF DESIRED BLOCK
+         GET   EMFILE              READ IN CORRECT BLOCK
+         MVC   SAVEID,ADDID+1      SAVE ID OF BLOCK
+READIN   LA    R7,EMBLK            POINT TO RECORD
+         AH    R7,ADDDISP
+         MVC   PRTLINE+5(L'EMDEPT),EMDEPT
+         MVC   PRTLINE+10(L'EMNUM),EMNUM
+         MVC   PRTLINE+15(L'EMNAME),EMNAME
+         BAL   R2,PRINT
+         AP    COUNT,=P'1'
+         B     MAINLOOP
+ENDOFJOB MVC   PRTLINE+4(6),=X'402020202120'
+         ED    PRTLINE+4(6),COUNT
+         MVC   PRTLINE+11(16),=C'EMPLOYEES LISTED'
+         BAL   R2,PRINT
+         CLOSE ADDFILE,EMFILE,PRINTER
+         EOJ
+*
+HEADING  MVC   PRTLINE+1(L'TODAY),TODAY
+         MVC   PRTLINE+15(L'MHEAD1),MHEAD1
+         MVI   PRTLINE,C'1'        SKIP TO NEW PAGE
+         BAL   R2,PRINT
+         MVI   PRTLINE,C'0'        DOUBLE SPACE NEXT TIME
+         MVI   EOPSW,C'0'          RESET BOTTOM-OF-PAGE SWITCH
+         BR    R3
+PRINT    LA    R0,PRTLINE
+         LA    R1,PRINTER
+         PUT   (1),(0)
+         LA    R0,EOP
+         PRTOV (1),12,(0)          CHECK FOR BOTTOM OF PAGE
+         MVI   PRTLINE,C' '
+         MVC   PRTLINE+1(132),PRTLINE
+         BR    R2
+EOP      MVI   EOPSW,C'1'          INDICATE BOTTOM OF PAGE
+         BR    R14
+SAVEID   DC    XL7'0'
+COUNT    DC    PL3'0'
+MHEAD1   DC    C'ADDROUT DEMONSTRATION USING LIOCS-SAM'
+TODAY    DS    CL8
+EOPSW    DS    C
+*
+         DS    0H
+ADDREC   DS    0CL10
+ADDID    DS    XL8     MBBCCHHR
+ADDDISP  DS    H       DISPLACEMENT
+*
+EMBLK    DS    CL160
+EMDSECT  DSECT
+EMREC    DS    0CL80
+EMDEPT   DS    CL2     EMPLOYEE DEPARTMENT
+EMNUM    DS    CL3     EMPLOYEE NUMBER
+EMNAME   DS    CL25    EMPLOYEE NAME
+         DS    CL50
+DEMOADDO CSECT
+*
+PRTLINE  DC    CL133' '
+         LTORG
+ADDFILE  DTFSD DEVICE=2314,EOFADDR=ENDOFJOB,                           X
+               RECFORM=FIXBLK,BLKSIZE=100,RECSIZE=10,                  X
+               IOAREA1=ADIO1,IOAREA2=ADIO2,WORKA=YES
+EMFILE   DTFSD DEVICE=2314,EOFADDR=*,                                  X
+               RECFORM=FIXUNB,BLKSIZE=160,                             X
+               IOAREA1=EMBLK
+PRINTER  DTFPR DEVADDR=SYSLST,BLKSIZE=133,IOAREA1=PRNTOUT1,            X
+               WORKA=YES,PRINTOV=YES,CTLCHR=ASA
+ADIO1    DS    CL100
+ADIO2    DS    CL100
+PRNTOUT1 DS    CL133
+         PRMOD WORKA=YES,CTLCHR=ASA,PRINTOV=YES
+         END
+/*
+// EXEC LNKEDT
+// ASSGN SYS006,X'192'
+// DLBL ADDFILE,'PEOPLE.ADDROUT'
+// EXTENT SYS006,WRK14A
+// DLBL EMFILE,'PEOPLE'
+// EXTENT SYS006,WRK14A
+// EXEC
+* READ FILE USING ASSEMBLER LIOCS-DAM
+// OPTION LINK,NOXREF
+// EXEC ASSEMBLY
+         TITLE 'DEMOSTRATE ADDRESS OUT FILES USING LIOCS-DAM'
+*        PRINT NOGEN
+DEMOADDO START X'5068'
+R0       EQU   0
+R1       EQU   1
+R2       EQU   2
+R3       EQU   3
+R4       EQU   4
+R5       EQU   5
+R6       EQU   6
+R7       EQU   7
+R8       EQU   8
+R9       EQU   9
+R10      EQU   10
+R11      EQU   11
+R12      EQU   12
+R13      EQU   13
+R14      EQU   14
+R15      EQU   15
+         BALR  R12,0
+         USING *,R12
+         USING EMDSECT,R7
+         OPEN  ADDFILE,EMFILE,PRINTER
+         COMRG
+         MVC   TODAY,0(R1)     GET TODAY'S DATE
+         BAL   R3,HEADING
+MAINLOOP EQU   *
+         GET   ADDFILE,ADDREC 
+         CLC   EMID,ADDREC     IF BLOCK ALREADY READ IN,
+         BE    BLKOK             GO PROCESS RECORD
+         MVC   EMID,ADDREC     READ IN CORRECT BLOCK
+         READ  EMFILE,ID
+         WAITF (1)
+         OC    EMERRS,EMERRS   IF NO ERRORS,
+         BZ    BLKOK             GO PROCESS BLOCK
+         TM    EMERRS,X'40'    IF WRONG LENGTH RECORD,
+         BO    WLR               TEST FOR SHORT BLOCK
+         B     CANCEL          ANYTHING ELSE IS A PROBLEM
+WLR      LH    R3,EMFILE       GET RESIDUAL COUNT
+         LTR   R3,R3           IF ZERO,
+         BZ    CANCEL            BLOCK IS TOO BIG
+         SR    R2,R2
+         D     R2,=A(L'EMREC)  DIVIDE BY RECORD SIZE
+         LTR   R2,R2           IF BLOCK NOT MULTIPLE OF REC.SIZE,
+         BNZ   CANCEL            BAD BLOCK
+BLKOK    LA    R7,EMBLK        POINT TO RECORD
+         AH    R7,ADDDISP
+         MVC   PRTLINE+5(L'EMDEPT),EMDEPT
+         MVC   PRTLINE+10(L'EMNUM),EMNUM
+         MVC   PRTLINE+15(L'EMNAME),EMNAME
+         BAL   R2,PRINT
+         AP    COUNT,=P'1'
+         B     MAINLOOP
+ENDOFJOB MVC   PRTLINE+4(6),=X'402020202120'
+         ED    PRTLINE+4(6),COUNT
+         MVC   PRTLINE+11(16),=C'EMPLOYEES LISTED'
+         BAL   R2,PRINT
+         CLOSE ADDFILE,EMFILE,PRINTER
+         EOJ
+CANCEL   PDUMP DEMOADDO,DEMOADDO+4096
+         CANCEL
+*
+HEADING  MVC   PRTLINE+1(L'TODAY),TODAY
+         MVC   PRTLINE+15(L'MHEAD1),MHEAD1
+         MVI   PRTLINE,C'1'        SKIP TO NEW PAGE
+         BAL   R2,PRINT
+         MVI   PRTLINE,C'0'        DOUBLE SPACE NEXT TIME
+         MVI   EOPSW,C'0'          RESET BOTTOM-OF-PAGE SWITCH
+         BR    R3
+PRINT    LA    R0,PRTLINE
+         LA    R1,PRINTER
+         PUT   (1),(0)
+         LA    R0,EOP
+         PRTOV (1),12,(0)          CHECK FOR BOTTOM OF PAGE
+         MVI   PRTLINE,C' '
+         MVC   PRTLINE+1(132),PRTLINE
+         BR    R2
+EOP      MVI   EOPSW,C'1'          INDICATE BOTTOM OF PAGE
+         BR    R14
+MHEAD1   DC    C'ADDROUT DEMONSTRATION USING LIOCS-DAM'
+TODAY    DS    CL8
+EOPSW    DS    C
+COUNT    DC    PL3'0'
+EMID     DC    XL8'0'
+EMERRS   DS    CL2
+*
+         DS    0H
+ADDREC   DS    0CL10
+ADDID    DS    XL8     MBBCCHHR
+ADDDISP  DS    H       DISPLACEMENT
+*
+EMBLK    DS    CL160
+EMDSECT  DSECT
+EMREC    DS    0CL80
+EMDEPT   DS    CL2     EMPLOYEE DEPARTMENT
+EMNUM    DS    CL3     EMPLOYEE NUMBER
+EMNAME   DS    CL25    EMPLOYEE NAME
+         DS    CL50
+DEMOADDO CSECT
+*
+PRTLINE  DC    CL133' '
+         LTORG
+ADDFILE  DTFSD DEVICE=2314,EOFADDR=ENDOFJOB,                           X
+               RECFORM=FIXBLK,BLKSIZE=100,RECSIZE=10,                  X
+               IOAREA1=ADIN1,IOAREA2=ADIN2,WORKA=YES
+EMFILE   DTFDA BLKSIZE=160,DEVICE=2314,ERRBYTE=EMERRS,IOAREA1=EMBLK,   X
+               READID=YES,RECFORM=FIXUNB,SEEKADR=EMID,TYPEFLE=INPUT
+PRINTER  DTFPR DEVADDR=SYSLST,BLKSIZE=133,IOAREA1=PRNTOUT1,            X
+               WORKA=YES,PRINTOV=YES,CTLCHR=ASA
+ADIN1    DS    CL100
+ADIN2    DS    CL100
+PRNTOUT1 DS    CL133
+         PRMOD WORKA=YES,CTLCHR=ASA,PRINTOV=YES
+         END
+/*
+// LBLTYP NSD(1)
+// EXEC LNKEDT
+// ASSGN SYS006,X'192'
+// DLBL ADDFILE,'PEOPLE.ADDROUT'
+// EXTENT SYS006,WRK14A
+// DLBL EMFILE,'PEOPLE',,DA
+// EXTENT SYS006,WRK14A,,,2600,2
+// EXEC
+* READ FILE USING RPG LIOCS-DAM
+/* RPG can also read and process Address Out files
+// OPTION LINK
+// EXEC RPG
+     H
+     FADDFILE IRE F 100  10 10 T      EDISK14 SYS000S
+     FEMFILE  IP  F 160  80R  ID       DISK14 SYS000S
+     FREPORT  O   F 132 132     OF     PRINTERSYSLST
+     E    ADDFILE EMFILE
+     IEMFILE  AA  01
+     I                                        1   2 EMDEPT
+     I                                        3   5 EMPNUM
+     I                                        6  30 EMNAME
+     C   01      COUNT     ADD  1         COUNT   50
+     OREPORT  H  2 1   1P
+     O       OR        OF
+     O                         UDATE      8 '0 /  /  '
+     O                                   34 'RPG ADDRESS OUT DEMO'
+     O                                   50 'USING LIOCS-DAM'
+     O        D  1     01
+     O                         EMDEPT     6
+     O                         EMPNUM    12
+     O                         EMNAME    40
+     O        T  0     LR
+     O                         COUNT Z    9
+     O                                   26 'EMPLOYEES LISTED'
+/*
+// LBLTYP NSD(1)
+// EXEC LNKEDT
+// ASSGN SYS006,X'192'
+// DLBL ADDFILE,'PEOPLE.ADDROUT'
+// EXTENT SYS006,WRK14A
+// DLBL EMFILE,'PEOPLE',,DA
+// EXTENT SYS006,WRK14A,,,2600,2
+// EXEC
+/&

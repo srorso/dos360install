@@ -1,0 +1,3 @@
+# Demonstrate 3270 access via BTAM	
+devinit e prt/demo-btam.txt crlf
+devinit c demos/demobtam-asm.jcl

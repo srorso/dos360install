@@ -1,0 +1,3 @@
+# Demonstrate ISAM processing in all available languages
+devinit e prt/demo-isam.txt crlf
+devinit c demos/demoisam.jcl

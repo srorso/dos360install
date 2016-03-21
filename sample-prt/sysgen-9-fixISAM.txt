@@ -1,0 +1,1216 @@
+
+// JOB SYSGEN9A   FIXISMOD CORRECT DOS R26.2 ISAM BUG FOR RAN.RET. NRF  12.03.28
+// EXEC MAINT
+
+ UPDATE A.ISMOD4,B.ISMOD4,,NO
+
+    ) DEL 0197
+                L     IJHRG10,IJHCRARA     GET IO AREA                    3-12 O4570197                   DELETE
+
+    ) ADD 0203
+       IJHSKBKT MVC   IJHCSADR+3(5),IJHCBCKT  MOVE ID TO S/S BUCKET  ***   3-4 O4570203
+                L     IJHRG10,IJHCRARA  GET ADDR. OF IOAREAR                                              ADD
+
+    ) END
+
+3U30I INVALID SEQUENCE
+// DLBL IJSYSPH,'DOS.BG.WORKFILE.004',0,SD
+// EXTENT SYSPCH,WRK14A,1,1,2600,300
+ASSGN SYSPCH,X'192'
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 13 10 07              56 04 09 06             133 01 09 03
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        28 02 02                110 01 07                177 06 10
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             953                     1520                      348
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE             2054                    17003                    23661
+LIBRARY   BLOCKS DELETED             116                      139                       00
+LIBRARY   BLOCKS AVAILABLE          2310                     7338                    11169
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN9A                                                            12.03.28,DURATION 00.00.00
+// JOB SYSGEN9B   RECATALR IBM SUPPLIED ISAM MODULES                    12.03.28
+// OPTION DECK,NOXREF
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+IJHAABCP  SD  01 000000 00159E
+IJHAABZP  LD     000000         01
+IJHAIZZP  LD     000000         01
+IJHAARZP  LD     000000         01
+IJHAASZP  LD     000000         01
+IJHBABZP  LD     000000         01
+IJHUABZP  LD     000000         01
+IJHAIZCP  LD     000000         01
+IJHAARCP  LD     000000         01
+IJHAASCP  LD     000000         01
+IJHBABCP  LD     000000         01
+IJHUABCP  LD     000000         01
+IJHBARZP  LD     000000         01
+IJHBASZP  LD     000000         01
+IJHBIZZP  LD     000000         01
+IJHBARCP  LD     000000         01
+IJHBASCP  LD     000000         01
+IJHBIZCP  LD     000000         01
+IJHUARZP  LD     000000         01
+IJHUASZP  LD     000000         01
+IJHUIZZP  LD     000000         01
+IJHUARCP  LD     000000         01
+IJHUASCP  LD     000000         01
+IJHUIZCP  LD     000000         01
+IJHZRBZP  LD     000000         01
+IJHZRRZP  LD     000000         01
+IJHZRSZP  LD     000000         01
+IJHZRBCP  LD     000000         01
+IJHZRRCP  LD     000000         01
+                                                                                                               PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      1          PRINT NOGEN
+                                      2          ISMOD SEPASMB=YES,RECFORM=BOTH,IOROUT=ADDRTR,TYPEFLE=RANSEQ,  X
+                                                       CORINDX=YES,CORDATA=YES
+                                   2451          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      08     0001A9
+   01       01      08     0001B1
+   01       01      08     0001B9
+   01       01      08     0001C1
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+IJHAABCZ  SD  01 000000 0013EE
+IJHAABZZ  LD     000000         01
+IJHAIZZZ  LD     000000         01
+IJHAARZZ  LD     000000         01
+IJHAASZZ  LD     000000         01
+IJHBABZZ  LD     000000         01
+IJHUABZZ  LD     000000         01
+IJHAIZCZ  LD     000000         01
+IJHAARCZ  LD     000000         01
+IJHAASCZ  LD     000000         01
+IJHBABCZ  LD     000000         01
+IJHUABCZ  LD     000000         01
+IJHBARZZ  LD     000000         01
+IJHBASZZ  LD     000000         01
+IJHBIZZZ  LD     000000         01
+IJHBARCZ  LD     000000         01
+IJHBASCZ  LD     000000         01
+IJHBIZCZ  LD     000000         01
+IJHUARZZ  LD     000000         01
+IJHUASZZ  LD     000000         01
+IJHUIZZZ  LD     000000         01
+IJHUARCZ  LD     000000         01
+IJHUASCZ  LD     000000         01
+IJHUIZCZ  LD     000000         01
+IJHZRBZZ  LD     000000         01
+IJHZRRZZ  LD     000000         01
+IJHZRSZZ  LD     000000         01
+IJHZRBCZ  LD     000000         01
+IJHZRRCZ  LD     000000         01
+                                                                                                               PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      1          PRINT NOGEN
+                                      2          ISMOD SEPASMB=YES,RECFORM=BOTH,IOROUT=ADDRTR,TYPEFLE=RANSEQ,  X
+                                                       CORINDX=YES
+                                   2277          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      08     0001A9
+   01       01      08     0001B1
+   01       01      08     0001B9
+   01       01      08     0001C1
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+IJHAABZP  SD  01 000000 00147E
+IJHAIZZP  LD     000000         01
+IJHAARZP  LD     000000         01
+IJHAASZP  LD     000000         01
+IJHBABZP  LD     000000         01
+IJHUABZP  LD     000000         01
+IJHBARZP  LD     000000         01
+IJHBASZP  LD     000000         01
+IJHBIZZP  LD     000000         01
+IJHUARZP  LD     000000         01
+IJHUASZP  LD     000000         01
+IJHUIZZP  LD     000000         01
+IJHZRBZP  LD     000000         01
+IJHZRRZP  LD     000000         01
+IJHZRSZP  LD     000000         01
+                                                                                                               PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      1          PRINT NOGEN
+                                      2          ISMOD SEPASMB=YES,RECFORM=BOTH,IOROUT=ADDRTR,TYPEFLE=RANSEQ,  X
+                                                       CORDATA=YES
+                                   2306          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      08     0001A9
+   01       01      08     0001B1
+   01       01      08     0001B9
+   01       01      08     0001C1
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+IJHAABZZ  SD  01 000000 0012CE
+IJHAIZZZ  LD     000000         01
+IJHAARZZ  LD     000000         01
+IJHAASZZ  LD     000000         01
+IJHBABZZ  LD     000000         01
+IJHUABZZ  LD     000000         01
+IJHBARZZ  LD     000000         01
+IJHBASZZ  LD     000000         01
+IJHBIZZZ  LD     000000         01
+IJHUARZZ  LD     000000         01
+IJHUASZZ  LD     000000         01
+IJHUIZZZ  LD     000000         01
+IJHZRBZZ  LD     000000         01
+IJHZRRZZ  LD     000000         01
+IJHZRSZZ  LD     000000         01
+                                                                                                               PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      1          PRINT NOGEN
+                                      2          ISMOD SEPASMB=YES,RECFORM=BOTH,IOROUT=ADDRTR,TYPEFLE=RANSEQ
+                                   2132          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      08     0001A9
+   01       01      08     0001B1
+   01       01      08     0001B9
+   01       01      08     0001C1
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+IJHAARCP  SD  01 000000 00122C
+IJHAARZP  LD     000000         01
+IJHAIZZP  LD     000000         01
+IJHBARZP  LD     000000         01
+IJHUARZP  LD     000000         01
+IJHAIZCP  LD     000000         01
+IJHBARCP  LD     000000         01
+IJHUARCP  LD     000000         01
+IJHBIZZP  LD     000000         01
+IJHBIZCP  LD     000000         01
+IJHUIZZP  LD     000000         01
+IJHUIZCP  LD     000000         01
+IJHZRRZP  LD     000000         01
+IJHZRRCP  LD     000000         01
+                                                                                                               PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      1          PRINT NOGEN
+                                      2          ISMOD SEPASMB=YES,RECFORM=BOTH,IOROUT=ADDRTR,TYPEFLE=RANDOM,  X
+                                                       CORINDX=YES,CORDATA=YES
+                                   2196          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      08     0001A9
+   01       01      08     0001B1
+   01       01      08     0001B9
+   01       01      08     0001C1
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+IJHAARCZ  SD  01 000000 001078
+IJHAARZZ  LD     000000         01
+IJHAIZZZ  LD     000000         01
+IJHBARZZ  LD     000000         01
+IJHUARZZ  LD     000000         01
+IJHAIZCZ  LD     000000         01
+IJHBARCZ  LD     000000         01
+IJHUARCZ  LD     000000         01
+IJHBIZZZ  LD     000000         01
+IJHBIZCZ  LD     000000         01
+IJHUIZZZ  LD     000000         01
+IJHUIZCZ  LD     000000         01
+IJHZRRZZ  LD     000000         01
+IJHZRRCZ  LD     000000         01
+                                                                                                               PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      1          PRINT NOGEN
+                                      2          ISMOD SEPASMB=YES,RECFORM=BOTH,IOROUT=ADDRTR,TYPEFLE=RANDOM,  X
+                                                       CORINDX=YES
+                                   2022          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      08     0001A9
+   01       01      08     0001B1
+   01       01      08     0001B9
+   01       01      08     0001C1
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+IJHAARZP  SD  01 000000 00110C
+IJHAIZZP  LD     000000         01
+IJHBARZP  LD     000000         01
+IJHUARZP  LD     000000         01
+IJHBIZZP  LD     000000         01
+IJHUIZZP  LD     000000         01
+IJHZRRZP  LD     000000         01
+                                                                                                               PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      1          PRINT NOGEN
+                                      2          ISMOD SEPASMB=YES,RECFORM=BOTH,IOROUT=ADDRTR,TYPEFLE=RANDOM,  X
+                                                       CORDATA=YES
+                                   2061          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      08     0001A9
+   01       01      08     0001B1
+   01       01      08     0001B9
+   01       01      08     0001C1
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+IJHAARZZ  SD  01 000000 000F58
+IJHAIZZZ  LD     000000         01
+IJHBARZZ  LD     000000         01
+IJHUARZZ  LD     000000         01
+IJHBIZZZ  LD     000000         01
+IJHUIZZZ  LD     000000         01
+IJHZRRZZ  LD     000000         01
+                                                                                                               PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      1          PRINT NOGEN
+                                      2          ISMOD SEPASMB=YES,RECFORM=BOTH,IOROUT=ADDRTR,TYPEFLE=RANDOM
+                                   1887          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      08     0001A9
+   01       01      08     0001B1
+   01       01      08     0001B9
+   01       01      08     0001C1
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+IJHBABCP  SD  01 000000 00149A
+IJHBABZP  LD     000000         01
+IJHBARZP  LD     000000         01
+IJHBASZP  LD     000000         01
+IJHBIZZP  LD     000000         01
+IJHBARCP  LD     000000         01
+IJHBASCP  LD     000000         01
+IJHBIZCP  LD     000000         01
+IJHZRBZP  LD     000000         01
+IJHZRRZP  LD     000000         01
+IJHZRSZP  LD     000000         01
+IJHZRBCP  LD     000000         01
+IJHZRRCP  LD     000000         01
+                                                                                                               PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      1          PRINT NOGEN
+                                      2          ISMOD SEPASMB=YES,RECFORM=FIXBLK,IOROUT=ADDRTR,TYPEFLE=RANSEQ,X
+                                                       CORINDX=YES,CORDATA=YES
+                                   2323          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      08     0001A9
+   01       01      08     0001B1
+   01       01      08     0001B9
+   01       01      08     0001C1
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+IJHBABCZ  SD  01 000000 0012F6
+IJHBABZZ  LD     000000         01
+IJHBARZZ  LD     000000         01
+IJHBASZZ  LD     000000         01
+IJHBIZZZ  LD     000000         01
+IJHBARCZ  LD     000000         01
+IJHBASCZ  LD     000000         01
+IJHBIZCZ  LD     000000         01
+IJHZRBZZ  LD     000000         01
+IJHZRRZZ  LD     000000         01
+IJHZRSZZ  LD     000000         01
+IJHZRBCZ  LD     000000         01
+IJHZRRCZ  LD     000000         01
+                                                                                                               PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      1          PRINT NOGEN
+                                      2          ISMOD SEPASMB=YES,RECFORM=FIXBLK,IOROUT=ADDRTR,TYPEFLE=RANSEQ,X
+                                                       CORINDX=YES
+                                   2144          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      08     0001A9
+   01       01      08     0001B1
+   01       01      08     0001B9
+   01       01      08     0001C1
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+IJHBABZP  SD  01 000000 00137E
+IJHBARZP  LD     000000         01
+IJHBASZP  LD     000000         01
+IJHBIZZP  LD     000000         01
+IJHZRBZP  LD     000000         01
+IJHZRRZP  LD     000000         01
+IJHZRSZP  LD     000000         01
+                                                                                                               PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      1          PRINT NOGEN
+                                      2          ISMOD SEPASMB=YES,RECFORM=FIXBLK,IOROUT=ADDRTR,TYPEFLE=RANSEQ,X
+                                                       CORDATA=YES
+                                   2191          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      08     0001A9
+   01       01      08     0001B1
+   01       01      08     0001B9
+   01       01      08     0001C1
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+IJHBABZZ  SD  01 000000 0011DA
+IJHBARZZ  LD     000000         01
+IJHBASZZ  LD     000000         01
+IJHBIZZZ  LD     000000         01
+IJHZRBZZ  LD     000000         01
+IJHZRRZZ  LD     000000         01
+IJHZRSZZ  LD     000000         01
+                                                                                                               PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      1          PRINT NOGEN
+                                      2          ISMOD SEPASMB=YES,RECFORM=FIXBLK,IOROUT=ADDRTR,TYPEFLE=RANSEQ
+                                   2012          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      08     0001A9
+   01       01      08     0001B1
+   01       01      08     0001B9
+   01       01      08     0001C1
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+IJHBARCP  SD  01 000000 001124
+IJHBARZP  LD     000000         01
+IJHBIZZP  LD     000000         01
+IJHBIZCP  LD     000000         01
+IJHZRRZP  LD     000000         01
+IJHZRRCP  LD     000000         01
+                                                                                                               PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      1          PRINT NOGEN
+                                      2          ISMOD SEPASMB=YES,RECFORM=FIXBLK,IOROUT=ADDRTR,TYPEFLE=RANDOM,X
+                                                       CORINDX=YES,CORDATA=YES
+                                   2080          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      08     0001A9
+   01       01      08     0001B1
+   01       01      08     0001B9
+   01       01      08     0001C1
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+IJHBARCZ  SD  01 000000 000F80
+IJHBARZZ  LD     000000         01
+IJHBIZZZ  LD     000000         01
+IJHBIZCZ  LD     000000         01
+IJHZRRZZ  LD     000000         01
+IJHZRRCZ  LD     000000         01
+                                                                                                               PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      1          PRINT NOGEN
+                                      2          ISMOD SEPASMB=YES,RECFORM=FIXBLK,IOROUT=ADDRTR,TYPEFLE=RANDOM,X
+                                                       CORINDX=YES
+                                   1901          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      08     0001A9
+   01       01      08     0001B1
+   01       01      08     0001B9
+   01       01      08     0001C1
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+IJHBARZP  SD  01 000000 001008
+IJHBIZZP  LD     000000         01
+IJHZRRZP  LD     000000         01
+                                                                                                               PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      1          PRINT NOGEN
+                                      2          ISMOD SEPASMB=YES,RECFORM=FIXBLK,IOROUT=ADDRTR,TYPEFLE=RANDOM,X
+                                                       CORDATA=YES
+                                   1952          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      08     0001A9
+   01       01      08     0001B1
+   01       01      08     0001B9
+   01       01      08     0001C1
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+IJHBARZZ  SD  01 000000 000E64
+IJHBIZZZ  LD     000000         01
+IJHZRRZZ  LD     000000         01
+                                                                                                               PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      1          PRINT NOGEN
+                                      2          ISMOD SEPASMB=YES,RECFORM=FIXBLK,IOROUT=ADDRTR,TYPEFLE=RANDOM
+                                   1773          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      08     0001A9
+   01       01      08     0001B1
+   01       01      08     0001B9
+   01       01      08     0001C1
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+IJHUABCP  SD  01 000000 00138A
+IJHUABZP  LD     000000         01
+IJHUARZP  LD     000000         01
+IJHUASZP  LD     000000         01
+IJHUIZZP  LD     000000         01
+IJHUARCP  LD     000000         01
+IJHUASCP  LD     000000         01
+IJHUIZCP  LD     000000         01
+IJHZRBZP  LD     000000         01
+IJHZRRZP  LD     000000         01
+IJHZRSZP  LD     000000         01
+IJHZRBCP  LD     000000         01
+IJHZRRCP  LD     000000         01
+                                                                                                               PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      1          PRINT NOGEN
+                                      2          ISMOD SEPASMB=YES,RECFORM=FIXUNB,IOROUT=ADDRTR,TYPEFLE=RANSEQ,X
+                                                       CORINDX=YES,CORDATA=YES
+                                   2198          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      08     0001A9
+   01       01      08     0001B1
+   01       01      08     0001B9
+   01       01      08     0001C1
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+IJHUABCZ  SD  01 000000 001222
+IJHUABZZ  LD     000000         01
+IJHUARZZ  LD     000000         01
+IJHUASZZ  LD     000000         01
+IJHUIZZZ  LD     000000         01
+IJHUARCZ  LD     000000         01
+IJHUASCZ  LD     000000         01
+IJHUIZCZ  LD     000000         01
+IJHZRBZZ  LD     000000         01
+IJHZRRZZ  LD     000000         01
+IJHZRSZZ  LD     000000         01
+IJHZRBCZ  LD     000000         01
+IJHZRRCZ  LD     000000         01
+                                                                                                               PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      1          PRINT NOGEN
+                                      2          ISMOD SEPASMB=YES,RECFORM=FIXUNB,IOROUT=ADDRTR,TYPEFLE=RANSEQ,X
+                                                       CORINDX=YES
+                                   2080          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      08     0001A9
+   01       01      08     0001B1
+   01       01      08     0001B9
+   01       01      08     0001C1
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+IJHUABZP  SD  01 000000 00126A
+IJHUARZP  LD     000000         01
+IJHUASZP  LD     000000         01
+IJHUIZZP  LD     000000         01
+IJHZRBZP  LD     000000         01
+IJHZRRZP  LD     000000         01
+IJHZRSZP  LD     000000         01
+                                                                                                               PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      1          PRINT NOGEN
+                                      2          ISMOD SEPASMB=YES,RECFORM=FIXUNB,IOROUT=ADDRTR,TYPEFLE=RANSEQ,X
+                                                       CORDATA=YES
+                                   2066          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      08     0001A9
+   01       01      08     0001B1
+   01       01      08     0001B9
+   01       01      08     0001C1
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+IJHUABZZ  SD  01 000000 001102
+IJHUARZZ  LD     000000         01
+IJHUASZZ  LD     000000         01
+IJHUIZZZ  LD     000000         01
+IJHZRBZZ  LD     000000         01
+IJHZRRZZ  LD     000000         01
+IJHZRSZZ  LD     000000         01
+                                                                                                               PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      1          PRINT NOGEN
+                                      2          ISMOD SEPASMB=YES,RECFORM=FIXUNB,IOROUT=ADDRTR,TYPEFLE=RANSEQ
+                                   1948          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      08     0001A9
+   01       01      08     0001B1
+   01       01      08     0001B9
+   01       01      08     0001C1
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+IJHUARCP  SD  01 000000 001018
+IJHUARZP  LD     000000         01
+IJHUIZZP  LD     000000         01
+IJHUIZCP  LD     000000         01
+IJHZRRZP  LD     000000         01
+IJHZRRCP  LD     000000         01
+                                                                                                               PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      1          PRINT NOGEN
+                                      2          ISMOD SEPASMB=YES,RECFORM=FIXUNB,IOROUT=ADDRTR,TYPEFLE=RANDOM,X
+                                                       CORINDX=YES,CORDATA=YES
+                                   1955          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      08     0001A9
+   01       01      08     0001B1
+   01       01      08     0001B9
+   01       01      08     0001C1
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+IJHUARCZ  SD  01 000000 000EAC
+IJHUARZZ  LD     000000         01
+IJHUIZZZ  LD     000000         01
+IJHUIZCZ  LD     000000         01
+IJHZRRZZ  LD     000000         01
+IJHZRRCZ  LD     000000         01
+                                                                                                               PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      1          PRINT NOGEN
+                                      2          ISMOD SEPASMB=YES,RECFORM=FIXUNB,IOROUT=ADDRTR,TYPEFLE=RANDOM,X
+                                                       CORINDX=YES
+                                   1837          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      08     0001A9
+   01       01      08     0001B1
+   01       01      08     0001B9
+   01       01      08     0001C1
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+IJHUARZP  SD  01 000000 000EF8
+IJHUIZZP  LD     000000         01
+IJHZRRZP  LD     000000         01
+                                                                                                               PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      1          PRINT NOGEN
+                                      2          ISMOD SEPASMB=YES,RECFORM=FIXUNB,IOROUT=ADDRTR,TYPEFLE=RANDOM,X
+                                                       CORDATA=YES
+                                   1827          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      08     0001A9
+   01       01      08     0001B1
+   01       01      08     0001B9
+   01       01      08     0001C1
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+IJHUARZZ  SD  01 000000 000D8C
+IJHUIZZZ  LD     000000         01
+IJHZRRZZ  LD     000000         01
+                                                                                                               PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      1          PRINT NOGEN
+                                      2          ISMOD SEPASMB=YES,RECFORM=FIXUNB,IOROUT=ADDRTR,TYPEFLE=RANDOM
+                                   1709          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      08     0001A9
+   01       01      08     0001B1
+   01       01      08     0001B9
+   01       01      08     0001C1
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+IJHZRBCZ  SD  01 000000 000A04
+IJHZRBZZ  LD     000000         01
+IJHZRRZZ  LD     000000         01
+IJHZRSZZ  LD     000000         01
+IJHZRRCZ  LD     000000         01
+                                                                                                               PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      1          PRINT NOGEN
+                                      2          ISMOD SEPASMB=YES,IOROUT=RETRVE,TYPEFLE=RANSEQ,CORINDX=YES
+                                   1043          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      08     0001A9
+   01       01      08     0001B1
+   01       01      08     0001B9
+   01       01      08     0001C1
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+IJHZRBZZ  SD  01 000000 00094E
+IJHZRRZZ  LD     000000         01
+IJHZRSZZ  LD     000000         01
+                                                                                                               PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      1          PRINT NOGEN
+                                      2          ISMOD SEPASMB=YES,IOROUT=RETRVE,TYPEFLE=RANSEQ
+                                    945          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      08     0001A9
+   01       01      08     0001B1
+   01       01      08     0001B9
+   01       01      08     0001C1
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+IJHZRRCZ  SD  01 000000 00068E
+IJHZRRZZ  LD     000000         01
+                                                                                                               PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      1          PRINT NOGEN
+                                      2          ISMOD SEPASMB=YES,IOROUT=RETRVE,TYPEFLE=RANDOM,CORINDX=YES
+                                    805          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      08     0001A9
+   01       01      08     0001B1
+   01       01      08     0001B9
+   01       01      08     0001C1
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC ASSEMBLY
+
+                                              EXTERNAL SYMBOL DICTIONARY                                       PAGE    1
+
+
+SYMBOL   TYPE ID  ADDR  LENGTH LD ID
+
+IJHZRRZZ  SD  01 000000 0005D8
+                                                                                                               PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      1          PRINT NOGEN
+                                      2          ISMOD SEPASMB=YES,IOROUT=RETRVE,TYPEFLE=RANDOM
+                                    709          END
+                                                 RELOCATION DICTIONARY                                          PAGE   1
+
+
+ POS.ID   REL.ID   FLAGS   ADDRESS                                                                              03/29/70
+
+   01       01      08     0001A9
+   01       01      08     0001B1
+   01       01      08     0001B9
+   01       01      08     0001C1
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+// EXEC ASSEMBLY
+
+                                                                                                               PAGE    1
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                          FDOS CL3-10 03/29/70
+
+                                      1          PRINT NOGEN
+                                      2          PUNCH '/*    '
+                                      3          END
+
+
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+CLOSE SYSPCH,X'00D'
+// DLBL UIN,'DOS.BG.WORKFILE.004',0,SD
+// EXTENT SYS004,WRK14A
+// DLBL UOUT,'DOS.BG.WORKFILE.001',0,SD
+// EXTENT SYS005,WRK14A,1,1,1700,300
+// ASSGN SYS004,X'192'       INPUT SYSPCH FILE 81-BYTE RECORDS
+// ASSGN SYS005,X'192'       OUTPUT SYSIPT FILE 80-BYTE RECORDS
+// EXEC DKDK                 DISK TO DISK
+
+// UDD TF,FF,A=(81,81),B=(80,80),ON,R1,E=(2314)
+// FS 2,80,1
+// END
+DISK TO DISK UTILITY
+INPUT RECORD LENGTH 0081
+OUTPUT RECORD LENGTH  0080
+INPUT BLOCK LENGTH 00081
+OUTPUT BLOCK LENGTH 00080
+OUTPUT OPTION NO DASD WRITE CHECK
+2 INPUT,2 OUTPUT AREAS ASSIGNED
+RECORD FORMAT FIXED
+TYPE FIELD SELECT
+STARTING RECORD NUMBER  00000001
+INPUT DEVICE TYPE  2314
+OUTPUT DEVICE TYPE  2314
+FILEMARK WRITTEN IN
+XT. NO.  B1   C1   C2   H1   H2   R
+   001  000  000  087  000  017  026
+NUMBER OF INPUT BLOCKS PROCESSED  002305
+NUMBER OF OUTPUT BLOCKS PROCESSED 002305
+END OF JOB
+// DLBL IJSYSIN,'DOS.BG.WORKFILE.001',0,SD
+// EXTENT SYSIPT,WRK14A,1,1,1700,300
+ASSGN SYSIPT,X'192'
+// EXEC MAINT
+
+  CATALR IJHAABCP,3.12
+  CATALR IJHAABCZ,3.12
+  CATALR IJHAABZP,3.12
+  CATALR IJHAABZZ,3.12
+  CATALR IJHAARCP,3.12
+  CATALR IJHAARCZ,3.12
+  CATALR IJHAARZP,3.12
+  CATALR IJHAARZZ,3.12
+  CATALR IJHBABCP,3.12
+  CATALR IJHBABCZ,3.12
+  CATALR IJHBABZP,3.12
+  CATALR IJHBABZZ,3.12
+  CATALR IJHBARCP,3.12
+  CATALR IJHBARCZ,3.12
+  CATALR IJHBARZP,3.12
+  CATALR IJHBARZZ,3.12
+  CATALR IJHUABCP,3.12
+  CATALR IJHUABCZ,3.12
+  CATALR IJHUABZP,3.12
+  CATALR IJHUABZZ,3.12
+  CATALR IJHUARCP,3.12
+  CATALR IJHUARCZ,3.12
+  CATALR IJHUARZP,3.12
+  CATALR IJHUARZZ,3.12
+  CATALR IJHZRBCZ,3.12
+  CATALR IJHZRBZZ,3.12
+  CATALR IJHZRRCZ,3.12
+  CATALR IJHZRRZZ,3.12
+CLOSE SYSIPT,X'00C'
+
+SYSTEM DIRECTORY--SYSRES            CORE-IMAGE               RELOCATABLE              SOURCE-STATEMENT
+
+03/29/70                            -----------------------------DECIMAL----------------------------------------
+
+                                      C  H  R  E               C  H  R  E               C  H  R  E
+DIRECTORY STARTING ADDRESS            00 10 01                 56 00 01                133 00 01
+DIRECTORY NEXT ENTRY                  00 13 10 07              56 04 10 14             133 01 09 03
+DIRECTORY LAST ENTRY                  00 19 15 17              56 09 17 19             133 09 27 09
+
+LIBRARY   STARTING ADDRESS            01 00 01                 56 10 01                133 10 01
+LIBRARY   NEXT AVAILABLE ENTRY        28 02 02                111 13 02                177 06 10
+LIBRARY   LAST AVAILABLE ENTRY        55 19 04                132 19 16                197 19 27
+
+                                    -----------------------STATUS  INFORMATION----------------------------------
+
+DIRECTORY ENTRIES ACTIVE             953                     1520                      348
+
+LIBRARY   BLOCKS ALLOCATED          4480                    24480                    34830
+LIBRARY   BLOCKS ACTIVE             2054                    17003                    23661
+LIBRARY   BLOCKS DELETED             116                      646                       00
+LIBRARY   BLOCKS AVAILABLE          2310                     6831                    11169
+
+AUTOMATIC CONDENSE LIMIT              00                       00                       00
+
+LIBRARY   ALLOCATED CYLINDERS         56                       77                       65
+DIRECTORY ALLOCATED TRACKS            10                       10                       10
+EOJ SYSGEN9B                                                            12.04.11,DURATION 00.00.42
+ASSGN SYSPCH,X'00D'   OR CLOSE SYSPCH,X'00D'
+ASSGN SYSIPT,X'00C'   OR CLOSE SYSPCH,X'00C'

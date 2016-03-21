@@ -1,0 +1,196 @@
+
+// JOB VERCOB02                                                         12.02.38
+// OPTION LINK
+// EXEC FCOBOL
+
+     1                                  IBM DOS AMERICAN NATIONAL STANDARD COBOL                CBF CL3-6       03/29/70
+
+
+00001   010010 IDENTIFICATION DIVISION.                                         $4820001
+00002   010020 PROGRAM-ID. C360SAMP.                                            $4820002
+00003   010030 REMARKS.                                                         $4820003
+00004   010040     EXAMPLE OF A 360 FCOBOL PROGRAM                              $4820004
+00005   010050         TO COMPUTE SALARIES.                                     $4820005
+00006   020060 ENVIRONMENT DIVISION.                                            $4820006
+00007   020070 CONFIGURATION SECTION.                                           $4820007
+00008   020080   SOURCE-COMPUTER. IBM-360-F30.                                  $4820008
+00009   020090   OBJECT-COMPUTER. IBM-360-F30.                                  $4820009
+00010   020100 INPUT-OUTPUT SECTION.                                            $4820010
+00011   020110   FILE-CONTROL.                                                  $4820011
+00012   020120     SELECT SALARY-FILE                                           $4820012
+00013   020130         ASSIGN TO SYS004-UR-1403-S.                              $4820013
+00014   020140                                                                  $4820014
+00015   030150 DATA DIVISION.                                                   $4820015
+00016   030160 FILE SECTION.                                                    $4820016
+00017   030170   FD SALARY-FILE                                                 $4820017
+00018   030180     LABEL RECORDS ARE OMITTED                                    $4820018
+00019   030190         DATA RECORD IS SALARY-RECORD.                            $4820019
+00020   030200   01 SALARY-RECORD  PICTURE X(100).                              $4820020
+00021   031010 WORKING-STORAGE SECTION.                                         $4820021
+00022   031020   77 TOTAL-A      PIC 9(6)V99   VALUE ZERO.                      $4820022
+00023   031030   77 TOTAL-B      PIC 9(6)V99   VALUE ZERO.                      $4820023
+00024   031040   77 TOTAL-C      PIC 9(6)V99   VALUE ZERO.                      $4820024
+00025   031050   77 WEEKLY-PAY   PIC 999V99.                                    $4820025
+00026   031060   77 MONTHLY-PAY  PIC 9999V99.                                   $4820026
+00027   031070   77 ANNUAL-PAY   PIC 99999V99.                                  $4820027
+00028   031080   77 CON-A        PIC 9(6)V99   VALUE 008826.69.                 $4820028
+00029   031090   77 CON-B        PIC 9(6)V99   VALUE 038250.00.                 $4820029
+00030   031100   77 CON-C        PIC 9(6)V99   VALUE 459000.00.                 $4820030
+00031   031110   01 SALARIES.                                                   $4820031
+00032   031120      02 FILLER    PIC X(46)     VALUE SPACES.                    $4820032
+00033   031130      02 WEEKLY    PIC ZZZ.99.                                    $4820033
+00034   031140      02 FILLER    PIC X(3)      VALUE SPACES.                    $4820034
+00035   031150      02 MONTHLY   PIC ZZZZ.99.                                   $4820035
+00036   031160      02 FILLER    PIC X(3)      VALUE SPACES.                    $4820036
+00037   031170      02 ANNUAL    PIC ZZZZZ.99.                                  $4820037
+00038   031180      02 FILLER    PIC X(27)     VALUE SPACES.                    $4820038
+00039   031190   01 MESG.                                                       $4820039
+00040   031200      02 FILLER    PIC X(40)     VALUE SPACES.                    $4820040
+00041   032010      02 SHOW      PIC A(26).                                     $4820041
+00042   032015      02 FILLER PIC X(34) VALUE SPACES.                           $4820042
+00043   032020   01 DSPY.                                                       $4820043
+00044   032030      02 FILLER    PIC X(40)     VALUE SPACES.                    $4820044
+00045   032040      02 PRSNT     PIC A(33).                                     $4820045
+00046   032045      02 FILLER PIC X(27) VALUE SPACES.                           $4820046
+00047   032050   01 PG-HDING.                                                   $4820047
+00048   032060      02 FILLER    PIC X(46)     VALUE SPACES.                    $4820048
+00049   032070      02 WEEKLY    PIC A(6)      VALUE 'WEEKLY'.                  $4820049
+00050   032080      02 FILLER    PIC X(3)      VALUE SPACES.                    $4820050
+00051   032090      02 MONTHLY   PIC A(7)      VALUE 'MONTHLY'.                 $4820051
+00052   032100      02 FILLER    PIC X(3)      VALUE SPACES.                    $4820052
+00053   032110      02 ANNUAL    PIC A(6)      VALUE 'ANNUAL'.                  $4820053
+     2
+
+
+00054   032120      02 FILLER    PIC X(29)     VALUE SPACES.                    $4820054
+00055   040130                                                                  $4820055
+00056   040140 PROCEDURE DIVISION.                                              $4820056
+00057   040150   START-PROG.                                                    $4820057
+00058   040160     OPEN OUTPUT SALARY-FILE.                                     $4820058
+00059   040170     WRITE SALARY-RECORD FROM PG-HDING AFTER ADVANCING 0 LINES.   $4820059
+00060   040180     PERFORM CALCULATIONS                                         $4820060
+00061   040190       VARYING MONTHLY-PAY FROM 500 BY 10                         $4820061
+00062   040200       UNTIL MONTHLY-PAY IS GREATER THAN 1000.                    $4820062
+00063   041010     IF TOTAL-A = CON-A AND TOTAL-B = CON-B AND TOTAL-C = CON-C   $4820063
+00064   041020         MOVE 'TABLE VALUES ARE CORRECT' TO SHOW                  $4820064
+00065   041030         WRITE SALARY-RECORD FROM MESG AFTER ADVANCING 2 LINES    $4820065
+00066   041040       ELSE                                                       $4820066
+00067   041050         MOVE 'TABLE VALUES ARE NOT CORRECT' TO PRSNT             $4820067
+00068   041060         WRITE SALARY-RECORD FROM DSPY AFTER ADVANCING 2 LINES.   $4820068
+00069   041070     CLOSE SALARY-FILE.                                           $4820069
+00070   041080     STOP RUN.                                                    $4820070
+00071   041090   CALCULATIONS.                                                  $4820071
+00072   041100     COMPUTE WEEKLY-PAY = 3 * MONTHLY-PAY / 13.                   $4820072
+00073   041110     COMPUTE ANNUAL-PAY = 12 * MONTHLY-PAY.                       $4820073
+00074   041120     MOVE WEEKLY-PAY TO WEEKLY IN SALARIES.                       $4820074
+00075   041130     MOVE MONTHLY-PAY TO MONTHLY IN SALARIES.                     $4820075
+00076   041140     MOVE ANNUAL-PAY TO ANNUAL IN SALARIES.                       $4820076
+00077   041150     ADD WEEKLY-PAY TO TOTAL-A.                                   $4820077
+00078   041160     ADD MONTHLY-PAY TO TOTAL-B.                                  $4820078
+00079   041170     ADD ANNUAL-PAY TO TOTAL-C.                                   $4820079
+00080   041180     WRITE SALARY-RECORD FROM SALARIES AFTER ADVANCING 1 LINES.   $4820080
+     3
+
+
+                                              CROSS-REFERENCE DICTIONARY
+
+
+ DATA NAMES                       DEFN       REFERENCE
+
+ SALARY-FILE                      00012      00058  00058  00059  00065  00068  00069  00080
+ SALARY-RECORD                    00020      00059  00059  00059  00065  00065  00065  00068  00068  00068  00080  00080
+                                             00080
+ TOTAL-A                          00022      00063  00077  00077  00077
+ TOTAL-B                          00023      00063  00078  00078  00078
+ TOTAL-C                          00024      00063  00079  00079  00079
+ WEEKLY-PAY                       00025      00072  00072  00074  00077
+ MONTHLY-PAY                      00026      00060  00060  00060  00060  00060  00072  00073  00075  00078
+ ANNUAL-PAY                       00027      00073  00073  00076  00079
+ CON-A                            00028      00063
+ CON-B                            00029      00063
+ CON-C                            00030      00063
+ SALARIES                         00031      00080  00080
+ WEEKLY                           00033      00074
+ MONTHLY                          00035      00075
+ ANNUAL                           00037      00076
+ MESG                             00039      00065  00065
+ SHOW                             00041      00064  00064  00064  00064
+ DSPY                             00043      00068  00068
+ PRSNT                            00045      00067  00067  00067  00067
+ PG-HDING                         00047      00059  00059
+
+
+ PROCEDURE NAMES                  DEFN       REFERENCE
+
+ CALCULATIONS                     00071      00060
+// EXEC LNKEDT
+
+JOB  VERCOB02  03/29/70   DISK LINKAGE EDITOR DIAGNOSTIC OF INPUT
+
+ACTION TAKEN  MAP
+LIST   AUTOLINK   IJDFAPIZ
+LIST   AUTOLINK   ILBDMNS0
+LIST   ENTRY
+03/29/70   PHASE  XFR-AD  LOCORE  HICORE  DSK-AD   ESD TYPE  LABEL     LOADED  REL-FR
+
+        PHASE***  006000  006000  006A80  1B 06 4  CSECT     C360SAMP  006000  006000
+
+                                                   CSECT     IJDFAPIZ  006968  006968
+                                                   *  ENTRY  IJDFAZIZ  006968
+
+                                                   CSECT     ILBDMNS0  006A80  006A80
+// ASSGN SYSLST,UA                                             WEEKLY   MONTHLY   ANNUAL
+                                             115.38    500.00    6000.00
+                                             117.69    510.00    6120.00
+                                             120.00    520.00    6240.00
+                                             122.30    530.00    6360.00
+                                             124.61    540.00    6480.00
+                                             126.92    550.00    6600.00
+                                             129.23    560.00    6720.00
+                                             131.53    570.00    6840.00
+                                             133.84    580.00    6960.00
+                                             136.15    590.00    7080.00
+                                             138.46    600.00    7200.00
+                                             140.76    610.00    7320.00
+                                             143.07    620.00    7440.00
+                                             145.38    630.00    7560.00
+                                             147.69    640.00    7680.00
+                                             150.00    650.00    7800.00
+                                             152.30    660.00    7920.00
+                                             154.61    670.00    8040.00
+                                             156.92    680.00    8160.00
+                                             159.23    690.00    8280.00
+                                             161.53    700.00    8400.00
+                                             163.84    710.00    8520.00
+                                             166.15    720.00    8640.00
+                                             168.46    730.00    8760.00
+                                             170.76    740.00    8880.00
+                                             173.07    750.00    9000.00
+                                             175.38    760.00    9120.00
+                                             177.69    770.00    9240.00
+                                             180.00    780.00    9360.00
+                                             182.30    790.00    9480.00
+                                             184.61    800.00    9600.00
+                                             186.92    810.00    9720.00
+                                             189.23    820.00    9840.00
+                                             191.53    830.00    9960.00
+                                             193.84    840.00   10080.00
+                                             196.15    850.00   10200.00
+                                             198.46    860.00   10320.00
+                                             200.76    870.00   10440.00
+                                             203.07    880.00   10560.00
+                                             205.38    890.00   10680.00
+                                             207.69    900.00   10800.00
+                                             210.00    910.00   10920.00
+                                             212.30    920.00   11040.00
+                                             214.61    930.00   11160.00
+                                             216.92    940.00   11280.00
+                                             219.23    950.00   11400.00
+                                             221.53    960.00   11520.00
+                                             223.84    970.00   11640.00
+                                             226.15    980.00   11760.00
+                                             228.46    990.00   11880.00
+                                             230.76   1000.00   12000.00
+
+                                       TABLE VALUES ARE CORRECT
+EOJ VERCOB02                                                            12.02.42,DURATION 00.00.03

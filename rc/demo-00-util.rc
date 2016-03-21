@@ -1,0 +1,7 @@
+# Demonstrate Sort and DOS Tape utilities.  
+devinit 280 *
+sh cd tape & del demoutil.aws
+sh hetinit -d tape/demoutil.aws 001005 HERCULES
+devinit 280 tape/demoutil.aws
+devinit e prt/demo-util.txt crlf
+devinit c demos/demoutil.jcl

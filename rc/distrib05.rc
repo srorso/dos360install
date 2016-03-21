@@ -1,0 +1,5 @@
+# DISTRIB05 restore distribution tape to RES11C
+stopall                            # Halt CPU, required for IPL
+#      No rewind; need tape positioned following initialize program
+iplc 281                           # IPL restore program
+devinit 00c jcl/distrib05.jcl      # restore third volume
